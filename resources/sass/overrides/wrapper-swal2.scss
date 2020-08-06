@@ -1,0 +1,53 @@
+.swal2-container {
+	z-index: 10000 !important;
+
+	.swal2-popup {
+		.swal2-content {
+			font-size: 1rem;
+		}
+
+		.swal2-title {
+			font-size: 1.25rem;
+			margin: 0 0 1.25rem;
+		}
+
+		.swal2-close {
+			top: 5px;
+			right: 5px;
+			font-size: 2rem;
+		}
+
+		.swal2-styled {
+			@extend .btn;
+			font-size: inherit !important;
+			min-width: 90px;
+
+			&.swal2-confirm {
+				@extend .btn-primary;
+			}
+
+			&.swal2-cancel {
+				@extend .btn-secondary;
+			}
+		}
+
+		.swal2-actions {
+			&.swal2-loading {
+				.swal2-confirm {
+					&.swal2-styled {
+						min-width: 35px !important;
+					}
+				}
+			}
+		}
+	}
+}
+
+body.swal2-shown.swal2-height-auto,
+ {
+	height: inherit !important;
+}
+
+body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
+	overflow: auto !important;
+}

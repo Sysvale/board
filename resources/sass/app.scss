@@ -1,0 +1,88 @@
+:root {
+	font-size: 14px;
+}
+
+//Bootstrap variables
+$body-bg: #fff;
+$font-family-sans-serif:      Ubuntu, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-weight-bold:            500;
+$font-weight-bolder:          700;
+
+$green:	#12caa7;
+$primary:	$green;
+
+
+
+@import '~bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+@import 'node_modules/vue-multiselect/dist/vue-multiselect.min';
+
+//Local variables
+$font-size-xlg: $font-size-base * 2;
+
+// Overrides
+@import "overrides/wrapper-multiselect.scss";
+@import "overrides/wrapper-swal2.scss";
+
+html, body, #app {
+	height: 100%;
+}
+
+@import 'text';
+@import 'icon';
+@import 'image';
+@import 'sidebar';
+
+.bg-gray-light {
+	background-color: $gray-200;
+}
+
+.col-form-label {
+	font-weight: 500;
+}
+
+.btn {
+	min-width: 120px;
+}
+
+.line {
+	height: 10px;
+	background-color: #e9eee3;
+	width: 100%;
+	border-radius: 1px;
+	margin: 5px 0px;
+}
+
+.page {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.top-menu {
+		background: $white;
+		height: 60px;
+		border-bottom: 1px solid $gray-300;
+	}
+
+	.page-body {
+		height: calc(100% - 60px);
+		flex-grow: 1;
+		overflow-x: auto;
+		position: relative;
+
+		.page-side-bar {
+			position: fixed;
+			width: 230px;
+			height: calc(100% - 60px);
+			border-right: 1px solid $gray-300;
+		}
+
+		.page-container {
+			padding-left: 230px;
+		}
+	}
+}
+
+.pointer {
+	cursor: pointer;
+}
