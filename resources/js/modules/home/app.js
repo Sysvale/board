@@ -4,6 +4,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router';
 import vuetify from '../../vuetify';
 import App from './views/App.vue';
+import draggable from 'vuedraggable';
 import {
 	ValidationProvider,
 	ValidationObserver,
@@ -35,6 +36,7 @@ const router = new VueRouter({
 
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('Draggable', draggable);
 
 
 const app = new Vue({
