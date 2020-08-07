@@ -14,6 +14,7 @@ import {
 
 import validateLocale from 'vee-validate/dist/locale/pt_BR.json';
 import routes from './routes';
+import store from './store';
 
 setInteractionMode('lazy'); //Mode interation validation fields;
 
@@ -43,4 +44,5 @@ const app = new Vue({
 	render: (h) => h(App),
 	vuetify,
 	router,
+	store,
 }).$mount('#app');
