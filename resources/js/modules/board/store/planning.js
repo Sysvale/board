@@ -6,16 +6,7 @@ const initialState = () => {
 	PLANNING_BOARD.forEach(({ key }, index) => {
 		state = {
 			...state,
-			[key]: [
-				{
-					id: index+'aback'+key,
-					title: 'Lorem ipsum ' + key,
-				},
-				{
-					id: index+'bbac'+key,
-					title: 'Lorem ipsum backlog b '+key,
-				}
-			],
+			[key]: [],
 		}
 	});
 	return state;
