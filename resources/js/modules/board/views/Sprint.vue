@@ -7,7 +7,9 @@
 		<v-divider class="py-3"/>
 		<section>
 			<h1>Não planejados</h1>
-			<not-planned-board />
+			<default-tasks-board
+				namespace="notPlanned"
+			/>
 		</section>
 		<v-divider/>
 		<section class="mt-10">
@@ -19,21 +21,21 @@
 		</div>
 		<section class="mt-10">
 			<h1>Sprint Devlog</h1>
-			<dev-board />
+			<default-tasks-board
+				namespace="dev"
+			/>
 		</section>
 	</v-container>
 </template>
 
 <script>
 import UserStoriesBoard from '../components/UserStoriesBoard.vue';
-import DevBoard from '../components/DevBoard.vue';
-import NotPlannedBoard from '../components/NotPlannedBoard.vue';
+import DefaultTasksBoard from '../components/DefaultTasksBoard.vue';
 
 export default {
 	components: {
 		UserStoriesBoard,
-		DevBoard,
-		NotPlannedBoard,
+		DefaultTasksBoard,
 	},
 }
 </script>
