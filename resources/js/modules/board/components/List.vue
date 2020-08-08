@@ -3,7 +3,7 @@
 		<header class="mb-4 text--black">
 			<div>
 				<span class="mb-0 font-weight-bold d-block">
-					{{ title }}
+					{{ $attrs.title }}
 				</span>
 				<div class="mt-n2">
 					<small class="mt-n2">
@@ -17,6 +17,7 @@
 			block
 			small
 			depressed
+			:disabled="$attrs.loading"
 			class="mb-2"
 			color="white"
 			@click="createMode = true"
@@ -37,38 +38,44 @@
 			@keydown.enter="save"
 			@keydown.esc="clear"
 		/>
-		<draggable
-			v-bind="$attrs"
-			v-on="$listeners"
-			:key="`${$attrs.id}-${$attrs.list.length}`"
+		<v-fade-transition
+			hide-on-leave
 		>
-				<card
-					v-for="(element, i) in $attrs.list"
-					:key="element.id "
-					:class="{
-						'mt-2': i > 0,
-					}"
-				>
-					{{ element.title }}
-				</card>
-		</draggable>
+			<list-skeleton-loader
+				v-if="$attrs.loading"
+			/>
+			<draggable
+				v-else
+				v-bind="$attrs"
+				v-on="$listeners"
+				:key="`${$attrs.id}-${$attrs.list.length}`"
+			>
+					<card
+						v-for="(element, i) in $attrs.list"
+						:id="element.id"
+						:key="element.id "
+						:class="{
+							'mt-2': i > 0,
+						}"
+						@delete="$emit('delete', element.id)"
+					>
+						{{ element.title }}
+					</card>
+			</draggable>
+		</v-fade-transition>
 	</list-container>
 </template>
 
 <script>
 import Card from './Card';
 import ListContainer from './ListContainer';
+import ListSkeletonLoader from './ListSkeletonLoader';
 
 export default {
 	components: {
 		Card,
 		ListContainer,
-	},
-	props: {
-		title: {
-			type: String,
-			default: 'title',
-		},
+		ListSkeletonLoader,
 	},
 
 	data() {
