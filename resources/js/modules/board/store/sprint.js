@@ -1,9 +1,9 @@
-import { SPRINT_STORY_BOARD } from '../constants/defaultBoards';
+import { TASK_BOARD } from '../constants/defaultBoards';
 import upperCamelCase from '../../../core/utils/upperCamelCase';
 
 const initialState = () => {
 	let state = {};
-	SPRINT_STORY_BOARD.forEach(({ key }, index) => {
+	TASK_BOARD.forEach(({ key }, index) => {
 		state = {
 			...state,
 			[key]: [],
@@ -14,7 +14,7 @@ const initialState = () => {
 
 const generateMutations = () => {
 	let mutations = {};
-	SPRINT_STORY_BOARD.forEach(({ key }) => {
+	TASK_BOARD.forEach(({ key }) => {
 		let mutationName = `set${upperCamelCase(key)}`;
 		mutations = {
 			[mutationName]: (state, payload) => {
@@ -28,7 +28,7 @@ const generateMutations = () => {
 
 const generateGetters = () => {
 	let getters = {};
-	SPRINT_STORY_BOARD.forEach(({ key }) => {
+	TASK_BOARD.forEach(({ key }) => {
 		let getterName = `get${upperCamelCase(key)}`;
 		getters = {
 			[getterName]: (state) => {

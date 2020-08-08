@@ -23,7 +23,7 @@ export const PLANNING_BOARD = [
   },
 ];
 
-export const SPRINT_STORY_BOARD = [
+export const TASK_BOARD = [
   {
     key: Lists.TODO,
     name: 'To Do',
