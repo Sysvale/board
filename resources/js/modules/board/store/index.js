@@ -6,6 +6,8 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 import planning from './planning';
 import sprint from './sprint';
 import userStories from './userStories';
+import dev from './dev';
+import notPlanned from './notPlanned';
 
 const modules = [];
 
@@ -21,6 +23,8 @@ export default new Vuex.Store({
 			planning,
 			sprint,
 			userStories,
+			dev,
+			notPlanned,
 		}),
 	},
 });
