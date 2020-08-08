@@ -5,74 +5,41 @@
 	>
 		<h2 class="mb-3 text-center font-weight-light">Planning Board</h2>
 		<v-divider class="py-3"/>
-		<v-layout
-			colum
-		>
-			<list-container>
+		<board>
+			<v-layout
+				colum
+			>
 				<list
-					:title="getListName(DEV_LOG)"
-					:list="getList(DEV_LOG)"
-					:group="boardContext"
+					v-for="list in PLANNING_BOARD"
+					:id="list.key"
+					:key="list.key"
+					:title="getListName(list.key)"
+					:list="getList(list.key)"
+					group="plannig"
+					@save="handleSave"
+					@delete="handleDelete"
 				/>
-				<list
-					:title="getListName(BUGS)"
-					:list="getList(BUGS)"
-					:group="boardContext"
-					class="mt-10"
-				/>
-			</list-container>
-			<list-container>
-				<list
-					:title="getListName(BACKLOG)"
-					:list="getList(BACKLOG)"
-					:group="boardContext"
-				/>
-			</list-container>
-			<list-container>
-				<list
-					:title="getListName(TEAM_ONE)"
-					:list="getList(TEAM_ONE)"
-					:group="boardContext"
-				/>
-			</list-container>
-			<list-container>
-				<list
-					:title="getListName(TEAM_TWO)"
-					:list="getList(TEAM_TWO)"
-					:group="boardContext"
-				/>
-			</list-container>
-		</v-layout>
+			</v-layout>
+		</board>
 	</v-container>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import List from '../components/List.vue';
-import ListContainer from '../components/ListContainer.vue';
+import Board from '../components/Board.vue';
 import { PLANNING_BOARD } from '../constants/defaultBoards';
-import {
-	BACKLOG,
-	TEAM_ONE,
-	TEAM_TWO,
-	DEV_LOG,
-	BUGS,
-} from '../constants/defaultLists';
 
 export default {
 	components: {
 		List,
-		ListContainer,
+		Board,
 	},
 
 	data() {
 		return {
-			BACKLOG,
-			TEAM_ONE,
-			TEAM_TWO,
-			DEV_LOG,
-			BUGS,
+			PLANNING_BOARD,
 		};
 	},
 
@@ -81,17 +48,28 @@ export default {
 			'planning',
 			PLANNING_BOARD.map(({key}) => key)
 		),
-		boardContext() {
-			return 'planning';
-		},
 	},
 
 	methods: {
+		...mapMutations(
+			'planning',
+			[
+				'addNewTask',
+				'removeTask',
+			],
+		),
 		getListName(boardKey) {
 			return PLANNING_BOARD.filter(({ key }) => key === boardKey)[0].name;
 		},
 		getList(boardKey) {
 			return this[boardKey];
+		},
+
+		handleSave({ listId, title }) {
+			this.addNewTask({ listId, title });
+		},
+		handleDelete({ listId, id }) {
+			this.removeTask({ listId, id });
 		},
 	}
 }

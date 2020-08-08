@@ -2,6 +2,14 @@ import * as Lists from './defaultLists';
 
 export const PLANNING_BOARD = [
   {
+    key: Lists.DEV_LOG,
+    name: 'Dev Backlog',
+  },
+  {
+    key: Lists.BUGS,
+    name: 'Bugs',
+  },
+  {
     key: Lists.BACKLOG,
     name: 'Product Backlog',
   },
@@ -12,14 +20,6 @@ export const PLANNING_BOARD = [
   {
     key: Lists.TEAM_TWO,
     name: 'Stepper Labs',
-  },
-  {
-    key: Lists.DEV_LOG,
-    name: 'Dev Backlog',
-  },
-  {
-    key: Lists.BUGS,
-    name: 'Bugs',
   },
 ];
 

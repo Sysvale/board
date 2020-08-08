@@ -1,5 +1,6 @@
 import { PLANNING_BOARD } from '../constants/defaultBoards';
 import upperCamelCase from '../../../core/utils/upperCamelCase';
+import generateUUID from '../../../core/utils/generateUUID';
 
 const initialState = () => {
 	let state = {};
@@ -48,6 +49,25 @@ export default {
 	},
 	mutations: {
 		...generateMutations(),
+		addNewTask(state, payload) {
+			const { listId, title } = payload;
+			let xItems = [...state[listId]];
+			xItems = [
+				{
+					id: generateUUID(),
+					title,
+				},
+				...xItems,
+			];
+			state[listId] = [...xItems];
+		},
+		removeTask(state, payload) {
+			const { listId, id} = payload;
+			let xItems = [
+				...state[listId].filter((card) => card.id !== id)
+			];
+			state[listId] = [...xItems];
+		},
 	},
 	getters: {
 		...generateGetters(),
