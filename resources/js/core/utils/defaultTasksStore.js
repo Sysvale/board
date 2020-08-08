@@ -28,13 +28,13 @@ export default (modules = []) => {
 				state.items = [...xItems];
 			},
 			addNewTask(state, payload) {
-				const { status, title } = payload;
+				const { listId, title } = payload;
 				let xItems = [...state.items];
 				xItems = [
 					{
 						id: generateUUID(),
 						title,
-						status,
+						status: listId,
 					},
 					...xItems,
 				];

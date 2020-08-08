@@ -57,7 +57,10 @@
 						:class="{
 							'mt-2': i > 0,
 						}"
-						@delete="$emit('delete', element.id)"
+						@delete="$emit('delete', {
+							id: element.id,
+							listId: $attrs.id
+						})"
 					>
 						{{ element.title }}
 					</card>
@@ -103,7 +106,7 @@ export default {
 			if(this.newCardTitle && this.newCardTitle.trim() !== '') {
 				this.$emit('save', {
 					title: this.newCardTitle,
-					status: this.$attrs.id,
+					listId: this.$attrs.id,
 				});
 				this.newCardTitle = null;
 			}

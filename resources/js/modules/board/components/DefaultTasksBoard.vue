@@ -114,15 +114,15 @@ export default {
 			console.log("handleCjange", event)
 		},
 
-		handleSave({ status, title }) {
+		handleSave({ listId, title }) {
 			this.addNewTask({
-				status,
+				listId,
 				title,
 			});
 		},
 
-		handleDelete(id) {
-			this.removeTask({ id });
+		handleDelete({ id, listId }) {
+			this.removeTask({ id, listId });
 		}
 	}
 }
