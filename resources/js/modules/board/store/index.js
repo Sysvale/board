@@ -1,15 +1,26 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import planning from './planning';
+import makeRequestStore from '../../../core/utils/makeRequestStore';
 
-console.log(planning);
+import planning from './planning';
+import sprint from './sprint';
+import userStories from './userStories';
+
+const modules = [];
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
 	namespaced: true,
 	modules: {
-		planning,
+		...modules.reduce((acc, module) => ({
+			...acc,
+			...makeRequestStore(module, true),
+		}), {
+			planning,
+			sprint,
+			userStories,
+		}),
 	},
 });
