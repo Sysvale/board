@@ -1,9 +1,7 @@
 <template>
 	<v-container
 		fluid
-		justify-start
-		align-content-start
-		class="list-container"
+		class="list-container mx-2"
 	>
 		<slot />
 	</v-container>
@@ -15,10 +13,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .list-container {
-	max-width: 275px;
-	margin-right: 0px!important;
-	margin-left: 0px!important;
+	max-width: 250px;
+	min-width: 250px;
+	padding: 0px!important;
 }
 </style>
