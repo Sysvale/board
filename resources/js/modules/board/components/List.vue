@@ -13,17 +13,22 @@
 			</div>
 		</header>
 		<v-btn
-			outlined
+			v-if="!createMode"
 			block
 			small
+			depressed
 			class="mb-2"
-			:disabled="createMode"
+			color="white"
 			@click="createMode = true"
 		>
-			<v-icon>add</v-icon>
+			<v-icon
+				color="rgba(0, 0, 0, 0.5)"
+			>
+				add
+			</v-icon>
 		</v-btn>
 		<v-textarea
-			v-if="createMode"
+			v-else
 			v-model="newCardTitle"
 			solo
 			auto-grow
