@@ -16,22 +16,11 @@
 							</v-card>
 						</div>
 					</list-container>
-					<v-layout
-						colum
-					>
-						<list
-							v-for="list in TASK_BOARD"
-							:key="list.key"
-							:id="list.key"
-							:title="getListName(list.key)"
-							:list="getTasksByUserStoryIdAndStatus(story.id, list.key)"
-							:group="story.id"
-							:move="onMoveHandler"
-							@change="handleChange"
-							@delete="handleDelete"
-							@save="handleSave($event, story.id)"
-						/>
-					</v-layout>
+					<default-board
+						:namespace="story.id"
+						:getLists="getDefaultLists"
+						:getCards="getCardsByListsIds"
+					/>
 				</v-layout>
 			</board>
 		</section>
@@ -40,88 +29,52 @@
 
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
-import makeFormFields from '../../../core/utils/makeFormFields';
-import List from '../components/List.vue';
-import Card from '../components/Card.vue';
 import Board from '../components/Board.vue';
+import DefaultBoard from '../components/DefaultBoard.vue';
 import ListContainer from '../components/ListContainer.vue';
-import { TASK_BOARD } from '../constants/defaultBoards';
+
 import {
-	TODO,
-	DEVELOPMENT,
-	CODE_REVIEW,
-	DONE,
-	DEPLOY,
-} from '../constants/defaultLists';
+	getDefaultLists,
+	getCardsByListsIds,
+} from '../services'
 
 export default {
 	components: {
-		List,
 		ListContainer,
-		Card,
-		Board,
-	},
-
-	data() {
-		return {
-			TASK_BOARD,
-		};
+		DefaultBoard,
 	},
 
 	computed: {
 		...mapGetters('userStories', {
 			userStories: 'getItems',
-			getTasksByUserStoryIdAndStatus: 'getTasksByUserStoryIdAndStatus',
 		})
 	},
 
 	mounted() {
-		this.getUserStories().then((data) => {
-			this.setItems(data);
-		});
+		this.setItems(
+			[
+				{
+					id: '1',
+					title: 'User Story 1',
+					teamId: 'x',
+				},
+				{
+					id: '2',
+					title: 'User Story 2',
+					teamId: 'x',
+				},
+			],
+		);
+		//this.getUserStories().then((data) => {
+		//});
 	},
 
 	methods: {
-		...mapActions('userStories', [
-			'getUserStories',
-		]),
+		getDefaultLists,
+		getCardsByListsIds,
 		...mapMutations('userStories', [
 			'setItems',
-			'setTasksByUserStoryId',
-			'setTaskStatus',
-			'addNewTask',
-			'removeTask',
 		]),
-
-		getListName(boardKey) {
-			return TASK_BOARD
-				.filter(({ key }) => key === boardKey)[0].name;
-		},
-		onMoveHandler({ from, to, draggedContext }) {
-			const taskId = draggedContext.element.id;
-			const storyId = draggedContext.element.cardId;
-			if(to.id != from.id) {
-				this.setTaskStatus({
-					storyId,
-					taskId,
-					newStatus: to.id,
-				});
-			}
-		},
-		handleChange(event) {
-			//verificar aqui a questão da ordenação
-			console.log("handleChange", event);
-		},
-		handleSave({ listId, title }, storyId) {
-			this.addNewTask({
-				listId,
-				title,
-				storyId,
-			});
-		},
-		handleDelete({ listId, id}) {
-			this.removeTask({ listId, id});
-		}
 	}
 }
 </script>
