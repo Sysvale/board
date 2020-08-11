@@ -1,35 +1,29 @@
 <template>
-	<board>
-		<v-layout
-			v-if="lists.length > 0 && Object.keys(cards).length > 0"
-			colum
-		>
-			<list
-				v-for="list in lists"
-				:id="list.id"
-				:key="list.id"
-				:title="list.name"
-				:list="getList(list.id)"
-				:group="namespace"
-				@save="handleSave"
-				@delete="handleDelete"
-			/>
-		</v-layout>
-	</board>
+	<v-container
+		fluid
+	>
+		<list-skeleton-loader
+			v-if="loading"
+		/>
+		<board-content
+			v-else
+			:namespace="namespace"
+			:lists="lists"
+			:cards="cards"
+		/>
+	</v-container>
 </template>
 
 <script>
+import makeRequestStore from '../../../core/utils/makeRequestStore';
+import BoardContent from '../components/BoardContent.vue';
+import ListSkeletonLoader from '../components/ListSkeletonLoader.vue';
 import { createNamespacedHelpers } from 'vuex';
-import makeFormFields from '../../../core/utils/makeFormFields';
-import List from '../components/List.vue';
-import Board from '../components/Board.vue';
-import defaultListsBoardStore from '../../../core/utils/defaultListsBoardStore';
-import generateUUID from '../../../core/utils/generateUUID';
 
 export default {
 	components: {
-		List,
-		Board,
+		BoardContent,
+		ListSkeletonLoader,
 	},
 
 	props: {
@@ -37,65 +31,92 @@ export default {
 			type: String,
 			default: null,
 		},
-		lists: {
-			type: Array,
-			default: () => [],
+		getLists: {
+			props: Function,
+			default: null,
 		},
-		cards: {
-			type: Object,
-			default: () => {},
+		getCards: {
+			props: Function,
+			default: null,
 		},
 	},
 
 	beforeCreate() {
 		let namespace = this.$options.propsData.namespace;
-		let lists = this.$options.propsData.lists;
-		let cards = this.$options.propsData.cards;
-		if(
-			lists && lists.length > 0
-			&& cards && !_.isEmpty(cards)
-		) {
-	
-			this.$store.registerModule(namespace, defaultListsBoardStore(lists));
-	
-			const {
-				mapActions,
-				mapMutations,
-				mapGetters,
-				mapState,
-			} = createNamespacedHelpers(namespace);
-	
-			this.$options.computed = {
-				...makeFormFields(
-					namespace,
-					[...lists.map(({ id }) => id)]
-				),
-				...this.$options.computed,
-			};
-	
-			this.$options.methods = {
-				...mapMutations([
-					...lists.map(({ id }) => `set${id}`),
-					'addNewTask',
-					'removeTask',
-					'setCards',
-				]),
-				...this.$options.methods,
-			};
-			this.$store.commit(`${namespace}/setCards`, cards);
-		}
+		let getLists = this.$options.propsData.getLists;
+		let getCards = this.$options.propsData.getCards;
+
+		const modules = [
+			{ getLists },
+			{ getCards },
+		];
+
+		this.$store.registerModule(namespace, {
+			namespaced: true,
+			modules: {
+				...modules.reduce((acc, module) => ({
+					...acc,
+					...makeRequestStore(module),
+				}), {}),
+			},
+		});
+
+		const {
+			mapActions,
+			mapState,
+		} = createNamespacedHelpers(namespace);
+
+		this.$options.computed = {
+			...mapState({
+				loadingLists: ({ getLists }) => getLists.isFetching,
+				loadingCards: ({ getCards }) => getCards.isFetching,
+			}),
+			...this.$options.computed,
+		};
+
+		this.$options.methods = {
+		...mapActions({
+			fetchCards: 'getCards',
+			fetchLists: 'getLists',
+		}),
+			...this.$options.methods,
+		};
 	},
 
-	methods: {
-		getList(listId) {
-			return this[listId];
+	data() {
+		return {
+			lists: [],
+			cards: {},
+		};
+	},
+
+	created() {
+		this.fetchLists().then((data) => {
+			this.lists = data;
+			this.fetchCards(
+				this.lists.map(({ id }) => id)
+			).then((cards) => {
+				this.cards = cards;
+			});
+		});
+	},
+
+	computed: {
+
+		loading() {
+			return !this.successfulFetched;
 		},
-		handleSave({ listId, title }) {
-			this.addNewTask({ listId, title });
+
+		successfulFetched() {
+			return !(this.loadingLists
+				|| this.loadingCards)
+				&& (this.lists.length > 0
+					&& Object.keys(this.cards).length > 0)
 		},
-		handleDelete({ listId, id }) {
-			this.removeTask({ listId, id });
+
+		loading() {
+			return !this.successfulFetched;
 		},
-	}
+	},
 }
 </script>
