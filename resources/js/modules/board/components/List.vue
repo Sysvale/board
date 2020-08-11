@@ -50,20 +50,24 @@
 				v-on="$listeners"
 				:key="`${$attrs.id}-${$attrs.list.length}`"
 			>
+				<div
+					v-for="(item, i) in $attrs.list"
+					:key="item.id"
+					:class="{
+						'mt-2': i > 0,
+					}"
+				>
 					<card
-						v-for="(element, i) in $attrs.list"
-						:id="element.id"
-						:key="element.id "
-						:class="{
-							'mt-2': i > 0,
-						}"
+						:item="item"
+						@save="save"
 						@delete="$emit('delete', {
-							id: element.id,
+							id: item.id,
 							listId: $attrs.id
 						})"
 					>
-						{{ element.title }}
+						{{ item.title }}
 					</card>
+				</div>
 			</draggable>
 		</v-fade-transition>
 	</list-container>
