@@ -5,72 +5,81 @@
 	>
 		<h2 class="mb-3 text-center font-weight-light">Planning Board</h2>
 		<v-divider class="py-3"/>
-		<board>
-			<v-layout
-				colum
-			>
-				<list
-					v-for="list in PLANNING_BOARD"
-					:id="list.key"
-					:key="list.key"
-					:title="getListName(list.key)"
-					:list="getList(list.key)"
-					group="plannig"
-					@save="handleSave"
-					@delete="handleDelete"
-				/>
-			</v-layout>
-		</board>
+		<div
+			v-if="loading"
+		>
+			Carregando...
+		</div>
+		<default-board
+			v-else
+			namespace="planning"
+			:lists="lists"
+			:cards="cards"
+		/>
 	</v-container>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import List from '../components/List.vue';
-import Board from '../components/Board.vue';
+import DefaultBoard from '../components/DefaultBoard.vue';
 import { PLANNING_BOARD } from '../constants/defaultBoards';
 
 export default {
 	components: {
-		List,
-		Board,
+		DefaultBoard,
 	},
 
 	data() {
 		return {
-			PLANNING_BOARD,
+			lists: [],
+			cards: {},
 		};
 	},
 
+	created() {
+		this.getLists().then((data) => {
+			this.lists = data;
+			this.getCardsByListsIds(
+				this.lists.map(({ id }) => id)
+			).then((cards) => {
+				this.cards = cards;
+			});
+		});
+	},
+
 	computed: {
-		...makeFormFields(
-			'planning',
-			PLANNING_BOARD.map(({key}) => key)
-		),
+		...mapState('getCardsByListsIds', {
+			loadingCards: ({ isFetching }) => isFetching,
+		}),
+		...mapState('getLists', {
+			loadingLists: ({ isFetching}) => isFetching,
+		}),
+
+		loading() {
+			return ;
+		},
+
+		successfulFetched() {
+			return !(this.loadingLists
+				|| this.loadingCards)
+				&& (this.lists.length > 0
+					&& Object.keys(this.cards).length > 0)
+		},
+
+		loading() {
+			return !this.successfulFetched;
+		},
 	},
 
 	methods: {
-		...mapMutations(
-			'planning',
-			[
-				'addNewTask',
-				'removeTask',
-			],
-		),
-		getListName(boardKey) {
-			return PLANNING_BOARD.filter(({ key }) => key === boardKey)[0].name;
-		},
-		getList(boardKey) {
-			return this[boardKey];
-		},
-
-		handleSave({ listId, title }) {
-			this.addNewTask({ listId, title });
-		},
-		handleDelete({ listId, id }) {
-			this.removeTask({ listId, id });
-		},
+		...mapActions('getCardsByListsIds', [
+			'getCardsByListsIds'
+		]),
+		...mapActions('getLists', [
+			'getLists'
+		]),
 	}
 }
 </script>
