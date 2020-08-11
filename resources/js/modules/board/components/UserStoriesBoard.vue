@@ -42,6 +42,7 @@ export default {
 	components: {
 		ListContainer,
 		BoardContainer,
+		Board,
 	},
 
 	computed: {
