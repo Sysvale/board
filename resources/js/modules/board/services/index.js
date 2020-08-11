@@ -3,6 +3,9 @@ import {
 	DEVELOPMENT,
 	TODO,
 	BACKLOG,
+	DONE,
+	DEPLOY,
+	CODE_REVIEW,
 } from '../constants/defaultLists';
 
 import {
@@ -129,6 +132,40 @@ export const getNotPlannedBacklog = (teamId) => new Promise((resolve, reject) =>
 		];
 		resolve({data});
 	}, 1000);
+});
+
+export const getDefaultLists = () => new Promise((resolve, reject) => {
+	setTimeout(() => {
+		const data = [
+			{
+				id: 'listId1', //TODO,
+				name: 'To Do',
+				position: 1,
+			},
+			{
+				id: 'listId2', //DEVELOPMENT,
+				name: 'Em desenvolvimento',
+				position: 2,
+			},
+			{
+				id: 'listId3', //CODE_REVIEW,
+				name: 'Code Review/Test',
+				position: 3,
+			},
+			{
+				id: 'listId4', //DONE,
+				name: 'Done/To Release',
+				position: 4,
+			},
+			{
+				id: 'listId5', //DEPLOY,
+				name: 'Deploy',
+				position: 5,
+			},
+		];
+
+		resolve({ data });
+	})
 });
 
 export const getLists = (boardId) => new Promise((resolve, reject) => {
