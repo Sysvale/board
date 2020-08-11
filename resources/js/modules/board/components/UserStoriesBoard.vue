@@ -8,11 +8,12 @@
 				<v-layout>
 					<list-container>
 						<div class="mt-16 pt-7">
-							<card
+							<v-card
+								class="task-card"
 								color="#ffff99"
 							>
 								{{ story.title }}
-							</card>
+							</v-card>
 						</div>
 					</list-container>
 					<v-layout
@@ -27,6 +28,7 @@
 							:group="story.id"
 							:move="onMoveHandler"
 							@change="handleChange"
+							@delete="handleDelete"
 							@save="handleSave($event, story.id)"
 						/>
 					</v-layout>
@@ -88,6 +90,7 @@ export default {
 			'setTasksByUserStoryId',
 			'setTaskStatus',
 			'addNewTask',
+			'removeTask',
 		]),
 
 		getListName(boardKey) {
@@ -106,15 +109,19 @@ export default {
 			}
 		},
 		handleChange(event) {
-			console.log("handleCjange", event)
+			//verificar aqui a questão da ordenação
+			console.log("handleChange", event);
 		},
-		handleSave({ status, title }, storyId) {
+		handleSave({ listId, title }, storyId) {
 			this.addNewTask({
-				status,
+				listId,
 				title,
 				storyId,
 			});
 		},
+		handleDelete({ listId, id}) {
+			this.removeTask({ listId, id});
+		}
 	}
 }
 </script>
