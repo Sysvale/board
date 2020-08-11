@@ -23,7 +23,7 @@ import { createNamespacedHelpers } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import List from '../components/List.vue';
 import BoardContainer from '../components/BoardContainer.vue';
-import defaultListsBoardStore from '../../../core/utils/defaultListsBoardStore';
+import makeBoardStore from '../../../core/utils/makeBoardStore';
 import generateUUID from '../../../core/utils/generateUUID';
 
 export default {
@@ -58,7 +58,7 @@ export default {
 	
 			this.$store.registerModule([
 				namespace, 'board'
-			], defaultListsBoardStore(lists));
+			], makeBoardStore(lists));
 
 			let nestedNamespace = `${namespace}/board`;
 	
