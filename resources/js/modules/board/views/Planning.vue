@@ -7,7 +7,12 @@
 		<v-divider class="py-3"/>
 		<board
 			namespace="planning"
-			:getLists="getLists"
+			:getLists="{
+				resolver: getLists,
+				params: {
+					boardId: 'planning',
+				},
+			}"
 			:getCards="getCardsByListsIds"
 		/>
 	</v-container>
@@ -29,6 +34,6 @@ export default {
 	methods: {
 		getLists,
 		getCardsByListsIds,
-	}
+	},
 }
 </script>
