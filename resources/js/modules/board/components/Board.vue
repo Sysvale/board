@@ -32,11 +32,11 @@ export default {
 			default: null,
 		},
 		getLists: {
-			props: Function,
+			props: [Object, Function],
 			default: null,
 		},
 		getCards: {
-			props: Function,
+			props: [Object, Function],
 			default: null,
 		},
 	},
@@ -46,9 +46,14 @@ export default {
 		let getLists = this.$options.propsData.getLists;
 		let getCards = this.$options.propsData.getCards;
 
+		let requestParams = {
+			getCards: _.isFunction(getCards) ? {} : (getCards.params || {}),
+			getLists: _.isFunction(getLists) ? {} : (getLists.params || {}),
+		};
+
 		const modules = [
-			{ getLists },
-			{ getCards },
+			{ getCards: _.isFunction(getCards) ? getCards : getCards.resolver },
+			{ getLists: _.isFunction(getLists) ? getLists : getLists.resolver }
 		];
 
 		this.$store.registerModule(namespace, {
@@ -71,6 +76,11 @@ export default {
 				loadingLists: ({ getLists }) => getLists.isFetching,
 				loadingCards: ({ getCards }) => getCards.isFetching,
 			}),
+			requestParams: {
+				get() {
+					return requestParams;
+				}
+			},
 			...this.$options.computed,
 		};
 
@@ -91,10 +101,10 @@ export default {
 	},
 
 	created() {
-		this.fetchLists().then((data) => {
+		this.fetchLists({...this.requestParams.getLists}).then((data) => {
 			this.lists = data;
 			this.fetchCards(
-				this.lists.map(({ id }) => id)
+				{ listsIds: this.lists.map(({ id }) => id), ...this.requestParams.getCards }
 			).then((cards) => {
 				this.cards = cards;
 			});
