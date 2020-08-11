@@ -1,6 +1,5 @@
-import { set } from 'vue';
-import lodash from 'lodash';
 import makeRequestStore from '../../../core/utils/makeRequestStore';
+import generateUUID from '../../../core/utils/generateUUID';
 
 import {
 	getUserStories,
@@ -13,22 +12,6 @@ const modules = [
 const initialState = () => ({
 	items: [],
 });
-
-function generateUUID() { // Public Domain/MIT
-	var d = new Date().getTime();//Timestamp
-	var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-			var r = Math.random() * 16;//random number between 0 and 16
-			if(d > 0){//Use timestamp until depleted
-					r = (d + r)%16 | 0;
-					d = Math.floor(d/16);
-			} else {//Use microseconds since page-load if supported
-					r = (d2 + r)%16 | 0;
-					d2 = Math.floor(d2/16);
-			}
-			return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-	});
-}
 
 export default {
 	namespaced: true,
@@ -65,26 +48,34 @@ export default {
 			state.items = [...xItems];
 		},
 		addNewTask(state, payload) {
-			const { status, title, storyId } = payload;
-			if(storyId) {
-				let xItems = [...state.items];
-				xItems.forEach(({ id, tasks }, i) => {
-					if(storyId === id) {
-						xItems[i].tasks = [
-							{
-								id: generateUUID(),
-								title,
-								status,
-								cardId: storyId,
-							},
-							...tasks,
-						];
-					}
-				});
-				console.log(xItems);
-				state.items = [...xItems];
-			}
-		}
+			const { listId, title, storyId } = payload;
+			let xItems = [...state.items];
+			xItems.forEach(({ id }, i) => {
+				if(storyId === id) {
+					xItems[i].tasks = [
+						{
+							id: generateUUID(),
+							title,
+							status: listId,
+							cardId: storyId,
+						},
+						...xItems[i].tasks,
+					];
+				}
+			});
+			state.items = [...xItems];
+		},
+		removeTask(state, payload) {
+			const { listId, id } = payload;
+			console.log(listId, id);
+			let xItems = [...state.items];
+			xItems.forEach((_, i) => {
+				// tá percorrendo tudo denecessariamente, pensar numa maneira mais legal
+				xItems[i].tasks = xItems[i]
+					.tasks.filter((task) => task.id !== id);
+			});
+			state.items = [...xItems];
+		},
 	},
 	getters: {
 		getItems({ items }) {
