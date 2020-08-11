@@ -7,8 +7,10 @@
 		<v-divider class="py-3"/>
 		<section>
 			<h1>Não planejados</h1>
-			<default-tasks-board
+			<default-board
 				namespace="notPlanned"
+				:getLists="getDefaultLists"
+				:getCards="getCardsByListsIds"
 			/>
 		</section>
 		<v-divider/>
@@ -21,8 +23,10 @@
 		</div>
 		<section class="mt-10">
 			<h1>Sprint Devlog</h1>
-			<default-tasks-board
+			<default-board
 				namespace="dev"
+				:getLists="getDefaultLists"
+				:getCards="getCardsByListsIds"
 			/>
 		</section>
 	</v-container>
@@ -30,12 +34,21 @@
 
 <script>
 import UserStoriesBoard from '../components/UserStoriesBoard.vue';
-import DefaultTasksBoard from '../components/DefaultTasksBoard.vue';
+import DefaultBoard from '../components/DefaultBoard.vue';
+import {
+	getDefaultLists,
+	getCardsByListsIds,
+} from '../services'
 
 export default {
 	components: {
 		UserStoriesBoard,
-		DefaultTasksBoard,
+		DefaultBoard,
+	},
+
+	methods: {
+		getDefaultLists,
+		getCardsByListsIds,
 	},
 }
 </script>
