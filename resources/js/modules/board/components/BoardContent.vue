@@ -1,5 +1,5 @@
 <template>
-	<board>
+	<board-container>
 		<v-layout
 			v-if="lists.length > 0 && Object.keys(cards).length > 0"
 			colum
@@ -15,21 +15,21 @@
 				@delete="handleDelete"
 			/>
 		</v-layout>
-	</board>
+	</board-container>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import List from '../components/List.vue';
-import Board from '../components/Board.vue';
+import BoardContainer from '../components/BoardContainer.vue';
 import defaultListsBoardStore from '../../../core/utils/defaultListsBoardStore';
 import generateUUID from '../../../core/utils/generateUUID';
 
 export default {
 	components: {
 		List,
-		Board,
+		BoardContainer,
 	},
 
 	props: {

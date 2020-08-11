@@ -4,7 +4,7 @@
 			v-for="story in userStories"
 			:key="story.id"
 		>
-			<board>
+			<board-container>
 				<v-layout>
 					<list-container>
 						<div class="mt-16 pt-7">
@@ -16,13 +16,13 @@
 							</v-card>
 						</div>
 					</list-container>
-					<default-board
+					<board
 						:namespace="story.id"
 						:getLists="getDefaultLists"
 						:getCards="getCardsByListsIds"
 					/>
 				</v-layout>
-			</board>
+			</board-container>
 		</section>
 	</div>
 </template>
@@ -30,7 +30,7 @@
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import Board from '../components/Board.vue';
-import DefaultBoard from '../components/DefaultBoard.vue';
+import BoardContainer from '../components/BoardContainer.vue';
 import ListContainer from '../components/ListContainer.vue';
 
 import {
@@ -41,7 +41,7 @@ import {
 export default {
 	components: {
 		ListContainer,
-		DefaultBoard,
+		BoardContainer,
 	},
 
 	computed: {

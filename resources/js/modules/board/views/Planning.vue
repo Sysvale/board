@@ -5,7 +5,7 @@
 	>
 		<h2 class="mb-3 text-center font-weight-light">Planning Board</h2>
 		<v-divider class="py-3"/>
-		<default-board
+		<board
 			namespace="planning"
 			:getLists="getLists"
 			:getCards="getCardsByListsIds"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import DefaultBoard from '../components/DefaultBoard.vue';
+import Board from '../components/Board.vue';
 import ListSkeletonLoader from '../components/ListSkeletonLoader.vue';
 import {
 	getLists,
@@ -23,7 +23,7 @@ import {
 
 export default {
 	components: {
-		DefaultBoard,
+		Board,
 		ListSkeletonLoader,
 	},
 	methods: {
