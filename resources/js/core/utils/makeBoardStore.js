@@ -61,11 +61,10 @@ export default (lists, modules = []) => {
 			},
 			...generateMutations(lists),
 			addNewTask(state, payload) {
-				const { listId, title } = payload;
+				const { listId, ...args } = payload;
 				state[listId] = [
 					{
-						id: generateUUID(),
-						title,
+						...args,
 					},
 					...state[listId],
 				];
@@ -79,6 +78,6 @@ export default (lists, modules = []) => {
 		},
 		getters: {
 			...generateGetters(lists),
-		}
+		},
 	}
 };
