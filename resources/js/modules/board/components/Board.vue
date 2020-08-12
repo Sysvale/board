@@ -112,7 +112,6 @@ export default {
 	},
 
 	computed: {
-
 		loading() {
 			return !this.successfulFetched;
 		},
