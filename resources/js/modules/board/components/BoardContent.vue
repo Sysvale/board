@@ -11,15 +11,16 @@
 				:title="list.name"
 				:list="getList(list.id)"
 				:group="namespace"
-				@save="handleSave"
+				@add="handleAdd"
 				@delete="handleDelete"
+				@change="handleChange(list.id)"
 			/>
 		</v-layout>
 	</board-container>
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers, mapActions } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import List from '../components/List.vue';
 import BoardContainer from '../components/BoardContainer.vue';
@@ -91,14 +92,36 @@ export default {
 	},
 
 	methods: {
+		...mapActions('cards', [
+			'deleteCard',
+			'createCard',
+			'updateCards',
+		]),
+
 		getList(listId) {
 			return this[listId];
 		},
-		handleSave({ listId, title }) {
-			this.addNewTask({ listId, title });
+
+		handleAdd({ listId, title }) {
+			this.createCard({ listId, title }).then((data) => {
+				this.addNewTask({ ...data });
+			});
 		},
+
 		handleDelete({ listId, id }) {
-			this.removeTask({ listId, id });
+			this.deleteCard(id).then(() => {
+				this.removeTask({ listId, id });
+			});
+		},
+
+		// Chamada para atualizar as posições no backend
+		handleChange(listId) {
+			this.updateCards(
+					this[listId].map((item, position) => ({
+					...item,
+					position,
+				}))
+			);
 		},
 	}
 }
