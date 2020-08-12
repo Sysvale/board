@@ -34,8 +34,8 @@
 			solo
 			auto-grow
 			autofocus
-			@blur="save"
-			@keydown.enter="save"
+			@blur="handleAdd"
+			@keydown.enter="handleAdd"
 			@keydown.esc="clear"
 		/>
 		<v-fade-transition
@@ -59,7 +59,7 @@
 				>
 					<card
 						:item="item"
-						@save="save"
+						@save="handleAdd"
 						@delete="$emit('delete', {
 							id: item.id,
 							listId: $attrs.id
@@ -106,9 +106,9 @@ export default {
 	},
 
 	methods: {
-		save() {
+		handleAdd() {
 			if(this.newCardTitle && this.newCardTitle.trim() !== '') {
-				this.$emit('save', {
+				this.$emit('add', {
 					title: this.newCardTitle,
 					listId: this.$attrs.id,
 				});
