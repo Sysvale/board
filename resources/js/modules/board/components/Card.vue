@@ -14,11 +14,51 @@
 					@mouseover="hover = true"
 					@mouseleave="hover = false"
 				>
+					<v-card-title>
+						<v-chip
+							label
+							x-small
+						>
+							Label
+						</v-chip>
+						<v-chip
+							v-if="hover"
+							label
+							x-small
+							class="ml-1"
+						>
+							+
+						</v-chip>
+					</v-card-title>
 					<v-card-text
 						class="text--black"
 					>
 						<slot />
 					</v-card-text>
+					<v-container>
+						<v-row
+							class="px-0"
+						>
+							<v-col>
+								<v-chip
+									v-if="hover"
+									avatar
+									small
+									outlined
+									text-color="#ccc"
+								>
+									Link
+								</v-chip>
+							</v-col>
+							<v-col
+								class="text-right"
+							>
+								 <v-avatar color="indigo" size="28">
+									<small class="white--text">TL</small>
+								</v-avatar>
+							</v-col>
+						</v-row>
+					</v-container>
 				</v-card>
 		</template>
 		<v-card>
