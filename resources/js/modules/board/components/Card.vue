@@ -1,6 +1,6 @@
 <template>
 	<v-dialog
-		v-if="$attrs.item"
+		v-if="item"
 		v-model="dialog"
 		width="500"
 	>
@@ -28,11 +28,11 @@
 						v-if="!titleInEditMode"
 						@click="titleInEditMode = true"
 					>
-						{{ $attrs.item.title }}
+						{{ item.title }}
 					</v-card-text>
 					<v-textarea
 						v-else
-						v-model="$attrs.item.title"
+						v-model="cloneTitle"
 						solo
 						auto-grow
 						autofocus
@@ -55,21 +55,45 @@
 	</v-dialog>
 </template>
 <script>
+import { mapActions } from 'vuex';
 export default {
+	props: {
+		item: {
+			type: Object,
+			default: () => {},
+		},
+	},
+
 	data() {
 		return {
 			hover: false,
 			dialog: false,
 			titleInEditMode: false,
+			// evitar que enquanto digita dispare o watch
+			cloneTitle: _.clone(this.item.title),
 		};
 	},
 
+	watch: {
+		item: {
+			handler(newValue, oldValue) {
+				this.updateCard(newValue);
+			},
+			deep: true,
+		},
+	},
+
 	methods: {
+		...mapActions('cards', [
+			'updateCard',
+		]),
+
 		showModal() {
 			this.dialog = true;
 		},
 		handleSave() {
 			this.titleInEditMode = false;
+			this.item.title = _.clone(this.cloneTitle);
 			this.$emit('save');
 		}
 	},
