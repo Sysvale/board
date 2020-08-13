@@ -66,6 +66,37 @@ export const getCardsByListsIds = ({ listsIds, ...args }) => new Promise((resolv
 					{
 						id: id(),
 						title: title(),
+						link: 'https://gitlab.com/syssus/server/-/merge_requests/2311',
+						labels: [
+							{
+								id: id(),
+								name: 'FrontEnd',
+								color: 'orange',
+								textColor: 'white',
+							},
+						],
+						members: [
+							{
+								id: id(),
+								name: 'Tássio Caique',
+							},
+							{
+								id: id(),
+								name: 'Rafa Dias',
+							},
+							{
+								id: id(),
+								name: 'Leonardo Cavalcante',
+							},
+							{
+								id: id(),
+								name: 'Patrícia Coelho',
+							},
+							{
+								id: id(),
+								name: 'Jedsão Meloso',
+							},
+						]
 					},
 					{
 						id: id(),
