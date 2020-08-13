@@ -16,18 +16,15 @@
 				>
 					<v-card-title>
 						<v-chip
+							v-for="(label, i) in (item.labels || [])"
+							:key="label.id"
+							:color="label.color || 'gray'"
+							:text-color="label.textColor || 'black'"
 							label
 							x-small
+							:class="{'ml-1': i > 0}"
 						>
-							Label
-						</v-chip>
-						<v-chip
-							v-if="hover"
-							label
-							x-small
-							class="ml-1"
-						>
-							+
+							{{ label.name }}
 						</v-chip>
 					</v-card-title>
 					<v-card-text
@@ -53,8 +50,17 @@
 							<v-col
 								class="text-right"
 							>
-								 <v-avatar color="indigo" size="28">
-									<small class="white--text">TL</small>
+								<v-avatar
+									v-for="(member, i) in (item.members || [])"
+									:key="member.id"
+									color="indigo"
+									:text-color="member.textColor || 'black'"
+									size="28"
+									:class="{'ml-1': i > 0}"
+								>
+									<small class="white--text">
+										{{ getFirstLetters(member.name) }}
+									</small>
 								</v-avatar>
 							</v-col>
 						</v-row>
@@ -80,6 +86,38 @@
 					/>
 				</v-layout>
 			</v-container>
+			<v-container>
+				<v-layout
+					row
+				>
+					<v-container>
+						 <v-select
+							v-model="item.labels"
+							:items="labels"
+							filled
+							chips
+							label="Labels"
+							multiple
+							return-object
+							item-text="name"
+							item-value="id"
+						/>
+					</v-container>
+					<v-container>
+						 <v-select
+							v-model="item.members"
+							:items="members"
+							filled
+							chips
+							label="Membros"
+							multiple
+							return-object
+							item-text="name"
+							item-value="id"
+						/>
+					</v-container>
+				</v-layout>
+			</v-container>
 			<v-card-actions>
 				<v-btn
 					block
@@ -95,7 +133,7 @@
 	</v-dialog>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 export default {
 	props: {
 		item: {
@@ -112,6 +150,15 @@ export default {
 			// evitar que enquanto digita dispare o watch
 			cloneTitle: _.clone(this.item.title),
 		};
+	},
+
+	computed: {
+		...mapState('members', {
+			members: 'items',
+		}),
+		...mapState('labels', {
+			labels: 'items',
+		}),
 	},
 
 	watch: {
@@ -131,11 +178,18 @@ export default {
 		showModal() {
 			this.dialog = true;
 		},
+
 		handleSave() {
 			this.titleInEditMode = false;
 			this.item.title = _.clone(this.cloneTitle);
 			this.$emit('save');
-		}
+		},
+
+		getFirstLetters(name) {
+			const computed = name[0] + name.split(' ')[1][0] || name[1];
+			console.log(computed);
+			return computed.toUpperCase();
+		},
 	},
 }
 </script>
