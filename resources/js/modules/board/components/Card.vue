@@ -6,7 +6,7 @@
 	>
 		<template v-slot:activator="{}">
 				<v-card
-					class="task-card"
+					class="task-card px-3"
 					v-bind="$attrs"
 					v-on="$listeners"
 					hover
@@ -14,68 +14,67 @@
 					@mouseover="hover = true"
 					@mouseleave="hover = false"
 				>
-					<v-card-title>
+					<div
+						class="py-2"
+					>
 						<v-chip
 							v-for="(label, i) in (item.labels || [])"
 							:key="label.id"
 							:color="label.color || 'gray'"
 							:text-color="label.textColor || 'black'"
-							label
 							x-small
 							:class="{'ml-1': i > 0}"
 						>
-							{{ label.name }}
+							<strong>{{ label.name }}</strong>
 						</v-chip>
-					</v-card-title>
-					<v-card-text
-						class="text--black"
+					</div>
+					<div
+						class="gray--text py-0"
 					>
 						<slot />
-					</v-card-text>
-					<v-container>
-						<v-row
-							class="px-0"
-						>
-							<v-col>
-								<v-chip
-									v-if="hover"
-									avatar
-									small
-									outlined
-									text-color="#ccc"
-								>
-									Link
-								</v-chip>
-							</v-col>
-							<v-col
-								class="text-right"
+					</div>
+					<div class="d-flex py-2">
+						<div>
+							<v-chip
+								v-if="item.link"
+								:href="item.link"
+								target="blank"
+								avatar
+								small
+								:color="link.color"
+								:text-color="link.textColor"
+								@click.native.stop
 							>
-								<v-avatar
-									v-for="(member, i) in (item.members || [])"
-									:key="member.id"
-									color="indigo"
-									:text-color="member.textColor || 'black'"
-									size="28"
-									:class="{'ml-1': i > 0}"
-								>
-									<small class="white--text">
-										{{ getFirstLetters(member.name) }}
-									</small>
-								</v-avatar>
-							</v-col>
-						</v-row>
-					</v-container>
+								<strong>{{ link.label }}</strong>
+							</v-chip>
+						</div>
+						<div class="d-flex justify-end flex-grow-1">
+							<v-avatar
+								v-for="(member, i) in (item.members || [])"
+								:key="member.id"
+								color="indigo"
+								:text-color="member.textColor || 'black'"
+								size="28"
+								:class="{'ml-1': i > 0}"
+							>
+								<small class="white--text">
+									{{ getFirstLetters(member.name) }}
+								</small>
+							</v-avatar>
+						</div>
+					</div>
 				</v-card>
 		</template>
 		<v-card>
 			<v-container>
 				<v-layout>
-					<v-card-text
+					<div
 						v-if="!titleInEditMode"
 						@click="titleInEditMode = true"
+						class="black--text"
 					>
 						{{ item.title }}
-					</v-card-text>
+					</div>
 					<v-textarea
 						v-else
 						v-model="cloneTitle"
@@ -87,14 +86,9 @@
 				</v-layout>
 			</v-container>
 			<v-container>
-				<v-layout
-					row
-				>
-					<v-container>
-						 <v-select
+						<v-select
 							v-model="item.labels"
 							:items="labels"
-							filled
 							chips
 							label="Labels"
 							multiple
@@ -102,12 +96,9 @@
 							item-text="name"
 							item-value="id"
 						/>
-					</v-container>
-					<v-container>
 						 <v-select
 							v-model="item.members"
 							:items="members"
-							filled
 							chips
 							label="Membros"
 							multiple
@@ -115,8 +106,10 @@
 							item-text="name"
 							item-value="id"
 						/>
-					</v-container>
-				</v-layout>
+				<v-text-field
+					v-model="item.link"
+					label="Link"
+				/>
 			</v-container>
 			<v-card-actions>
 				<v-btn
@@ -149,6 +142,7 @@ export default {
 			titleInEditMode: false,
 			// evitar que enquanto digita dispare o watch
 			cloneTitle: _.clone(this.item.title),
+			showLinkField: false,
 		};
 	},
 
@@ -159,6 +153,16 @@ export default {
 		...mapState('labels', {
 			labels: 'items',
 		}),
+		link() {
+			if(this.item.link) {
+				return {
+					label: `!132`,
+					color: 'orange',
+					textColor: 'white',
+				};
+			}
+			return null;
+		}
 	},
 
 	watch: {
@@ -187,7 +191,6 @@ export default {
 
 		getFirstLetters(name) {
 			const computed = name[0] + name.split(' ')[1][0] || name[1];
-			console.log(computed);
 			return computed.toUpperCase();
 		},
 	},
