@@ -50,7 +50,8 @@
 				v-on="$listeners"
 				:key="`${$attrs.id}-${$attrs.list.length}`"
 			>
-				<div
+				<component
+					:is="true ? 'v-flex' : 'div'"
 					v-for="(item, i) in $attrs.list"
 					:key="item.id"
 					:class="{
@@ -67,7 +68,7 @@
 					>
 						{{ item.title }}
 					</card>
-				</div>
+				</component>
 			</draggable>
 		</v-fade-transition>
 	</list-container>

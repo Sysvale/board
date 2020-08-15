@@ -6,6 +6,15 @@
 		<h2 class="mb-3 text-center font-weight-light">Sprint Board</h2>
 		<v-divider class="py-3"/>
 		<section>
+			<h1>Impedimentos</h1>
+			<board
+				grid
+				namespace="impediment"
+				:getLists="getDefaultLists"
+				:getCards="getCardsByListsIds"
+			/>
+		</section>
+		<section>
 			<h1>Não planejados</h1>
 			<board
 				namespace="notPlanned"

@@ -10,30 +10,44 @@
 					v-bind="$attrs"
 					v-on="$listeners"
 					hover
+					:ripple="false"
 					@click="showModal"
 					@mouseover="hover = true"
 					@mouseleave="hover = false"
 				>
-					<div
-						class="py-2"
+				<div
+					class="py-2"
+				>
+					<v-chip
+						v-if="item.number"
+						color="gray"
+						text-color="black"
+						small
+						label
 					>
-						<v-chip
-							v-for="(label, i) in (item.labels || [])"
-							:key="label.id"
-							:color="label.color || 'gray'"
-							:text-color="label.textColor || 'black'"
-							x-small
-							:class="{'ml-1': i > 0}"
-						>
-							<strong>{{ label.name }}</strong>
-						</v-chip>
-					</div>
+						#{{ item.number }}
+					</v-chip>
+				</div>
 					<div
 						class="gray--text py-0"
 					>
 						<slot />
 					</div>
-					<div class="d-flex py-2">
+					<div class="d-flex pt-3">
+						<div class="d-flex justify-start flex-grow-1">
+							<v-avatar
+								v-for="(member, i) in (item.members || [])"
+								:key="member.id"
+								color="indigo"
+								:text-color="member.textColor || 'black'"
+								size="28"
+								:class="{'ml-1': i > 0}"
+							>
+								<small class="white--text">
+									{{ getFirstLetters(member.name) }}
+								</small>
+							</v-avatar>
+						</div>
 						<div>
 							<v-chip
 								v-if="item.link"
@@ -48,33 +62,36 @@
 								<strong>{{ link.label }}</strong>
 							</v-chip>
 						</div>
-						<div class="d-flex justify-end flex-grow-1">
-							<v-avatar
-								v-for="(member, i) in (item.members || [])"
-								:key="member.id"
-								color="indigo"
-								:text-color="member.textColor || 'black'"
-								size="28"
-								:class="{'ml-1': i > 0}"
-							>
-								<small class="white--text">
-									{{ getFirstLetters(member.name) }}
-								</small>
-							</v-avatar>
-						</div>
+					</div>
+					<div
+						v-if="item.labels && item.labels.length"
+						class="pb-2"
+					>
+						<v-chip
+							v-for="(label, i) in (item.labels || [])"
+							:key="label.id"
+							:color="label.color || 'gray'"
+							:text-color="label.textColor || 'black'"
+							x-small
+							:class="{'ml-1': i > 0}"
+						>
+							<strong>{{ label.name }}</strong>
+						</v-chip>
 					</div>
 				</v-card>
 		</template>
-		<v-card>
+		<v-card
+			class="px-5 py-5"
+		>
 			<v-container>
 				<v-layout>
-					<div
+					<h3
 						v-if="!titleInEditMode"
 						@click="titleInEditMode = true"
 						class="black--text"
 					>
 						{{ item.title }}
-					</div>
+					</h3>
 					<v-textarea
 						v-else
 						v-model="cloneTitle"
@@ -85,6 +102,7 @@
 					/>
 				</v-layout>
 			</v-container>
+			<v-divider/>
 			<v-container>
 						<v-select
 							v-model="item.labels"
@@ -157,7 +175,7 @@ export default {
 			if(this.item.link) {
 				return {
 					label: `!132`,
-					color: 'orange',
+					color: '#fc6d26',
 					textColor: 'white',
 				};
 			}

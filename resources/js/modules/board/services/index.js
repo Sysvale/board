@@ -39,13 +39,8 @@ export const getLists = ({ boardId, ...args }) => new Promise((resolve, reject) 
 					},
 					{
 						id: id(),
-						name: 'The Avengers',
+						name: 'Sprint',
 						position: 4,
-					},
-					{
-						id: id(),
-						name: 'Stepper Labs',
-						position: 5,
 					},
 				];
 				resolve({data});
@@ -65,13 +60,14 @@ export const getCardsByListsIds = ({ listsIds, ...args }) => new Promise((resolv
 				[listId]: [
 					{
 						id: id(),
+						number: Math.floor(Math.random() * (999 - 1) + 1),
 						title: title(),
 						link: 'https://gitlab.com/syssus/server/-/merge_requests/2311',
 						labels: [
 							{
 								id: id(),
-								name: 'FrontEnd',
-								color: 'orange',
+								name: 'BackEnd',
+								color: '#222',
 								textColor: 'white',
 							},
 						],
@@ -84,22 +80,11 @@ export const getCardsByListsIds = ({ listsIds, ...args }) => new Promise((resolv
 								id: id(),
 								name: 'Rafa Dias',
 							},
-							{
-								id: id(),
-								name: 'Leonardo Cavalcante',
-							},
-							{
-								id: id(),
-								name: 'Patrícia Coelho',
-							},
-							{
-								id: id(),
-								name: 'Jedsão Meloso',
-							},
 						]
 					},
 					{
 						id: id(),
+						number: Math.floor(Math.random() * (999 - 1) + 1),
 						title: title(),
 					},
 				],
@@ -151,58 +136,60 @@ export const getUserStories = (teamId) => new Promise((resolve, reject) => {
 	setTimeout(() => {
 		const data = [
 			{
-				id: '1',
+				id: id(),
 				title: 'User Story 1',
-				category: USER_STORY,
-				teamId: 'x',
-				tasks: [
-					{
-						id: '1a',
-						title: 'Task A from User Story 1',
-						status: TODO,
-						cardId: '1',
-						category: USER_STORY_TASK,
-					},
-					{
-						id: '1b',
-						title: 'Task B from User Story 1',
-						status: DEVELOPMENT,
-						cardId: '1',
-						category: USER_STORY_TASK,
-					},
-					{
-						id: '1c',
-						title: 'Task C from User Story 1',
-						status: DEVELOPMENT,
-						cardId: '1',
-						category: USER_STORY_TASK,
-					},
-				],
 			},
-
 			{
-				id: '2',
+				id: id(),
 				title: 'User Story 2',
-				category: USER_STORY,
-				teamId: 'x',
-				tasks: [
-					{
-						id: '2a',
-						title: 'Task A from User Story 2',
-						status: TODO,
-						cardId: '2',
-						category: USER_STORY_TASK,
-					},
-					{
-						id: '2b',
-						title: 'Task B from User Story 2',
-						status: TODO,
-						cardId: '2',
-						category: USER_STORY_TASK,
-					},
-				],
 			},
 		];
+		resolve({data});
+	}, 1000);
+});
+
+export const getUserStoriesTasks = ({ listsIds, userStoryId }) => new Promise((resolve) => {
+	console.log(userStoryId);
+	// esse listIds são os lids ids defaults passados "automagicamente"
+	setTimeout(() => {
+		let computed = {};
+		listsIds.forEach((listId) => {
+			computed = {
+				[listId]: [
+					{
+						id: id(),
+						title: title(),
+						link: 'https://gitlab.com/syssus/server/-/merge_requests/2311',
+						labels: [
+							{
+								id: id(),
+								name: 'FrontEnd',
+								color: 'orange',
+								textColor: 'white',
+							},
+						],
+						members: [
+							{
+								id: id(),
+								name: 'Tássio Caique',
+							},
+							{
+								id: id(),
+								name: 'Rafa Dias',
+							},
+						]
+					},
+					{
+						id: id(),
+						title: title(),
+					},
+				],
+				...computed,
+			}
+		});
+		const data = {
+			...computed,
+		};
 		resolve({data});
 	}, 1000);
 });

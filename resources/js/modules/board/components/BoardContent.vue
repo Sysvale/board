@@ -118,7 +118,7 @@ export default {
 		handleChange(listId) {
 			this.updateCards(
 					this[listId].map((item, position) => ({
-					...item,
+					id: item.id,
 					position,
 				}))
 			);

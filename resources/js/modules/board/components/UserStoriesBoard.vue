@@ -19,7 +19,12 @@
 					<board
 						:namespace="story.id"
 						:getLists="getDefaultLists"
-						:getCards="getCardsByListsIds"
+						:getCards="{
+							resolver: getUserStoriesTasks,
+							params: {
+								userStoryId: story.id,
+							}
+						}"
 					/>
 				</v-layout>
 			</board-container>
@@ -35,7 +40,7 @@ import ListContainer from '../components/ListContainer.vue';
 
 import {
 	getDefaultLists,
-	getCardsByListsIds,
+	getUserStoriesTasks,
 } from '../services'
 
 export default {
@@ -52,29 +57,21 @@ export default {
 	},
 
 	mounted() {
-		this.setItems(
-			[
-				{
-					id: '1',
-					title: 'User Story 1',
-					teamId: 'x',
-				},
-				{
-					id: '2',
-					title: 'User Story 2',
-					teamId: 'x',
-				},
-			],
-		);
-		//this.getUserStories().then((data) => {
-		//});
+		this.getUserStories().then((data) => {
+			this.setItems(data);
+		});
 	},
 
 	methods: {
 		getDefaultLists,
-		getCardsByListsIds,
+		getUserStoriesTasks,
+
 		...mapMutations('userStories', [
 			'setItems',
+		]),
+
+		...mapActions('userStories', [
+			'getUserStories',
 		]),
 	}
 }
