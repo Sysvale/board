@@ -7,12 +7,7 @@
 		<v-divider class="py-3"/>
 		<section>
 			<h1>Impedimentos</h1>
-			<board
-				grid
-				namespace="impediment"
-				:getLists="getDefaultLists"
-				:getCards="getCardsByListsIds"
-			/>
+			<impediment-table/>
 		</section>
 		<section>
 			<h1>Não planejados</h1>
@@ -44,6 +39,7 @@
 <script>
 import UserStoriesBoard from '../components/UserStoriesBoard.vue';
 import Board from '../components/Board.vue';
+import ImpedimentTable from '../components/ImpedimentTable.vue';
 import {
 	getDefaultLists,
 	getCardsByListsIds,
@@ -53,6 +49,7 @@ export default {
 	components: {
 		UserStoriesBoard,
 		Board,
+		ImpedimentTable,
 	},
 
 	methods: {

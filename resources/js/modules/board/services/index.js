@@ -287,3 +287,205 @@ export const getLabels = () => new Promise((resolve, reject) => {
 		resolve({data});
 	}, 1000);
 });
+
+export const getImpediments = () => new Promise((resolve, reject) => {
+	setTimeout(() => {
+		const data = [
+			{
+				id: id(),
+				title: 'Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			{
+				id: id(),
+				title: 'Outra Reunião com o BIOS',
+				members: [
+					{
+						id: id(),
+						name: 'Tássio Caique',
+					},
+					{
+						id: id(),
+						name: 'Rafa Dias',
+					},
+				]
+			},
+			
+		];
+
+		resolve({ data });
+	}, 1000);
+})
+
+export const createImpediment = (payload) => new Promise((resolve, reject) => {
+	setTimeout(() => {
+		let data = {
+			id: id(),
+			...payload,
+		};
+		resolve({data});
+	}, 1000);
+});

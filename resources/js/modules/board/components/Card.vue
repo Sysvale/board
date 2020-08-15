@@ -35,18 +35,9 @@
 					</div>
 					<div class="d-flex pt-3">
 						<div class="d-flex justify-start flex-grow-1">
-							<v-avatar
-								v-for="(member, i) in (item.members || [])"
-								:key="member.id"
-								color="indigo"
-								:text-color="member.textColor || 'black'"
-								size="28"
-								:class="{'ml-1': i > 0}"
-							>
-								<small class="white--text">
-									{{ getFirstLetters(member.name) }}
-								</small>
-							</v-avatar>
+							<member-list
+								:members="item.members"
+							/>
 						</div>
 						<div>
 							<v-chip
@@ -114,15 +105,8 @@
 							item-text="name"
 							item-value="id"
 						/>
-						 <v-select
+						<member-select
 							v-model="item.members"
-							:items="members"
-							chips
-							label="Membros"
-							multiple
-							return-object
-							item-text="name"
-							item-value="id"
 						/>
 				<v-text-field
 					v-model="item.link"
@@ -145,7 +129,15 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex';
+import MemberList from './MemberList';
+import MemberSelect from './MemberSelect';
+
 export default {
+	components: {
+		MemberList,
+		MemberSelect,
+	},
+
 	props: {
 		item: {
 			type: Object,
@@ -165,9 +157,6 @@ export default {
 	},
 
 	computed: {
-		...mapState('members', {
-			members: 'items',
-		}),
 		...mapState('labels', {
 			labels: 'items',
 		}),
@@ -205,11 +194,6 @@ export default {
 			this.titleInEditMode = false;
 			this.item.title = _.clone(this.cloneTitle);
 			this.$emit('save');
-		},
-
-		getFirstLetters(name) {
-			const computed = name[0] + name.split(' ')[1][0] || name[1];
-			return computed.toUpperCase();
 		},
 	},
 }
