@@ -10,8 +10,6 @@
 					v-bind="$attrs"
 					v-on="$listeners"
 					hover
-					outlined
-					flat
 					:ripple="false"
 					@click="showModal"
 					@mouseover="hover = true"
@@ -22,27 +20,22 @@
 				>
 					<div
 						v-if="item.labels && item.labels.length"
-						class="pb-2 flex-grow-1"
+						class="pb-2 flex-grow-1 d-flex align-items-center"
 					>
 						<v-chip
 							v-if="item.number"
 							color="gray"
 							text-color="black"
-							x-small
+							small
 							label
+							class="mr-2"
 						>
 							#{{ item.number }}
 						</v-chip>
-						<v-chip
-							v-for="(label, i) in (item.labels || [])"
-							:key="label.id"
-							:color="label.color || 'gray'"
-							:text-color="label.textColor || 'black'"
-							x-small
-							:class="{'ml-1': i > 0}"
-						>
-							<strong>{{ label.name }}</strong>
-						</v-chip>
+						<label-list
+							v-if="isTask"
+							:labels="item.labels"
+						/>
 					</div>
 				</div>
 					<div
@@ -53,6 +46,7 @@
 					<div class="d-flex pt-3">
 						<div class="d-flex justify-start flex-grow-1">
 							<member-list
+								v-if="isTask"
 								:members="item.members"
 							/>
 						</div>
@@ -77,7 +71,25 @@
 			class="px-5 py-5"
 		>
 			<v-container>
-				<v-layout>
+				<div
+					v-if="isTask"
+					class="d-flex"
+				>
+					<v-chip
+						v-if="item.number"
+						color="gray"
+						text-color="black"
+						label
+						small
+						class="mr-2"
+					>
+						#{{ item.number }}
+					</v-chip>
+					<label-list
+						:labels="item.labels"
+					/>
+				</div>
+				<v-layout class="py-5">
 					<h3
 						v-if="!titleInEditMode"
 						@click="titleInEditMode = true"
@@ -88,36 +100,86 @@
 					<v-textarea
 						v-else
 						v-model="cloneTitle"
-						solo
+						flat
+						outlined
 						auto-grow
 						autofocus
 						@blur="handleSave"
 					/>
 				</v-layout>
+				<div
+					v-if="isTask"
+					class="d-flex pt-3"
+				>
+					<div class="d-flex justify-start flex-grow-1">
+						<member-list
+							:members="item.members"
+						/>
+					</div>
+					<div>
+						<v-chip
+							v-if="item.link"
+							:href="item.link"
+							target="blank"
+							avatar
+							small
+							:color="link.color"
+							:text-color="link.textColor"
+							@click.native.stop
+						>
+							<strong>{{ link.label }}</strong>
+						</v-chip>
+					</div>
+				</div>
 			</v-container>
 			<v-divider/>
-			<v-container>
-						<v-select
-							v-model="item.labels"
-							:items="labels"
-							chips
-							label="Labels"
-							multiple
-							return-object
-							item-text="name"
-							item-value="id"
-						/>
-						<member-select
-							v-model="item.members"
-						/>
+			<v-container
+				v-if="isTask"
+			>
+				<div class="pb-2">
+					Categorias:
+				</div>
+				<label-select
+					v-model="item.labels"
+				/>
+				<div class="pb-2">
+					Membros:
+				</div>
+				<member-select
+					v-model="item.members"
+				/>
+				<div class="pb-2">
+					Link:
+				</div>
 				<v-text-field
 					v-model="item.link"
-					label="Link"
+					placeholder="Link"
+					flat
+					outlined
+					dense
 				/>
 			</v-container>
-			<v-card-actions>
+			<v-container
+				v-else
+			>
+				<div>
+					Breakout Room
+				</div>
+				<v-radio-group
+					v-model="item.breakout"
+					class="mt-1"
+				>
+					<v-radio label="Breakout 1" value="radio-1"></v-radio>
+					<v-radio label="Breakout 2" value="radio-2"></v-radio>
+					<v-radio label="Breakout 3" value="radio-3"></v-radio>
+					<v-radio label="Breakout 4" value="radio-4"></v-radio>
+					<v-radio label="Breakout 5" value="radio-5"></v-radio>
+				</v-radio-group>
+			</v-container>
+			<v-card-actions
+				class="d-flex justify-start"
+			>
 				<v-btn
-					block
 					outlined
 					color="red"
 					small
@@ -132,12 +194,16 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 import MemberList from './MemberList';
+import LabelList from './LabelList';
 import MemberSelect from './MemberSelect';
+import LabelSelect from './LabelSelect';
 
 export default {
 	components: {
 		MemberList,
+		LabelList,
 		MemberSelect,
+		LabelSelect,
 	},
 
 	props: {
@@ -171,6 +237,9 @@ export default {
 				};
 			}
 			return null;
+		},
+		isTask() {
+			return false;
 		}
 	},
 

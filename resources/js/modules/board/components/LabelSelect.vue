@@ -1,9 +1,9 @@
 <template>
 	<v-select
 		:value="value"
-		:items="members"
+		:items="labels"
 		chips
-		placeholder="Membros"
+		placeholder="Categorias"
 		multiple
 		outlined
 		dense
@@ -24,8 +24,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('members', {
-			members: 'items',
+		...mapState('labels', {
+			labels: 'items',
 		}),
 	},
 }

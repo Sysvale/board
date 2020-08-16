@@ -5,6 +5,9 @@
 	>
 		<v-card
 			class="px-4 py-4"
+			flat
+			outlined
+			color="#efefef"
 		>
 			<slot />
 		</v-card>
