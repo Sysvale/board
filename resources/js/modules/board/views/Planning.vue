@@ -1,10 +1,8 @@
 <template>
 	<v-container
-		grid-list-md
 		fluid
+		class="px-0 py-0"
 	>
-		<h2 class="mb-3 text-center font-weight-light">Planning Board</h2>
-		<v-divider class="py-3"/>
 		<board
 			namespace="planning"
 			:getLists="{

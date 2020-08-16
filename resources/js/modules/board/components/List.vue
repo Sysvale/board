@@ -1,7 +1,7 @@
 <template>
 	<list-container>
-		<header class="mb-4 text--black">
-			<div>
+		<header class="mb-2 text--black d-flex">
+			<div class="flex-grow-1">
 				<span class="mb-0 font-weight-bold d-block">
 					{{ $attrs.title }}
 				</span>
@@ -11,29 +11,31 @@
 					</small>
 				</div>
 			</div>
+			<div class="d-flex justify-end">
+				<v-btn
+					block
+					small
+					depressed
+					:disabled="$attrs.loading"
+					color="white"
+					class="px-0"
+					@click="createMode = true"
+				>
+					<v-icon
+						color="rgba(0, 0, 0, 0.5)"
+					>
+						add
+					</v-icon>
+				</v-btn>
+			</div>
 		</header>
-		<v-btn
-			v-if="!createMode"
-			block
-			small
-			depressed
-			:disabled="$attrs.loading"
-			class="mb-2"
-			color="white"
-			@click="createMode = true"
-		>
-			<v-icon
-				color="rgba(0, 0, 0, 0.5)"
-			>
-				add
-			</v-icon>
-		</v-btn>
 		<v-textarea
-			v-else
+			v-if="createMode"
 			v-model="newCardTitle"
 			solo
 			auto-grow
 			autofocus
+			class="mb-0 pb-0"
 			@blur="handleAdd"
 			@keydown.enter="handleAdd"
 			@keydown.esc="clear"
@@ -55,7 +57,7 @@
 					v-for="(item, i) in $attrs.list"
 					:key="item.id"
 					:class="{
-						'mt-2': i > 0,
+						'mt-3': i > 0,
 					}"
 				>
 					<card

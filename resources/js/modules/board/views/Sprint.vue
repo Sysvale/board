@@ -5,11 +5,15 @@
 	>
 		<h2 class="mb-3 text-center font-weight-light">Sprint Board</h2>
 		<v-divider class="py-3"/>
-		<section>
+		<section
+			v-if="false"
+		>
 			<h1>Impedimentos</h1>
 			<impediment-table/>
 		</section>
-		<section>
+		<section
+			v-if="false"
+		>
 			<h1>Não planejados</h1>
 			<board
 				namespace="notPlanned"

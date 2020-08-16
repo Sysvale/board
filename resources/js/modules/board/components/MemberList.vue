@@ -1,20 +1,21 @@
 <template>
 	<div
 		v-if="members.length > 0"
+		class="d-flex"
 	>
-		<v-avatar
+		<div
 			v-for="(member, i) in members"
 			:key="member.id"
-			color="indigo"
+			class="member-item"
 			:text-color="member.textColor || 'black'"
 			size="28"
 			:class="{'ml-1': i > 0}"
 			:title="member.name"
 		>
-			<small class="white--text">
-				{{ getFirstLetters(member.name) }}
+			<small>
+				<strong>{{ getFirstLetters(member.name) }}</strong>
 			</small>
-		</v-avatar>
+		</div>
 	</div>
 </template>
 <script>
@@ -34,3 +35,14 @@ export default {
 	}
 }
 </script>
+<style>
+.member-item {
+	background: #dce6ff;
+	width: 28px;
+	height: 28px;
+	border-radius: 3px;
+	text-align: center;
+	color: #3a7efd;
+	border: 1px solid #3a7efd;
+}
+</style>

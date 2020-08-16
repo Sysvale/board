@@ -2,7 +2,7 @@
 	<v-container
 		id="board"
 		fluid
-		class="py-10"
+		class="px-0 py-5"
 	>
 		<slot/>
 	</v-container>
@@ -17,6 +17,7 @@ export default {
 <style scoped>
 #board {
 	overflow-x: scroll;
+	max-width: 100%;
 }
 /* width */
 #board::-webkit-scrollbar {

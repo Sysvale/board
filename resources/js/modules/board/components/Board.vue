@@ -1,6 +1,7 @@
 <template>
 	<v-container
 		fluid
+		class="px-0 py-0 d-flex"
 	>
 		<list-skeleton-loader
 			v-if="loading"

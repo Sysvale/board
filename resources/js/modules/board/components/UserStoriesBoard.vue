@@ -4,18 +4,66 @@
 			v-for="story in userStories"
 			:key="story.id"
 		>
-			<board-container>
-				<v-layout>
-					<list-container>
-						<div class="mt-16 pt-7">
-							<v-card
-								class="task-card"
-								color="#ffff99"
+			<v-layout>
+				<div class="mr-3 mt-4">
+					<v-card
+						class="task-card px-3 py-3"
+						outlined
+						flat
+					>
+						<div class="py-3 text-right">
+							<v-chip
+								color="gray"
+								text-color="black"
+								label
 							>
-								{{ story.title }}
-							</v-card>
+								<strong>21 pts</strong>
+							</v-chip>
 						</div>
-					</list-container>
+						<v-img
+							src="https://i.pinimg.com/originals/77/75/5e/77755e565ef7ddbff2546231cd8732bf.png"
+							width="250px"
+						/>
+						<div>
+							{{ story.title }}
+						</div>
+						<div
+							class="pt-3"
+						>
+							<v-divider/>
+						</div>
+						<v-expansion-panels
+							flat
+						>
+							<v-expansion-panel
+								class="px-0 py-0"
+							>
+								<v-expansion-panel-header
+									class="px-0 py-0"
+								>
+									Critérios de aceitação
+								</v-expansion-panel-header>
+								<v-expansion-panel-content
+									class="px-0 py-0"
+								>
+									<ul>
+										<li>Critério 1</li>
+										<li>Critério 1</li>
+										<li>Critério 1</li>
+										<li>Critério 1</li>
+										<li>Critério 1</li>
+									</ul>
+								</v-expansion-panel-content>
+							</v-expansion-panel>
+						</v-expansion-panels>
+					</v-card>
+				</div>
+				<div class="mr-3">
+					<v-divider
+						vertical
+					/>
+				</div>
+				<div>
 					<board
 						:namespace="story.id"
 						:getLists="getDefaultLists"
@@ -26,8 +74,11 @@
 							}
 						}"
 					/>
-				</v-layout>
-			</board-container>
+				</div>
+			</v-layout>
+			<div class="py-5">
+				<v-divider/>
+			</div>
 		</section>
 	</div>
 </template>
@@ -76,3 +127,8 @@ export default {
 	}
 }
 </script>
+<style>
+.v-expansion-panel-content__wrap {
+	padding: 0!important;
+}
+</style>

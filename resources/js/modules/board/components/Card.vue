@@ -6,27 +6,44 @@
 	>
 		<template v-slot:activator="{}">
 				<v-card
-					class="task-card px-3"
+					class="task-card px-3 py-3"
 					v-bind="$attrs"
 					v-on="$listeners"
 					hover
+					outlined
+					flat
 					:ripple="false"
 					@click="showModal"
 					@mouseover="hover = true"
 					@mouseleave="hover = false"
 				>
 				<div
-					class="py-2"
+					class="d-flex align-center"
 				>
-					<v-chip
-						v-if="item.number"
-						color="gray"
-						text-color="black"
-						small
-						label
+					<div
+						v-if="item.labels && item.labels.length"
+						class="pb-2 flex-grow-1"
 					>
-						#{{ item.number }}
-					</v-chip>
+						<v-chip
+							v-if="item.number"
+							color="gray"
+							text-color="black"
+							x-small
+							label
+						>
+							#{{ item.number }}
+						</v-chip>
+						<v-chip
+							v-for="(label, i) in (item.labels || [])"
+							:key="label.id"
+							:color="label.color || 'gray'"
+							:text-color="label.textColor || 'black'"
+							x-small
+							:class="{'ml-1': i > 0}"
+						>
+							<strong>{{ label.name }}</strong>
+						</v-chip>
+					</div>
 				</div>
 					<div
 						class="gray--text py-0"
@@ -53,21 +70,6 @@
 								<strong>{{ link.label }}</strong>
 							</v-chip>
 						</div>
-					</div>
-					<div
-						v-if="item.labels && item.labels.length"
-						class="pb-2"
-					>
-						<v-chip
-							v-for="(label, i) in (item.labels || [])"
-							:key="label.id"
-							:color="label.color || 'gray'"
-							:text-color="label.textColor || 'black'"
-							x-small
-							:class="{'ml-1': i > 0}"
-						>
-							<strong>{{ label.name }}</strong>
-						</v-chip>
 					</div>
 				</v-card>
 		</template>

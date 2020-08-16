@@ -137,11 +137,11 @@ export const getUserStories = (teamId) => new Promise((resolve, reject) => {
 		const data = [
 			{
 				id: id(),
-				title: 'User Story 1',
+				title: 'Para fazer alguma coisa, eu como usuário, gostaria de fazer alguma coisa',
 			},
 			{
 				id: id(),
-				title: 'User Story 2',
+				title: 'Para fazer alguma coisa, eu como usuário, gostaria de fazer alguma coisa',
 			},
 		];
 		resolve({data});
