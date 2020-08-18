@@ -42,6 +42,15 @@ export default {
 			return this.loadingMembers || this.loadingLabels;
 		},
 	},
+	watch: {
+		'$route'(to, from) {
+			if(to.meta && to.meta.title) {
+				document.title = `${to.meta.title} | Trelássio`
+				return;
+			}
+			to.from.title = 'Trelássio';
+		},
+	},
 	methods: {
 		...mapActions('members', [
 			'getMembers',
