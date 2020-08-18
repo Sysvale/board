@@ -224,6 +224,13 @@ export const updateCards = (cards = []) => new Promise((resolve, reject) => {
 	}, 1000);
 });
 
+// Update card and his positions when is a list change
+export const updateCardsLists = ({ listOne, listTwo }) => new Promise((resolve, reject) => {
+	setTimeout(() => {
+		resolve({data:{ listOne, listTwo} });
+	}, 1000);
+});
+
 export const deleteCard = ({ id, ...payload }) => new Promise((resolve, reject) => {
 	setTimeout(() => {
 		let data = {
@@ -297,10 +304,6 @@ export const getImpediments = () => new Promise((resolve, reject) => {
 				members: [
 					{
 						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
 						name: 'Rafa Dias',
 					},
 				]
@@ -311,169 +314,10 @@ export const getImpediments = () => new Promise((resolve, reject) => {
 				members: [
 					{
 						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
 						name: 'Rafa Dias',
 					},
 				]
 			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			{
-				id: id(),
-				title: 'Outra Reunião com o BIOS',
-				members: [
-					{
-						id: id(),
-						name: 'Tássio Caique',
-					},
-					{
-						id: id(),
-						name: 'Rafa Dias',
-					},
-				]
-			},
-			
 		];
 
 		resolve({ data });
