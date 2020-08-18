@@ -5,6 +5,7 @@ import {
 	createCard,
 	updateCard,
 	updateCards,
+	updateCardsLists,
 } from '../services';
 
 const modules = [
@@ -12,6 +13,7 @@ const modules = [
 	{ createCard },
 	{ updateCard },
 	{ updateCards },
+	{ updateCardsLists },
 ];
 
 export default {
