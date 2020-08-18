@@ -11,6 +11,7 @@
 				:title="list.name"
 				:list="getList(list.id)"
 				:group="namespace"
+				:move="moveCallback"
 				@add="handleAdd"
 				@delete="handleDelete"
 				@change="handleChange(list.id)"
@@ -96,6 +97,7 @@ export default {
 			'deleteCard',
 			'createCard',
 			'updateCards',
+			'updateCardsLists',
 		]),
 
 		getList(listId) {
@@ -123,6 +125,25 @@ export default {
 				}))
 			);
 		},
+
+		moveCallback(ev) {
+			const fromSizeBefore = this[ev.from.id].length + 0; // force var to lose the reference
+			const toSizeBefore = this[ev.to.id].length + 0;
+			if(ev.from !== ev.to) {
+				// a little trick/gamb here rsrsrsrs
+				setTimeout(() => {
+					if(
+						fromSizeBefore != this[ev.from.id].length
+						&& toSizeBefore != this[ev.to.id].length
+					) {
+						this.updateCardsLists({
+							listOne: this[ev.from.id].map(({ id }, i) => ({ id, position: i })),
+							listTwo: this[ev.to.id].map(({ id }, i) => ({ id, position: i })),
+						});
+					}
+				}, 1000);
+			}
+		}
 	}
 }
 </script>
