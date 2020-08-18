@@ -7,6 +7,20 @@
 			dark
 		>
 			<v-toolbar-title>Trelássio</v-toolbar-title>
+			<v-spacer/>
+			<v-btn
+				text
+				to="planning"
+				class="mr-3"
+			>
+				Planning
+			</v-btn>
+			<v-btn
+				text
+				to="sprint"
+			>
+				Sprint
+			</v-btn>
 		</v-app-bar>
 		<v-main>
 			<div
