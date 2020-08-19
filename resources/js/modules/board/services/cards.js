@@ -14,7 +14,6 @@ export const createCard = (payload) => new Promise((resolve, reject) => {
 });
 
 export const updateCard = ({ id, ...payload }) => new Promise((resolve, reject) => {
-	console.log(id, payload);
 	setTimeout(() => {
 		let data = {
 			id,
