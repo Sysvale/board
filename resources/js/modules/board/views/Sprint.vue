@@ -3,7 +3,8 @@
 		fluid
 	>
 		<v-tabs
-			style="background-color: transparent"
+			grow
+			background-color="transparent"
 		>
 			<v-tab
 				v-for="team in teams"

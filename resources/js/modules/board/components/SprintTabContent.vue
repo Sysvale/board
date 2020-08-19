@@ -1,48 +1,73 @@
 <template>
-	<div>
-		<section>
-			<h1>Impedimentos</h1>
-			<impediment-table
-				:team-id="teamId"
-			/>
-		</section>
-		<section>
-			<h1>Não planejados</h1>
-			<board
-				:namespace="`${teamId}-notPlanned`"
-				:getLists="getDefaultLists"
-				:getCards="{
-					resolver: getNotPlannedTasksByTeam,
-					params: {
-						teamId,
-					}
-				}"
-			/>
-		</section>
-		<v-divider/>
-		<section class="mt-10">
-			<h1>Sprint Backlog</h1>
-			<user-stories-board
-				:team-id="teamId"
-			/>
-		</section>
-		<div class="mt-10">
-			<v-divider/>
-		</div>
-		<section class="mt-10">
-			<h1>Sprint Devlog</h1>
-			<board
-				:namespace="`${teamId}-dev`"
-				:getLists="getSprintDevlogLists"
-				:getCards="{
-					resolver: getSprintDevlogTasksByTeam,
-					params: {
-						teamId,
-					}
-				}"
-			/>
-		</section>
-	</div>
+	<v-expansion-panels
+		v-model="panels"
+		flat
+		multiple
+		tile
+	>
+		<v-expansion-panel
+			:key="`impediment-${teamId}`"
+		>
+			<v-expansion-panel-header>
+				<h3>Impedimentos</h3>
+			</v-expansion-panel-header>
+			<v-expansion-panel-content>
+				<impediment-table
+					:team-id="teamId"
+				/>
+			</v-expansion-panel-content>
+		</v-expansion-panel>
+		<v-expansion-panel
+			:key="`notPlanned-${teamId}`"
+		>
+			<v-expansion-panel-header>
+				<h3>Não planejados</h3>
+			</v-expansion-panel-header>
+			<v-expansion-panel-content>
+				<board
+					:namespace="`${teamId}-notPlanned`"
+					:getLists="getDefaultLists"
+					:getCards="{
+						resolver: getNotPlannedTasksByTeam,
+						params: {
+							teamId,
+						}
+					}"
+				/>
+			</v-expansion-panel-content>
+		</v-expansion-panel>
+		<v-expansion-panel
+			:key="`userStories-${teamId}`"
+		>
+			<v-expansion-panel-header>
+				<h3>Sprint Backlog</h3>
+			</v-expansion-panel-header>
+			<v-expansion-panel-content>
+				<user-stories-board
+					:team-id="teamId"
+				/>
+			</v-expansion-panel-content>
+		</v-expansion-panel>
+		<v-expansion-panel
+			:key="`sprintDevlog-${teamId}`"
+		>
+			<v-expansion-panel-header>
+				<h3>Sprint Devlog</h3>
+			</v-expansion-panel-header>
+			<v-expansion-panel-content>
+				<board
+					:namespace="`${teamId}-dev`"
+					:getLists="getSprintDevlogLists"
+					:getCards="{
+						resolver: getSprintDevlogTasksByTeam,
+						params: {
+							teamId,
+						}
+					}"
+				/>
+			</v-expansion-panel-content>
+		</v-expansion-panel>
+	</v-expansion-panels>
 </template>
 
 <script>
@@ -74,6 +99,14 @@ export default {
 		},
 	},
 
+	data() {
+		return {
+			panels: [
+				2
+			],
+		};
+	},
+
 	methods: {
 		getDefaultLists,
 		getCardsByListsIds,
@@ -83,3 +116,11 @@ export default {
 	},
 }
 </script>
+<style scoped>
+.v-expansion-panel-content__wrap {
+	padding: 0!important;
+}
+.v-expansion-panel {
+	background: transparent!important;
+}
+</style>
