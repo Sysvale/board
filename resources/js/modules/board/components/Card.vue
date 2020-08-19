@@ -19,7 +19,6 @@
 					class="d-flex align-center"
 				>
 					<div
-						v-if="item.labels && item.labels.length"
 						class="pb-2 flex-grow-1 d-flex align-items-center"
 					>
 						<v-chip
@@ -33,7 +32,7 @@
 							#{{ item.number }}
 						</v-chip>
 						<label-list
-							v-if="isTask"
+							v-if="isTask && item.labels && item.labels.length"
 							:labels="item.labels"
 						/>
 						<v-chip
@@ -48,6 +47,18 @@
 								<strong>{{ teams.filter(({ id }) => id === item.teamId)[0].name }}</strong>
 							</small>
 						</v-chip>
+						<v-spacer
+							v-if="!isTask && item.estimated"
+						/>
+						<v-chip
+							v-if="!isTask && item.estimated"
+							color="gray"
+							text-color="black"
+							label
+							small
+						>
+							<strong>{{ estimated }}</strong>
+						</v-chip>
 					</div>
 				</div>
 					<div
@@ -55,10 +66,12 @@
 					>
 						<slot />
 					</div>
-					<div class="d-flex pt-3">
+					<div
+						v-if="isTask"
+						class="d-flex pt-3"
+					>
 						<div class="d-flex justify-start flex-grow-1">
 							<member-list
-								v-if="isTask"
 								:members="item.members"
 							/>
 						</div>
@@ -174,6 +187,16 @@
 			<v-container
 				v-else
 			>
+				<div class="mb-2">
+					Esforço estimado
+				</div>
+				<v-text-field
+					v-model="item.estimated"
+					outlined
+					flat
+					dense
+					type="number"
+				/>
 				<div>
 					Time
 				</div>
@@ -267,6 +290,12 @@ export default {
 		},
 		isTask() {
 			return false;
+		},
+		estimated() {
+			if(+this.item.estimated === 1) {
+				return `${this.item.estimated} pt`
+			}
+			return `${this.item.estimated} pts`;
 		}
 	},
 
