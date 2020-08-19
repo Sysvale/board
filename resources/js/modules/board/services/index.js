@@ -159,53 +159,6 @@ export const getUserStoriesTasks = ({ listsIds, userStoryId }) => new Promise((r
 	}, 1000);
 });
 
-
-export const createCard = (payload) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = {
-			id: id(),
-			...payload,
-		};
-		resolve({data});
-	}, 1000);
-});
-
-export const updateCard = ({ id, ...payload }) => new Promise((resolve, reject) => {
-	console.log(id, payload);
-	setTimeout(() => {
-		let data = {
-			id,
-			...payload,
-		};
-		resolve({data});
-	}, 1000);
-});
-
-// Update card and his positions
-export const updateCards = (cards = []) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		console.log(cards);
-		resolve(cards);
-	}, 1000);
-});
-
-// Update card and his positions when is a list change
-export const updateCardsLists = ({ listOne, listTwo }) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		resolve({data:{ listOne, listTwo} });
-	}, 1000);
-});
-
-export const deleteCard = ({ id, ...payload }) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = {
-			id,
-			...payload,
-		};
-		resolve({data});
-	}, 1000);
-});
-
 export const getMembers = () => new Promise((resolve, reject) => {
 	setTimeout(() => {
 		let data = [

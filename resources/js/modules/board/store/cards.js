@@ -6,7 +6,7 @@ import {
 	updateCard,
 	updateCards,
 	updateCardsLists,
-} from '../services';
+} from '../services/cards';
 
 const modules = [
 	{ deleteCard },
