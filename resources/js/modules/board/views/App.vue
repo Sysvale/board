@@ -43,6 +43,9 @@ export default {
 		this.getLabels().then((data) => {
 			this.setLabels(data);
 		});
+		this.getTeams().then((data) => {
+			this.setTeams(data);
+		});
 	},
 	computed: {
 		...mapState('members', {
@@ -51,9 +54,14 @@ export default {
 		...mapState('labels', {
 			loadingLabels: ({ getLabels }) => getLabels.isFetching,
 		}),
+		...mapState('teams', {
+			loadingTeams: ({ getTeams }) => getTeams.isFetching,
+		}),
 
 		loading() {
-			return this.loadingMembers || this.loadingLabels;
+			return this.loadingMembers
+				|| this.loadingLabels
+				|| this.loadingTeams;
 		},
 	},
 	watch: {
@@ -72,11 +80,17 @@ export default {
 		...mapActions('labels', [
 			'getLabels',
 		]),
+		...mapActions('teams', [
+			'getTeams',
+		]),
 		...mapMutations('members', {
 			setMembers: 'setItems',
 		}),
 		...mapMutations('labels', {
 			setLabels: 'setItems',
+		}),
+		...mapMutations('teams', {
+			setTeams: 'setItems',
 		}),
 	}
 }
