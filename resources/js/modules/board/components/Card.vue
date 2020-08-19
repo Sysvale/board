@@ -289,7 +289,7 @@ export default {
 			return null;
 		},
 		isTask() {
-			return false;
+			return !!!this.item.isUserStory;
 		},
 		estimated() {
 			if(+this.item.estimated === 1) {

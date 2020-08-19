@@ -5,12 +5,7 @@
 	>
 		<board
 			namespace="planning"
-			:getLists="{
-				resolver: getLists,
-				params: {
-					boardId: 'planning',
-				},
-			}"
+			:getLists="getLists"
 			:getCards="getCardsByListsIds"
 		/>
 	</v-container>
@@ -18,16 +13,14 @@
 
 <script>
 import Board from '../components/Board.vue';
-import ListSkeletonLoader from '../components/ListSkeletonLoader.vue';
 import {
 	getLists,
 	getCardsByListsIds,
-} from '../services';
+} from '../services/planning';
 
 export default {
 	components: {
 		Board,
-		ListSkeletonLoader,
 	},
 	methods: {
 		getLists,

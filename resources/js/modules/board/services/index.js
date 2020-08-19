@@ -15,41 +15,6 @@ const title = () => {
 	let index = Math.floor(Math.random() * (splited.length - 0) + 0);
 	return splited[index] || "cachorro? sou cachorro não";
 }
-//ficar atento ao fato que o parâmentro aqui é um objeto
-export const getLists = ({ boardId, ...args }) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = [];
-		switch(boardId) {
-			case 'planning':
-				data = [
-					{
-						id: id(),
-						name: 'Bugs',
-						position: 1,
-					},
-					{
-						id: id(),
-						name: 'Devlog',
-						position: 2,
-					},
-					{
-						id: id(),
-						name: 'Backlog',
-						position: 3,
-					},
-					{
-						id: id(),
-						name: 'Sprint',
-						position: 4,
-					},
-				];
-				resolve({data});
-				return;
-			default:
-				resolve({ data })
-		}
-	})
-});
 
 //parametros aqui tbm sao um objeto
 export const getCardsByListsIds = ({ listsIds, ...args }) => new Promise((resolve, reject) => {
