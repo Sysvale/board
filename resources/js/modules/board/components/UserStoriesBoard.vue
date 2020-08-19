@@ -1,5 +1,7 @@
 <template>
-	<div>
+	<div
+		v-if="userStories && userStories.length > 0"
+	>
 		<section
 			v-for="story in userStories"
 			:key="story.id"
@@ -17,7 +19,7 @@
 								text-color="black"
 								label
 							>
-								<strong>21 pts</strong>
+								<strong>{{ story.estimated }} pt(s)</strong>
 							</v-chip>
 						</div>
 						<v-img
@@ -47,11 +49,12 @@
 									class="px-0 py-0"
 								>
 									<ul>
-										<li>Critério 1</li>
-										<li>Critério 1</li>
-										<li>Critério 1</li>
-										<li>Critério 1</li>
-										<li>Critério 1</li>
+										<li
+											v-for="criteria in story.acceptanceCriteria"
+											:key="criteria"
+										>
+											{{ criteria }}
+										</li>
 									</ul>
 								</v-expansion-panel-content>
 							</v-expansion-panel>
@@ -84,15 +87,25 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+import makeRequestStore from '../../../core/utils/makeRequestStore';
+
 import Board from '../components/Board.vue';
 import BoardContainer from '../components/BoardContainer.vue';
 import ListContainer from '../components/ListContainer.vue';
 
 import {
 	getDefaultLists,
-	getUserStoriesTasks,
-} from '../services'
+	getSprintBacklog,
+} from '../services/sprint';
+
+import {
+	getUserStoriesTasks
+} from '../services';
+
+import {
+	getUserStoriesByTeam,
+} from '../services/userStories';
 
 export default {
 	components: {
@@ -101,14 +114,67 @@ export default {
 		Board,
 	},
 
-	computed: {
-		...mapGetters('userStories', {
-			userStories: 'getItems',
-		})
+	beforeCreate() {
+		let teamId = this.$options.propsData.teamId;
+
+		if(teamId) {
+			let modules = [
+				{ getUserStoriesByTeam },
+			];
+
+			let namespace = `userStories-${teamId}`;
+
+			this.$store.registerModule(namespace, {
+				namespaced: true,
+				modules: {
+					...modules.reduce((acc, module) => ({
+						...acc,
+						...makeRequestStore(module),
+					}), {}),
+				},
+				state: {
+					items: [],
+				},
+				mutations: {
+					setItems(state, payload) {
+						state.items = payload;
+					},
+				},
+			});
+			const {
+				mapActions,
+				mapMutations,
+				mapState,
+			} = createNamespacedHelpers(namespace);
+	
+			this.$options.computed = {
+				...mapState({
+					userStories: 'items',
+				}),
+				...this.$options.computed,
+			};
+	
+			this.$options.methods = {
+				...mapActions([
+					'getUserStoriesByTeam',
+				]),
+				...mapMutations([
+					'setItems',
+				]),
+				...this.$options.methods,
+			};
+		}
+	},
+
+	props: {
+		teamId: {
+			type: String,
+			default: null,
+		},
 	},
 
 	mounted() {
-		this.getUserStories().then((data) => {
+		this.getUserStoriesByTeam(this.teamId).then((data) => {
 			this.setItems(data);
 		});
 	},
@@ -116,14 +182,6 @@ export default {
 	methods: {
 		getDefaultLists,
 		getUserStoriesTasks,
-
-		...mapMutations('userStories', [
-			'setItems',
-		]),
-
-		...mapActions('userStories', [
-			'getUserStories',
-		]),
 	}
 }
 </script>

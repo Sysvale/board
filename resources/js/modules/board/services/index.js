@@ -63,55 +63,6 @@ export const getCardsByListsIds = ({ listsIds, ...args }) => new Promise((resolv
 	}, 1000);
 });
 
-export const getDefaultLists = () => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		const data = [
-			{
-				id: id(),
-				name: 'To Do',
-				position: 1,
-			},
-			{
-				id: id(),
-				name: 'Em desenvolvimento',
-				position: 2,
-			},
-			{
-				id: id(),
-				name: 'Code Review/Test',
-				position: 3,
-			},
-			{
-				id: id(),
-				name: 'Done/To Release',
-				position: 4,
-			},
-			{
-				id: id(),
-				name: 'Deploy',
-				position: 5,
-			},
-		];
-		resolve({ data });
-	})
-});
-
-//sprintBacklog makes more sense
-export const getUserStories = (teamId) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		const data = [
-			{
-				id: id(),
-				title: 'Para fazer alguma coisa, eu como usuário, gostaria de fazer alguma coisa',
-			},
-			{
-				id: id(),
-				title: 'Para fazer alguma coisa, eu como usuário, gostaria de fazer alguma coisa',
-			},
-		];
-		resolve({data});
-	}, 1000);
-});
 
 export const getUserStoriesTasks = ({ listsIds, userStoryId }) => new Promise((resolve) => {
 	console.log(userStoryId);
