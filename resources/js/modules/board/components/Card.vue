@@ -188,7 +188,7 @@
 				v-else
 			>
 				<div class="mb-2">
-					Esforço estimado
+					<strong>Esforço estimado</strong>
 				</div>
 				<v-text-field
 					v-model="item.estimated"
@@ -198,7 +198,7 @@
 					type="number"
 				/>
 				<div>
-					Time
+					<strong>Time</strong>
 				</div>
 				<v-radio-group
 					v-model="item.teamId"
@@ -215,7 +215,7 @@
 				<div
 					class="mb-2"
 				>
-					Critérios de aceitação
+					<strong>Critérios de aceitação</strong>
 				</div>
 				<acceptance-criteria-form
 					v-model="item.acceptanceCriteria"
