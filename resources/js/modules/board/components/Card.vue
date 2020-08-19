@@ -36,6 +36,18 @@
 							v-if="isTask"
 							:labels="item.labels"
 						/>
+						<v-chip
+							v-else-if="item.teamId"
+							:text-color="'#fff'"
+							:color="'#333'"
+							class="ml-1"
+							:title="teams.filter(({ id }) => id === item.teamId)[0].name"
+							small
+						>
+							<small>
+								<strong>{{ teams.filter(({ id }) => id === item.teamId)[0].name }}</strong>
+							</small>
+						</v-chip>
 					</div>
 				</div>
 					<div
@@ -72,7 +84,6 @@
 		>
 			<v-container>
 				<div
-					v-if="isTask"
 					class="d-flex"
 				>
 					<v-chip
@@ -86,6 +97,7 @@
 						#{{ item.number }}
 					</v-chip>
 					<label-list
+						v-if="isTask"
 						:labels="item.labels"
 					/>
 				</div>
@@ -163,18 +175,28 @@
 				v-else
 			>
 				<div>
-					Breakout Room
+					Time
 				</div>
 				<v-radio-group
-					v-model="item.breakout"
+					v-model="item.teamId"
 					class="mt-1"
 				>
-					<v-radio label="Breakout 1" value="radio-1"></v-radio>
-					<v-radio label="Breakout 2" value="radio-2"></v-radio>
-					<v-radio label="Breakout 3" value="radio-3"></v-radio>
-					<v-radio label="Breakout 4" value="radio-4"></v-radio>
-					<v-radio label="Breakout 5" value="radio-5"></v-radio>
+					<v-radio
+						v-for="team in teams"
+						:key="team.id"
+						:label="team.name"
+						:value="team.id"
+					/>
 				</v-radio-group>
+
+				<div
+					class="mb-2"
+				>
+					Critérios de aceitação
+				</div>
+				<acceptance-criteria-form
+					v-model="item.acceptanceCriteria"
+				/>
 			</v-container>
 			<v-card-actions
 				class="d-flex justify-start"
@@ -197,6 +219,7 @@ import MemberList from './MemberList';
 import LabelList from './LabelList';
 import MemberSelect from './MemberSelect';
 import LabelSelect from './LabelSelect';
+import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
 
 export default {
 	components: {
@@ -204,6 +227,7 @@ export default {
 		LabelList,
 		MemberSelect,
 		LabelSelect,
+		AcceptanceCriteriaForm,
 	},
 
 	props: {
@@ -227,6 +251,9 @@ export default {
 	computed: {
 		...mapState('labels', {
 			labels: 'items',
+		}),
+		...mapState('teams', {
+			teams: 'items',
 		}),
 		link() {
 			if(this.item.link) {
