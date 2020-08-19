@@ -96,15 +96,11 @@ import ListContainer from '../components/ListContainer.vue';
 
 import {
 	getDefaultLists,
-	getSprintBacklog,
 } from '../services/sprint';
 
 import {
-	getUserStoriesTasks
-} from '../services';
-
-import {
 	getUserStoriesByTeam,
+	getUserStoriesTasks,
 } from '../services/userStories';
 
 export default {

@@ -63,53 +63,6 @@ export const getCardsByListsIds = ({ listsIds, ...args }) => new Promise((resolv
 	}, 1000);
 });
 
-
-export const getUserStoriesTasks = ({ listsIds, userStoryId }) => new Promise((resolve) => {
-	console.log(userStoryId);
-	// esse listIds são os lids ids defaults passados "automagicamente"
-	setTimeout(() => {
-		let computed = {};
-		listsIds.forEach((listId) => {
-			computed = {
-				[listId]: [
-					{
-						id: id(),
-						title: title(),
-						link: 'https://gitlab.com/syssus/server/-/merge_requests/2311',
-						labels: [
-							{
-								id: id(),
-								name: 'FrontEnd',
-								color: 'orange',
-								textColor: 'white',
-							},
-						],
-						members: [
-							{
-								id: id(),
-								name: 'Tássio Caique',
-							},
-							{
-								id: id(),
-								name: 'Rafa Dias',
-							},
-						]
-					},
-					{
-						id: id(),
-						title: title(),
-					},
-				],
-				...computed,
-			}
-		});
-		const data = {
-			...computed,
-		};
-		resolve({data});
-	}, 1000);
-});
-
 export const getMembers = () => new Promise((resolve, reject) => {
 	setTimeout(() => {
 		let data = [
