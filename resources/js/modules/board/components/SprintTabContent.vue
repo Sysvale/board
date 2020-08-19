@@ -1,19 +1,22 @@
 <template>
 	<div>
-		<section
-			v-if="false"
-		>
+		<section>
 			<h1>Impedimentos</h1>
-			<impediment-table/>
+			<impediment-table
+				:team-id="teamId"
+			/>
 		</section>
-		<section
-			v-if="false"
-		>
+		<section>
 			<h1>Não planejados</h1>
 			<board
 				:namespace="`${teamId}-notPlanned`"
 				:getLists="getDefaultLists"
-				:getCards="getCardsByListsIds"
+				:getCards="{
+					resolver: getNotPlannedTasksByTeam,
+					params: {
+						teamId,
+					}
+				}"
 			/>
 		</section>
 		<v-divider/>
@@ -30,8 +33,13 @@
 			<h1>Sprint Devlog</h1>
 			<board
 				:namespace="`${teamId}-dev`"
-				:getLists="getDefaultLists"
-				:getCards="getCardsByListsIds"
+				:getLists="getSprintDevlogLists"
+				:getCards="{
+					resolver: getSprintDevlogTasksByTeam,
+					params: {
+						teamId,
+					}
+				}"
 			/>
 		</section>
 	</div>
@@ -47,6 +55,9 @@ import {
 
 import {
 	getDefaultLists,
+	getSprintDevlogLists,
+	getSprintDevlogTasksByTeam,
+	getNotPlannedTasksByTeam,
 } from '../services/sprint'
 
 export default {
@@ -66,6 +77,9 @@ export default {
 	methods: {
 		getDefaultLists,
 		getCardsByListsIds,
+		getSprintDevlogLists,
+		getSprintDevlogTasksByTeam,
+		getNotPlannedTasksByTeam,
 	},
 }
 </script>
