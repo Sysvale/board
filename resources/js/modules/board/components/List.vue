@@ -65,7 +65,7 @@
 						@save="handleAdd"
 						@delete="$emit('delete', {
 							id: item.id,
-							listId: $attrs.id
+							boardListId: $attrs.id
 						})"
 					>
 						{{ item.title }}
@@ -113,7 +113,7 @@ export default {
 			if(this.newCardTitle && this.newCardTitle.trim() !== '') {
 				this.$emit('add', {
 					title: this.newCardTitle,
-					listId: this.$attrs.id,
+					boardListId: this.$attrs.id,
 				});
 				this.newCardTitle = null;
 			}
