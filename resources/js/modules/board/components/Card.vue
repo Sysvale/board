@@ -243,6 +243,7 @@ import LabelList from './LabelList';
 import MemberSelect from './MemberSelect';
 import LabelSelect from './LabelSelect';
 import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
+import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
 	components: {
@@ -302,7 +303,7 @@ export default {
 	watch: {
 		item: {
 			handler(newValue, oldValue) {
-				this.updateCard(newValue);
+				this.updateCard(convertKeysToSnakeCase(newValue));
 			},
 			deep: true,
 		},
