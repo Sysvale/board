@@ -7,7 +7,6 @@
 		multiple
 		outlined
 		dense
-		return-object
 		item-text="name"
 		item-value="id"
 		@input="$emit('input', $event)"

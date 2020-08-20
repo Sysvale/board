@@ -4,7 +4,7 @@
 		class="d-flex"
 	>
 		<div
-			v-for="(member, i) in members"
+			v-for="(member, i) in computedMembers"
 			:key="member.id"
 			class="member-item"
 			:text-color="member.textColor || 'black'"
@@ -19,11 +19,21 @@
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
 	props: {
 		members: {
 			type: Array,
 			default: () => [],
+		},
+	},
+
+	computed: {
+		...mapState('members', {
+			rawMembers: 'items',
+		}),
+		computedMembers() {
+			return this.rawMembers.filter(item => _.includes(this.members, item.id));
 		},
 	},
 

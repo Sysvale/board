@@ -4,7 +4,7 @@
 		class="d-flex"
 	>
 		<v-chip
-			v-for="(label, i) in labels"
+			v-for="(label, i) in computedLabels"
 			:key="label.id"
 			:text-color="label.textColor || 'black'"
 			:color="label.color"
@@ -19,6 +19,7 @@
 	</div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
 	props: {
 		labels: {
@@ -26,5 +27,14 @@ export default {
 			default: () => [],
 		},
 	},
+
+	computed: {
+		...mapState('labels', {
+			rawLabels: 'items',
+		}),
+		computedLabels() {
+			return this.rawLabels.filter(item => _.includes(this.labels, item.id));
+		},
+	}
 }
 </script>
