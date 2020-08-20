@@ -17,6 +17,8 @@
 
 <script>
 import makeRequestStore from '../../../core/utils/makeRequestStore';
+import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 import BoardContent from '../components/BoardContent.vue';
 import ListSkeletonLoader from '../components/ListSkeletonLoader.vue';
 import { createNamespacedHelpers } from 'vuex';
@@ -102,12 +104,21 @@ export default {
 	},
 
 	created() {
-		this.fetchLists({...this.requestParams.getLists}).then((data) => {
-			this.lists = data;
+		this.fetchLists({
+			...convertKeysToSnakeCase(this.requestParams.getLists)
+		}).then((data) => {
+			this.lists = convertKeysToCamelCase(data);
 			this.fetchCards(
-				{ listsIds: this.lists.map(({ id }) => id), ...this.requestParams.getCards }
+				convertKeysToSnakeCase({ listsIds: this.lists.map(({ id }) => id), ...this.requestParams.getCards })
 			).then((cards) => {
-				this.cards = cards;
+				let computed = {};
+				_.each(cards, (value, key) => {
+					computed = {
+						[key]: convertKeysToCamelCase(value),
+						...computed,
+					}
+				});
+				this.cards = computed;
 			});
 		});
 	},
