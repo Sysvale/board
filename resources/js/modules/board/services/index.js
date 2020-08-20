@@ -63,60 +63,6 @@ export const getCardsByListsIds = ({ listsIds, ...args }) => new Promise((resolv
 	}, 1000);
 });
 
-export const getMembers = () => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = [
-			{
-				id: id(),
-				name: 'Tássio Caique',
-			},
-			{
-				id: id(),
-				name: 'Rafa Dias',
-			},
-			{
-				id: id(),
-				name: 'Leonardo Cavalcante',
-			},
-			{
-				id: id(),
-				name: 'Patrícia Coelho',
-			},
-			{
-				id: id(),
-				name: 'Jedsão Meloso',
-			},
-		];
-		resolve({data});
-	}, 1000);
-});
-
-export const getLabels = () => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = [
-			{
-				id: id(),
-				name: 'FrontEnd',
-				color: 'orange',
-				textColor: 'white',
-			},
-			{
-				id: id(),
-				name: 'BackEnd',
-				color: 'yellow',
-				textColor: 'black',
-			},
-			{
-				id: id(),
-				name: 'Mockup',
-				color: 'green',
-				textColor: 'white',
-			},
-		];
-		resolve({data});
-	}, 1000);
-});
-
 export const getImpediments = () => new Promise((resolve, reject) => {
 	setTimeout(() => {
 		const data = [
