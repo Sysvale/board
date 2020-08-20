@@ -1,28 +1,14 @@
-import generateUUID from '../../../core/utils/generateUUID';
+import http from '../../../http';
 
-const id = () => generateUUID().split('-')[0];
+export const createCard = (payload) => http.post('/cards', payload);
 
-export const createCard = (payload) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = {
-			id: id(),
-			...payload,
-		};
-		console.log('createCard');
-		resolve({data});
-	}, 1000);
+export const getCardsByListsIds = (params) => http.get('/get-cards-by-lists-ids', {
+	params,
 });
 
-export const updateCard = ({ id, ...payload }) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = {
-			id,
-			...payload,
-		};
-		console.log('updateCard');
-		resolve({data});
-	}, 1000);
-});
+export const updateCard = ({ id, ...params }) => http.put(`/cards/${id}`, params);
+
+export const deleteCard = (id) => http.delete(`/cards/${id}`);
 
 // Update card and his positions
 export const updateCards = (cards = []) => new Promise((resolve, reject) => {
@@ -37,16 +23,5 @@ export const updateCardsLists = ({ listOne, listTwo }) => new Promise((resolve, 
 	setTimeout(() => {
 		console.log('updateCardsLists', '(the card list changed)');
 		resolve({data:{ listOne, listTwo} });
-	}, 1000);
-});
-
-export const deleteCard = ({ id, ...payload }) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		let data = {
-			id,
-			...payload,
-		};
-		console.log('deleteCard');
-		resolve({data});
 	}, 1000);
 });
