@@ -5,7 +5,7 @@
 	>
 		<board
 			namespace="planning"
-			:getLists="getLists"
+			:getLists="getPlanningLists"
 			:getCards="getCardsByListsIds"
 		/>
 	</v-container>
@@ -14,16 +14,19 @@
 <script>
 import Board from '../components/Board.vue';
 import {
-	getLists,
-	getCardsByListsIds,
+	getPlanningLists,
 } from '../services/planning';
+
+import {
+	getCardsByListsIds,
+} from '../services/cards';
 
 export default {
 	components: {
 		Board,
 	},
 	methods: {
-		getLists,
+		getPlanningLists,
 		getCardsByListsIds,
 	},
 }
