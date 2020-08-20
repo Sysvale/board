@@ -1,6 +1,6 @@
 import makeRequestStore from './makeRequestStore';
-import generateUUID from './generateUUID';
 import upperCamelCase from './upperCamelCase';
+import convertKeysToCamelCase from './convertKeysToCamelCase';
 
 const initialState = (lists) => {
 	let state = {};
@@ -19,7 +19,7 @@ const generateMutations = (lists) => {
 		let mutationName = `set${upperCamelCase(id)}`;
 		mutations = {
 			[mutationName]: (state, payload) => {
-				state[key] = payload;
+				state[key] = convertKeysToCamelCase(payload);
 			},
 			...mutations,
 		};
@@ -56,23 +56,23 @@ export default (lists, modules = []) => {
 		mutations: {
 			setCards(state, payload) {
 				Object.keys(payload).forEach((key) => {
-					state[key] = payload[key];
+					state[key] = convertKeysToCamelCase(payload[key]);
 				})
 			},
 			...generateMutations(lists),
 			addNewTask(state, payload) {
-				const { listId, ...args } = payload;
-				state[listId] = [
+				const { boardListId, ...args } = convertKeysToCamelCase(payload);
+				state[boardListId] = [
 					{
 						...args,
 					},
-					...state[listId],
+					...state[boardListId],
 				];
 			},
 			removeTask(state, payload) {
-				const { listId, id } = payload;
-				state[listId] = [
-					...state[listId].filter((card) => card.id !== id),
+				const { boardListId, id } = convertKeysToCamelCase(payload);
+				state[boardListId] = [
+					...state[boardListId].filter((card) => card.id !== id),
 				];
 			},
 		},
