@@ -23,6 +23,7 @@
 <script>
 import { createNamespacedHelpers, mapActions } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
+import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import List from '../components/List.vue';
 import BoardContainer from '../components/BoardContainer.vue';
 import makeBoardStore from '../../../core/utils/makeBoardStore';
@@ -100,26 +101,26 @@ export default {
 			'updateCardsLists',
 		]),
 
-		getList(listId) {
-			return this[listId];
+		getList(boardListId) {
+			return this[boardListId];
 		},
 
-		handleAdd({ listId, title }) {
-			this.createCard({ listId, title }).then((data) => {
+		handleAdd({ boardListId, title }) {
+			this.createCard(convertKeysToSnakeCase({ boardListId, title })).then((data) => {
 				this.addNewTask({ ...data });
 			});
 		},
 
-		handleDelete({ listId, id }) {
+		handleDelete({ boardListId, id }) {
 			this.deleteCard(id).then(() => {
-				this.removeTask({ listId, id });
+				this.removeTask({ boardListId, id });
 			});
 		},
 
 		// Chamada para atualizar as posições no backend
-		handleChange(listId) {
+		handleChange(boardListId) {
 			this.updateCards(
-					this[listId].map((item, position) => ({
+					this[boardListId].map((item, position) => ({
 					id: item.id,
 					position,
 				}))
