@@ -1,8 +1,9 @@
 import makeRequestStore from '../../../core/utils/makeRequestStore';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
 	getLabels
-} from '../services';
+} from '../services/labels';
 
 const modules = [
 	{ getLabels },
@@ -21,7 +22,7 @@ export default {
 	},
 	mutations: {
 		setItems(state, payload) {
-			state.items = payload;
+			state.items = convertKeysToCamelCase(payload);
 		},
 	},
 }

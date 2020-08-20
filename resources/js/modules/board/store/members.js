@@ -2,7 +2,7 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 
 import {
 	getMembers
-} from '../services';
+} from '../services/members';
 
 const modules = [
 	{ getMembers },
