@@ -46,7 +46,8 @@ class CardController extends Controller
         $cards = Card::where('team_id', $team->id)
             ->where('is_user_story', true)
             ->get()
-            ->sortBy('position');
+            ->sortBy('position')
+            ->all();
 
         return $cards;
     }
