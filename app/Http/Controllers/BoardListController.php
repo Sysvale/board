@@ -26,7 +26,7 @@ class BoardListController extends Controller
             BoardListsKeys::BUGS,
             BoardListsKeys::DEVLOG,
             BoardListsKeys::BACKLOG,
-            BoardListsKeys::SPRINT_BACKLOG,
+            BoardListsKeys::SPRINT,
         ];
         return BoardList::whereIn('key', $planningLists)->get();
     }
