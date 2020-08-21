@@ -4,7 +4,6 @@
 	>
 		<v-tabs
 			grow
-			background-color="transparent"
 		>
 			<v-tab
 				v-for="team in teams"
