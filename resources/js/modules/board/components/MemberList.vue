@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="members.length > 0"
+		v-if="members && members.length > 0"
 		class="d-flex"
 	>
 		<div
