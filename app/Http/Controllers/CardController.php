@@ -7,7 +7,6 @@ use App\Models\BoardList;
 use App\Models\Card;
 use App\Models\Team;
 use Illuminate\Http\Request;
-use stdClass;
 
 class CardController extends Controller
 {
