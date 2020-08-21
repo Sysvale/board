@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="labels.length > 0"
+		v-if="labels && labels.length > 0"
 		class="d-flex"
 	>
 		<v-chip
