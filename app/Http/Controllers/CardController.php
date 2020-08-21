@@ -44,7 +44,10 @@ class CardController extends Controller
             'link' => $in->link,
             'labels' => $in->labels,
             'members' => $in->members,
+            'estimated' => $in->estimated,
         ];
+
+        $params = array_filter($params);
 
         $card = Card::where('_id', $id)->update($params);
 
