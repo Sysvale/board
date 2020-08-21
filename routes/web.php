@@ -24,6 +24,7 @@ Route::post('/update-cards-positions', 'CardController@updateCardsPositions');
 Route::resource('labels', 'LabelController')->only(['index']);
 Route::resource('members', 'MemberController')->only(['index']);
 Route::resource('teams', 'TeamController')->only(['index']);
+Route::resource('boards', 'BoardController')->only(['index']);
 
 Route::middleware('auth')->group(function() {
 

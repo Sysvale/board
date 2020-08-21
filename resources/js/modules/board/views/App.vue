@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex';
+
 export default {
 	created() {
 		this.getMembers().then((data) => {
@@ -45,6 +46,9 @@ export default {
 		});
 		this.getTeams().then((data) => {
 			this.setTeams(data);
+		});
+		this.getBoards().then((data) => {
+			this.setBoards(data);
 		});
 	},
 	computed: {
@@ -57,11 +61,15 @@ export default {
 		...mapState('teams', {
 			loadingTeams: ({ getTeams }) => getTeams.isFetching,
 		}),
+		...mapState('boards', {
+			loadingBoards: ({ getBoards }) => getBoards.isFetching,
+		}),
 
 		loading() {
 			return this.loadingMembers
 				|| this.loadingLabels
-				|| this.loadingTeams;
+				|| this.loadingTeams
+				|| this.loadingBoards;
 		},
 	},
 	watch: {
@@ -83,6 +91,9 @@ export default {
 		...mapActions('teams', [
 			'getTeams',
 		]),
+		...mapActions('boards', [
+			'getBoards',
+		]),
 		...mapMutations('members', {
 			setMembers: 'setItems',
 		}),
@@ -91,6 +102,9 @@ export default {
 		}),
 		...mapMutations('teams', {
 			setTeams: 'setItems',
+		}),
+		...mapMutations('boards', {
+			setBoards: 'setItems',
 		}),
 	}
 }

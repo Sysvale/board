@@ -7,6 +7,7 @@ import cards from './cards';
 import members from './members';
 import labels from './labels';
 import teams from './teams';
+import boards from './boards';
 
 export default new Vuex.Store({
 	namespaced: true,
@@ -15,5 +16,6 @@ export default new Vuex.Store({
 		members,
 		labels,
 		teams,
+		boards,
 	}
 });
