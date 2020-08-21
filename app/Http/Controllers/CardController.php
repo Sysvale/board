@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\BoardListsKeys;
+use App\Models\BoardList;
 use App\Models\Card;
 use Illuminate\Http\Request;
 use stdClass;
@@ -54,9 +55,18 @@ class CardController extends Controller
             'acceptance_criteria' => $in->acceptance_criteria,
         ];
 
-        $card = Card::where('_id', $id)->update($params);
+        $list_key = BoardList::where('_id', $in->board_list_id)->first()->key;
 
-        return $card;
+        if ($this->isListAnUserStoryHolder($list_key)) {
+            $params['is_user_story'] = true;
+        } else {
+            $params['is_user_story'] = false;
+        }
+
+        $card = Card::where('_id', $id);
+        $card->update($params);
+
+        return $card->first();
     }
 
     public function updateCardsPositions(Request $in)
