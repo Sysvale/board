@@ -41,13 +41,14 @@ class CardController extends Controller
     public function update(Request $in, $id)
     {
         $params = [
+            'title' => $in->title,
             'link' => $in->link,
             'labels' => $in->labels,
             'members' => $in->members,
             'estimated' => $in->estimated,
+            'team_id' => $in->team_id,
+            'acceptance_criteria' => $in->acceptance_criteria,
         ];
-
-        $params = array_filter($params);
 
         $card = Card::where('_id', $id)->update($params);
 
