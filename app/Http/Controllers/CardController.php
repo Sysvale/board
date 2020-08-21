@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\BoardKeys;
 use App\Constants\BoardListsKeys;
+use App\Models\Board;
 use App\Models\BoardList;
 use App\Models\Card;
 use App\Models\Team;
@@ -47,9 +49,22 @@ class CardController extends Controller
             ->where('is_user_story', true)
             ->get()
             ->sortBy('position')
-            ->all();
+            ->values();
 
         return $cards;
+    }
+
+    public function getImpedimentsByTeam(Team $team)
+    {
+        $impediments = Card::where('team_id', $team->id)
+            ->where(
+                'board_id',
+                Board::where('key', BoardKeys::IMPEDIMENTS)->first()->id
+            )->get()
+            ->sortByDesc('created_at')
+            ->values();
+
+        return $impediments;
     }
 
     public function store(Request $in)
@@ -58,11 +73,12 @@ class CardController extends Controller
             'board_list_id' => $in->board_list_id,
             'title' => $in->title,
             'user_story_id' => $in->user_story_id,
+            'members' => $in->members,
             'team_id' => $in->team_id,
             'board_id' => $in->board_id,
         ]);
 
-        if ($this->isListAnUserStoryHolder($card->boardList->key)) {
+        if ($card->boardList && $this->isListAnUserStoryHolder($card->boardList->key)) {
             $card->is_user_story = true;
             $card->save();
         }

@@ -17,6 +17,7 @@ Route::get('/default-lists', 'BoardListController@getDefaultLists');
 Route::get('/planning-lists', 'BoardListController@getPlanningLists');
 
 Route::resource('cards', 'CardController')->only(['store', 'update', 'destroy']);
+Route::get('/cards/impediments/{team}', 'CardController@getImpedimentsByTeam');
 Route::get('/get-cards-by-lists-ids', 'CardController@getCardsByListsIds');
 Route::get('/user-stories/{team}', 'CardController@getUserStoriesByTeam');
 Route::post('/update-cards-positions', 'CardController@updateCardsPositions');

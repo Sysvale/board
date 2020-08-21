@@ -18,7 +18,7 @@
 				>
 					<template v-slot:activator="{}">
 						<div
-							class="d-flex flex-grow-1 justify-end"
+							class="d-flex flex-grow-1 justify-end mb-3"
 						>
 							<v-btn
 								color="primary"
@@ -109,16 +109,18 @@
 	</v-container>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers, mapActions, mapState } from 'vuex';
 import MemberList from './MemberList';
 import MemberSelect from './MemberSelect';
 
 import {
 	getImpedimentsByTeam,
-	createImpediment,
-	deleteImpediment,
-} from '../services/impediments';
+} from '../services/cards';
+
 import makeRequestStore from '../../../core/utils/makeRequestStore';
+import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
+import { IMPEDIMENTS } from '../constants/BoardKeys';
 
 export default {
 	components: {
@@ -132,8 +134,6 @@ export default {
 		if(teamId) {
 			const modules = [
 				{ getImpedimentsByTeam },
-				{ createImpediment },
-				{ deleteImpediment },
 			];
 
 			let namespace = `impediments-${teamId}`;
@@ -151,16 +151,16 @@ export default {
 				},
 				mutations: {
 					setItems(state, payload) {
-						state.items = payload;
+						state.items = convertKeysToCamelCase(payload);
 					},
 					addItem(state, payload) {
 						state.items = [
-							payload,
+							convertKeysToCamelCase(payload),
 							...state.items,
 						];
 					},
-					removeItem(state, payload) {
-						state.items = state.items.filter(({ id }) => id !== payload.id);
+					removeItem(state, id) {
+						state.items = state.items.filter(item => item.id !== id);
 					},
 				},
 			});
@@ -174,8 +174,6 @@ export default {
 				...mapState({
 					items: 'items',
 					isFetching: ({ getImpedimentsByTeam }) => getImpedimentsByTeam.isFetching,
-					isCreating: ({ createImpediment }) => createImpediment.isFetching,
-					isRemoving: ({ deleteImpediment }) => deleteImpediment.isFetching,
 				}),
 				...this.$options.computed,
 			};
@@ -232,31 +230,52 @@ export default {
 	},
 
 	created() {
-		this.getImpedimentsByTeam().then((data) => {
-			this.setItems(data);
-		});
+		this.getImpedimentsByTeam(this.teamId)
+			.then((data) => {
+				this.setItems(data);
+			});
 	},
 
 	computed: {
+		...mapState('cards', {
+			isCreating: ({ createCard }) => createCard.isFetching,
+			isRemoving: ({ deleteCard }) => deleteCard.isFetching,
+		}),
+
+		...mapState('boards', {
+			boards: 'items',
+		}),
+
 		loading() {
 			return this.isCreating || this.isRemoving;
-		}
+		},
+
+		boardId() {
+			return this.boards.filter(item => item.key === IMPEDIMENTS )[0].id;
+		},
 	},
 
 	methods: {
+		...mapActions('cards', [
+			'createCard',
+			'deleteCard',
+		]),
+
 		handleAdd() {
-			this.createImpediment({
-				...this.newItem, teamId: this.teamId
-			}).then((data) => {
+			this.createCard(convertKeysToSnakeCase({
+				...this.newItem,
+				teamId: this.teamId,
+				boardId: this.boardId,
+			})).then((data) => {
 				this.addItem(data);
 				this.createMode = false;
 				this.newItem = {};
 			});
 		},
 
-		handleRemove(item) {
-			this.deleteImpediment(item).then((data) => {
-				this.removeItem(data);
+		handleRemove({ id }) {
+			this.deleteCard(id).then(() => {
+				this.removeItem(id);
 			});
 		},
 	},
