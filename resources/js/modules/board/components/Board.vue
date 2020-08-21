@@ -11,6 +11,7 @@
 			:namespace="namespace"
 			:lists="lists"
 			:cards="cards"
+			:card-middleware="cardMiddleware"
 		/>
 	</v-container>
 </template>
@@ -35,12 +36,16 @@ export default {
 			default: null,
 		},
 		getLists: {
-			props: [Object, Function],
+			type: [Object, Function],
 			default: null,
 		},
 		getCards: {
-			props: [Object, Function],
+			type: [Object, Function],
 			default: null,
+		},
+		cardMiddleware: {
+			type: Object,
+			default: () => {},
 		},
 	},
 

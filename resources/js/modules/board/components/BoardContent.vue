@@ -48,6 +48,10 @@ export default {
 			type: Object,
 			default: () => {},
 		},
+		cardMiddleware: {
+			type: Object,
+			default: () => {},
+		},
 	},
 
 	beforeCreate() {
@@ -108,7 +112,11 @@ export default {
 		},
 
 		handleAdd({ boardListId, title }) {
-			this.createCard(convertKeysToSnakeCase({ boardListId, title })).then((data) => {
+			this.createCard(convertKeysToSnakeCase({
+				boardListId,
+				title,
+				...this.cardMiddleware,
+			})).then((data) => {
 				this.addNewTask({ ...data });
 				this.updateCardsPositions(
 						this[boardListId].map((item, position) => ({
