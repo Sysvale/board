@@ -73,18 +73,18 @@ class CardController extends Controller
     public function update(Request $in, $id)
     {
         $params = [
-            'board_list_id' => $in->board_list_id ?? $in->board_list->id,
+            'board_list_id' => $in->board_list_id ?? $in->board_list['id'],
             'title' => $in->title,
             'link' => $in->link,
             'labels' => $in->labels,
             'members' => $in->members,
             'estimated' => $in->estimated,
-            'team_id' => $in->team_id ?? $in->team->id,
+            'team_id' => $in->team_id ?? $in->team['id'],
             'acceptance_criteria' => $in->acceptance_criteria,
-            'board_id' => $in->board_id ?? $in->board->id,
+            'board_id' => $in->board_id ?? $in->board['id'],
         ];
 
-        $list_key = BoardList::where('_id', $in->board_list_id)->first()->key;
+        $list_key = BoardList::where('_id', $params['board_list_id'])->first()->key;
 
         if ($this->isListAnUserStoryHolder($list_key)) {
             $params['is_user_story'] = true;
