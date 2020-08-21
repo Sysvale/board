@@ -16,7 +16,10 @@ class CardController extends Controller
         $payload = array();
         collect($in->lists_ids)->each(
             function ($item) use (&$payload, &$cards) {
-                $payload[$item] = $cards->where('board_list_id', $item)->values();
+                $payload[$item] = $cards
+                    ->where('board_list_id', $item)
+                    ->sortBy('position')
+                    ->values();
             }
         );
 
@@ -53,6 +56,20 @@ class CardController extends Controller
         $card = Card::where('_id', $id)->update($params);
 
         return $card;
+    }
+
+    public function updateCardsPositions(Request $in)
+    {
+        $requestCards = collect($in->cards);
+
+        $result = $requestCards
+            ->each(function ($requestCard) {
+                $card = Card::where('_id', $requestCard['id'])->first();
+                $card->position = $requestCard['position'];
+                $card->save();
+            });
+
+        return $result;
     }
 
     public function destroy($id)

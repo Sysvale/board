@@ -15,6 +15,7 @@ class Card extends Model
         'team_id',
         'title',
         'link',
+        'position',
     ];
     protected $appends = ['id'];
     protected $hidden = ['_id'];

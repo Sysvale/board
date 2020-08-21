@@ -11,12 +11,7 @@ export const updateCard = ({ id, ...params }) => http.put(`/cards/${id}`, params
 export const deleteCard = (id) => http.delete(`/cards/${id}`);
 
 // Update card and his positions
-export const updateCards = (cards = []) => new Promise((resolve, reject) => {
-	setTimeout(() => {
-		console.log('updateCards', '(positions updated)');
-		resolve(cards);
-	}, 1000);
-});
+export const updateCardsPositions = (cards = []) => http.post('/update-cards-positions', { cards });
 
 // Update card and his positions when is a list change
 export const updateCardsLists = ({ listOne, listTwo }) => new Promise((resolve, reject) => {

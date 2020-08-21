@@ -97,7 +97,7 @@ export default {
 		...mapActions('cards', [
 			'deleteCard',
 			'createCard',
-			'updateCards',
+			'updateCardsPositions',
 			'updateCardsLists',
 		]),
 
@@ -108,6 +108,12 @@ export default {
 		handleAdd({ boardListId, title }) {
 			this.createCard(convertKeysToSnakeCase({ boardListId, title })).then((data) => {
 				this.addNewTask({ ...data });
+				this.updateCardsPositions(
+						this[boardListId].map((item, position) => ({
+						id: item.id,
+						position,
+					}))
+				);
 			});
 		},
 
@@ -119,7 +125,7 @@ export default {
 
 		// Chamada para atualizar as posições no backend
 		handleChange(boardListId) {
-			this.updateCards(
+			this.updateCardsPositions(
 					this[boardListId].map((item, position) => ({
 					id: item.id,
 					position,

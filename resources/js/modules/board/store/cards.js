@@ -4,7 +4,7 @@ import {
 	deleteCard,
 	createCard,
 	updateCard,
-	updateCards,
+	updateCardsPositions,
 	updateCardsLists,
 } from '../services/cards';
 
@@ -12,7 +12,7 @@ const modules = [
 	{ deleteCard },
 	{ createCard },
 	{ updateCard },
-	{ updateCards },
+	{ updateCardsPositions },
 	{ updateCardsLists },
 ];
 
