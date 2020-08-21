@@ -31,10 +31,12 @@
 						resolver: getCardsByListsIds,
 						params: {
 							teamId,
+							boardId: getBoardId(NOT_PLANNED),
 						}
 					}"
 					:card-middleware="{
 						teamId,
+						boardId: getBoardId(NOT_PLANNED),
 					}"
 				/>
 			</v-expansion-panel-content>
@@ -60,12 +62,17 @@
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-dev`"
-					:getLists="getSprintDevlogLists"
+					:getLists="getDefaultLists"
 					:getCards="{
-						resolver: getSprintDevlogTasksByTeam,
+						resolver: getCardsByListsIds,
 						params: {
 							teamId,
+							boardId: getBoardId(SPRINT_DEVLOG),
 						}
+					}"
+					:card-middleware="{
+						teamId,
+						boardId: getBoardId(SPRINT_DEVLOG),
 					}"
 				/>
 			</v-expansion-panel-content>
@@ -87,6 +94,12 @@ import {
 	getSprintDevlogTasksByTeam,
 	getNotPlannedTasksByTeam,
 } from '../services/sprint'
+import { mapState } from 'vuex';
+import {
+	NOT_PLANNED,
+	IMPEDIMENTS,
+	SPRINT_DEVLOG,
+} from '../constants/BoardKeys';
 
 export default {
 	components: {
@@ -107,7 +120,16 @@ export default {
 			panels: [
 				2
 			],
+			NOT_PLANNED,
+			IMPEDIMENTS,
+			SPRINT_DEVLOG,
 		};
+	},
+
+	computed: {
+		...mapState('boards', {
+			boards: 'items',
+		}),
 	},
 
 	methods: {
@@ -116,6 +138,10 @@ export default {
 		getSprintDevlogLists,
 		getSprintDevlogTasksByTeam,
 		getNotPlannedTasksByTeam,
+
+		getBoardId(key) {
+			return this.boards.filter(item => item.key === key)[0].id;
+		}
 	},
 }
 </script>
