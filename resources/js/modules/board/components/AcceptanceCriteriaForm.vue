@@ -78,7 +78,7 @@ export default {
 	methods: {
 		handleAdd() {
 			if(this.newCriteria === null || this.newCriteria.trim() === '' ) return;
-			this.$emit('input', [...this.value, this.newCriteria]);
+			this.$emit('input', [...(this.value || []), this.newCriteria]);
 			this.newCriteria = null;
 		},
 
