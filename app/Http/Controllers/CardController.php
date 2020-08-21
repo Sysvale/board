@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BoardList;
+use App\Constants\BoardListsKeys;
 use App\Models\Card;
 use Illuminate\Http\Request;
 use stdClass;
@@ -30,6 +30,11 @@ class CardController extends Controller
             'title' => $in->title
         ]);
 
+        if ($this->isListAnUserStoryHolder($card->boardList->key)) {
+            $card->isUserStory = true;
+            $card->save();
+        }
+
         return $card;
     }
 
@@ -51,5 +56,16 @@ class CardController extends Controller
         $card = Card::where('_id', $id)
             ->delete();
         return $card;
+    }
+
+    private function isListAnUserStoryHolder($key)
+    {
+        return in_array(
+            $key,
+            [
+                BoardListsKeys::SPRINT_BACKLOG,
+                BoardListsKeys::BACKLOG
+            ]
+        );
     }
 }
