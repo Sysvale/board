@@ -44,6 +44,7 @@ class CardController extends Controller
     public function update(Request $in, $id)
     {
         $params = [
+            'board_list_id' => $in->board_list_id,
             'title' => $in->title,
             'link' => $in->link,
             'labels' => $in->labels,

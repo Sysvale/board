@@ -97,6 +97,7 @@ export default {
 		...mapActions('cards', [
 			'deleteCard',
 			'createCard',
+			'updateCard',
 			'updateCardsPositions',
 			'updateCardsLists',
 		]),
@@ -134,6 +135,7 @@ export default {
 		},
 
 		moveCallback(ev) {
+			const element = ev.draggedContext.element;
 			const fromSizeBefore = this[ev.from.id].length + 0; // force var to lose the reference
 			const toSizeBefore = this[ev.to.id].length + 0;
 			if(ev.from !== ev.to) {
@@ -143,12 +145,27 @@ export default {
 						fromSizeBefore != this[ev.from.id].length
 						&& toSizeBefore != this[ev.to.id].length
 					) {
-						this.updateCardsLists({
-							listOne: this[ev.from.id].map(({ id }, i) => ({ id, position: i })),
-							listTwo: this[ev.to.id].map(({ id }, i) => ({ id, position: i })),
+						this.updateCard(
+							convertKeysToSnakeCase({
+								...element,
+								boardListId: ev.to.id,
+							})
+						).then(() => {
+							this.updateCardsPositions(
+									this[ev.from.id].map((item, position) => ({
+									id: item.id,
+									position,
+								}))
+							);
+							this.updateCardsPositions(
+									this[ev.to.id].map((item, position) => ({
+									id: item.id,
+									position,
+								}))
+							);
 						});
 					}
-				}, 1000);
+				}, 500);
 			}
 		}
 	}
