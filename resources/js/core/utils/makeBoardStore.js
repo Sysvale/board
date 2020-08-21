@@ -59,6 +59,17 @@ export default (lists, modules = []) => {
 					state[key] = convertKeysToCamelCase(payload[key]);
 				})
 			},
+			setCard(state, payload) {
+				const convertedPayload = convertKeysToCamelCase(payload);
+				const { id, boardListId } = convertedPayload;
+				let xItems = _.clone(state[boardListId]);
+				xItems.forEach((item, i) => {
+					if(item.id === id) {
+						xItems[i] = {...convertedPayload};
+					}
+				});
+				state[boardListId] = xItems;
+			},
 			...generateMutations(lists),
 			addNewTask(state, payload) {
 				const { boardListId, ...args } = convertKeysToCamelCase(payload);
