@@ -35,6 +35,7 @@
 							<v-divider/>
 						</div>
 						<v-expansion-panels
+							v-if="story.acceptanceCriteria && story.acceptanceCriteria.length > 0"
 							flat
 						>
 							<v-expansion-panel
@@ -71,10 +72,13 @@
 						:namespace="story.id"
 						:getLists="getDefaultLists"
 						:getCards="{
-							resolver: getUserStoriesTasks,
+							resolver: getCardsByListsIds,
 							params: {
 								userStoryId: story.id,
 							}
+						}"
+						:card-middleware="{
+							userStoryId: story.id,
 						}"
 					/>
 				</div>
@@ -89,6 +93,7 @@
 <script>
 import { createNamespacedHelpers } from 'vuex';
 import makeRequestStore from '../../../core/utils/makeRequestStore';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import Board from '../components/Board.vue';
 import BoardContainer from '../components/BoardContainer.vue';
@@ -100,8 +105,11 @@ import {
 
 import {
 	getUserStoriesByTeam,
-	getUserStoriesTasks,
 } from '../services/userStories';
+
+import {
+	getCardsByListsIds,
+} from '../services/cards';
 
 export default {
 	components: {
@@ -133,7 +141,7 @@ export default {
 				},
 				mutations: {
 					setItems(state, payload) {
-						state.items = payload;
+						state.items = convertKeysToCamelCase(payload);
 					},
 				},
 			});
@@ -177,7 +185,7 @@ export default {
 
 	methods: {
 		getDefaultLists,
-		getUserStoriesTasks,
+		getCardsByListsIds,
 	}
 }
 </script>
