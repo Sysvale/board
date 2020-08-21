@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constants\BoardListsKeys;
 use App\Models\BoardList;
 use App\Models\Card;
+use App\Models\Team;
 use Illuminate\Http\Request;
 use stdClass;
 
@@ -12,8 +13,18 @@ class CardController extends Controller
 {
     public function getCardsByListsIds(Request $in)
     {
-        $cards = Card::whereIn('board_list_id', $in->lists_ids)
-            ->get();
+        $query = Card::whereIn('board_list_id', $in->lists_ids);
+
+        if ($in->user_story_id) {
+            $query = $query->where('user_story_id', $in->user_story_id);
+        }
+
+        if ($in->team_id) {
+            $query = $query->where('team_id', $in->team_id);
+        }
+
+        $cards = $query->get();
+
         $payload = array();
         collect($in->lists_ids)->each(
             function ($item) use (&$payload, &$cards) {
@@ -27,11 +38,23 @@ class CardController extends Controller
         return $payload;
     }
 
+    public function getUserStoriesByTeam(Team $team)
+    {
+        $cards = Card::where('team_id', $team->id)
+            ->where('is_user_story', true)
+            ->get()
+            ->sortBy('position');
+
+        return $cards;
+    }
+
     public function store(Request $in)
     {
         $card = Card::create([
             'board_list_id' => $in->board_list_id,
-            'title' => $in->title
+            'title' => $in->title,
+            'user_story_id' => $in->user_story_id,
+            'team_id' => $in->team_id,
         ]);
 
         if ($this->isListAnUserStoryHolder($card->boardList->key)) {

@@ -13,6 +13,7 @@ class Card extends Model
     protected $fillable = [
         'board_list_id',
         'team_id',
+        'user_story_id',
         'title',
         'link',
         'position',
@@ -28,5 +29,10 @@ class Card extends Model
     public function team()
     {
         return $this->belongsTo('App\Models\Team');
+    }
+
+    public function userStory()
+    {
+        return $this->belongsTo('App\Models\Card');
     }
 }
