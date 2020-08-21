@@ -28,10 +28,13 @@
 					:namespace="`${teamId}-notPlanned`"
 					:getLists="getDefaultLists"
 					:getCards="{
-						resolver: getNotPlannedTasksByTeam,
+						resolver: getCardsByListsIds,
 						params: {
 							teamId,
 						}
+					}"
+					:card-middleware="{
+						teamId,
 					}"
 				/>
 			</v-expansion-panel-content>
@@ -76,7 +79,7 @@ import Board from './Board.vue';
 import ImpedimentTable from './ImpedimentTable.vue';
 import {
 	getCardsByListsIds,
-} from '../services'
+} from '../services/cards';
 
 import {
 	getDefaultLists,
