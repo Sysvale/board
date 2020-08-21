@@ -21,6 +21,7 @@ Route::get('/get-cards-by-lists-ids', 'CardController@getCardsByListsIds');
 
 Route::resource('labels', 'LabelController')->only(['index']);
 Route::resource('members', 'MemberController')->only(['index']);
+Route::resource('teams', 'TeamController')->only(['index']);
 
 Route::middleware('auth')->group(function() {
 
