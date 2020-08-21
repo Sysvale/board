@@ -15,6 +15,10 @@ class CardController extends Controller
     {
         $query = Card::whereIn('board_list_id', $in->lists_ids);
 
+        if ($in->board_id) {
+            $query = $query->where('board_id', $in->board_id);
+        }
+
         if ($in->user_story_id) {
             $query = $query->where('user_story_id', $in->user_story_id);
         }
@@ -55,10 +59,11 @@ class CardController extends Controller
             'title' => $in->title,
             'user_story_id' => $in->user_story_id,
             'team_id' => $in->team_id,
+            'board_id' => $in->board_id,
         ]);
 
         if ($this->isListAnUserStoryHolder($card->boardList->key)) {
-            $card->isUserStory = true;
+            $card->is_user_story = true;
             $card->save();
         }
 
@@ -68,7 +73,7 @@ class CardController extends Controller
     public function update(Request $in, $id)
     {
         $params = [
-            'board_list_id' => $in->board_list_id,
+            'board_list_id' => $in->board_list_id ?? $in->board_list->id,
             'title' => $in->title,
             'link' => $in->link,
             'labels' => $in->labels,
@@ -76,6 +81,7 @@ class CardController extends Controller
             'estimated' => $in->estimated,
             'team_id' => $in->team_id,
             'acceptance_criteria' => $in->acceptance_criteria,
+            'board_id' => $in->board_id,
         ];
 
         $list_key = BoardList::where('_id', $in->board_list_id)->first()->key;
@@ -89,7 +95,7 @@ class CardController extends Controller
         $card = Card::where('_id', $id);
         $card->update($params);
 
-        return $card->first();
+        return $card->get()->first();
     }
 
     public function updateCardsPositions(Request $in)
@@ -118,7 +124,7 @@ class CardController extends Controller
         return in_array(
             $key,
             [
-                BoardListsKeys::SPRINT_BACKLOG,
+                BoardListsKeys::SPRINT,
                 BoardListsKeys::BACKLOG
             ]
         );
