@@ -86,6 +86,7 @@ export default {
 					'addNewTask',
 					'removeTask',
 					'setCards',
+					'setCard',
 				]),
 				...this.$options.methods,
 			};
@@ -150,7 +151,8 @@ export default {
 								...element,
 								boardListId: ev.to.id,
 							})
-						).then(() => {
+						).then((data) => {
+							this.setCard(data);
 							this.updateCardsPositions(
 									this[ev.from.id].map((item, position) => ({
 									id: item.id,
