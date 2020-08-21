@@ -13,13 +13,14 @@ class Card extends Model
     protected $fillable = [
         'board_list_id',
         'team_id',
+        'board_id',
         'user_story_id',
         'title',
         'link',
         'position',
     ];
     protected $appends = ['id'];
-    protected $hidden = ['_id'];
+    protected $hidden = ['_id', 'board_list']; //esse segundo n sei como parar de mandar a parada kkk
 
     public function boardList()
     {
@@ -34,5 +35,10 @@ class Card extends Model
     public function userStory()
     {
         return $this->belongsTo('App\Models\Card');
+    }
+
+    public function board()
+    {
+        return $this->belongsTo('App\Models\Board');
     }
 }
