@@ -7,7 +7,7 @@
 			:key="story.id"
 		>
 			<div class="d-flex">
-				<div class="mr-3 mt-4">
+				<div class="mr-1">
 					<v-card
 						class="task-card px-3 py-3"
 						outlined
@@ -65,12 +65,10 @@
 						</v-expansion-panels>
 					</v-card>
 				</div>
-				<div class="mr-3">
-					<v-divider
-						vertical
-					/>
-				</div>
-				<div id="board-outside-wrapper">
+				<div
+					id="board-outside-wrapper"
+					class="ml-2"
+				>
 					<board
 						:namespace="story.id"
 						:getLists="getDefaultLists"

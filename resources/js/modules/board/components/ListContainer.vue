@@ -1,7 +1,7 @@
 <template>
 	<v-container
 		fluid
-		class="list-container mx-2"
+		class="list-container mr-1 ml-1"
 	>
 		<v-card
 			class="px-2 py-2"

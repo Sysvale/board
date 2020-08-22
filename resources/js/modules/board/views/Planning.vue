@@ -1,7 +1,7 @@
 <template>
 	<v-container
 		fluid
-		class="px-0 py-0"
+		class="px-2 py-5"
 	>
 		<board
 			namespace="planning"

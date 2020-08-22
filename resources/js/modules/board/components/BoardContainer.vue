@@ -2,7 +2,7 @@
 	<v-container
 		id="board"
 		fluid
-		class="px-0 py-5"
+		class="px-0 pb-5 pt-0"
 	>
 		<slot/>
 	</v-container>
