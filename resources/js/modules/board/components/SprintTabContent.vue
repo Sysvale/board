@@ -10,7 +10,12 @@
 			:key="`impediment-${teamId}`"
 		>
 			<v-expansion-panel-header>
-				<h3>Impedimentos</h3>
+				<div class="d-flex align-center">
+					<v-icon class="mr-2">
+						block
+					</v-icon>
+					<h3 class="mb-0">Impedimentos</h3>
+				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
 				<impediment-table
@@ -22,7 +27,12 @@
 			:key="`notPlanned-${teamId}`"
 		>
 			<v-expansion-panel-header>
-				<h3>Não planejados</h3>
+				<div class="d-flex align-center">
+					<v-icon class="mr-2">
+						local_fire_department
+					</v-icon>
+					<h3 class="mb-0">Não planejados</h3>
+				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
 				<board
@@ -46,7 +56,12 @@
 			:key="`userStories-${teamId}`"
 		>
 			<v-expansion-panel-header>
-				<h3>Sprint Backlog</h3>
+				<div class="d-flex align-center">
+					<v-icon class="mr-2">
+						settings_backup_restore
+					</v-icon>
+					<h3 class="mb-0">Sprint Backlog</h3>
+				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
 				<user-stories-board
@@ -58,7 +73,12 @@
 			:key="`sprintDevlog-${teamId}`"
 		>
 			<v-expansion-panel-header>
-				<h3>Sprint Devlog</h3>
+				<div class="d-flex align-center">
+					<v-icon class="mr-2">
+						code
+					</v-icon>
+					<h3 class="mb-0">Sprint Devlog</h3>
+				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
 				<board
