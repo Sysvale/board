@@ -4,13 +4,11 @@
 		class="d-flex"
 	>
 		<div
-			v-for="(member, i) in computedMembers"
+			v-for="(member, i) in slicedMembers"
 			:key="member.id"
 			class="member-item"
-			:text-color="member.textColor || 'black'"
-			size="28"
 			:class="{'ml-1': i > 0}"
-			:title="member.name"
+			:title="member.title || member.name"
 		>
 			<small>
 				<strong>{{ getFirstLetters(member.name) }}</strong>
@@ -35,11 +33,32 @@ export default {
 		computedMembers() {
 			return this.rawMembers.filter(item => _.includes(this.members, item.id));
 		},
+		slicedMembers() {
+			const { length } = this.computedMembers;
+			if(length > 4) {
+				const remain = _.slice(this.computedMembers, 4, length);
+				if (remain.length === 1) return this.computedMembers;
+				let title = '';
+				remain.map(({ name }) => name)
+					.forEach((name, i) => {
+						title += `${name}${ i !== remain.length - 1 ? ', ' : ''}`
+					});
+				return [
+					..._.slice(this.computedMembers, 0, 4),
+					{
+						id: 'anyId',
+						name: `+${remain.length}`,
+						title,
+					},
+				];
+			}
+			return this.computedMembers;
+		}
 	},
 
 	methods: {
 		getFirstLetters(name) {
-			const computed = name[0] + name.split(' ')[1][0] || name[1];
+			const computed = name[0] + ((name.split(' ')[1] ? name.split(' ')[1][0] : false) || name[1]);
 			return computed.toUpperCase();
 		},
 	}
