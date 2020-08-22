@@ -4,6 +4,7 @@
 		flat
 		multiple
 		tile
+		class="px-2"
 	>
 		<v-expansion-panel
 			:key="`impediment-${teamId}`"
