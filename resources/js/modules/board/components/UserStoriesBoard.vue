@@ -6,14 +6,17 @@
 			v-for="story in userStories"
 			:key="story.id"
 		>
-			<v-layout>
+			<div class="d-flex">
 				<div class="mr-3 mt-4">
 					<v-card
 						class="task-card px-3 py-3"
 						outlined
 						flat
 					>
-						<div class="py-3 text-right">
+						<div
+							v-if="story.estimated"
+							class="py-3 text-right"
+						>
 							<v-chip
 								color="gray"
 								text-color="black"
@@ -67,7 +70,7 @@
 						vertical
 					/>
 				</div>
-				<div>
+				<div id="board-outside-wrapper">
 					<board
 						:namespace="story.id"
 						:getLists="getDefaultLists"
@@ -82,7 +85,7 @@
 						}"
 					/>
 				</div>
-			</v-layout>
+			</div>
 			<div class="py-5">
 				<v-divider/>
 			</div>
@@ -192,5 +195,20 @@ export default {
 <style scoped>
 .v-expansion-panel-content__wrap {
 	padding: 0!important;
+}
+#board-outside-wrapper {
+	overflow-x: scroll;
+	max-width: 100%;
+}
+/* width */
+#board-outside-wrapper::-webkit-scrollbar {
+	width: 0px;
+	height: 0px;
+	border-radius: 50px;
+}
+
+/* Track */
+#board-outside-wrapper::-webkit-scrollbar-track {
+	background: transparent;
 }
 </style>
