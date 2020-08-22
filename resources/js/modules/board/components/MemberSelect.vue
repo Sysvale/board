@@ -10,6 +10,7 @@
 		return
 		item-text="name"
 		item-value="id"
+		hide-details
 		@input="$emit('input', $event)"
 	/>
 </template>

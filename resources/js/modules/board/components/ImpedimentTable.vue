@@ -1,6 +1,7 @@
 <template>
 	<v-container
 		fluid
+		class="px-0 py-0"
 	>
 		<v-fade-transition
 			hide-on-leave
@@ -12,72 +13,12 @@
 			<div
 				v-else
 			>
-				<v-dialog
-					v-model="createMode"
-					width="500"
-				>
-					<template v-slot:activator="{}">
-						<div
-							class="d-flex flex-grow-1 justify-end mb-3"
-						>
-							<v-btn
-								color="primary"
-								:disabled="loading"
-								@click="createMode = true"
-							>
-								Novo impedimento
-							</v-btn>
-						</div>
-					</template>
-					<v-card
-						class="px-2 py-2"
-					>
-						<v-card-title>
-							Novo impedimento
-						</v-card-title>
-						<v-img
-							src="https://2.bp.blogspot.com/-3QrUHMBUoAI/U_Z-kO9ONoI/AAAAAAAAAPM/b2u8pHgaZ_8/s1600/Bandeirinha-se-viu-no-telao.gif"
-							width="258"
-							height="278"
-						/>
-						<v-card-text>
-							<div>
-								<v-text-field
-									v-model="newItem.title"
-									dense
-									outlined
-									autofocus
-									placeholder="Descrição do impedimento"
-								/>
-							</div>
-							<div>
-								<member-select
-									v-model="newItem.members"
-								/>
-							</div>
-						</v-card-text>
-						<v-card-actions>
-							<v-spacer/>
-							<v-btn
-								text
-								@click="createMode = false"
-							>
-								Cancelar
-							</v-btn>
-							<v-btn
-								color="primary"
-								@click="handleAdd"
-							>
-								Salvar
-							</v-btn>
-						</v-card-actions>
-					</v-card>
-				</v-dialog>
 				<v-data-table
 					:loading="loading"
 					:headers="headers"
 					:items="items"
-					:items-per-page="items.length"
+					hide-default-footer
+					class="impediments-table"
 				>
 					<template v-slot:item.members="{ item }">
 						<member-list
@@ -87,9 +28,9 @@
 
 					<template v-slot:item.actions="{ item }">
 						<v-btn
-							outlined
+							text
 							color="red"
-							small
+							x-small
 							:disabled="loading"
 							@click="handleRemove(item)"
 						>
@@ -97,11 +38,53 @@
 						</v-btn>
 					</template>
 
-					<template v-slot:footer="{}">
-						<v-divider
-							v-if="createMode"
-						/>
-						
+					<template v-slot:body.append="{ headers }">
+						<tr>
+							<td :colspan="headers.length" class="text-center py-2">
+								<v-btn
+									v-if="!createMode"
+									text
+									small
+									color="primary"
+									@click="createMode = true"
+								>
+									<v-icon class="mr-2">
+										add_circle_outline
+									</v-icon>
+									Novo impedimento
+								</v-btn>
+								<div
+									v-else
+									class="d-flex align-center"
+								>
+									<v-text-field
+										v-model="newItem.title"
+										dense
+										outlined
+										autofocus
+										placeholder="Descrição do impedimento"
+										hide-details
+										class="mr-2"
+									/>
+									<member-select
+										v-model="newItem.members"
+									/>
+									<v-btn
+										text
+										@click="createMode = false"
+									>
+										Cancelar
+									</v-btn>
+									<v-btn
+										color="primary"
+										outlined
+										@click="handleAdd"
+									>
+										Salvar
+									</v-btn>
+								</div>
+							</td>
+						</tr>
 					</template>
 				</v-data-table>
 			</div>
@@ -281,3 +264,8 @@ export default {
 	},
 }
 </script>
+<style scoped>
+.impediments-table {
+	border: thin solid rgba(0, 0, 0, .12);
+}
+</style>
