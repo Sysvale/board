@@ -35,18 +35,6 @@
 							v-if="isTask && item.labels && item.labels.length"
 							:labels="item.labels"
 						/>
-						<v-chip
-							v-else-if="item.teamId"
-							:text-color="'#fff'"
-							:color="'#333'"
-							class="ml-1"
-							:title="teams.filter(({ id }) => id === item.teamId)[0].name"
-							small
-						>
-							<small>
-								<strong>{{ teams.filter(({ id }) => id === item.teamId)[0].name }}</strong>
-							</small>
-						</v-chip>
 						<v-spacer
 							v-if="!isTask && item.estimated"
 						/>
@@ -79,6 +67,14 @@
 								:link="item.link"
 							/>
 						</div>
+					</div>
+					<div
+							v-else-if="item.teamId"
+							class="mt-2"
+					>
+						<team-chip
+							:team-id="item.teamId"
+						/>
 					</div>
 				</v-card>
 		</template>
@@ -228,6 +224,7 @@ import MemberSelect from './MemberSelect';
 import LabelSelect from './LabelSelect';
 import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
 import LinkChip from './LinkChip';
+import TeamChip from './TeamChip';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
@@ -238,6 +235,7 @@ export default {
 		LabelSelect,
 		AcceptanceCriteriaForm,
 		LinkChip,
+		TeamChip,
 	},
 
 	props: {
