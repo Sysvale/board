@@ -1,9 +1,11 @@
 <template>
 	<v-container
 		fluid
+		class="px-0 py-0"
 	>
 		<v-tabs
 			grow
+			background-color="transparent"
 		>
 			<v-tab
 				v-for="team in teams"
