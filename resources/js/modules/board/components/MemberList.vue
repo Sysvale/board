@@ -24,6 +24,10 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+		full: {
+			type: Boolean,
+			default: false,
+		}
 	},
 
 	computed: {
@@ -34,6 +38,9 @@ export default {
 			return this.rawMembers.filter(item => _.includes(this.members, item.id));
 		},
 		slicedMembers() {
+			if(this.full) {
+				return this.computedMembers;
+			}
 			const { length } = this.computedMembers;
 			if(length > 4) {
 				const remain = _.slice(this.computedMembers, 4, length);
