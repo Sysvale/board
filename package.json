@@ -30,6 +30,7 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "@mdi/font": "^5.5.55",
         "bootstrap": "^4.4.1",
         "bootstrap-vue": "^2.13.0",
         "moment": "^2.25.2",
