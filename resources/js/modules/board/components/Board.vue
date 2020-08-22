@@ -64,15 +64,17 @@ export default {
 			{ getLists: _.isFunction(getLists) ? getLists : getLists.resolver }
 		];
 
-		this.$store.registerModule(namespace, {
-			namespaced: true,
-			modules: {
-				...modules.reduce((acc, module) => ({
-					...acc,
-					...makeRequestStore(module),
-				}), {}),
-			},
-		});
+		if(!this.$store.hasModule(namespace)) {
+			this.$store.registerModule(namespace, {
+				namespaced: true,
+				modules: {
+					...modules.reduce((acc, module) => ({
+						...acc,
+						...makeRequestStore(module),
+					}), {}),
+				},
+			});
+		}
 
 		const {
 			mapActions,

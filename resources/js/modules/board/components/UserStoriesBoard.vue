@@ -129,23 +129,26 @@ export default {
 
 			let namespace = `userStories-${teamId}`;
 
-			this.$store.registerModule(namespace, {
-				namespaced: true,
-				modules: {
-					...modules.reduce((acc, module) => ({
-						...acc,
-						...makeRequestStore(module),
-					}), {}),
-				},
-				state: {
-					items: [],
-				},
-				mutations: {
-					setItems(state, payload) {
-						state.items = convertKeysToCamelCase(payload);
+			if(!this.$store.hasModule(namespace)) {
+				this.$store.registerModule(namespace, {
+					namespaced: true,
+					modules: {
+						...modules.reduce((acc, module) => ({
+							...acc,
+							...makeRequestStore(module),
+						}), {}),
 					},
-				},
-			});
+					state: {
+						items: [],
+					},
+					mutations: {
+						setItems(state, payload) {
+							state.items = convertKeysToCamelCase(payload);
+						},
+					},
+				});
+			}
+
 			const {
 				mapActions,
 				mapMutations,

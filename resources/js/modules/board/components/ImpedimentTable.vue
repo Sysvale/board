@@ -121,32 +121,34 @@ export default {
 
 			let namespace = `impediments-${teamId}`;
 
-			this.$store.registerModule(namespace, {
-				namespaced: true,
-				modules: {
-					...modules.reduce((acc, module) => ({
-						...acc,
-						...makeRequestStore(module),
-					}), {}),
-				},
-				state: {
-					items: [],
-				},
-				mutations: {
-					setItems(state, payload) {
-						state.items = convertKeysToCamelCase(payload);
+			if(!this.$store.hasModule(namespace)) {
+				this.$store.registerModule(namespace, {
+					namespaced: true,
+					modules: {
+						...modules.reduce((acc, module) => ({
+							...acc,
+							...makeRequestStore(module),
+						}), {}),
 					},
-					addItem(state, payload) {
-						state.items = [
-							convertKeysToCamelCase(payload),
-							...state.items,
-						];
+					state: {
+						items: [],
 					},
-					removeItem(state, id) {
-						state.items = state.items.filter(item => item.id !== id);
+					mutations: {
+						setItems(state, payload) {
+							state.items = convertKeysToCamelCase(payload);
+						},
+						addItem(state, payload) {
+							state.items = [
+								convertKeysToCamelCase(payload),
+								...state.items,
+							];
+						},
+						removeItem(state, id) {
+							state.items = state.items.filter(item => item.id !== id);
+						},
 					},
-				},
-			});
+				});
+			}
 			const {
 				mapActions,
 				mapMutations,

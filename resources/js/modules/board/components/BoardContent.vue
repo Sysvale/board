@@ -63,9 +63,13 @@ export default {
 			&& cards && !_.isEmpty(cards)
 		) {
 	
-			this.$store.registerModule([
+			if(!this.$store.hasModule([
 				namespace, 'board'
-			], makeBoardStore(lists));
+			])) {
+				this.$store.registerModule([
+					namespace, 'board'
+				], makeBoardStore(lists));
+			}
 
 			let nestedNamespace = `${namespace}/board`;
 	
