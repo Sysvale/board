@@ -45,8 +45,12 @@ class CardController extends Controller
 
     public function getUserStoriesByTeam(Team $team)
     {
+        $sprintListId = BoardList::where('key', BoardListsKeys::SPRINT)
+            ->first()->id;
+
         $cards = Card::where('team_id', $team->id)
             ->where('is_user_story', true)
+            ->where('board_list_id', $sprintListId)
             ->get()
             ->sortBy('position')
             ->values();
