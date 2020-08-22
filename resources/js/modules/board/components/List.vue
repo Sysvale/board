@@ -1,15 +1,13 @@
 <template>
 	<list-container>
 		<header class="mb-2 text--black d-flex">
-			<div class="flex-grow-1">
-				<span class="mb-0 font-weight-bold d-block">
-					{{ $attrs.title }}
+			<div class="flex-grow-1 d-flex align-items-center">
+				<span class="mb-0 text-uppercase font-weight-medium text--secondary ">
+					<small>{{ $attrs.title }}</small>
 				</span>
-				<div class="mt-n2">
-					<small class="mt-n2">
-						{{ cardsQuantity }}
-					</small>
-				</div>
+				<span class="ml-3 text--secondary mb-0">
+					<small>{{ $attrs.list.length }}</small>
+				</span>
 			</div>
 			<div class="d-flex justify-end">
 				<v-btn
@@ -57,7 +55,7 @@
 					v-for="(item, i) in $attrs.list"
 					:key="item.id"
 					:class="{
-						'mt-3': i > 0,
+						'mt-2': i > 0,
 					}"
 				>
 					<card
