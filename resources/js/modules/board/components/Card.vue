@@ -68,14 +68,12 @@
 					</div>
 					<div
 						v-if="isTask"
-						class="d-flex pt-3"
+						class="d-flex pt-2"
 					>
-						<div class="d-flex justify-start flex-grow-1">
-							<member-list
-								:members="item.members"
-							/>
-						</div>
-						<div>
+						<member-list
+							:members="item.members"
+						/>
+						<div class="d-flex flex-grow-1 justify-end">
 							<v-chip
 								v-if="item.link"
 								:href="item.link"
