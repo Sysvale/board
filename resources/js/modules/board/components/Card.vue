@@ -74,18 +74,10 @@
 							:members="item.members"
 						/>
 						<div class="d-flex flex-grow-1 justify-end">
-							<v-chip
+							<link-chip
 								v-if="item.link"
-								:href="item.link"
-								target="blank"
-								avatar
-								small
-								:color="link.color"
-								:text-color="link.textColor"
-								@click.native.stop
-							>
-								<strong>{{ link.label }}</strong>
-							</v-chip>
+								:link="item.link"
+							/>
 						</div>
 					</div>
 				</v-card>
@@ -137,21 +129,15 @@
 					<div class="d-flex justify-start flex-grow-1">
 						<member-list
 							:members="item.members"
+							full
 						/>
 					</div>
-					<div>
-						<v-chip
-							v-if="item.link"
-							:href="item.link"
-							target="blank"
-							avatar
-							small
-							:color="link.color"
-							:text-color="link.textColor"
-							@click.native.stop
-						>
-							<strong>{{ link.label }}</strong>
-						</v-chip>
+					<div
+						v-if="item.link"
+					>
+						<link-chip
+							:link="item.link"
+						/>
 					</div>
 				</div>
 			</v-container>
@@ -241,6 +227,7 @@ import LabelList from './LabelList';
 import MemberSelect from './MemberSelect';
 import LabelSelect from './LabelSelect';
 import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
+import LinkChip from './LinkChip';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
@@ -250,6 +237,7 @@ export default {
 		MemberSelect,
 		LabelSelect,
 		AcceptanceCriteriaForm,
+		LinkChip,
 	},
 
 	props: {
@@ -277,16 +265,7 @@ export default {
 		...mapState('teams', {
 			teams: 'items',
 		}),
-		link() {
-			if(this.item.link) {
-				return {
-					label: `!132`,
-					color: '#fc6d26',
-					textColor: 'white',
-				};
-			}
-			return null;
-		},
+		
 		isTask() {
 			return !!!this.item.isUserStory;
 		},

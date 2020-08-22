@@ -4,13 +4,19 @@
 		:href="link"
 		target="blank"
 		small
+		pill
 		:color="computedLink.color"
-		:text-color="computedLink.textColor"
+		:text-color="computedLink.color"
+		outlined
+		:title="link"
 		@click.native.stop
 	>
-		<v-icon>
-			anchor
-		</v-icon>
+		<span
+			v-if="computedLink.label"
+		>
+			{{ computedLink.label }}
+		</span>
+		<v-icon v-else>link</v-icon>
 	</v-chip>
 </template>
 <script>
@@ -53,14 +59,13 @@ export default {
 
 				if(this.isUrlFromThisDomain(url, 'figma')) {
 					return {
-						label: 'mockup',
+						label: 'figma',
 						color: '#021336',
 						textColor: '#fff',
 					}
 				}
 				return {
-					label: 'link',
-					color: 'blue',
+					color: 'rgba(0, 0, 0, 0.50)',
 					textColor: 'white',
 				}
 			}
