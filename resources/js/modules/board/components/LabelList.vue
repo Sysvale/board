@@ -3,19 +3,25 @@
 		v-if="labels && labels.length > 0"
 		class="d-flex"
 	>
-		<v-chip
-			v-for="(label, i) in computedLabels"
-			:key="label.id"
-			:text-color="label.textColor || 'black'"
-			:color="label.color"
-			:class="{'ml-1': i > 0}"
-			:title="label.name"
-			small
-		>
-			<small>
-				<strong>{{label.name }}</strong>
-			</small>
-		</v-chip>
+		<div style="line-height:28px">
+			<v-chip
+				v-for="label in computedLabels"
+				:key="label.id"
+				:text-color="label.textColor || 'black'"
+				:color="label.color"
+				:title="label.name"
+				small
+				label
+				class="mr-1 px-1 py-1"
+				:style="{
+					borderBottom: `2px solid rgba(0, 0, 0, 0.35)`,
+				}"
+			>
+				<small class="text-uppercase font-weight-medium">
+					{{label.name }}
+				</small>
+			</v-chip>
+		</div>
 	</div>
 </template>
 <script>
