@@ -11,3 +11,19 @@
 .v-tabs-items {
 	background-color: transparent!important;
 }
+
+.v-expansion-panel-content__wrap {
+	padding: 0!important;
+}
+
+.v-expansion-panel-header {
+	padding: 0!important;
+}
+
+.v-expansion-panel--active>.v-expansion-panel-header {
+	min-height: 48px!important;
+}
+
+.v-expansion-panel--active+.v-expansion-panel, .v-expansion-panel--active:not(:first-child) {
+	margin-top: 0px!important;
+}
