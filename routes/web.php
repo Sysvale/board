@@ -13,20 +13,17 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/default-lists', 'BoardListController@getDefaultLists');
-Route::get('/planning-lists', 'BoardListController@getPlanningLists');
+Route::get('/lists/default', 'BoardListController@getDefaultLists');
+Route::get('/lists/planning', 'BoardListController@getPlanningLists');
+Route::get('/lists/devlog', 'BoardListController@getDevlogLists');
 
 Route::resource('cards', 'CardController')->only(['store', 'update', 'destroy']);
 Route::get('/cards/impediments/{team}', 'CardController@getImpedimentsByTeam');
-Route::get('/get-cards-by-lists-ids', 'CardController@getCardsByListsIds');
+Route::get('/cards/lists-ids', 'CardController@getCardsByListsIds');
+Route::post('/cards/update-positions', 'CardController@updateCardsPositions');
 Route::get('/user-stories/{team}', 'CardController@getUserStoriesByTeam');
-Route::post('/update-cards-positions', 'CardController@updateCardsPositions');
 
 Route::resource('labels', 'LabelController')->only(['index']);
 Route::resource('members', 'MemberController')->only(['index']);
 Route::resource('teams', 'TeamController')->only(['index']);
 Route::resource('boards', 'BoardController')->only(['index']);
-
-Route::middleware('auth')->group(function() {
-
-});

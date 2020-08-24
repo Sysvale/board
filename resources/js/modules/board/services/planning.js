@@ -1,3 +1,3 @@
 import http from '../../../http';
 
-export const getPlanningLists = () => http.get('/planning-lists');
+export const getPlanningLists = () => http.get('/lists/planning');
