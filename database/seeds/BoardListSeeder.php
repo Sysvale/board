@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Constants\BoardListsKeys;
 use App\Models\BoardList;
+use App\Models\Team;
 
 class BoardListSeeder extends Seeder
 {
@@ -13,65 +14,88 @@ class BoardListSeeder extends Seeder
    */
     public function run()
     {
-      $defaultLists = collect($this->getPlanningLists());
+        $lists = collect(
+            array_merge(
+                $this->getDefaultPlanningLists()->toArray(),
+                $this->getDefaultLists()->toArray(),
+                $this->getSprintListsFromTeams()->toArray()
+            )
+        );
 
-      $defaultLists->each(function ($item) {
-            $list = new BoardList();
-            $list->name = $item['name'];
-            $list->key = $item['key'];
-            $list->user_story_holder = $item['user_story_holder'] ?? null;
-            $list->save();
-        }
-      );
+        $lists->each(function ($item) {
+              $list = new BoardList();
+              $list->name = $item['name'];
+              $list->key = $item['key'];
+              $list->position = $item['position'];
+              $list->user_story_holder = $item['user_story_holder'] ?? null;
+              $list->save();
+            }
+        );
     }
 
   private function getDefaultLists()
   {
-    return [
-      [
-        'name' => 'To Do',
-        'key' => BoardListsKeys::TODO,
-      ],
-      [
-        'name' => 'Em desenvolvimento',
-        'key' => BoardListsKeys::DEVELOPMENT,
-      ],
-      [
-        'name' => 'Code Review',
-        'key' => BoardListsKeys::DEVELOPMENT,
-      ],
-      [
-        'name' => 'Done/To Release',
-        'key' => BoardListsKeys::DONE,
-      ],
-      [
-        'name' => 'Deploy',
-        'key' => BoardListsKeys::DEPLOY,
-      ],
-    ];
+      return collect([
+          [
+            'name' => 'To Do',
+            'key' => BoardListsKeys::TODO,
+            'position' => 10,
+          ],
+          [
+            'name' => 'Em desenvolvimento',
+            'key' => BoardListsKeys::DEVELOPMENT,
+            'position' => 11,
+          ],
+          [
+            'name' => 'Code Review',
+            'key' => BoardListsKeys::DEVELOPMENT,
+            'position' => 12,
+          ],
+          [
+            'name' => 'Done/To Release',
+            'key' => BoardListsKeys::DONE,
+            'position' => 13,
+          ],
+          [
+            'name' => 'Deploy',
+            'key' => BoardListsKeys::DEPLOY,
+            'position' => 14,
+          ],
+      ]);
   }
 
-  private function getPlanningLists()
+  private function getDefaultPlanningLists()
   {
-    return [
-      [
-        'name' => 'Bugs',
-        'key' => BoardListsKeys::BUGS,
-      ],
-      [
-        'name' => 'Devlog',
-        'key' => BoardListsKeys::DEVLOG,
-      ],
-      [
-        'name' => 'Backlog',
-        'key' => BoardListsKeys::BACKLOG,
-        'user_story_holder' => true,
-      ],
-      [
-        'name' => 'Sprint',
-        'key' => BoardListsKeys::SPRINT_BACKLOG,
-        'user_story_holder' => true,
-      ],
-    ];
+      return collect([
+          [
+            'name' => 'Bugs',
+            'key' => BoardListsKeys::BUGS,
+            'position' => 0
+          ],
+          [
+            'name' => 'Devlog',
+            'key' => BoardListsKeys::DEVLOG,
+            'position' => 1,
+          ],
+          [
+            'name' => 'Backlog',
+            'key' => BoardListsKeys::BACKLOG,
+            'user_story_holder' => true,
+            'position' => 2,
+          ],
+      ]);
+  }
+
+  private function getSprintListsFromTeams()
+  {
+      $teams = Team::get();
+      return $teams->map(function ($item) {
+          return [
+            'name' => 'Sprint - '. $item->name,
+            'key' => $item->key,
+            'user_story_holder' => true,
+            'position' => 3,
+          ];
+      }) ?? collect([]);
   }
 }
