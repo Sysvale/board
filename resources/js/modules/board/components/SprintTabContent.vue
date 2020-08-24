@@ -83,7 +83,7 @@
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-dev`"
-					:getLists="getDefaultLists"
+					:getLists="getDevlogLists"
 					:getCards="{
 						resolver: getCardsByListsIds,
 						params: {
@@ -111,9 +111,7 @@ import {
 
 import {
 	getDefaultLists,
-	getSprintDevlogLists,
-	getSprintDevlogTasksByTeam,
-	getNotPlannedTasksByTeam,
+	getDevlogLists,
 } from '../services/sprint'
 import { mapState } from 'vuex';
 import {
@@ -155,10 +153,8 @@ export default {
 
 	methods: {
 		getDefaultLists,
+		getDevlogLists,
 		getCardsByListsIds,
-		getSprintDevlogLists,
-		getSprintDevlogTasksByTeam,
-		getNotPlannedTasksByTeam,
 
 		getBoardId(key) {
 			return this.boards.filter(item => item.key === key)[0].id;
