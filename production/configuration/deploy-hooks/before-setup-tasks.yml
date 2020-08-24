@@ -1,0 +1,22 @@
+---
+- name: adds group {{ admin_group }}
+  group:
+    name: '{{ admin_group }}'
+    state: present
+  become: yes
+
+- name: ensures apache2 has correct group permissions
+  user:
+    name: www-data
+    groups:
+      - '{{ admin_group }}'
+    append: yes
+  become: yes
+
+- name: ensures {{ ansible_user }} has correct group permissions
+  user:
+    name: '{{ ansible_user }}'
+    groups:
+      - '{{ admin_group }}'
+    append: yes
+  become: yes

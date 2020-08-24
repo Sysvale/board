@@ -1,0 +1,3 @@
+---
+- import_playbook: ../setup.yml
+- import_playbook: ../../deploy.yml

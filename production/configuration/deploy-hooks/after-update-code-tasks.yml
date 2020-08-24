@@ -1,0 +1,5 @@
+---
+- name: copies .env to the right directory
+  copy:
+    src: 'env.{{ current_environment }}'
+    dest: '{{ ansistrano_shared_path }}/.env'

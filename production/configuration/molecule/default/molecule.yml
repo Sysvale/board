@@ -1,0 +1,35 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+platforms:
+  - name: BoardUbuntu
+    image: leolleocompo/ubuntu-18.04
+    pre_build_image: true
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      BoardUbuntu:
+        ansible_user: ansible
+        current_environment: testing
+verifier:
+  name: ansible
+scenario:
+  test_sequence:
+    - dependency
+    - lint
+    - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - side_effect
+    - verify
+    - cleanup
+    - destroy

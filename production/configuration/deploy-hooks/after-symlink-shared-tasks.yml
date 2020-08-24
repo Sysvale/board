@@ -1,0 +1,30 @@
+---
+- name: ensures the right permissions on files
+  file:
+    path: '{{ ansistrano_release_path.stdout }}/{{ item }}'
+    state: directory
+    owner: www-data
+    group: '{{ admin_group }}'
+    recurse: yes
+  with_items:
+    - bootstrap
+    - storage
+  become: yes
+
+- name: creates laravel necessary storage directories
+  file:
+    path: '{{ ansistrano_release_path.stdout }}/{{ item }}'
+    state: directory
+    owner: www-data
+    group: '{{ admin_group }}'
+  with_items:
+    - storage/app
+    - storage/app/public
+    - storage/framework
+    - storage/framework/cache
+    - storage/framework/cache/data
+    - storage/framework/sessions
+    - storage/framework/testing
+    - storage/framework/views
+    - storage/logs
+  become: yes

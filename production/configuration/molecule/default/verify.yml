@@ -1,0 +1,26 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get current vhost log size before request
+      shell:
+        cmd: cat /var/log/apache2/alpha.board.log | wc -l
+      register: tail_result_before
+      become: yes
+
+    - name: Makes request to the application
+      uri:
+        url: http://localhost
+        headers:
+          Host: 'alpha.board.sysvale.com'
+
+    - name: Get current vhost log size after request
+      shell:
+        cmd: cat /var/log/apache2/alpha.board.log | wc -l
+      register: tail_result_after
+      become: yes
+
+    - assert:
+        that: 'tail_result_after.stdout|int - tail_result_before.stdout|int == 1'

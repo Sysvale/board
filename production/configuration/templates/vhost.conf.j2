@@ -1,0 +1,36 @@
+<VirtualHost *:80>
+	ServerName {{subdomain}}.{{domain}}
+	ServerAlias www.{{subdomain}}.{{domain}}
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/{{subdomain}}
+
+	<Directory />
+		Options -Indexes +FollowSymLinks +MultiViews +Includes
+		AllowOverride AuthConfig
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	<Directory /var/www/{{subdomain}}>
+		AllowOverride Options
+		Options -Indexes +FollowSymLinks +MultiViews +Includes
+		Order allow,deny
+		allow from all
+		RewriteEngine on
+		RewriteBase /
+		RewriteCond %{REQUEST_FILENAME} !-f
+		RewriteCond %{REQUEST_FILENAME} !-d
+		RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
+		RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+	</Directory>
+
+
+	ErrorLog ${APACHE_LOG_DIR}/{{subdomain}}-error.log
+	CustomLog ${APACHE_LOG_DIR}/{{subdomain}}.log combined
+
+RewriteEngine on
+RewriteCond %{SERVER_NAME} ={{subdomain}}.cidadesaudavel.com [OR]
+RewriteCond %{SERVER_NAME} =www.{{subdomain}}.cidadesaudavel.com
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>

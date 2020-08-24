@@ -1,0 +1,4 @@
+---
+roles:
+  - name: ansistrano.deploy
+  - name: ansistrano.rollback

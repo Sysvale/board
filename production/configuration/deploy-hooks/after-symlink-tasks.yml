@@ -1,0 +1,24 @@
+---
+- name: setup insider vhost
+  template:
+    src: templates/vhost.conf.j2
+    dest: '/etc/apache2/sites-available/{{ subdomain }}.conf'
+    mode: '0644'
+    owner: root
+    group: root
+  notify: restart apache2
+  become: yes
+
+- name: creates symbolic link to the site
+  file:
+    path: '/var/www/{{ subdomain }}'
+    state: link
+    src: '{{ ansistrano_deploy_to }}/current/public'
+  become: yes
+
+- name: enables site
+  command: a2ensite {{ subdomain }}
+  args:
+    creates: /etc/apache2/sites-enabled/{{ subdomain }}.conf
+  notify: restart apache2
+  become: yes

@@ -1,0 +1,56 @@
+---
+- hosts: all
+  tasks:
+    - name: installs dependencies
+      apt:
+        name:
+          - apache2
+          - git
+          - rsync
+          - php7.2
+          - php7.2-mongodb
+          - libapache2-mod-php7.2
+          - vim
+        update_cache: yes
+      become: yes
+
+    - name: enables rewrite engine
+      apache2_module:
+        name: rewrite
+        state: present
+      become: yes
+
+    - name: setup default config
+      copy:
+        src: files/000-default.conf
+        dest: /etc/apache2/sites-available/000-default.conf
+        owner: root
+        group: root
+      become: yes
+
+    - name: restarts apache2
+      service:
+        name: apache2
+        state: restarted
+      become: yes
+
+    - name: ensures server-admin group exists
+      group:
+        name: server-admin
+        state: present
+      become: yes
+
+    - name: ensures {{ ansible_user }} is on server-admin group
+      user:
+        name: '{{ ansible_user }}'
+        groups: server-admin
+        append: yes
+      become: yes
+
+    - name: creates /home/servers directory
+      file:
+        path: /home/servers
+        state: directory
+        mode: u=rwx,g=rwx,o=rx
+        group: server-admin
+      become: yes

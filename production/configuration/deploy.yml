@@ -1,0 +1,32 @@
+---
+- hosts: all
+
+  vars:
+    domain: sysvale.com
+    admin_group: server-admin
+
+    ansistrano_deploy_to: '/home/servers/board-{{ current_environment }}'
+    ansistrano_deploy_from: '{{ playbook_dir }}/../..'
+    ansistrano_keep_releases: 2
+    ansistrano_deploy_via: rsync
+    ansistrano_shared_paths:
+      - storage
+    ansistrano_shared_files:
+      - .env
+
+    ansistrano_before_setup_tasks_file: deploy-hooks/before-setup-tasks.yml
+    ansistrano_after_update_code_tasks_file: deploy-hooks/after-update-code-tasks.yml
+    ansistrano_after_symlink_shared_tasks_file: deploy-hooks/after-symlink-shared-tasks.yml
+    ansistrano_after_symlink_tasks_file: deploy-hooks/after-symlink-tasks.yml
+  vars_files:
+    - vars/global.{{ current_environment }}.yml
+
+  roles:
+    - ansistrano.deploy
+
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+      become: yes

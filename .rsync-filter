@@ -1,0 +1,11 @@
+- .docker
+- node_modules
+- storage/logs/*
+- .git
+- .env
+- .env.example
+- tests
+- storage/framework/sessions/*
+- storage/framework/cache/*
+- production
+- public/.htaccess

@@ -1,0 +1,10 @@
+---
+- hosts: all
+
+  vars:
+    ansistrano_deploy_to: '/home/servers/insider-{{ current_environment }}'
+  vars_files:
+    - vars/global.{{ current_environment }}.yml
+
+  roles:
+    - ansistrano.rollback
