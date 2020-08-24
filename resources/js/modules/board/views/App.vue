@@ -10,7 +10,7 @@
 			<v-spacer/>
 			<v-btn
 				text
-				to="planning"
+				to="/"
 				class="mr-3"
 			>
 				Planning

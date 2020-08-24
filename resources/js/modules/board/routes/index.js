@@ -1,6 +1,6 @@
 export default [
 	{
-		path: '/planning',
+		path: '/',
 		name: 'planning',
 		component: () => import('../views/Planning'),
 		meta: {
