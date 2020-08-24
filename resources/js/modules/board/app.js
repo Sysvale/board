@@ -4,6 +4,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router';
 import vuetify from '../../vuetify';
 import App from './views/App.vue';
+import draggable from 'vuedraggable';
 import {
 	ValidationProvider,
 	ValidationObserver,
@@ -13,6 +14,7 @@ import {
 
 import validateLocale from 'vee-validate/dist/locale/pt_BR.json';
 import routes from './routes';
+import store from './store';
 
 setInteractionMode('lazy'); //Mode interation validation fields;
 
@@ -35,10 +37,12 @@ const router = new VueRouter({
 
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);
+Vue.component('Draggable', draggable);
 
 
 const app = new Vue({
 	render: (h) => h(App),
 	vuetify,
 	router,
+	store,
 }).$mount('#app');

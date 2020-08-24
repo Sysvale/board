@@ -14,3 +14,10 @@ services:
       - "entrypoint.sh"
     working_dir: /home/server/
     mem_limit: 2g
+
+  mongo:
+    image: 'mongo'
+    volumes:
+      - './.docker/mongo/data:/data/db:z'
+    ports:
+      - '27003:27017'
