@@ -23,6 +23,9 @@ class Card extends Model
     protected $appends = ['id'];
     protected $hidden = ['_id', 'board_list']; //esse segundo n sei como parar de mandar a parada kkk
 
+    //relacionamento com members????????
+    //relacionamento com labels????????
+    
     public function boardList()
     {
         return $this->belongsTo('App\Models\BoardList');
