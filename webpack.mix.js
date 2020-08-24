@@ -53,5 +53,5 @@ module.exports = {
   ],
 }
 
-mix.js('resources/js/modules/home/app.js', 'public/js/app.min.js')
+mix.js('resources/js/modules/board/app.js', 'public/js/app.min.js')
 	.sass('resources/sass/app.scss', 'public/css');
