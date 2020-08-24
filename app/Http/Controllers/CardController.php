@@ -16,25 +16,30 @@ class CardController extends Controller
     {
         $query = Card::whereIn('board_list_id', $in->lists_ids);
 
-        if ($in->board_id) {
-            $query = $query->where('board_id', $in->board_id);
-        }
-
         if ($in->user_story_id) {
             $query = $query->where('user_story_id', $in->user_story_id);
         }
 
-        if ($in->team_id) {
-            $query = $query->where('team_id', $in->team_id);
-        }
-
         $cards = $query->get();
+
+        $board_lists = BoardList::get()->keyBy('id');
 
         $payload = array();
         collect($in->lists_ids)->each(
-            function ($item) use (&$payload, &$cards) {
-                $payload[$item] = $cards
-                    ->where('board_list_id', $item)
+            function ($item) use (&$payload, &$cards, $board_lists, $in) {
+                $sub_query = $cards->where('board_list_id', $item);
+                
+                // se a lista n for devlog deve fazer o filtro pro time nem por board
+                if ($board_lists[$item]->key !== BoardListsKeys::DEVLOG) {
+                    if ($in->board_id) {
+                        $sub_query = $sub_query->where('board_id', $in->board_id);
+                    }
+                    if ($in->team_id) {
+                        $sub_query = $sub_query->where('team_id', $in->team_id);
+                    }
+                }
+
+                $payload[$item] = $sub_query
                     ->sortBy('position')
                     ->values();
             }
@@ -45,12 +50,11 @@ class CardController extends Controller
 
     public function getUserStoriesByTeam(Team $team)
     {
-        $sprintListId = BoardList::where('key', BoardListsKeys::SPRINT)
+        $sprintListId = BoardList::where('key', $team->key)
             ->first()->id;
 
-        $cards = Card::where('team_id', $team->id)
+        $cards = Card::where('board_list_id', $sprintListId)
             ->where('is_user_story', true)
-            ->where('board_list_id', $sprintListId)
             ->get()
             ->sortBy('position')
             ->values();
@@ -141,12 +145,18 @@ class CardController extends Controller
 
     private function isListAnUserStoryHolder($key)
     {
-        return in_array(
-            $key,
+        $teams = Team::get()->map(function ($item) {
+            return $item['key'];
+        });
+        $user_story_holders = array_merge(
+            $teams->toArray(),
             [
-                BoardListsKeys::SPRINT,
                 BoardListsKeys::BACKLOG
             ]
+        );
+        return in_array(
+            $key,
+            $user_story_holders
         );
     }
 }
