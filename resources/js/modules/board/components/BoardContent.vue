@@ -160,7 +160,10 @@ export default {
 					) {
 						this.updateCard(
 							convertKeysToSnakeCase({
-								...element,
+								...{
+									...element,
+									...this.cardMiddleware,
+								},
 								boardListId: ev.to.id,
 							})
 						).then((data) => {
