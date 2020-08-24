@@ -12,6 +12,7 @@ class Team extends Model
 
     protected $fillable = [
         'name',
+        'key',
     ];
 
     protected $appends = ['id'];
