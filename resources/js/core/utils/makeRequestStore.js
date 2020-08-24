@@ -1,11 +1,12 @@
 import { initialState } from './requestsStates';
 import makeMutations from './makeMutations';
 
-export default (module) => {
+export default (module, namespaced = false) => {
 	const name = Object.keys(module)[0];
 
 	return {
 		[name]: {
+			namespaced,
 			state: { ...initialState },
 
 			actions: {

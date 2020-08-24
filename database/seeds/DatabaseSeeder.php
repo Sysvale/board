@@ -11,8 +11,14 @@ class DatabaseSeeder extends Seeder
 	 */
 	public function run()
 	{
-		$this->call([
-			DictionarySeeder::class,
-		]);
+			$this->call(
+				[
+					TeamSeeder::class,
+					BoardSeeder::class,
+					LabelSeeder::class,
+					BoardListSeeder::class,
+					MemberSeeder::class,
+				]
+			);
 	}
 }

@@ -1,4 +1,4 @@
-const upperCamelCase = string => _.upperFirst(_.camelCase(string));
+import upperCamelCase from './upperCamelCase';
 
 export default (module, fields) => {
 	let computed = {};
