@@ -6,7 +6,7 @@ terraform {
     skip_metadata_api_check     = true
     endpoint                    = "https://sfo2.digitaloceanspaces.com"
     region                      = "us-east-1"
-    bucket                      = "board"
+    bucket                      = "cs-infra-assets"
     key                         = "board-terraform.tfstate"
   }
 }
