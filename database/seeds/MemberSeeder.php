@@ -12,14 +12,13 @@ class MemberSeeder extends Seeder
    */
     public function run()
     {
-      $defaultMembers = collect($this->getDefaultMembers());
-
-      $defaultMembers->each(function ($item) {
-            $list = new Member();
-            $list->name = $item['name'];
-            $list->save();
-        }
-      );
+      collect($this->getDefaultMembers())
+        ->each(function ($item) {
+              $list = new Member();
+              $list->name = $item['name'];
+              $list->save();
+          }
+        );
     }
 
   private function getDefaultMembers()
@@ -39,6 +38,33 @@ class MemberSeeder extends Seeder
       ],
       [
         'name' => 'Jedsão Melo',
+      ],
+      [
+        'name' => 'Lucas Nascimento',
+      ],
+      [
+        'name' => 'Gabriel Gomes',
+      ],
+      [
+        'name' => 'Gilmara Castro',
+      ],
+      [
+        'name' => 'Elayne Lemos',
+      ],
+      [
+        'name' => 'Ueslei Melo',
+      ],
+      [
+        'name' => 'Geidsão Benício',
+      ],
+      [
+        'name' => 'Dani Reis',
+      ],
+      [
+        'name' => 'Cadu Guimarães',
+      ],
+      [
+        'name' => 'Lean Gonçalves',
       ],
     ];
   }
