@@ -11,9 +11,8 @@
 			<v-btn
 				@click="syncWithGitlab"
 				class="mr-3"
-				:disabled="loadingSync"
 			>
-				Sincronizar com o GitLab
+				Sincronizar
 			</v-btn>
 			<v-btn
 				text
@@ -57,6 +56,9 @@ export default {
 		this.getBoards().then((data) => {
 			this.setBoards(data);
 		});
+		this.getPlanningLists().then((data) => {
+			this.setPlanningLists(data);
+		});
 	},
 	computed: {
 		...mapState('members', {
@@ -74,11 +76,8 @@ export default {
 		...mapGetters('labels', [
 			'lowercaseLabels',
 		]),
-		...mapState('gitlab', {
-			loadingSync: ({ getIssues }) => getIssues.isFetching,
-		}),
-		...mapState('cards', {
-			loadingCreate: ({ createCards }) => createCards.isFetching,
+		...mapState('sprint', {
+			planningLists: 'items'
 		}),
 
 		loading() {
@@ -86,8 +85,6 @@ export default {
 				|| this.loadingLabels
 				|| this.loadingTeams
 				|| this.loadingBoards
-				|| this.loadingSync
-				|| this.loadingCreate;
 		},
 	},
 	watch: {
@@ -131,39 +128,42 @@ export default {
 		...mapActions('cards', [
 			'createCards',
 		]),
+		...mapActions('sprint', [
+			'getPlanningLists'
+		]),
+		...mapMutations('sprint', {
+			setPlanningLists: 'setItems'
+		}),
 		syncWithGitlab() {
 			const maxPerPage = 100;
-			this.getIssuesAmount().then(({ statistics: { counts } }) => {
-				const opened = counts.opened;
+			this.getIssuesAmount()
+				.then(({ statistics: { counts } }) => {
+					const opened = counts.opened;
 
-				const requestsAmount = Math.ceil(opened/maxPerPage);
-				const lastPerPage = opened - (requestsAmount - 1) * maxPerPage;
+					const requestsAmount = Math.ceil(opened/maxPerPage);
+					const lastPerPage = opened - (requestsAmount - 1) * maxPerPage;
 
-				let currentPerPage;
-				for (const i of Array(requestsAmount).keys()) {
-					currentPerPage = (i == requestsAmount - 1) ? lastPerPage : maxPerPage;
+					let currentPerPage;
+					for (const i of Array(requestsAmount).keys()) {
+						currentPerPage = (i == requestsAmount - 1) ? lastPerPage : maxPerPage;
 
-					this.getIssues({ per_page: currentPerPage }).then((data) => {
-						const cards = data.map((issue) => {
-							let { labels, title, web_url } = issue;
-							labels = this.mapLabels(labels);
+						this.getIssues({ per_page: currentPerPage }).then((data) => {
+							const cards = data.map((issue) => {
+								let { labels, title, web_url } = issue;
+								const labelIds = this.mapLabels(labels);
 
-							return {
-								title,
-								labels,
-								board_list_id: '5f4912bd7eca1b02ed62f462',
-								link: web_url,
-							};
-						})
-						this.createCards({ list: cards });
-					})
-					.finally(() => {
-						this.getBoards().then((data) => {
-							this.setBoards(data);
+								return {
+									title,
+									labels: labelIds,
+									board_list_id: this.getBoardListId(labels),
+									link: web_url,
+								};
+							})
+							this.createCards({ list: cards });
 						});
-					});
+					}
 				}
-			});
+			);
 		},
 		mapLabels(labels) {
 			const dict = {
@@ -180,7 +180,19 @@ export default {
 
 			return _.filter(this.lowercaseLabels, item => _.includes(mappedLabels, item.key))
 				.map(label => label.id);
-		}
+		},
+		getBoardListId(labels) {
+			let key;
+
+			key = 'devtask';
+			if (labels.includes('Suporte')) {
+				key = 'helpDesk'
+			} else if (labels.includes('BUG')) {
+				key = 'bugs';
+			}
+
+			return this.planningLists.filter(list => list.key === key)[0].id;
+		},
 	}
 }
 </script>
