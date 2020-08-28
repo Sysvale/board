@@ -10,16 +10,24 @@
 			<v-spacer/>
 			<v-btn
 				text
-				to="/"
+					to="/"
 				class="mr-3"
 			>
 				Planning
 			</v-btn>
 			<v-btn
 				text
-				to="sprint"
+				to="/sprint"
 			>
 				Sprint
+			</v-btn>
+			<v-btn
+				icon
+				@click="logout()"
+			>
+				<v-icon>
+					logout
+				</v-icon>
 			</v-btn>
 		</v-app-bar>
 		<v-main>
@@ -35,9 +43,8 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-
 export default {
-	created() {
+	mounted() {
 		this.getMembers().then((data) => {
 			this.setMembers(data);
 		});
@@ -106,6 +113,9 @@ export default {
 		...mapMutations('boards', {
 			setBoards: 'setItems',
 		}),
+		logout() {
+			return window.location.href = '/logout';
+		}
 	}
 }
 </script>
