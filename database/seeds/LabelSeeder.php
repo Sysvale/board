@@ -83,6 +83,24 @@ class LabelSeeder extends Seeder
         'color' => '#EC6646',
         'text_color' => '#fff',
       ],
+      [
+        'name' => 'UX',
+        'key' => LabelKeys::UX,
+        'color' => '#EC6646',
+        'text_color' => '#fff',
+      ],
+      [
+        'name' => 'App',
+        'key' => LabelKeys::APP,
+        'color' => '#EC6646',
+        'text_color' => '#fff',
+      ],
+      [
+        'name' => 'Exportação',
+        'key' => LabelKeys::EXPORT,
+        'color' => '#EC6646',
+        'text_color' => '#fff',
+      ],
     ];
   }
 }
