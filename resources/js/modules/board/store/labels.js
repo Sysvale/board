@@ -19,17 +19,10 @@ export default {
 	},
 	state: {
 		items: [],
-		lowerCaseLabels: [],
 	},
 	mutations: {
 		setItems(state, payload) {
 			state.items = convertKeysToCamelCase(payload);
-			state.lowerCaseLabels = payload;
 		},
 	},
-	getters: {
-		lowercaseLabels(state) {
-			return state.lowerCaseLabels;
-		},
-	}
 }
