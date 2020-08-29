@@ -74,7 +74,7 @@ class BoardListSeeder extends Seeder
           ],
           [
             'name' => 'Suporte',
-            'key' => BoardListsKeys::SUPPORT,
+            'key' => BoardListsKeys::HELPDESK,
             'position' => 1,
           ],
           [
