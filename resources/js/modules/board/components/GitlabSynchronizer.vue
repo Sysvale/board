@@ -50,7 +50,9 @@ export default {
 		finished: {
 			handler(oldValue, newValue) {
 				if (!oldValue && newValue) {
-					this.$emit('finished', true);
+					setTimeout(() => {
+						this.$emit('finished', true);
+					}, 500);
 				}
 			}
 		}

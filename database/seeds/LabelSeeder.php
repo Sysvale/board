@@ -74,8 +74,8 @@ class LabelSeeder extends Seeder
       [
         'name' => 'Suporte',
         'key' => LabelKeys::HELP_DESK,
-        'color' => '#45D9ED',
-        'text_color' => 'rgba(0, 0, 0, 0.75)',
+        'color' => '#54EF1A',
+        'text_color' => '#fff',
       ],
       [
         'name' => 'Reunião',
@@ -86,19 +86,19 @@ class LabelSeeder extends Seeder
       [
         'name' => 'UX',
         'key' => LabelKeys::UX,
-        'color' => '#EC6646',
-        'text_color' => '#fff',
+        'color' => '#BC70E5',
+        'text_color' => 'rgba(0, 0, 0, 0.75)',
       ],
       [
         'name' => 'App',
         'key' => LabelKeys::APP,
-        'color' => '#EC6646',
-        'text_color' => '#fff',
+        'color' => '#97D480',
+        'text_color' => 'rgba(0, 0, 0, 0.75)',
       ],
       [
         'name' => 'Exportação',
         'key' => LabelKeys::EXPORT,
-        'color' => '#EC6646',
+        'color' => '#CFDD23',
         'text_color' => '#fff',
       ],
     ];
