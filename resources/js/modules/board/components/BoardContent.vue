@@ -16,6 +16,25 @@
 				@delete="handleDelete"
 				@change="handleChange(list.id)"
 			/>
+			<v-snackbar
+				v-model="snackbar"
+				:timeout="-1"
+			>
+				Opa! Temos um probleminha na atualização das listas.
+				Estamos trabalhado para resolvê-lo.
+				Enquanto isso, a solução é recarregar a página e tentar efetuar a ação novamente.
+
+				<template v-slot:action="{ attrs }">
+					<v-btn
+						color="blue"
+						text
+						v-bind="attrs"
+						@click="reload()"
+					>
+						Recarregar
+					</v-btn>
+				</template>
+			</v-snackbar>
 		</v-layout>
 	</board-container>
 </template>
@@ -102,6 +121,12 @@ export default {
 		}
 	},
 
+	data() {
+		return {
+			snackbar: false,
+		}
+	},
+
 	methods: {
 		...mapActions('cards', [
 			'deleteCard',
@@ -149,8 +174,8 @@ export default {
 
 		moveCallback(ev) {
 			const element = ev.draggedContext.element;
-			const fromSizeBefore = this[ev.from.id].length + 0; // force var to lose the reference
-			const toSizeBefore = this[ev.to.id].length + 0;
+			const fromSizeBefore = this[ev.from.id].length + 1 - 1; // force var to lose the reference
+			const toSizeBefore = this[ev.to.id].length + 1 - 1;
 			if(ev.from !== ev.to) {
 				// a little trick/gamb here rsrsrsrs
 				setTimeout(() => {
@@ -181,9 +206,16 @@ export default {
 								}))
 							);
 						});
+					} else {
+						this.snackbar = true;
 					}
-				}, 500);
+				}, 1000);
 			}
+		},
+
+		reload() {
+			window.location.reload();
+			this.snackbar = false;
 		}
 	}
 }
