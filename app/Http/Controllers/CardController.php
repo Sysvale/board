@@ -107,10 +107,13 @@ class CardController extends Controller
                 'board_id' => $item['board_id'] ?? null,
                 'labels' => $item['labels'] ?? null,
                 'link' => $item['link'] ?? null,
+                'from_gitlab' => $item['from_gitlab'] ?? false,
             ];
         }
 
-        Card::insert($cards);
+        if (count($cards)) {
+            Card::insert($cards);
+        }
     }
 
     public function update(Request $in, $id)
