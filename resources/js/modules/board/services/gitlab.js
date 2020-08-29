@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://gitlab.com/api/v4/projects/586906';
-const TOKEN = 'QNj1ZykwP11RzLgiqXMv';
+const BASE_URL = process.env.MIX_GITLAB_BASE_URL;
+const TOKEN = process.env.MIX_GITLAB_TOKEN;
 
 axios.interceptors.request.use(function (config) {
     config.headers.Authorization = `Bearer ${TOKEN}`;
