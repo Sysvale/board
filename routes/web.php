@@ -11,20 +11,49 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('home');
+Auth::routes([
+    'reset' => false,
+    'verify' => false,
+]);
 
-Route::get('/lists/default', 'BoardListController@getDefaultLists');
-Route::get('/lists/planning', 'BoardListController@getPlanningLists');
-Route::get('/lists/devlog', 'BoardListController@getDevlogLists');
+$any = \App\Constants\RouteConstants::ANY;
+Route::redirect('/', 'login');
 
-Route::post('cards/store-many', 'CardController@storeMany');
-Route::resource('cards', 'CardController')->only(['store', 'update', 'destroy']);
-Route::get('/cards/impediments/{team}', 'CardController@getImpedimentsByTeam');
-Route::get('/cards/lists-ids', 'CardController@getCardsByListsIds');
-Route::post('/cards/update-positions', 'CardController@updateCardsPositions');
-Route::get('/user-stories/{team}', 'CardController@getUserStoriesByTeam');
+Route::group(
+    ['middleware' => ['auth']], function () {
+        Route::get('/lists/default', 'BoardListController@getDefaultLists');
+        Route::get('/lists/planning', 'BoardListController@getPlanningLists');
+        Route::get('/lists/devlog', 'BoardListController@getDevlogLists');
 
-Route::resource('labels', 'LabelController')->only(['index']);
-Route::resource('members', 'MemberController')->only(['index']);
-Route::resource('teams', 'TeamController')->only(['index']);
-Route::resource('boards', 'BoardController')->only(['index']);
+        Route::resource('cards', 'CardController')->only(['store', 'update', 'destroy']);
+        Route::get(
+            '/cards/impediments/{team}',
+            'CardController@getImpedimentsByTeam'
+        );
+        Route::get('/cards/lists-ids', 'CardController@getCardsByListsIds');
+        Route::post(
+            '/cards/update-positions',
+            'CardController@updateCardsPositions'
+        );
+        Route::get('/user-stories/{team}', 'CardController@getUserStoriesByTeam');
+        Route::post('cards/store-many', 'CardController@storeMany');
+        Route::get('/labels', 'LabelController@index');
+        Route::get('/members', 'MemberController@index');
+        Route::get('/teams', 'TeamController@index');
+        Route::get('/boards', 'BoardController@index');
+
+        Route::get('/logout', function () {
+            Auth::logout();
+            return redirect('login');
+        });
+    }
+);
+
+Route::get(
+    "/{{$any}}", function () {
+        if (Auth::check()) {
+            return view('index');
+        }
+        return redirect('login');
+    }
+);

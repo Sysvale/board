@@ -21,16 +21,24 @@
 
 			<v-btn
 				text
-				to="/"
+					to="/"
 				class="mr-3"
 			>
 				Planning
 			</v-btn>
 			<v-btn
 				text
-				to="sprint"
+				to="/sprint"
 			>
 				Sprint
+			</v-btn>
+			<v-btn
+				icon
+				@click="logout()"
+			>
+				<v-icon>
+					logout
+				</v-icon>
 			</v-btn>
 		</v-app-bar>
 		<v-main>
@@ -45,7 +53,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState, mapGetters } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
 import GitlabSynchronizer from '../components/GitlabSynchronizer';
 
 export default {
@@ -57,7 +65,7 @@ export default {
 			syncing: false,
 		};
 	},
-	created() {
+	mounted() {
 		this.getMembers().then((data) => {
 			this.setMembers(data);
 		});
@@ -130,6 +138,9 @@ export default {
 		finishedSync() {
 			this.syncing = false;
 		},
+		logout() {
+			return window.location.href = '/logout';
+		}
 	}
 }
 </script>
