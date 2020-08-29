@@ -10,14 +10,14 @@ import BoardListKeys from '../constants/BoardListKeys';
 import { mapActions, mapMutations, mapState, mapGetters } from 'vuex';
 
 export default {
-    data() {
+	data() {
 		return {
 			LabelKeys,
 			GitlabLabelKeys,
 			BoardListKeys
 		};
 	},
-    computed: {
+	computed: {
 		...mapState('labels', {
 			labels: 'items'
 		}),
@@ -25,20 +25,43 @@ export default {
 			planningLists: 'items'
 		}),
 		...mapState('planning', ['board']),
+		...mapState('gitlab', {
+			finishedGetIssuesAmount: ({ getIssuesAmount }) => !getIssuesAmount.isFetching && getIssuesAmount.hasSucceeded,
+			finishedGetIssues: ({ getIssues }) => !getIssues.isFetching && getIssues.hasSucceeded,
+		}),
+		...mapState('cards', {
+			finishedCreateCards: ({ createCards }) => !createCards.isFetching && createCards.hasSucceeded,
+		}),
 
 		existingIssues() {
 			return _.flatten(Object.values(this.board))
 				.filter(card => card.fromGitlab)
 				.map(card => card.link);
 		},
-    },
 
-    created() {
-        this.getPlanningLists().then((data) => {
+		finished() {
+			return this.finishedCreateCards
+				&& this.finishedGetIssues
+				&& this.finishedGetIssuesAmount;
+		}
+	},
+
+	watch: {
+		finished: {
+			handler(oldValue, newValue) {
+				if (!oldValue && newValue) {
+					this.$emit('finished', true);
+				}
+			}
+		}
+	},
+
+	created() {
+		this.getPlanningLists().then((data) => {
 			this.setPlanningLists(data);
 		});
 
-        const maxPerPage = 100;
+		const maxPerPage = 100;
 			this.getIssuesAmount()
 				.then(({ statistics: { counts } }) => {
 					const { opened } = counts;
@@ -65,22 +88,22 @@ export default {
 					}
 				}
 			);
-    },
+	},
 
-    methods: {
-        ...mapActions('gitlab', [
+	methods: {
+		...mapActions('gitlab', [
 			'getIssues',
 			'getIssuesAmount'
 		]),
 		...mapActions('cards', [
 			'createCards',
 		]),
-        ...mapActions('sprint', [
+		...mapActions('sprint', [
 			'getPlanningLists',
 		]),
-        ...mapMutations('sprint', {
-            setPlanningLists: 'setItems'
-        }),
+		...mapMutations('sprint', {
+			setPlanningLists: 'setItems'
+		}),
 		getCardsByListsIds,
 
 		mapIssueToCard(issue) {
@@ -125,6 +148,6 @@ export default {
 
 			return this.planningLists.filter(list => list.key === key)[0].id;
 		},
-    },
+	},
 };
 </script>
