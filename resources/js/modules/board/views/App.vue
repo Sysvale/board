@@ -9,12 +9,15 @@
 			<v-toolbar-title>Trelássio</v-toolbar-title>
 			<v-spacer/>
 			<v-btn
-				@click="syncWithGitlab = true"
+				@click="syncing = true"
 				class="mr-3"
 			>
 				Sincronizar
 			</v-btn>
-			<gitlab-synchronizer v-if="syncWithGitlab"/>
+			<gitlab-synchronizer
+				v-if="syncing"
+				@finished="finishedSync"
+			/>
 
 			<v-btn
 				text
@@ -51,7 +54,7 @@ export default {
 	},
 	data() {
 		return {
-			syncWithGitlab: false,
+			syncing: false,
 		};
 	},
 	created() {
@@ -87,6 +90,7 @@ export default {
 				|| this.loadingLabels
 				|| this.loadingTeams
 				|| this.loadingBoards
+				|| this.syncing
 		},
 	},
 	watch: {
@@ -123,6 +127,9 @@ export default {
 		...mapMutations('boards', {
 			setBoards: 'setItems',
 		}),
+		finishedSync() {
+			this.syncing = false;
+		},
 	}
 }
 </script>
