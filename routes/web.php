@@ -36,6 +36,7 @@ Route::group(
             'CardController@updateCardsPositions'
         );
         Route::get('/user-stories/{team}', 'CardController@getUserStoriesByTeam');
+        Route::post('cards/store-many', 'CardController@storeMany');
         Route::get('/labels', 'LabelController@index');
         Route::get('/members', 'MemberController@index');
         Route::get('/teams', 'TeamController@index');

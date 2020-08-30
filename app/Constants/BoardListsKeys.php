@@ -12,4 +12,6 @@ class BoardListsKeys extends BagOfConstants
 	const BUGS = 'bugs';
 	const DEVLOG = 'devlog';
 	const BACKLOG = 'backlog';
+	const HELPDESK = 'helpDesk';
+	const DEVTASK = 'devtask';
 }

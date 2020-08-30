@@ -1,19 +1,11 @@
 import makeRequestStore from '../../../core/utils/makeRequestStore';
 
 import {
-	deleteCard,
-	createCard,
-	updateCard,
-	updateCardsPositions,
-	createCards
-} from '../services/cards';
+	getPlanningLists
+} from '../services/sprint';
 
 const modules = [
-	{ deleteCard },
-	{ createCard },
-	{ updateCard },
-	{ updateCardsPositions },
-	{ createCards },
+	{ getPlanningLists },
 ];
 
 export default {
@@ -23,5 +15,13 @@ export default {
 			...acc,
 			...makeRequestStore(module),
 		}), {}),
+	},
+	state: {
+		items: [],
+	},
+	mutations: {
+		setItems (state, payload) {
+			state.items = payload;
+		},
 	},
 }

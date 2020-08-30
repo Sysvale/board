@@ -39,6 +39,8 @@ class BoardListController extends Controller
     {
         $planningLists = [
             BoardListsKeys::BUGS,
+            BoardListsKeys::HELPDESK,
+            BoardListsKeys::DEVTASK,
             BoardListsKeys::DEVLOG,
             BoardListsKeys::BACKLOG,
         ];

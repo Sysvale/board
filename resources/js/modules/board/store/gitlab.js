@@ -1,19 +1,13 @@
 import makeRequestStore from '../../../core/utils/makeRequestStore';
 
 import {
-	deleteCard,
-	createCard,
-	updateCard,
-	updateCardsPositions,
-	createCards
-} from '../services/cards';
+	getIssues,
+	getIssuesAmount
+} from '../services/gitlab';
 
 const modules = [
-	{ deleteCard },
-	{ createCard },
-	{ updateCard },
-	{ updateCardsPositions },
-	{ createCards },
+	{ getIssues },
+	{ getIssuesAmount }
 ];
 
 export default {
