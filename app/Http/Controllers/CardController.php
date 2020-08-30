@@ -84,6 +84,8 @@ class CardController extends Controller
             'members' => $in->members,
             'team_id' => $in->team_id,
             'board_id' => $in->board_id,
+            'labels' => $in->labels,
+            'link' => $in->link,
         ]);
 
         if ($card->boardList && $this->isListAnUserStoryHolder($card->boardList->key)) {
@@ -92,6 +94,26 @@ class CardController extends Controller
         }
 
         return $card;
+    }
+
+    public function storeMany(Request $in)
+    {
+        $cards = [];
+
+        foreach ($in->list as $item) {
+            $cards[] = [
+                'board_list_id' => $item['board_list_id'] ?? null,
+                'title' => $item['title'] ?? null,
+                'board_id' => $item['board_id'] ?? null,
+                'labels' => $item['labels'] ?? null,
+                'link' => $item['link'] ?? null,
+                'from_gitlab' => $item['from_gitlab'] ?? false,
+            ];
+        }
+
+        if (count($cards)) {
+            Card::insert($cards);
+        }
     }
 
     public function update(Request $in, $id)

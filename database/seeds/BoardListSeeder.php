@@ -73,15 +73,25 @@ class BoardListSeeder extends Seeder
             'position' => 0
           ],
           [
+            'name' => 'Suporte',
+            'key' => BoardListsKeys::HELPDESK,
+            'position' => 1,
+          ],
+          [
+            'name' => 'Atividades dev',
+            'key' => BoardListsKeys::DEVTASK,
+            'position' => 2,
+          ],
+          [
             'name' => 'Devlog',
             'key' => BoardListsKeys::DEVLOG,
-            'position' => 1,
+            'position' => 3,
           ],
           [
             'name' => 'Backlog',
             'key' => BoardListsKeys::BACKLOG,
             'user_story_holder' => true,
-            'position' => 2,
+            'position' => 4,
           ],
       ]);
   }

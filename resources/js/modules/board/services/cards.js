@@ -2,6 +2,8 @@ import http from '../../../http';
 
 export const createCard = (payload) => http.post('/cards', payload);
 
+export const createCards = (payload) => http.post('/cards/store-many', payload);
+
 export const getCardsByListsIds = (params) => http.get('/cards/lists-ids', {
 	params,
 });
