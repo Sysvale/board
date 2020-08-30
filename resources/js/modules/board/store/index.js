@@ -8,6 +8,8 @@ import members from './members';
 import labels from './labels';
 import teams from './teams';
 import boards from './boards';
+import gitlab from './gitlab';
+import sprint from './sprint';
 
 export default new Vuex.Store({
 	namespaced: true,
@@ -17,5 +19,7 @@ export default new Vuex.Store({
 		labels,
 		teams,
 		boards,
+		gitlab,
+		sprint
 	}
 });

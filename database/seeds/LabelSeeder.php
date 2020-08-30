@@ -74,13 +74,31 @@ class LabelSeeder extends Seeder
       [
         'name' => 'Suporte',
         'key' => LabelKeys::HELP_DESK,
-        'color' => '#45D9ED',
-        'text_color' => 'rgba(0, 0, 0, 0.75)',
+        'color' => '#54EF1A',
+        'text_color' => '#fff',
       ],
       [
         'name' => 'Reunião',
         'key' => LabelKeys::MEET,
         'color' => '#EC6646',
+        'text_color' => '#fff',
+      ],
+      [
+        'name' => 'UX',
+        'key' => LabelKeys::UX,
+        'color' => '#BC70E5',
+        'text_color' => 'rgba(0, 0, 0, 0.75)',
+      ],
+      [
+        'name' => 'App',
+        'key' => LabelKeys::APP,
+        'color' => '#97D480',
+        'text_color' => 'rgba(0, 0, 0, 0.75)',
+      ],
+      [
+        'name' => 'Exportação',
+        'key' => LabelKeys::EXPORT,
+        'color' => '#CFDD23',
         'text_color' => '#fff',
       ],
     ];
