@@ -71,7 +71,12 @@
 				>
 					<board
 						:namespace="story.id"
-						:getLists="getDefaultLists"
+						:getLists="{
+							resolver: getDefaultLists,
+							params: {
+								teamId,
+							}
+						}"
 						:getCards="{
 							resolver: getCardsByListsIds,
 							params: {

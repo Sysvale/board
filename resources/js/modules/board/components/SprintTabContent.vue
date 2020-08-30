@@ -37,7 +37,12 @@
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-notPlanned`"
-					:getLists="getDefaultLists"
+					:getLists="{
+						resolver: getDefaultLists,
+						params: {
+							teamId,
+						},
+					}"
 					:getCards="{
 						resolver: getCardsByListsIds,
 						params: {
