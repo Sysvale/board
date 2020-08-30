@@ -19,6 +19,7 @@ class TeamSeeder extends Seeder
             $list = new Team();
             $list->name = $item['name'];
             $list->key = $item['key'];
+            $list->extended_task_flow = $item['extended_task_flow'] ?? false;
             $list->save();
         }
       );
@@ -30,6 +31,7 @@ class TeamSeeder extends Seeder
       [
         'name' => 'The Avengers',
         'key' => TeamKeys::AVENGERS,
+        'extended_task_flow' => true,
       ],
       [
         'name' => 'Stepper Labs',
