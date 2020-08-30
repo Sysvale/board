@@ -54,14 +54,24 @@ class BoardListSeeder extends Seeder
             'position' => 12,
           ],
           [
+            'name' => 'Done',
+            'key' => BoardListsKeys::REVIEWED,
+            'position' => 13,
+          ],
+          [
+            'name' => 'P.O. Review',
+            'key' => BoardListsKeys::PO_REVIEW,
+            'position' => 14,
+          ],
+          [
             'name' => 'Done/To Release',
             'key' => BoardListsKeys::DONE,
-            'position' => 13,
+            'position' => 15,
           ],
           [
             'name' => 'Deploy',
             'key' => BoardListsKeys::DEPLOY,
-            'position' => 14,
+            'position' => 16,
           ],
       ]);
   }
