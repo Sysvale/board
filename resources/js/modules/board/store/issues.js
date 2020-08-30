@@ -1,11 +1,11 @@
 import makeRequestStore from '../../../core/utils/makeRequestStore';
 
 import {
-	getPlanningLists
-} from '../services/sprint';
+	getIssuesLists,
+} from '../services/issues';
 
 const modules = [
-	{ getPlanningLists },
+	{ getIssuesLists },
 ];
 
 export default {
