@@ -21,10 +21,10 @@ export default {
 		...mapState('labels', {
 			labels: 'items'
 		}),
-		...mapState('sprint', {
-			planningLists: 'items'
+		...mapState('issues', {
+			issuesLists: 'items',
 		}),
-		...mapState('planning', ['board']),
+		...mapState('problems', ['board']),
 		...mapState('gitlab', {
 			finishedGetIssuesAmount: ({ getIssuesAmount }) => !getIssuesAmount.isFetching && getIssuesAmount.hasSucceeded,
 			finishedGetIssues: ({ getIssues }) => !getIssues.isFetching && getIssues.hasSucceeded,
@@ -59,8 +59,8 @@ export default {
 	},
 
 	created() {
-		this.getPlanningLists().then((data) => {
-			this.setPlanningLists(data);
+		this.getIssuesLists().then((data) => {
+			this.setIssuesLists(data);
 		});
 
 		const maxPerPage = 100;
@@ -82,8 +82,8 @@ export default {
 							this.createCards({ list: cardsToCreate })
 								.finally(() => {
 									if (i == requestsAmount - 1) {
-										let planningListIds = this.planningLists.map(list => list.id);
-										this.getCardsByListsIds({ lists_ids: planningListIds });
+										let issuesListIds = this.issuesLists.map(list => list.id);
+										this.getCardsByListsIds({ lists_ids: issuesListIds });
 									}
 								});
 						});
@@ -100,11 +100,11 @@ export default {
 		...mapActions('cards', [
 			'createCards',
 		]),
-		...mapActions('sprint', [
-			'getPlanningLists',
+		...mapActions('issues', [
+			'getIssuesLists',
 		]),
-		...mapMutations('sprint', {
-			setPlanningLists: 'setItems'
+		...mapMutations('issues', {
+			setIssuesLists: 'setItems'
 		}),
 		getCardsByListsIds,
 
@@ -148,7 +148,7 @@ export default {
 				key = BoardListKeys.BUGS;
 			}
 
-			return this.planningLists.filter(list => list.key === key)[0].id;
+			return this.issuesLists.filter(list => list.key === key)[0].id;
 		},
 	},
 };
