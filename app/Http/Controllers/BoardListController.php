@@ -9,31 +9,26 @@ use Illuminate\Http\Request;
 
 class BoardListController extends Controller
 {
-    public function getDefaultLists()
+    public function getDefaultLists(Request $in)
     {
-        $defaulLists = [
-            BoardListsKeys::TODO,
-            BoardListsKeys::DEVELOPMENT,
-            BoardListsKeys::CODE_REVIEW,
-            BoardListsKeys::DONE,
-            BoardListsKeys::DEPLOY,
-        ];
 
-        return BoardList::whereIn('key', $defaulLists)->get();
+        return BoardList::whereIn('key', $this->getDefaultTaskLists($in->team_id))
+            ->get()
+            ->sortBy('position')
+            ->values();
     }
 
     public function getDevlogLists(Request $in)
     {
-        $defaulLists = [
-            Team::where('_id', $in->team_id)->first()->key . 'Dev',
-            BoardListsKeys::TODO,
-            BoardListsKeys::DEVELOPMENT,
-            BoardListsKeys::CODE_REVIEW,
-            BoardListsKeys::DONE,
-            BoardListsKeys::DEPLOY,
-        ];
+        $default_lists = [Team::where('_id', $in->team_id)->first()->key . 'Dev'];
+        
 
-        return BoardList::whereIn('key', $defaulLists)
+        $default_lists = array_merge(
+            $default_lists,
+            $this->getDefaultTaskLists($in->team_id)
+        );
+
+        return BoardList::whereIn('key', $default_lists)
             ->get()
             ->sortBy('position')
             ->values();
@@ -77,5 +72,33 @@ class BoardListController extends Controller
         );
 
         return BoardList::whereIn('key', $issuesLists)->get();
+    }
+
+    private function getDefaultTaskLists($team_id)
+    {
+        $default_lists = [
+            BoardListsKeys::TODO,
+            BoardListsKeys::DEVELOPMENT,
+            BoardListsKeys::CODE_REVIEW,
+            BoardListsKeys::DONE,
+            BoardListsKeys::DEPLOY,
+        ];
+
+        if ($team_id) {
+            $extended_task_flow = Team::where('_id', $team_id)
+                ->first()
+                ->extended_task_flow;
+            if ($extended_task_flow) {
+                $default_lists = array_merge(
+                    $default_lists,
+                    [
+                        BoardListsKeys::PO_REVIEW,
+                        BoardListsKeys::REVIEWED
+                    ]
+                );
+            }
+        }
+
+        return $default_lists;
     }
 }
