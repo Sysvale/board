@@ -13,4 +13,7 @@ class LabelKeys extends BagOfConstants
 	const INFRA = 'infra';
 	const HELP_DESK = 'helpDesk';
 	const MEET = 'meet';
+	const UX = 'ux';
+	const APP = 'app';
+	const EXPORT = 'export';
 }
