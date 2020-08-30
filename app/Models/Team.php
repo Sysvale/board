@@ -13,6 +13,7 @@ class Team extends Model
     protected $fillable = [
         'name',
         'key',
+        'extended_task_flow',
     ];
 
     protected $appends = ['id'];
