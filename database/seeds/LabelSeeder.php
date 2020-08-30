@@ -57,7 +57,7 @@ class LabelSeeder extends Seeder
         'name' => 'Bug',
         'key' => LabelKeys::BUG,
         'color' => '#CC2A48',
-        'text_color' => 'rgba(0, 0, 0, 0.75)',
+        'text_color' => 'white',
       ],
       [
         'name' => 'Documentação',
@@ -75,7 +75,7 @@ class LabelSeeder extends Seeder
         'name' => 'Suporte',
         'key' => LabelKeys::HELP_DESK,
         'color' => '#54EF1A',
-        'text_color' => '#fff',
+        'text_color' => 'rgba(0, 0, 0, 0.75)',
       ],
       [
         'name' => 'Reunião',
