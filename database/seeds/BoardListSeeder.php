@@ -18,7 +18,9 @@ class BoardListSeeder extends Seeder
             array_merge(
                 $this->getDefaultPlanningLists()->toArray(),
                 $this->getDefaultLists()->toArray(),
-                $this->getSprintListsFromTeams()->toArray()
+                $this->getSprintListsFromTeams()->toArray(),
+                $this->getDefaultProblemsLists()->toArray(),
+                $this->getDevSprintListsFromTeams()->toArray()
             )
         );
 
@@ -68,26 +70,6 @@ class BoardListSeeder extends Seeder
   {
       return collect([
           [
-            'name' => 'Bugs',
-            'key' => BoardListsKeys::BUGS,
-            'position' => 0
-          ],
-          [
-            'name' => 'Suporte',
-            'key' => BoardListsKeys::HELPDESK,
-            'position' => 1,
-          ],
-          [
-            'name' => 'Atividades dev',
-            'key' => BoardListsKeys::DEVTASK,
-            'position' => 2,
-          ],
-          [
-            'name' => 'Devlog',
-            'key' => BoardListsKeys::DEVLOG,
-            'position' => 3,
-          ],
-          [
             'name' => 'Backlog',
             'key' => BoardListsKeys::BACKLOG,
             'user_story_holder' => true,
@@ -104,6 +86,38 @@ class BoardListSeeder extends Seeder
             'name' => 'Sprint - '. $item->name,
             'key' => $item->key,
             'user_story_holder' => true,
+            'position' => 3,
+          ];
+      }) ?? collect([]);
+  }
+
+  private function getDefaultProblemsLists() {
+      return collect([
+          [
+            'name' => 'Bugs',
+            'key' => BoardListsKeys::BUGS,
+            'position' => 0
+          ],
+          [
+            'name' => 'Suporte',
+            'key' => BoardListsKeys::HELPDESK,
+            'position' => 1,
+          ],
+          [
+            'name' => 'Atividades dev',
+            'key' => BoardListsKeys::DEVTASK,
+            'position' => 2,
+          ],
+      ]);
+  }
+
+  private function getDevSprintListsFromTeams()
+  {
+      $teams = Team::get();
+      return $teams->map(function ($item) {
+          return [
+            'name' => 'Sprint Dev - '. $item->name,
+            'key' => $item->key . 'Dev',
             'position' => 3,
           ];
       }) ?? collect([]);
