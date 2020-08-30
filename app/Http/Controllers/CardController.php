@@ -29,8 +29,8 @@ class CardController extends Controller
             function ($item) use (&$payload, &$cards, $board_lists, $in) {
                 $sub_query = $cards->where('board_list_id', $item);
                 
-                // se a lista n for devlog deve fazer o filtro pro time nem por board
-                if ($board_lists[$item]->key !== BoardListsKeys::DEVLOG) {
+                // se a lista n sprint for devlog deve fazer o filtro pro time nem por board
+                if (!preg_match("/([a-zA-Z0-9()]*)(Dev)/", $board_lists[$item]->key)) {
                     if ($in->board_id) {
                         $sub_query = $sub_query->where('board_id', $in->board_id);
                     }
