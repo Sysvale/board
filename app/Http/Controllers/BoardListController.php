@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constants\BoardListsKeys;
 use App\Models\BoardList;
 use App\Models\Team;
+use Illuminate\Http\Request;
 
 class BoardListController extends Controller
 {
@@ -21,10 +22,10 @@ class BoardListController extends Controller
         return BoardList::whereIn('key', $defaulLists)->get();
     }
 
-    public function getDevlogLists()
+    public function getDevlogLists(Request $in)
     {
         $defaulLists = [
-            BoardListsKeys::DEVLOG,
+            Team::where('_id', $in->team_id)->first()->key . 'Dev',
             BoardListsKeys::TODO,
             BoardListsKeys::DEVELOPMENT,
             BoardListsKeys::CODE_REVIEW,
@@ -32,16 +33,15 @@ class BoardListController extends Controller
             BoardListsKeys::DEPLOY,
         ];
 
-        return BoardList::whereIn('key', $defaulLists)->get();
+        return BoardList::whereIn('key', $defaulLists)
+            ->get()
+            ->sortBy('position')
+            ->values();
     }
 
     public function getPlanningLists()
     {
         $planningLists = [
-            BoardListsKeys::BUGS,
-            BoardListsKeys::HELPDESK,
-            BoardListsKeys::DEVTASK,
-            BoardListsKeys::DEVLOG,
             BoardListsKeys::BACKLOG,
         ];
 
@@ -56,5 +56,26 @@ class BoardListController extends Controller
         );
 
         return BoardList::whereIn('key', $planningLists)->get();
+    }
+
+    public function getIssuesLists()
+    {
+        $issuesLists = [
+            BoardListsKeys::BUGS,
+            BoardListsKeys::HELPDESK,
+            BoardListsKeys::DEVTASK,
+        ];
+
+        $teams = Team::get();
+        $issuesLists = array_merge(
+            $issuesLists,
+            $teams->map(
+                function ($item) {
+                    return $item->key . 'Dev';
+                }
+            )->toArray()
+        );
+
+        return BoardList::whereIn('key', $issuesLists)->get();
     }
 }
