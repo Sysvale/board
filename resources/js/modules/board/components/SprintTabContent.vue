@@ -83,7 +83,12 @@
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-dev`"
-					:getLists="getDevlogLists"
+					:getLists="{
+						resolver: getDevlogLists,
+						params: {
+							teamId,
+						}
+					}"
 					:getCards="{
 						resolver: getCardsByListsIds,
 						params: {
@@ -162,11 +167,3 @@ export default {
 	},
 }
 </script>
-<style scoped>
-.v-expansion-panel-content__wrap {
-	padding: 0!important;
-}
-.v-expansion-panel {
-	background: transparent!important;
-}
-</style>

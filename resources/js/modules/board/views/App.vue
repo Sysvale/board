@@ -8,16 +8,6 @@
 		>
 			<v-toolbar-title>Trelássio</v-toolbar-title>
 			<v-spacer/>
-			<v-btn
-				@click="syncing = true"
-				class="mr-3"
-			>
-				Sincronizar
-			</v-btn>
-			<gitlab-synchronizer
-				v-if="syncing"
-				@finished="finishedSync"
-			/>
 
 			<v-btn
 				text
@@ -54,17 +44,8 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import GitlabSynchronizer from '../components/GitlabSynchronizer';
 
 export default {
-	components: {
-		GitlabSynchronizer,
-	},
-	data() {
-		return {
-			syncing: false,
-		};
-	},
 	mounted() {
 		this.getMembers().then((data) => {
 			this.setMembers(data);
@@ -97,8 +78,7 @@ export default {
 			return this.loadingMembers
 				|| this.loadingLabels
 				|| this.loadingTeams
-				|| this.loadingBoards
-				|| this.syncing
+				|| this.loadingBoards;
 		},
 	},
 	watch: {
@@ -135,9 +115,6 @@ export default {
 		...mapMutations('boards', {
 			setBoards: 'setItems',
 		}),
-		finishedSync() {
-			this.syncing = false;
-		},
 		logout() {
 			return window.location.href = '/logout';
 		}

@@ -23,6 +23,7 @@ Route::group(
     ['middleware' => ['auth']], function () {
         Route::get('/lists/default', 'BoardListController@getDefaultLists');
         Route::get('/lists/planning', 'BoardListController@getPlanningLists');
+        Route::get('/lists/issues/', 'BoardListController@getIssuesLists');
         Route::get('/lists/devlog', 'BoardListController@getDevlogLists');
 
         Route::resource('cards', 'CardController')->only(['store', 'update', 'destroy']);
