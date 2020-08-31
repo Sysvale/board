@@ -9,7 +9,8 @@
 			<div class="d-flex">
 				<div class="mr-1">
 					<v-card
-						class="task-card px-3 py-3"
+						style="max-width: 275px"
+						class="px-3 py-3"
 						outlined
 						flat
 					>
