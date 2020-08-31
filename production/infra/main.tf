@@ -8,8 +8,8 @@ data "digitalocean_droplet" "app_php7_1" {
   name = "app-php7-1"
 }
 
-data "digitalocean_domain" "sysvale" {
-  name = "sysvale.com"
+data "digitalocean_domain" "cidadesaudavel" {
+  name = "cidadesaudavel.com"
 }
 
 variable "workspace_to_record_dns_name" {
@@ -38,7 +38,7 @@ locals {
 }
 
 resource "digitalocean_record" "dns_name" {
-  domain = data.digitalocean_domain.sysvale.name
+  domain = data.digitalocean_domain.cidadesaudavel.name
   type   = "A"
   name   = local.dns_name
   value  = data.digitalocean_droplet.app_php7_1.ipv4_address
@@ -46,7 +46,7 @@ resource "digitalocean_record" "dns_name" {
 }
 
 resource "digitalocean_record" "dns_alias" {
-  domain = data.digitalocean_domain.sysvale.name
+  domain = data.digitalocean_domain.cidadesaudavel.name
   type   = "CNAME"
   name   = local.dns_alias
   value  = "${digitalocean_record.dns_name.fqdn}."
