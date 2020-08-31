@@ -1,6 +1,6 @@
 <template>
 	<list-container>
-		<header class="mb-2 text--black d-flex">
+		<header class="mb-2 px-2 py-2 text--black d-flex">
 			<div class="flex-grow-1 d-flex align-items-center">
 				<span class="mb-0 text-uppercase font-weight-medium text--secondary ">
 					<small>{{ $attrs.title }}</small>
@@ -33,7 +33,7 @@
 			solo
 			auto-grow
 			autofocus
-			class="mb-0 pb-0"
+			class="mb-n5 pb-0 mx-1"
 			@blur="handleAdd"
 			@keydown.enter="handleAdd"
 			@keydown.esc="clear"
@@ -44,32 +44,38 @@
 			<list-skeleton-loader
 				v-if="$attrs.loading"
 			/>
-			<draggable
+			<div
 				v-else
-				v-bind="$attrs"
-				v-on="$listeners"
-				:key="`${$attrs.id}-${$attrs.list.length}`"
+				id="cards-container"
+				class="pb-1"
 			>
-				<component
-					:is="true ? 'v-flex' : 'div'"
-					v-for="(item, i) in $attrs.list"
-					:key="item.id"
-					:class="{
-						'mt-2': i > 0,
-					}"
+				<draggable
+					v-bind="$attrs"
+					v-on="$listeners"
+					:key="`${$attrs.id}-${$attrs.list.length}`"
 				>
-					<card
-						:item="item"
-						@save="handleAdd"
-						@delete="$emit('delete', {
-							id: item.id,
-							boardListId: $attrs.id
-						})"
-					>
-						{{ item.title }}
-					</card>
-				</component>
-			</draggable>
+						<component
+							:is="true ? 'v-flex' : 'div'"
+							v-for="(item, i) in $attrs.list"
+							:key="item.id"
+							:class="{
+								'mt-2': i > 0,
+							}"
+							class="mx-1"
+						>
+							<card
+								:item="item"
+								@save="handleAdd"
+								@delete="$emit('delete', {
+									id: item.id,
+									boardListId: $attrs.id
+								})"
+							>
+								{{ item.title }}
+							</card>
+						</component>
+				</draggable>
+			</div>
 		</v-fade-transition>
 	</list-container>
 </template>
@@ -125,3 +131,31 @@ export default {
 
 }
 </script>
+<style scoped>
+#cards-container {
+	max-height: 60vh;
+	overflow-y: auto;
+}
+/* width */
+#cards-container::-webkit-scrollbar {
+	width: 8px;
+	height: 100px;
+	border-radius: 50px;
+}
+
+/* Track */
+#cards-container::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+/* Handle */
+#cards-container::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.15);
+	border-radius: 5px;
+}
+
+/* Handle on hover */
+#cards-container::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, 0.20);
+}
+</style>
