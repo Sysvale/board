@@ -4,7 +4,7 @@
 		class="list-container mr-1 ml-1"
 	>
 		<v-card
-			class="px-2 py-2"
+			class="px-1 py-2"
 			flat
 			outlined
 			color="#efefef"
