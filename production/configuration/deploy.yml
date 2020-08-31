@@ -2,7 +2,7 @@
 - hosts: all
 
   vars:
-    domain: sysvale.com
+    domain: cidadesaudavel.com
     admin_group: server-admin
 
     ansistrano_deploy_to: '/home/servers/board-{{ current_environment }}'
