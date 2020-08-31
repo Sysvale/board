@@ -19,7 +19,9 @@ class Card extends Model
         'link',
         'position',
         'members',
-        'labels'
+        'labels',
+        'acceptance_criteria',
+        'is_user_story',
     ];
     protected $appends = ['id'];
     protected $hidden = ['_id', 'board_list']; //esse segundo n sei como parar de mandar a parada kkk
