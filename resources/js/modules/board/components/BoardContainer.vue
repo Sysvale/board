@@ -16,7 +16,7 @@ export default {
 
 <style scoped>
 #board {
-	overflow-x: scroll;
+	overflow-x: auto;
 	max-width: 100%;
 }
 /* width */
