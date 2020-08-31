@@ -177,10 +177,13 @@
 					dense
 					type="number"
 				/>
-				<div>
+				<div
+					v-if="false"
+				>
 					<strong>Time</strong>
 				</div>
 				<v-radio-group
+					v-if="false"
 					v-model="item.teamId"
 					class="mt-1"
 				>
