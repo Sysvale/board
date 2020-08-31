@@ -1,6 +1,6 @@
 import http from '../../../http';
 
-export const getDefaultLists = () => http.get('/lists/default');
+export const getDefaultLists = (params) => http.get('/lists/default', { params });
 
 export const getDevlogLists = (params) => http.get('/lists/devlog', { params });
 

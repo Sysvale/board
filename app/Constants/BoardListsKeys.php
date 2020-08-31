@@ -14,4 +14,6 @@ class BoardListsKeys extends BagOfConstants
 	const BACKLOG = 'backlog';
 	const HELPDESK = 'helpDesk';
 	const DEVTASK = 'devtask';
+	const PO_REVIEW = 'poReview';
+	const REVIEWED = 'reviewed';
 }
