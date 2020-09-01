@@ -214,6 +214,12 @@ export default {
 		};
 	},
 
+	watch: {
+		items(newValue) {
+			this.$emit('changed', newValue);
+		}
+	},
+
 	created() {
 		this.getImpedimentsByTeam(this.teamId)
 			.then((data) => {
