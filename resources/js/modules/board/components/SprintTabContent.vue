@@ -15,19 +15,15 @@
 						block
 					</v-icon>
 					<h3 class="mb-0 mr-2">Impedimentos</h3>
-					<v-chip
-						color="gray"
-						text-color="black"
-						label
-						small
-					>
-						<strong>{{ impedimentsAmount }}</strong>
-					</v-chip>
+					<span class="text--secondary mb-0">
+						{{ impedimentsAmount }}
+					</span>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
 				<impediment-table
 					:team-id="teamId"
+					@changed="impedimentsAmount = $event.length"
 				/>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
@@ -73,7 +69,10 @@
 					<v-icon class="mr-2">
 						settings_backup_restore
 					</v-icon>
-					<h3 class="mb-0">Sprint Backlog</h3>
+					<h3 class="mb-0 mr-2">Sprint Backlog</h3>
+					<span class="text--secondary mb-0">
+						{{ computedEstimatedAmout }}
+					</span>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -131,12 +130,14 @@ import {
 	getDefaultLists,
 	getDevlogLists,
 } from '../services/sprint'
-import { mapState } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 import {
 	NOT_PLANNED,
 	IMPEDIMENTS,
 	SPRINT_DEVLOG,
 } from '../constants/BoardKeys';
+
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 export default {
 	components: {
@@ -152,6 +153,15 @@ export default {
 		},
 	},
 
+	mounted() {
+		this.getCurrentSprintSummaryByTeam(this.teamId)
+			.then((data) => {
+				const { impedimentsAmount, estimatedAmount } = convertKeysToCamelCase(data);
+				this.impedimentsAmount = impedimentsAmount;
+				this.estimatedAmount = estimatedAmount;
+			});
+	},
+
 	data() {
 		return {
 			panels: [
@@ -160,6 +170,8 @@ export default {
 			NOT_PLANNED,
 			IMPEDIMENTS,
 			SPRINT_DEVLOG,
+			impedimentsAmount: 0,
+			estimatedAmount: 0,
 		};
 	},
 
@@ -167,17 +179,23 @@ export default {
 		...mapState('boards', {
 			boards: 'items',
 		}),
-		impedimentsAmount() {
-			const impediments = this.$store.state[`impediments-${this.teamId}`];
 
-			return impediments ? impediments['items'].length : 0;
-		},
+		computedEstimatedAmout() {
+			if(this.estimatedAmount === 1) {
+				return `${this.estimatedAmount} pt`;
+			}
+			return `${this.estimatedAmount} pts`;
+		}
 	},
 
 	methods: {
 		getDefaultLists,
 		getDevlogLists,
 		getCardsByListsIds,
+
+		...mapActions('sprint', [
+			'getCurrentSprintSummaryByTeam',
+		]),
 
 		getBoardId(key) {
 			return this.boards.filter(item => item.key === key)[0].id;
