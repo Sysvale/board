@@ -149,11 +149,15 @@ class CardController extends Controller
         $requestCards = collect($in->cards);
 
         $result = $requestCards
-            ->each(function ($requestCard) {
-                $card = Card::where('_id', $requestCard['id'])->first();
-                $card->position = $requestCard['position'];
-                $card->save();
-            });
+            ->each(
+                function ($requestCard) {
+                    $card = Card::where('_id', $requestCard['id'])->first();
+                    $card->position = $requestCard['position'];
+                    $card->board_list_id = $requestCard['board_list_id']
+                        ?? $card->board_list_id;
+                    $card->save();
+                }
+            );
 
         return $result;
     }
