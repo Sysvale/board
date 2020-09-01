@@ -14,7 +14,15 @@
 					<v-icon class="mr-2">
 						block
 					</v-icon>
-					<h3 class="mb-0">Impedimentos</h3>
+					<h3 class="mb-0 mr-2">Impedimentos</h3>
+					<v-chip
+						color="gray"
+						text-color="black"
+						label
+						small
+					>
+						<strong>{{ impedimentsAmount }}</strong>
+					</v-chip>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -159,6 +167,11 @@ export default {
 		...mapState('boards', {
 			boards: 'items',
 		}),
+		impedimentsAmount() {
+			const impediments = this.$store.state[`impediments-${this.teamId}`];
+
+			return impediments ? impediments['items'].length : 0;
+		},
 	},
 
 	methods: {
