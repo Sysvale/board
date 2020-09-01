@@ -74,7 +74,7 @@ export default {
 					for (const i of Array(requestsAmount).keys()) {
 						let currentPerPage = (i == requestsAmount - 1) ? lastPerPage : maxPerPage;
 
-						this.getIssues({ per_page: currentPerPage }).then((data) => {
+						this.getIssues({ per_page: currentPerPage, page: i + 1 }).then((data) => {
 							const cards = data.map(issue => this.mapIssueToCard(issue));
 
 							const cardsToCreate = cards.filter(card => !this.existingIssues.includes(card.link));
