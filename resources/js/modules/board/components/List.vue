@@ -8,6 +8,15 @@
 				<span class="ml-3 text--secondary mb-0">
 					<small>{{ $attrs.list.length }}</small>
 				</span>
+				<v-chip
+					v-if="pointsSum"
+					color="gray"
+					text-color="black"
+					label
+					small
+				>
+					<strong>{{ pointsSum }}</strong>
+				</v-chip>
 			</div>
 			<div class="d-flex justify-end">
 				<v-btn
@@ -84,6 +93,7 @@
 import Card from './Card';
 import ListContainer from './ListContainer';
 import ListSkeletonLoader from './ListSkeletonLoader';
+import PlanningGroups from '../constants/PlanningGroups';
 
 export default {
 	components: {
@@ -96,6 +106,7 @@ export default {
 		return {
 			newCardTitle: null,
 			createMode: false,
+			PlanningGroups
 		};
 	},
 
@@ -109,6 +120,15 @@ export default {
 				return '1 cartão';
 			}
 			return `${length} cartões`;
+		},
+
+		pointsSum() {
+			if (this.$attrs.group !== PlanningGroups.PLANNING) {
+				return null;
+			}
+
+			const sum = _.sum(this.$attrs.list.map(card => +card.estimated || 0));
+			return sum ? `${sum} pts` : null;
 		}
 	},
 
