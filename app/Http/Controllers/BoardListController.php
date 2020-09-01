@@ -59,6 +59,7 @@ class BoardListController extends Controller
             BoardListsKeys::BUGS,
             BoardListsKeys::HELPDESK,
             BoardListsKeys::DEVTASK,
+            BoardListsKeys::DEVLOG,
         ];
 
         $teams = Team::get();
@@ -71,7 +72,10 @@ class BoardListController extends Controller
             )->toArray()
         );
 
-        return BoardList::whereIn('key', $issuesLists)->get();
+        return BoardList::whereIn('key', $issuesLists)
+            ->get()
+            ->sortBy('position')
+            ->values();
     }
 
     private function getDefaultTaskLists($team_id)
