@@ -11,7 +11,7 @@
 			class="px-2"
 		>
 			<v-expansion-panel
-				key="problems"
+				:key="PlanningGroups.PROBLEMS"
 				@change="handleProblemsPanelChange"
 			>
 				<v-expansion-panel-header>
@@ -48,7 +48,7 @@
 				</v-expansion-panel-content>
 			</v-expansion-panel>
 			<v-expansion-panel
-				key="planning"
+				:key="PlanningGroups.PLANNING"
 			>
 				<v-expansion-panel-header>
 					<div class="d-flex align-center">
@@ -73,6 +73,7 @@
 <script>
 import Board from '../components/Board.vue';
 import GitlabSynchronizer from '../components/GitlabSynchronizer';
+import PlanningGroups from '../constants/PlanningGroups';
 
 import {
 	getPlanningLists,
@@ -96,6 +97,7 @@ export default {
 			panels: [1],
 			syncing: false,
 			wasSynced: true,
+			PlanningGroups
 		}
 	},
 	methods: {

@@ -4,6 +4,12 @@
 			<div class="flex-grow-1 d-flex align-items-center">
 				<span class="mb-0 text-uppercase font-weight-medium text--secondary ">
 					<small>{{ $attrs.title }}</small>
+					<div
+						v-if="hasSomeEstimatedCard && pointsSum"
+						class="d-flex"
+					>
+						<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
+					</div>
 				</span>
 				<span class="ml-3 text--secondary mb-0">
 					<small>{{ $attrs.list.length }}</small>
@@ -109,6 +115,17 @@ export default {
 				return '1 cartão';
 			}
 			return `${length} cartões`;
+		},
+
+		hasSomeEstimatedCard() {
+			return this.$attrs.list.reduce((acc, curr) => {
+				return acc || curr.estimated !== null;
+			}, false);
+		},
+
+		pointsSum() {
+			const sum = _.sum(this.$attrs.list.map(card => +card.estimated || 0));
+			return sum ? `${sum} pt${sum === 1 ? '' : 's'}` : null;
 		}
 	},
 
