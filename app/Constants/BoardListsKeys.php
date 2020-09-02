@@ -16,4 +16,6 @@ class BoardListsKeys extends BagOfConstants
 	const DEVTASK = 'devtask';
 	const PO_REVIEW = 'poReview';
 	const REVIEWED = 'reviewed';
+	const DESIGN_SYSTEM = 'designSystem';
+	const SYS_SECURITY = 'sysSecurity';
 }

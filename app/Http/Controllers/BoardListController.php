@@ -59,6 +59,8 @@ class BoardListController extends Controller
             BoardListsKeys::BUGS,
             BoardListsKeys::HELPDESK,
             BoardListsKeys::DEVTASK,
+            BoardListsKeys::DESIGN_SYSTEM,
+            BoardListsKeys::SYS_SECURITY,
             BoardListsKeys::DEVLOG,
         ];
 
