@@ -10,10 +10,14 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
+        "graham-campbell/gitlab": "^4.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "http-interop/http-factory-guzzle": "^1.0",
         "jenssegers/mongodb": "^3.6",
         "laravel/framework": "^6.2",
         "laravel/helpers": "^1.2",
         "laravel/tinker": "^2.0",
+        "m4tthumphrey/php-gitlab-api": "^10.0",
         "sysvale/helpers": "^1.0"
     },
     "require-dev": {
