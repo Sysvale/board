@@ -16,11 +16,12 @@ export default [
 		},
 	},
 	{
-		path: '/sprint',
+		path: '/sprint/:teamId',
 		name: 'sprint',
 		component: () => import('../views/Sprint'),
 		meta: {
 			title: 'Sprint',
 		},
+		props: true,
 	},
 ];
