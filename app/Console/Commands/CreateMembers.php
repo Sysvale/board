@@ -2,20 +2,17 @@
 
 namespace App\Console\Commands;
 
-use App\Constants\BoardListsKeys;
-use App\Models\BoardList;
-use App\Models\Card;
 use App\Models\Member;
 use Illuminate\Console\Command;
 
-class CreateMember extends Command
+class CreateMembers extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'create:member {name : Nome da pessoa}';
+    protected $signature = 'create:members {names*}';
 
     /**
      * The console command description.
@@ -41,12 +38,16 @@ class CreateMember extends Command
      */
     public function handle()
     {
-        $member = Member::create([
-            'name' => $this->argument('name'),
-        ]);
-
-        if ($member) {
-            $this->info('Membro "' . $member->name . '" criado com sucesso!');
-        }
+        $names = collect($this->argument('names'));
+        $names->each(
+            function ($name) {
+                $member = Member::create([
+                    'name' => $name,
+                ]);
+                if ($member) {
+                    $this->info('Membro "' . $member->name . '" criado com sucesso!');
+                }
+            }
+        );
     }
 }
