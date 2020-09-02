@@ -9,6 +9,7 @@ import labels from './labels';
 import teams from './teams';
 import boards from './boards'
 import issues from './issues';
+import sprint from './sprint';
 
 export default new Vuex.Store({
 	namespaced: true,
@@ -19,5 +20,6 @@ export default new Vuex.Store({
 		teams,
 		boards,
 		issues,
+		sprint,
 	}
 });

@@ -236,4 +236,20 @@ class CardController extends Controller
 
 		return Label::whereIn('key', $labels_keys)->pluck('_id')->toArray();
 	}
+
+	public function getCurrentSprintSummaryByTeam(Team $team)
+	{
+		$cards = Card::where('team_id', $team->id)->get();
+
+		return [
+			'impediments_amount' => $cards->where(
+				'board_id',
+				Board::where('key', BoardKeys::IMPEDIMENTS)->first()->id
+			)->count(),
+			'estimated_amount' =>  Card::where(
+				'board_list_id',
+				BoardList::where('key', $team->key)->first()->id // TODO: Associar team_id quando entrar no board do time (pode ser um observer)
+			)->get()->sum('estimated')
+		];
+	}
 }
