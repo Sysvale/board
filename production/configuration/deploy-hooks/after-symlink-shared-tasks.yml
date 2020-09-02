@@ -36,3 +36,19 @@
     chdir: '{{ ansistrano_release_path.stdout }}'
   become: yes
   become_user: www-data
+
+- name: runs create:devlog once
+  shell:
+    cmd: php artisan create:devlog -q --force > storage/logs/php_artisan_create:devlog-{{ ansible_date_time.epoch }}
+    creates: storage/logs/php_artisan_create:devlog-*
+    chdir: '{{ ansistrano_release_path.stdout }}'
+  become: yes
+  become_user: www-data
+
+- name: runs issues:put-gitlab-id once
+  shell:
+    cmd: php artisan issues:put-gitlab-id -q --force > storage/logs/php_artisan_issues:put-gitlab-id-{{ ansible_date_time.epoch }}
+    creates: storage/logs/php_artisan_issues:put-gitlab-id-*
+    chdir: '{{ ansistrano_release_path.stdout }}'
+  become: yes
+  become_user: www-data
