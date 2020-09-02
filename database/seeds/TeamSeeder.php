@@ -6,41 +6,40 @@ use App\Models\Team;
 
 class TeamSeeder extends Seeder
 {
-  /**
-   * Run the database seeds.
-   *
-   * @return void
-   */
-    public function run()
-    {
-      $defaultTeams = collect($this->getDefaultTeams());
+	/**
+	 * Run the database seeds.
+	 *
+	 * @return void
+	 */
+	public function run()
+	{
+		$defaultTeams = collect($this->getDefaultTeams());
 
-      $defaultTeams->each(function ($item) {
-            $list = new Team();
-            $list->name = $item['name'];
-            $list->key = $item['key'];
-            $list->extended_task_flow = $item['extended_task_flow'] ?? false;
-            $list->save();
-        }
-      );
-    }
+		$defaultTeams->each(function ($item) {
+			$list = new Team();
+			$list->name = $item['name'];
+			$list->key = $item['key'];
+			$list->extended_task_flow = $item['extended_task_flow'] ?? false;
+			$list->save();
+		});
+	}
 
-  private function getDefaultTeams()
-  {
-    return [
-      [
-        'name' => 'The Avengers',
-        'key' => TeamKeys::AVENGERS,
-        'extended_task_flow' => true,
-      ],
-      [
-        'name' => 'Stepper Labs',
-        'key' => TeamKeys::STEPPER,
-      ],
-      [
-        'name' => 'Breakout One',
-        'key' => TeamKeys::BREAKOUT_ONE,
-      ],
-    ];
-  }
+	private function getDefaultTeams()
+	{
+		return [
+			[
+				'name' => 'The Avengers',
+				'key' => TeamKeys::AVENGERS,
+				'extended_task_flow' => true,
+			],
+			[
+				'name' => 'Stepper Labs',
+				'key' => TeamKeys::STEPPER,
+			],
+			[
+				'name' => 'Breakout One',
+				'key' => TeamKeys::BREAKOUT_ONE,
+			],
+		];
+	}
 }
