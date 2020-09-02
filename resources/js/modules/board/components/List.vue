@@ -1,7 +1,7 @@
 <template>
 	<v-card
 		v-if="colapsed"
-		class="px-3 py-2 mr-2"
+		class="px-2 py-2 mr-1 ml-1"
 		flat
 		outlined
 		color="#efefef"
@@ -17,14 +17,45 @@
 					keyboard_arrow_down
 				</v-icon>
 			</v-btn>
-			<small class="mb-3 text-uppercase font-weight-medium text--secondary">{{ $attrs.title }}</small>
-			<small class="mb-3 text--secondary">{{ $attrs.list.length }}</small>
-			<small
+			<v-tooltip bottom>
+				<template v-slot:activator="{ on, attrs }">
+					<small
+						v-bind="attrs"
+						v-on="on"
+						class="mb-3 text-uppercase font-weight-medium text--secondary"
+					>
+						{{ $attrs.title }}
+					</small>
+				</template>
+				<span>{{ $attrs.title }}</span>
+			</v-tooltip>
+			<v-tooltip top>
+				<template v-slot:activator="{ on, attrs }">
+					<small
+						v-bind="attrs"
+						v-on="on"
+						class="mb-3 text--secondary"
+					>
+						{{ $attrs.list.length }}
+					</small>
+				</template>
+				<span>{{ $attrs.list.length }}</span>
+			</v-tooltip>
+			<v-tooltip
 				v-if="hasSomeEstimatedCard && pointsSum"
-				class="text--primary"
+				top
 			>
-				<strong>{{ pointsSum }}</strong>
-			</small>
+				<template v-slot:activator="{ on, attrs }">
+					<small
+						v-bind="attrs"
+						v-on="on"
+						class="text--primary"
+					>
+						<strong>{{ pointsSum }}</strong>
+					</small>
+				</template>
+				<span>{{ pointsSum }}</span>
+			</v-tooltip>
 		</div>
 	</v-card>
 	<list-container
@@ -42,16 +73,18 @@
 			</v-btn>
 			<div class="flex-grow-1 d-flex align-center">
 				<span class="mb-0 text-uppercase font-weight-medium text--secondary ">
-					<small>{{ $attrs.title }}</small>
+					<span>
+						<small>{{ $attrs.title }}</small>
+						<span class="ml-3 text--secondary mb-0">
+							<small>{{ $attrs.list.length }}</small>
+						</span>
+					</span>
 					<div
 						v-if="hasSomeEstimatedCard && pointsSum"
 						class="d-flex"
 					>
 						<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
 					</div>
-				</span>
-				<span class="ml-3 text--secondary mb-0">
-					<small>{{ $attrs.list.length }}</small>
 				</span>
 			</div>
 			<div class="d-flex justify-end">
