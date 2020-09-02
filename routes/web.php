@@ -37,11 +37,11 @@ Route::group(
             'CardController@updateCardsPositions'
         );
         Route::get('/user-stories/{team}', 'CardController@getUserStoriesByTeam');
+        Route::get('/cards/synchronize', 'CardController@synchronize');
         Route::get(
             '/sprint/summary/current/{team}',
             'CardController@getCurrentSprintSummaryByTeam'
         );
-        Route::post('cards/store-many', 'CardController@storeMany');
         Route::get('/labels', 'LabelController@index');
         Route::get('/members', 'MemberController@index');
         Route::get('/teams', 'TeamController@index');

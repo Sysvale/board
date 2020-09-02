@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<ruleset name="Selective Standard">
+
+	<!--
+		The content of the description tag is not displayed anywhere
+		except in this file, so it can contain information for
+		developers who may change this file in the future.
+	-->
+	<description>A custom coding standard</description>
+
+	<!--
+		Include all sniffs in the PEAR standard. Note that the
+		path to the standard does not have to be specified as the
+		PEAR standard exists inside the PHP_CodeSniffer install
+		directory.
+	-->
+	<rule ref="PSR2"/>
+
+	<!--
+		Set different property values for fixing and checking.
+	-->
+	<rule ref="Generic.Files.LineLength">
+		<properties>
+			<property name="lineLimit" value="100"/>
+		</properties>
+	</rule>
+
+	<!-- Code MUST use an indent of 4 spaces, and MUST NOT use tabs for indenting. -->
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="tabIndent" value="true" />
+		</properties>
+	</rule>
+	<rule ref="Generic.WhiteSpace.DisallowTabIndent">
+		<severity>0</severity>
+	</rule>
+
+	<rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+		<exclude-pattern>*/database/*</exclude-pattern>
+	</rule>
+
+	<exclude-pattern>vendor</exclude-pattern>
+</ruleset>

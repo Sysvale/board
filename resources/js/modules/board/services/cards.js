@@ -15,3 +15,5 @@ export const deleteCard = (id) => http.delete(`/cards/${id}`);
 export const updateCardsPositions = (cards = []) => http.post('/cards/update-positions', { cards });
 
 export const getImpedimentsByTeam = (teamId) => http.get(`/cards/impediments/${teamId}`);
+
+export const synchronize = () => http.get('/cards/synchronize');
