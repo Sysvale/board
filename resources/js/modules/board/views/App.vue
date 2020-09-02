@@ -18,12 +18,7 @@
 			</v-btn>
 			<v-btn
 				text
-				@click="$router.push({
-					name: 'sprint',
-					params: {
-						teamId: teams[0].id
-					}
-				})"
+				:to="sprintRoute"
 			>
 				Sprint
 			</v-btn>
@@ -86,6 +81,16 @@ export default {
 				|| this.loadingTeams
 				|| this.loadingBoards;
 		},
+
+		sprintRoute() {
+			if(this.$route && this.$route.name === 'sprint') {
+				return `${this.$route.params.teamId}`;
+			}
+			if(this.teams && this.teams.length) {
+				return `sprint/${this.teams[0].id}`;
+			}
+			return 'sprint';
+		}
 	},
 	watch: {
 		'$route'(to, from) {
@@ -123,7 +128,7 @@ export default {
 		}),
 		logout() {
 			return window.location.href = '/logout';
-		}
+		},
 	}
 }
 </script>
