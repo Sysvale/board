@@ -36,11 +36,3 @@
     chdir: '{{ ansistrano_release_path.stdout }}'
   become: yes
   become_user: www-data
-
-- name: runs create:stories once
-  shell:
-    cmd: php artisan create:stories > storage/logs/php_artisan_create:stories-{{ ansible_date_time.epoch }}
-    creates: storage/logs/php_artisan_create:stories-*
-    chdir: '{{ ansistrano_release_path.stdout }}'
-  become: yes
-  become_user: www-data
