@@ -9,6 +9,7 @@ class GitlabHandler
 	const LINK_FIELD = 'web_url';
 	const LABELS_FIELD = 'labels';
 	const TITLE_FIELD = 'title';
+	const ID_FIELD = 'iid';
 
 	protected $client;
 
