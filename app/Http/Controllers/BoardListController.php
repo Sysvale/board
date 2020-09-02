@@ -53,14 +53,7 @@ class BoardListController extends Controller
 
 	public function getIssuesLists()
 	{
-		$issuesLists = [
-			BoardListsKeys::BUGS,
-			BoardListsKeys::HELPDESK,
-			BoardListsKeys::DEVTASK,
-			BoardListsKeys::DESIGN_SYSTEM,
-			BoardListsKeys::SYS_SECURITY,
-			BoardListsKeys::DEVLOG,
-		];
+		$issuesLists = BoardListsKeys::DEFAULT_ISSUES_LISTS;
 
 		$teams = Team::get();
 		$issuesLists = array_merge(
@@ -80,26 +73,14 @@ class BoardListController extends Controller
 
 	private function getDefaultTaskLists($team_id)
 	{
-		$default_lists = [
-			BoardListsKeys::TODO,
-			BoardListsKeys::DEVELOPMENT,
-			BoardListsKeys::CODE_REVIEW,
-			BoardListsKeys::DONE,
-			BoardListsKeys::DEPLOY,
-		];
+		$default_lists = BoardListsKeys::DEFAULT_LISTS;
 
 		if ($team_id) {
 			$extended_task_flow = Team::where('_id', $team_id)
 				->first()
 				->extended_task_flow;
 			if ($extended_task_flow) {
-				$default_lists = array_merge(
-					$default_lists,
-					[
-						BoardListsKeys::PO_REVIEW,
-						BoardListsKeys::REVIEWED
-					]
-				);
+				$default_lists = array_merge($default_lists, BoardListsKeys::EXTENDED_LISTS);
 			}
 		}
 
