@@ -1,7 +1,46 @@
 <template>
-	<list-container>
+	<v-card
+		v-if="colapsed"
+		class="px-3 py-2 mr-2"
+		flat
+		outlined
+		color="#efefef"
+		height="60vh"
+	>
+		<div class="flex-grow-1 d-flex align-center vertical-text">
+			<v-btn
+				icon
+				small
+				@click="colapsed = false"
+			>
+				<v-icon>
+					keyboard_arrow_down
+				</v-icon>
+			</v-btn>
+			<small class="mb-3 text-uppercase font-weight-medium text--secondary">{{ $attrs.title }}</small>
+			<small class="mb-3 text--secondary">{{ $attrs.list.length }}</small>
+			<small
+				v-if="hasSomeEstimatedCard && pointsSum"
+				class="text--primary"
+			>
+				<strong>{{ pointsSum }}</strong>
+			</small>
+		</div>
+	</v-card>
+	<list-container
+		v-else
+	>
 		<header class="mb-2 px-2 py-2 text--black d-flex">
-			<div class="flex-grow-1 d-flex align-items-center">
+			<v-btn
+				icon
+				small
+				@click="colapsed = true"
+			>
+				<v-icon>
+					keyboard_arrow_right
+				</v-icon>
+			</v-btn>
+			<div class="flex-grow-1 d-flex align-center">
 				<span class="mb-0 text-uppercase font-weight-medium text--secondary ">
 					<small>{{ $attrs.title }}</small>
 					<div
@@ -102,6 +141,7 @@ export default {
 		return {
 			newCardTitle: null,
 			createMode: false,
+			colapsed: false,
 		};
 	},
 
@@ -149,6 +189,11 @@ export default {
 }
 </script>
 <style scoped>
+.vertical-text {
+	writing-mode: vertical-rl;
+	text-orientation: mixed;
+}
+
 #cards-container {
 	max-height: 60vh;
 	overflow-y: auto;
