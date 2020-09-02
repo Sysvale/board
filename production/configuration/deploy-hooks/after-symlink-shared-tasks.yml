@@ -52,3 +52,11 @@
     chdir: '{{ ansistrano_release_path.stdout }}'
   become: yes
   become_user: www-data
+
+- name: runs create:members once
+  shell:
+    cmd: php artisan create:members "João Paulo" "Uendel Couto" "Esron Dtamar" "Ítalo André" -q --force > storage/logs/php_artisan_create:members-{{ ansible_date_time.epoch }}
+    creates: storage/logs/php_artisan_create:members-*
+    chdir: '{{ ansistrano_release_path.stdout }}'
+  become: yes
+  become_user: www-data
