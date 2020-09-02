@@ -18,7 +18,12 @@
 			</v-btn>
 			<v-btn
 				text
-				to="/sprint"
+				@click="$router.push({
+					name: 'sprint',
+					params: {
+						teamId: teams[0].id
+					}
+				})"
 			>
 				Sprint
 			</v-btn>
@@ -68,6 +73,7 @@ export default {
 			loadingLabels: ({ getLabels }) => getLabels.isFetching,
 		}),
 		...mapState('teams', {
+			teams: 'items',
 			loadingTeams: ({ getTeams }) => getTeams.isFetching,
 		}),
 		...mapState('boards', {
