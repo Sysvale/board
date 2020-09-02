@@ -178,8 +178,8 @@ class CardController extends Controller
 		$issues = $this->handler->getAllIssues();
 
 		$issues_to_create = $issues->whereNotIn(
-			GitlabHandler::LINK_FIELD,
-			Card::fromGitlab()->pluck('link')
+			GitlabHandler::ID_FIELD,
+			Card::fromGitlab()->pluck('gitlab_id')
 		);
 
 		$cards = $this->mapIssuesToCard($issues_to_create);
@@ -200,6 +200,7 @@ class CardController extends Controller
 			$card['labels'] = $this->getLabelIds($labels);
 			$card['link'] = $issue[GitlabHandler::LINK_FIELD];
 			$card['from_gitlab'] = true;
+			$card['gitlab_id'] = $issue[GitlabHandler::ID_FIELD];
 
 			return $card;
 		})->values()->toArray();
