@@ -11,10 +11,8 @@
 				:title="list.name"
 				:list="getList(list.id)"
 				:group="namespace"
-				:move="moveCallback"
 				@add="handleAdd"
 				@delete="handleDelete"
-				@change="handleChange(list.id)"
 			/>
 			<v-snackbar
 				v-model="snackbar"
@@ -106,6 +104,23 @@ export default {
 				),
 				...this.$options.computed,
 			};
+
+			this.$options.watch = {
+				...lists.reduce((acc, list) => ({
+					...acc,
+					[list.id]: {
+						handler: (newValue) => {
+							this.updateCardsPositions(
+									newValue.map((item, position) => (convertKeysToSnakeCase({
+										id: item.id,
+										position,
+										boardListId: list.id,
+									})))
+							);
+						},
+					},
+				}), {})
+			};
 	
 			this.$options.methods = {
 				...mapMutations([
@@ -147,12 +162,6 @@ export default {
 				...this.cardMiddleware,
 			})).then((data) => {
 				this.addNewTask({ ...data });
-				this.updateCardsPositions(
-						this[boardListId].map((item, position) => ({
-						id: item.id,
-						position,
-					}))
-				);
 			});
 		},
 
@@ -160,57 +169,6 @@ export default {
 			this.deleteCard(id).then(() => {
 				this.removeTask({ boardListId, id });
 			});
-		},
-
-		// Chamada para atualizar as posições no backend
-		handleChange(boardListId) {
-			this.updateCardsPositions(
-					this[boardListId].map((item, position) => ({
-					id: item.id,
-					position,
-				}))
-			);
-		},
-
-		moveCallback(ev) {
-			const element = ev.draggedContext.element;
-			const fromSizeBefore = this[ev.from.id].length + 1 - 1; // force var to lose the reference
-			const toSizeBefore = this[ev.to.id].length + 1 - 1;
-			if(ev.from !== ev.to) {
-				// a little trick/gamb here rsrsrsrs
-				setTimeout(() => {
-					if(
-						fromSizeBefore != this[ev.from.id].length
-						&& toSizeBefore != this[ev.to.id].length
-					) {
-						this.updateCard(
-							convertKeysToSnakeCase({
-								...{
-									...element,
-									...this.cardMiddleware,
-								},
-								boardListId: ev.to.id,
-							})
-						).then((data) => {
-							this.setCard(data);
-							this.updateCardsPositions(
-									this[ev.from.id].map((item, position) => ({
-									id: item.id,
-									position,
-								}))
-							);
-							this.updateCardsPositions(
-									this[ev.to.id].map((item, position) => ({
-									id: item.id,
-									position,
-								}))
-							);
-						});
-					} else {
-						this.snackbar = true;
-					}
-				}, 1000);
-			}
 		},
 
 		reload() {
