@@ -5,7 +5,7 @@
 		flat
 		outlined
 		color="#efefef"
-		height="60vh"
+		min-height="100%"
 	>
 		<div class="flex-grow-1 d-flex align-center vertical-text">
 			<v-btn
