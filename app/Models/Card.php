@@ -48,4 +48,9 @@ class Card extends Model
     {
         return $this->belongsTo('App\Models\Board');
     }
+
+    public function scopeFromGitlab($query)
+    {
+        return $query->where('from_gitlab', true);
+    }
 }
