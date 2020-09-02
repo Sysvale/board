@@ -13,8 +13,8 @@ class DictionaryController extends Controller
 			->orderBy('name', 'asc')
 			->get(['name', 'code', 'group'])
 			->groupBy('group')
-			->map(function($group) {
-				$group = collect($group)->map(function($item) {
+			->map(function ($group) {
+				$group = collect($group)->map(function ($item) {
 					return [
 						'value' => $item['code'],
 						'text' => $item['name'],
