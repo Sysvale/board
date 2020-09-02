@@ -51,10 +51,10 @@ Route::group(
 );
 
 Route::get(
-    "/{{$any}}", function () {
+    "{path}", function () {
         if (Auth::check()) {
             return view('index');
         }
         return redirect('login');
     }
-);
+)->where('path', '(.*)');
