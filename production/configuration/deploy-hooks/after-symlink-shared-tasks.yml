@@ -37,10 +37,10 @@
   become: yes
   become_user: www-data
 
-- name: runs create:devlog once
+- name: runs create:lists-to-problem-board once
   shell:
-    cmd: php artisan create:devlog -q --force > storage/logs/php_artisan_create:devlog-{{ ansible_date_time.epoch }}
-    creates: storage/logs/php_artisan_create:devlog-*
+    cmd: php artisan create:lists-to-problem-board -q --force > storage/logs/php_artisan_create:lists-to-problem-board-{{ ansible_date_time.epoch }}
+    creates: storage/logs/php_artisan_create:lists-to-problem-board-*
     chdir: '{{ ansistrano_release_path.stdout }}'
   become: yes
   become_user: www-data
