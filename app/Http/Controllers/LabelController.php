@@ -6,8 +6,8 @@ use App\Models\Label;
 
 class LabelController extends Controller
 {
-    public function index()
-    {
-        return Label::get();
-    }
+	public function index()
+	{
+		return Label::get();
+	}
 }
