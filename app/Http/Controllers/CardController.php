@@ -202,14 +202,14 @@ class CardController extends Controller
 			Card::fromGitlab()->pluck('gitlab_id')
 		);
 
-		$cards = $this->mapIssuesToCard($issues_to_create);
+		$cards = $this->mapIssuesToCards($issues_to_create);
 
 		if (count($cards)) {
 			Card::insert($cards);
 		}
 	}
 
-	private function mapIssuesToCard($issues)
+	private function mapIssuesToCards($issues)
 	{
 		return $issues->map(function ($issue) {
 			$labels = collect($issue[GitlabHandler::LABELS_FIELD]);
