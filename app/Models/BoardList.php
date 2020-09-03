@@ -7,21 +7,20 @@ use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class BoardList extends Model
 {
-    use SoftDeletes;
+	use SoftDeletes;
 
-    public $fillable = [
-        'name',
-        'position',
-        'key',
-        'user_story_holder'
-    ];
+	public $fillable = [
+		'name',
+		'position',
+		'key',
+		'user_story_holder'
+	];
 
-    protected $appends = ['id'];
-    protected $hidden = ['_id'];
+	protected $appends = ['id'];
+	protected $hidden = ['_id'];
 
-    public function cards()
-    {
-        return $this->hasMany('App\Models\Card');
-    }
-
+	public function cards()
+	{
+		return $this->hasMany('App\Models\Card');
+	}
 }
