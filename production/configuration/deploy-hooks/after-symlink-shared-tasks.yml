@@ -39,7 +39,7 @@
 
 - name: runs create:lists-to-problem-board once
   shell:
-    cmd: php artisan create:lists-to-problem-board -q --force > storage/logs/php_artisan_create:lists-to-problem-board-{{ ansible_date_time.epoch }}
+    cmd: php artisan create:lists-to-problem-board > storage/logs/php_artisan_create:lists-to-problem-board-{{ ansible_date_time.epoch }}
     creates: storage/logs/php_artisan_create:lists-to-problem-board-*
     chdir: '{{ ansistrano_release_path.stdout }}'
   become: yes
@@ -47,7 +47,7 @@
 
 - name: runs issues:put-gitlab-id once
   shell:
-    cmd: php artisan issues:put-gitlab-id -q --force > storage/logs/php_artisan_issues:put-gitlab-id-{{ ansible_date_time.epoch }}
+    cmd: php artisan issues:put-gitlab-id > storage/logs/php_artisan_issues:put-gitlab-id-{{ ansible_date_time.epoch }}
     creates: storage/logs/php_artisan_issues:put-gitlab-id-*
     chdir: '{{ ansistrano_release_path.stdout }}'
   become: yes
@@ -55,7 +55,7 @@
 
 - name: runs create:members once
   shell:
-    cmd: php artisan create:members "João Paulo" "Uendel Couto" "Esron Dtamar" "Ítalo André" -q --force > storage/logs/php_artisan_create:members-{{ ansible_date_time.epoch }}
+    cmd: php artisan create:members "João Paulo" "Uendel Couto" "Esron Dtamar" "Ítalo André" > storage/logs/php_artisan_create:members-{{ ansible_date_time.epoch }}
     creates: storage/logs/php_artisan_create:members-*
     chdir: '{{ ansistrano_release_path.stdout }}'
   become: yes
