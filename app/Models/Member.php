@@ -5,15 +5,14 @@ namespace App\Models;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
-
 class Member extends Model
 {
-    use SoftDeletes;
+	use SoftDeletes;
 
-    protected $fillable = [
-        'name',
-    ];
+	protected $fillable = [
+		'name',
+	];
 
-    protected $appends = ['id'];
-    protected $hidden = ['_id'];
+	protected $appends = ['id'];
+	protected $hidden = ['_id'];
 }
