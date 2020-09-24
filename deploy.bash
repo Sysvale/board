@@ -12,7 +12,6 @@ help() {
   echo
   echo '    -e=, --environment=ENVIRONMENT      the environment to deploy to'
   echo '    -u=, --user=                        the user used to ssh into the machine'
-  echo '    -u=, --user=                        the user used to ssh into the machine'
   echo '    -s=, --secret-file=                 file containing the vault secret key for sensitive files decription'
   echo '    -p=, --sudo-password=               the sudo password of the user specifyed'
   echo
@@ -63,7 +62,7 @@ if [ -z $ENVIRONMENT ]; then
 fi
 
 cd production/infra
-  terraform workspace select $ENVIRONMENT
+  terraform workspace select $ENVIRONMENT || terraform workspace new $ENVIRONMENT
   terraform apply -input=false
 cd -
 
