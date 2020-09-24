@@ -16,3 +16,4 @@ npm-debug.log
 yarn-error.log
 public/mix-manifest.json
 .docker
+.virtualenv
