@@ -14,6 +14,7 @@
 Auth::routes([
     'reset' => false,
     'verify' => false,
+    'register' => false,
 ]);
 
 $any = \App\Constants\RouteConstants::ANY;
