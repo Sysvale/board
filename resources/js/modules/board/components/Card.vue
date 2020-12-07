@@ -138,6 +138,13 @@
 				</div>
 			</v-container>
 			<v-divider/>
+			<!-- christmas -->
+			<div class="d-flex flex-column justify-space-between align-center">
+				<v-img
+					src="https://i.giphy.com/media/RIjMZfUlxRjKwpMLby/giphy.webp"
+					width="100px"
+				/>
+			</div>
 			<v-container
 				v-if="isTask"
 			>
