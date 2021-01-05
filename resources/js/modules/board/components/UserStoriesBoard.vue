@@ -27,9 +27,10 @@
 							</v-chip>
 						</div>
 						<v-img
-							src="https://image.freepik.com/free-vector/christmas-office-illustration_18591-8204.jpg"
+							src="https://miro.medium.com/max/2684/1*gPH1OunEUZPZNjFi7WycSA.png"
 							width="250px"
 							class="mb-3"
+							title="Image by Undraw.co"
 						/>
 						<div>
 							{{ story.title }}
