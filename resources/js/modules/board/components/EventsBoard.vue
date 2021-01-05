@@ -94,6 +94,7 @@
 				</v-sheet>
 				<v-sheet height="600">
 					<v-calendar
+						id="calendar"
 						ref="calendar"
 						v-model="focus"
 						color="primary"
@@ -438,6 +439,7 @@ export default {
 		this.getEventsByTeam(this.teamId)
 			.then((data) => {
 				this.setItems(data);
+				this.$refs.calendar.checkChange();
 			});
 	},
 
@@ -545,6 +547,7 @@ export default {
 			).then((data) => {
 				this.addItem(data);
 				this.createMode = false;
+				this.$refs.calendar.checkChange();
 			});
 		},
 
@@ -552,6 +555,7 @@ export default {
 			this.selectedOpen = false;
 			this.deleteEvent(this.selectedEvent.id).then(() => {
 				this.removeItem(this.selectedEvent.id);
+				this.$refs.calendar.checkChange();
 			})
 		},
 
@@ -568,6 +572,7 @@ export default {
 							return item;
 						})
 						this.setItems(newEventsList);
+						this.$refs.calendar.checkChange();
 					});
 			}
 			this.createMode = false;
@@ -578,5 +583,34 @@ export default {
 <style>
 .position-relative {
 	position: relative;
+}
+/* width */
+.v-calendar-daily__scroll-area::-webkit-scrollbar {
+	width: 8px;
+	height: 100px;
+	border-radius: 50px;
+	margin-left: -8px;
+}
+
+/* Track */
+.v-calendar-daily__scroll-area::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	margin-left: -8px;
+
+}
+
+/* Handle */
+.v-calendar-daily__scroll-area::-webkit-scrollbar-thumb {
+	background: rgba(0, 0, 0, 0.15);
+	border-radius: 5px;
+	margin-left: -8px;
+
+}
+
+/* Handle on hover */
+.v-calendar-daily__scroll-area::-webkit-scrollbar-thumb:hover {
+	background: rgba(0, 0, 0, 0.20);
+	margin-left: -8px;
+
 }
 </style>
