@@ -10,6 +10,7 @@ import teams from './teams';
 import boards from './boards'
 import issues from './issues';
 import sprint from './sprint';
+import events from './events';
 
 export default new Vuex.Store({
 	namespaced: true,
@@ -21,5 +22,6 @@ export default new Vuex.Store({
 		boards,
 		issues,
 		sprint,
+		events,
 	}
 });
