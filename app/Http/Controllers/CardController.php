@@ -11,6 +11,7 @@ use App\Models\BoardList;
 use App\Models\Card;
 use App\Models\Label;
 use App\Models\Team;
+use App\Models\Event;
 use App\Utils\GitlabHandler;
 use Illuminate\Http\Request;
 
@@ -73,28 +74,12 @@ class CardController extends Controller
 		return $cards;
 	}
 
-	public function getImpedimentsByTeam(Team $team)
-	{
-		$impediments = Card::where('team_id', $team->id)
-			->where(
-				'board_id',
-				Board::where('key', BoardKeys::IMPEDIMENTS)->first()->id
-			)->get()
-			->sortByDesc('created_at')
-			->values();
-
-		return $impediments;
-	}
-
 	public function getCurrentSprintSummaryByTeam(Team $team)
 	{
 		$cards = Card::where('team_id', $team->id)->get();
 
 		return [
-			'impediments_amount' => $cards->where(
-				'board_id',
-				Board::where('key', BoardKeys::IMPEDIMENTS)->first()->id
-			)->count(),
+			'impediments_amount' => Event::where('team_id', $team->id)->count(),
 			'estimated_amount' =>  Card::where(
 				'board_list_id',
 				BoardList::where('key', $team->key)->first()->id // TODO: Associar team_id quando entrar no board do time (pode ser um observer)
