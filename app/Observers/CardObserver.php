@@ -14,6 +14,10 @@ class CardObserver
      */
     public function created(Card $card)
     {
-        $card->number = Card::withTrashed()->count() + 1;
+        if (Card::withTrashed()->count() > 0) {
+            $card->number = Card::max('number') + 1;
+            return;
+        }
+        $card->number = 1;
     }
 }
