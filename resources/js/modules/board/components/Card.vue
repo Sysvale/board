@@ -34,6 +34,7 @@
 						<label-list
 							v-if="isTask && item.labels && item.labels.length"
 							:labels="item.labels"
+							small
 						/>
 						<v-spacer
 							v-if="!isTask && item.estimated"
@@ -95,10 +96,6 @@
 					>
 						#{{ item.number }}
 					</v-chip>
-					<label-list
-						v-if="isTask"
-						:labels="item.labels"
-					/>
 				</div>
 				<v-layout class="py-5">
 					<h3
@@ -118,51 +115,54 @@
 						@blur="handleSave"
 					/>
 				</v-layout>
+			</v-container>
+			<v-divider/>
+			<v-container
+				v-if="isTask"
+			>
 				<div
-					v-if="isTask"
-					class="d-flex pt-3"
+					class="pt-5"
 				>
-					<div class="d-flex justify-start flex-grow-1">
-						<member-list
-							:members="item.members"
-							full
-						/>
+					<div class="pb-2 grey--text caption">
+						Categorias:
 					</div>
+					<label-select
+						v-model="item.labels"
+						small
+					/>
+				</div>
+				<div
+					class="py-5"
+				>
+					<div class="pb-2 grey--text caption">
+						Membros:
+					</div>
+					<member-select
+						v-model="item.members"
+					/>
+				</div>
+				<div class="pb-2 grey--text caption">
+					Link:
+				</div>
+				<div
+					class="d-flex align-center"
+				>
+					<v-text-field
+						v-model="item.link"
+						placeholder="Link"
+						flat
+						outlined
+						dense
+					/>
 					<div
 						v-if="item.link"
+						class="ml-2 mt-n6"
 					>
 						<link-chip
 							:link="item.link"
 						/>
 					</div>
 				</div>
-			</v-container>
-			<v-divider/>
-			<v-container
-				v-if="isTask"
-			>
-				<div class="pb-2">
-					Categorias:
-				</div>
-				<label-select
-					v-model="item.labels"
-				/>
-				<div class="pb-2">
-					Membros:
-				</div>
-				<member-select
-					v-model="item.members"
-				/>
-				<div class="pb-2">
-					Link:
-				</div>
-				<v-text-field
-					v-model="item.link"
-					placeholder="Link"
-					flat
-					outlined
-					dense
-				/>
 			</v-container>
 			<v-container
 				v-else
