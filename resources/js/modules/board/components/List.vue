@@ -67,14 +67,12 @@
 				small
 				@click="colapsed = true"
 			>
-				<v-icon
-					class="christmas-highlight"
-				>
+				<v-icon>
 					keyboard_arrow_right
 				</v-icon>
 			</v-btn>
 			<div class="flex-grow-1 d-flex align-center">
-				<span class="mb-0 text-uppercase font-weight-medium text--secondary christmas-highlight">
+				<span class="mb-0 text-uppercase font-weight-medium text--secondary">
 					<span>
 						<small>{{ $attrs.title }}</small>
 						<span class="ml-3 text--secondary mb-0">
@@ -254,12 +252,5 @@ export default {
 /* Handle on hover */
 #cards-container::-webkit-scrollbar-thumb:hover {
 	background: rgba(0, 0, 0, 0.20);
-}
-
-.christmas-highlight {
-	background: rgba(255, 255, 255, 1);
-	padding-right: 5px;
-	padding-left: 5px;
-	border-radius: 5px;
 }
 </style>
