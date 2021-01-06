@@ -6,7 +6,7 @@
 		<div
 			v-for="(member, i) in slicedMembers"
 			:key="member.id"
-			class="member-item"
+			class="member-item d-flex align-center justify-center"
 			:class="{'ml-1': i > 0}"
 			:title="member.title || member.name"
 		>
@@ -76,7 +76,7 @@ export default {
 	background: #dce6ff;
 	width: 28px;
 	height: 28px;
-	border-radius: 3px;
+	border-radius: 50%;
 	text-align: center;
 	color: #3a7efd;
 	border: 1px solid #3a7efd;

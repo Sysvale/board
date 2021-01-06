@@ -98,6 +98,8 @@
 						ref="calendar"
 						v-model="focus"
 						color="primary"
+						event-color="transparent"
+						event-text-color="primary"
 						:events="items"
 						:type="type"
 						:weekdays="weekdays"
@@ -110,18 +112,21 @@
 						@click:more="viewDay"
 						@click:date="viewDay"
 					>
-					<template v-slot:event="{event, eventParsed }">
-						<div class="px-1 py-1">
-							<div>
-								{{ eventParsed.start.time }} - {{ eventParsed.end.time }}
+					<template v-slot:event="{ event, eventParsed }">
+							<div class="px-1 py-1">
+								<div class="d-flex align-center">
+									<member-list
+										class="mr-2"
+										:members="event.members"
+									/>
+									<div>
+										<div><strong>{{ event.name }}</strong></div>
+										<div class="event-time text--secondary">
+											{{ eventParsed.start.time }} - {{ eventParsed.end.time }}
+										</div>
+									</div>
+								</div>
 							</div>
-							<strong>{{ event.name }}</strong>
-							<div class="py-2">
-								<member-list
-									:members="event.members"
-								/>
-							</div>
-						</div>
 					</template>
 					</v-calendar>
 					<v-dialog
@@ -611,6 +616,16 @@ export default {
 .v-calendar-daily__scroll-area::-webkit-scrollbar-thumb:hover {
 	background: rgba(0, 0, 0, 0.20);
 	margin-left: -8px;
+}
 
+.theme--light.v-calendar-events .v-event-timed  {
+	border: 0px solid #1976d2!important;
+  border-left: 5px solid!important;
+	border-radius: 0px!important;
+	min-height: 40px;
+}
+
+.event-time {
+	font-size: 10px;
 }
 </style>
