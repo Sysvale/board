@@ -44,7 +44,7 @@ Route::group(
             'CardController@getCurrentSprintSummaryByTeam'
         );
         Route::get('/labels', 'LabelController@index');
-        Route::get('/members', 'MemberController@index');
+        Route::resource('members', 'MemberController');
         Route::get('/teams', 'TeamController@index');
         Route::get('/boards', 'BoardController@index');
 
