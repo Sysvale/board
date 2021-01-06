@@ -113,7 +113,7 @@
 						@click:date="viewDay"
 					>
 					<template v-slot:event="{ event, eventParsed }">
-							<div class="px-1 py-1">
+							<div class="px-1 py-1 highlight">
 								<div class="d-flex align-center">
 									<member-list
 										class="mr-2"
@@ -627,5 +627,9 @@ export default {
 
 .event-time {
 	font-size: 10px;
+}
+
+.highlight {
+	background: rgba(255, 255, 255, 0.75);
 }
 </style>
