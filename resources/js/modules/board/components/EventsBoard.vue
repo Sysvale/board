@@ -158,12 +158,6 @@
 									@blur="handleSave"
 								/>
 							</v-layout>
-							<div class="d-flex justify-start flex-grow-1 pb-5">
-								<member-list
-									:members="selectedEvent.members"
-									full
-								/>
-							</div>
 							<v-divider class="py-5"/>
 							<div>
 								Data:
