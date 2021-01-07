@@ -87,7 +87,7 @@ export default {
 				return `${this.$route.params.teamId}`;
 			}
 			if(this.teams && this.teams.length) {
-				return `sprint/${this.teams[0].id}`;
+				return `/sprint/${this.teams[0].id}`;
 			}
 			return 'sprint';
 		}
