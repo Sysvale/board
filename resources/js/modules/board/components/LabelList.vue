@@ -53,7 +53,10 @@ export default {
 			return this.rawLabels.filter(item => _.includes(this.labels, item.id));
 		},
 		shouldBeMuted() {
-			return itemId => this.selectable && this.selectedLabels.indexOf(itemId) === -1;
+			return itemId => {
+				if(!this.selectable) return false;
+				return !!this.selectedLabels && this.selectedLabels.indexOf(itemId) === -1;
+			};
 		},
 	},
 
