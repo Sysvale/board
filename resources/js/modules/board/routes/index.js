@@ -24,4 +24,12 @@ export default [
 		},
 		props: true,
 	},
+	{
+		path: '/settings/members',
+		name: 'settings.members',
+		component: () => import('../views/MemberSettings'),
+		meta: {
+			title: 'Membros',
+		},
+	},
 ];
