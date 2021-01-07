@@ -1,17 +1,21 @@
 <template>
 	<div
-		v-if="members && members.length > 0"
-		class="d-flex flex-wrap align-end"
+		class="d-flex align-end"
 	>
-			<member-item
-				v-for="member in slicedMembers"
-				:key="member.id"
-				:member="member"
-				:deletable="deletable"
-				class="mr-1 mt-1"
-				@delete="deletable ? $emit('deleteItem', member.id) : null"
-			/>
-			<slot name="append"></slot>
+		<div
+			v-if="members && members.length > 0"
+			class="d-flex"
+		>
+				<member-item
+					v-for="member in slicedMembers"
+					:key="member.id"
+					:member="member"
+					:deletable="deletable"
+					class="mr-1 mt-1"
+					@delete="deletable ? $emit('deleteItem', member.id) : null"
+				/>
+		</div>
+		<slot name="append"></slot>
 	</div>
 </template>
 <script>
