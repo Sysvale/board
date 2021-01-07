@@ -4,6 +4,7 @@
 			:key="member.id"
 			class="member-item d-flex align-center justify-center"
 			:title="member.title || member.name"
+			:style="avatarStyle"
 			@mouseover="deletable ? overlay = true : null"
 			@mouseleave="deletable ? overlay = false : null"
 		>
@@ -22,7 +23,7 @@
 					</v-icon>
 				</v-btn>
 			</v-overlay>
-			<small>
+			<small v-if="!avatarStyle">
 				<strong>{{ getFirstLetters(member.name) }}</strong>
 			</small>
 		</span>
@@ -44,7 +45,12 @@ export default {
 	data() {
 		return {
 			overlay: false,
+			avatarStyle: null,
 		};
+	},
+
+	mounted() {
+		this.setAvatarStyle(this.member.avatarUrl);
 	},
 
 	methods: {
@@ -52,12 +58,28 @@ export default {
 			const computed = name[0] + ((name.split(' ')[1] ? name.split(' ')[1][0] : false) || name[1]);
 			return computed.toUpperCase();
 		},
+		setAvatarStyle(avatarUrl) {
+			let img = new Image();
+			img.onload = () => {
+				this.avatarStyle = {
+					backgroundImage: `url('${avatarUrl}')`,
+					backgroundColor: 'transparent!important',
+					backgroundSize: 'cover',
+					backgroundPosition: 'center',
+					border: 'none',
+				}
+			};
+			img.onerror = () => {
+				this.avatarStyle = null;
+			};
+			img.src = avatarUrl;
+		},
 	}
 }
 </script>
 <style>
 .member-item {
-	background: #dce6ff;
+	background-color: #dce6ff;
 	width: 28px;
 	height: 28px;
 	border-radius: 50%;
