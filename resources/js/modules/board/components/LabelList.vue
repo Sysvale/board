@@ -3,35 +3,46 @@
 		v-if="labels && labels.length > 0"
 		class="d-flex"
 	>
-		<div style="line-height:28px">
-			<v-chip
+		<div>
+			<label-item
 				v-for="label in computedLabels"
 				:key="label.id"
-				:text-color="label.textColor || 'black'"
-				:color="label.color"
-				:title="label.name"
-				small
-				label
-				class="mr-1 px-1 py-1"
-				:style="{
-					borderBottom: `2px solid rgba(0, 0, 0, 0.35)`,
-				}"
-			>
-				<small class="text-uppercase font-weight-medium">
-					{{label.name }}
-				</small>
-			</v-chip>
+				:label="label"
+				:muted="shouldBeMuted(label.id)"
+				:small="small"
+				style="cursor:pointer"
+				class="mt-1"
+				@click.native="handleItemClick($event, label.id)"
+			/>
 		</div>
 	</div>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
+import LabelItem from './LabelItem';
+
 export default {
 	props: {
 		labels: {
 			type: Array,
 			default: () => [],
 		},
+		selectable: {
+			type: Boolean,
+			default: false,
+		},
+		selectedLabels: {
+			type: Array,
+			default: () => [],
+		},
+		small: {
+			type: Boolean,
+			default: false,
+		},
+	},
+
+	components: {
+		LabelItem,
 	},
 
 	computed: {
@@ -41,6 +52,21 @@ export default {
 		computedLabels() {
 			return this.rawLabels.filter(item => _.includes(this.labels, item.id));
 		},
+		shouldBeMuted() {
+			return itemId => {
+				if(!this.selectable) return false;
+				return !!this.selectedLabels && this.selectedLabels.indexOf(itemId) === -1;
+			};
+		},
+	},
+
+	methods: {
+		handleItemClick(event, id) {
+			if(this.selectable) {
+				event.stopPropagation();
+				this.$emit('itemClick', id);
+			}
+		}
 	}
 }
 </script>

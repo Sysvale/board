@@ -1,25 +1,33 @@
 <template>
-	<v-select
-		:value="value"
-		:items="labels"
-		chips
-		placeholder="Categorias"
-		multiple
-		outlined
-		dense
-		item-text="name"
-		item-value="id"
-		@input="$emit('input', $event)"
-	/>
+	<div class="mb-5">
+		<label-list
+			:labels="labels.map(({ id }) => id)"
+			selectable
+			:selectedLabels="value"
+			@itemClick="selectHandler"
+		/>
+	</div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import LabelItem from './LabelItem';
+import LabelList from './LabelList.vue';
+
 export default {
 	props: {
 		value: {
 			type: [Object, String, Array],
 			default: null,
 		},
+		small: {
+			type: Boolean,
+			default: false,
+		}
+	},
+
+	components: {
+		LabelItem,
+		LabelList,
 	},
 
 	computed: {
@@ -27,5 +35,15 @@ export default {
 			labels: 'items',
 		}),
 	},
+
+	methods: {
+		selectHandler(selectedId) {
+			if(!!this.value && this.value.indexOf(selectedId) > -1) {
+				this.$emit('input', this.value.filter((item) => item !== selectedId));
+				return;
+			}
+			this.$emit('input', [...(this.value || []), selectedId]);
+		}
+	}
 }
 </script>
