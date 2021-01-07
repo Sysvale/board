@@ -57,7 +57,7 @@
 					</div>
 					<div
 						v-if="isTask"
-						class="d-flex pt-2"
+						class="d-flex align-start pt-2"
 					>
 						<member-list
 							:members="item.members"
