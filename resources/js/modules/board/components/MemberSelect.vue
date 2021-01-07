@@ -91,6 +91,7 @@ export default {
 	watch: {
 		select(newValue) {
 			setTimeout(() => {
+				if(!this.$refs.memberSelect) return;
 				this.$refs.memberSelect.isMenuActive = true;
 			}, 100);
 		}
