@@ -8,6 +8,6 @@ class LabelController extends Controller
 {
 	public function index()
 	{
-		return Label::get();
+		return Label::orderBy('name')->get();
 	}
 }
