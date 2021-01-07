@@ -44,9 +44,12 @@ Route::group(
             'CardController@getCurrentSprintSummaryByTeam'
         );
         Route::get('/labels', 'LabelController@index');
-        Route::get('/members', 'MemberController@index');
+        Route::resource('members', 'MemberController');
         Route::get('/teams', 'TeamController@index');
         Route::get('/boards', 'BoardController@index');
+
+        Route::resource('events', 'EventController')->only(['store', 'update', 'destroy']);
+        Route::get('/events/{team}', 'EventController@getEventsByTeam');
 
         Route::get('/logout', function () {
             Auth::logout();

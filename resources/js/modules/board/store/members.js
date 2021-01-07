@@ -1,11 +1,18 @@
 import makeRequestStore from '../../../core/utils/makeRequestStore';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
-	getMembers
+	getMembers,
+	createMember,
+	updateMember,
+	deleteMember,
 } from '../services/members';
 
 const modules = [
 	{ getMembers },
+	{ createMember },
+	{ updateMember },
+	{ deleteMember },
 ];
 
 export default {
@@ -21,7 +28,7 @@ export default {
 	},
 	mutations: {
 		setItems(state, payload) {
-			state.items = payload;
+			state.items = convertKeysToCamelCase(payload);
 		},
 	},
 }

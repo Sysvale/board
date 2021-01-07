@@ -1,30 +1,38 @@
 <template>
 	<div
-		v-if="members && members.length > 0"
-		class="d-flex"
+		class="d-flex align-end"
 	>
 		<div
-			v-for="(member, i) in slicedMembers"
-			:key="member.id"
-			class="member-item"
-			:class="{'ml-1': i > 0}"
-			:title="member.title || member.name"
+			v-if="members && members.length > 0"
+			class="d-flex"
 		>
-			<small>
-				<strong>{{ getFirstLetters(member.name) }}</strong>
-			</small>
+				<member-item
+					v-for="member in slicedMembers"
+					:key="member.id"
+					:member="member"
+					:deletable="deletable"
+					class="mr-1 mt-1"
+					@delete="deletable ? $emit('deleteItem', member.id) : null"
+				/>
 		</div>
+		<slot name="append"></slot>
 	</div>
 </template>
 <script>
 import { mapState } from 'vuex';
+import MemberItem from './MemberItem.vue';
 export default {
+  components: { MemberItem },
 	props: {
 		members: {
 			type: Array,
 			default: () => [],
 		},
 		full: {
+			type: Boolean,
+			default: false,
+		},
+		deletable: {
 			type: Boolean,
 			default: false,
 		}
@@ -62,23 +70,5 @@ export default {
 			return this.computedMembers;
 		}
 	},
-
-	methods: {
-		getFirstLetters(name) {
-			const computed = name[0] + ((name.split(' ')[1] ? name.split(' ')[1][0] : false) || name[1]);
-			return computed.toUpperCase();
-		},
-	}
 }
 </script>
-<style>
-.member-item {
-	background: #dce6ff;
-	width: 28px;
-	height: 28px;
-	border-radius: 3px;
-	text-align: center;
-	color: #3a7efd;
-	border: 1px solid #3a7efd;
-}
-</style>

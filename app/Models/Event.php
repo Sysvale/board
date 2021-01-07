@@ -5,16 +5,18 @@ namespace App\Models;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
-class Member extends Model
+class Event extends Model
 {
 	use SoftDeletes;
 
 	protected $fillable = [
-		'name',
 		'team_id',
-		'avatar_url',
+		'name',
+		'start',
+		'end',
+		'members',
+		'labels',
 	];
-
 	protected $appends = ['id'];
 	protected $hidden = ['_id'];
 

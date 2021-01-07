@@ -1,8 +1,8 @@
 <template>
 	<v-chip
-		v-if="link"
+		v-if="computedLink.label"
 		:href="link"
-		target="blank"
+		target="_blank"
 		small
 		pill
 		:color="computedLink.color"
@@ -12,12 +12,18 @@
 		@click.native.stop
 	>
 		<span
-			v-if="computedLink.label"
 		>
 			{{ computedLink.label }}
 		</span>
-		<v-icon v-else>link</v-icon>
 	</v-chip>
+	<v-btn
+		v-else
+		icon
+		:href="link"
+		target="_blank"
+	>
+		<v-icon>open_in_new</v-icon>
+	</v-btn>
 </template>
 <script>
 export default {

@@ -21,7 +21,7 @@
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
-				<impediment-table
+				<events-board
 					:team-id="teamId"
 					@changed="impedimentsAmount = $event.length"
 				/>
@@ -121,7 +121,7 @@
 <script>
 import UserStoriesBoard from './UserStoriesBoard.vue';
 import Board from './Board.vue';
-import ImpedimentTable from './ImpedimentTable.vue';
+import EventsBoard from './EventsBoard.vue';
 import {
 	getCardsByListsIds,
 } from '../services/cards';
@@ -143,7 +143,7 @@ export default {
 	components: {
 		UserStoriesBoard,
 		Board,
-		ImpedimentTable,
+		EventsBoard,
 	},
 
 	props: {
