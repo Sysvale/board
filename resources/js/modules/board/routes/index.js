@@ -8,7 +8,7 @@ export default [
 		},
 	},
 	{
-		path: '/',
+		path: '/planning',
 		name: 'planning',
 		component: () => import('../views/Planning'),
 		meta: {

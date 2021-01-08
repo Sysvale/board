@@ -11,7 +11,7 @@
 
 			<v-btn
 				text
-					to="/"
+					to="/planning"
 				class="mr-3"
 			>
 				Planning
