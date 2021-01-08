@@ -32,11 +32,18 @@
 			</v-btn>
 		</v-app-bar>
 		<v-main>
-			<div
+			<v-container
 				v-if="loading"
+				fluid
+				fill-height
+				class="px-2 py-5 text-center"
 			>
-				Carregando...
-			</div>
+				<div
+					class="flex-grow-1"
+				>
+					Abastecendo o poçante...
+				</div>
+			</v-container>
 			<router-view v-else />
 		</v-main>
 	</v-app>
