@@ -16,6 +16,7 @@ class CardObserver
     {
         if (Card::withTrashed()->count() > 0) {
             $card->number = Card::max('number') + 1;
+            $card->save();
             return;
         }
         $card->number = 1;
