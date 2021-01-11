@@ -9,7 +9,7 @@ class MemberController extends Controller
 {
 	public function index()
 	{
-		return Member::get();
+		return Member::orderBy('name', 'ASC')->get();
 	}
 
 	public function store(Request $in)

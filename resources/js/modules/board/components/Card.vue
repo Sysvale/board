@@ -15,22 +15,24 @@
 					@mouseover="hover = true"
 					@mouseleave="hover = false"
 				>
+				<div>
+					<v-chip
+						v-if="item.number"
+						color="gray"
+						text-color="black"
+						small
+						label
+						class="mb-2"
+					>
+						#{{ item.number }}
+					</v-chip>
+				</div>
 				<div
 					class="d-flex align-center"
 				>
 					<div
 						class="pb-2 flex-grow-1 d-flex align-items-center"
 					>
-						<v-chip
-							v-if="item.number"
-							color="gray"
-							text-color="black"
-							small
-							label
-							class="mr-2"
-						>
-							#{{ item.number }}
-						</v-chip>
 						<label-list
 							v-if="isTask && item.labels && item.labels.length"
 							:labels="item.labels"
