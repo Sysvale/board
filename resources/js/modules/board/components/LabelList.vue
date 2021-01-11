@@ -55,6 +55,7 @@ export default {
 		shouldBeMuted() {
 			return itemId => {
 				if(!this.selectable) return false;
+				if(!this.selectedLabels || this.selectedLabels.length === 0) return true;
 				return !!this.selectedLabels && this.selectedLabels.indexOf(itemId) === -1;
 			};
 		},
