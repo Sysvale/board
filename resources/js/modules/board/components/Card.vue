@@ -15,16 +15,39 @@
 					@mouseover="hover = true"
 					@mouseleave="hover = false"
 				>
-				<div>
+				<div class="d-flex align-center">
 					<v-chip
 						v-if="item.number"
-						color="gray"
-						text-color="black"
+						color="#efefef"
+						text-color="#555"
 						small
 						label
 						class="mb-2"
 					>
 						#{{ item.number }}
+					</v-chip>
+					<v-chip
+						v-if="hasChecklist"
+						color="transparent"
+						text-color="#a3a3a3"
+						small
+						label
+						class="mb-2 justify-end"
+					>
+						<span
+							class="d-flex align-items-center"
+							:class="{
+								'font-weight-bold': allDoneInChecklist
+							}"
+						>
+							<v-icon
+								x-small
+								class="mr-1"
+							>
+								check_box
+							</v-icon>
+							{{ checklistLabel }}
+						</span>
 					</v-chip>
 				</div>
 				<div
@@ -59,7 +82,7 @@
 					</div>
 					<div
 						v-if="isTask"
-						class="d-flex align-start pt-2"
+						class="d-flex align-center pt-2"
 					>
 						<member-list
 							:members="item.members"
@@ -102,7 +125,7 @@
 				<v-layout class="py-5">
 					<h3
 						v-if="!titleInEditMode"
-						@click="titleInEditMode = true"
+						@click="handleEditMode"
 						class="black--text"
 					>
 						{{ item.title }}
@@ -122,49 +145,84 @@
 			<v-container
 				v-if="isTask"
 			>
-				<div
-					class="pt-5"
+				<v-tabs
+					v-model="selectedTab"
+					grow
+					background-color="transparent"
+					color="secondary"
 				>
-					<div class="pb-2 grey--text caption">
-						Categorias:
-					</div>
-					<label-select
-						v-model="item.labels"
-						small
-					/>
-				</div>
-				<div
-					class="py-5"
-				>
-					<div class="pb-2 grey--text caption">
-						Membros:
-					</div>
-					<member-select
-						v-model="item.members"
-					/>
-				</div>
-				<div class="pb-2 grey--text caption">
-					Link:
-				</div>
-				<div
-					class="d-flex align-center"
-				>
-					<v-text-field
-						v-model="item.link"
-						placeholder="Link"
-						flat
-						outlined
-						dense
-					/>
-					<div
-						v-if="item.link"
-						class="ml-2 mt-n6"
+					<v-tab
+						v-for="(tab, i) in tabs"
+						:key="i"
 					>
-						<link-chip
-							:link="item.link"
-						/>
-					</div>
-				</div>
+						{{ tabTitle(tab) }}
+					</v-tab>
+				</v-tabs>
+				<v-tabs-items
+					v-model="selectedTab"
+				>
+					<v-tab-item
+						:key="MAIN_TAB"
+					>
+						<div
+							class="pt-5"
+						>
+							<div class="pb-2 grey--text caption">
+								Categorias:
+							</div>
+							<label-select
+								v-model="item.labels"
+								small
+							/>
+						</div>
+						<div
+							class="py-5"
+						>
+							<div class="pb-2 grey--text caption">
+								Membros:
+							</div>
+							<member-select
+								v-model="item.members"
+							/>
+						</div>
+						<div class="pb-2 grey--text caption">
+							Link:
+						</div>
+						<div
+							class="d-flex align-center"
+						>
+							<v-text-field
+								v-model="item.link"
+								placeholder="Link"
+								flat
+								outlined
+								dense
+							/>
+							<div
+								v-if="item.link"
+								class="ml-2 mt-n6"
+							>
+								<link-chip
+									:link="item.link"
+								/>
+							</div>
+						</div>
+					</v-tab-item>
+					<v-tab-item
+						:key="CHECKLIST_TAB"
+					>
+						<div
+							class="py-5"
+						>
+							<div class="pb-2 grey--text caption">
+								Items:
+							</div>
+							<checklist-form
+								v-model="item.checklist"
+							/>
+						</div>
+					</v-tab-item>
+				</v-tabs-items>
 			</v-container>
 			<v-container
 				v-else
@@ -228,9 +286,13 @@ import LabelList from './LabelList';
 import MemberSelect from './MemberSelect';
 import LabelSelect from './LabelSelect';
 import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
+import ChecklistForm from './ChecklistForm';
 import LinkChip from './LinkChip';
 import TeamChip from './TeamChip';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+
+const MAIN_TAB = 'Informações gerais';
+const CHECKLIST_TAB = 'Checklist';
 
 export default {
 	components: {
@@ -239,6 +301,7 @@ export default {
 		MemberSelect,
 		LabelSelect,
 		AcceptanceCriteriaForm,
+		ChecklistForm,
 		LinkChip,
 		TeamChip,
 	},
@@ -258,6 +321,10 @@ export default {
 			// evitar que enquanto digita dispare o watch
 			cloneTitle: _.clone(this.item.title),
 			showLinkField: false,
+			MAIN_TAB,
+			CHECKLIST_TAB,
+			tabs: [MAIN_TAB, CHECKLIST_TAB],
+			selectedTab: MAIN_TAB,
 		};
 	},
 
@@ -277,7 +344,39 @@ export default {
 				return `${this.item.estimated} pt`
 			}
 			return `${this.item.estimated} pts`;
-		}
+		},
+
+		hasChecklist() {
+			return this.item.checklist && this.item.checklist.length > 0;
+		},
+
+		checklistLabel() {
+			const doneLenght = this.item.checklist.filter((item) => {
+				return !!item.done;
+			}).length;
+			const { length } = this.item.checklist;
+			return `${doneLenght}/${length}`;
+		},
+
+		allDoneInChecklist() {
+			return this.item.checklist.filter((item) => {
+				return !!item.done;
+			}).length === this.item.checklist.length;
+		},
+
+		tabTitle() {
+			return tab => {
+				switch(tab) {
+					case CHECKLIST_TAB:
+						if(this.hasChecklist) {
+							return `${tab} (${this.checklistLabel})`;
+						}
+						return tab;
+					default:
+						return tab;
+				}
+			}
+		},
 	},
 
 	watch: {
@@ -300,9 +399,17 @@ export default {
 
 		handleSave() {
 			this.titleInEditMode = false;
+			if(!this.cloneTitle || this.cloneTitle.trim().length === 0 ) {
+				return;
+			}
 			this.item.title = _.clone(this.cloneTitle);
 			this.$emit('save');
 		},
+
+		handleEditMode() {
+			this.cloneTitle = _.clone(this.item.title);
+			this.titleInEditMode = true;
+		}
 	},
 }
 </script>
