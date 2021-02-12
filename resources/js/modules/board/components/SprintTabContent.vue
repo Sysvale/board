@@ -15,9 +15,6 @@
 						block
 					</v-icon>
 					<h3 class="mb-0 mr-2">Impedimentos</h3>
-					<span class="text--secondary mb-0">
-						{{ impedimentsAmount }}
-					</span>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>

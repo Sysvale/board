@@ -29,9 +29,6 @@ export default {
 }
 </script>
 <style scoped>
-	.label-item {
-		border-bottom: 2px solid rgba(0, 0, 0, 0.35)!important;
-	}
 	.muted {
 		opacity: 0.5;
 	}
