@@ -20,6 +20,7 @@ class Card extends Model
 		'members',
 		'labels',
 		'acceptance_criteria',
+		'checklist',
 		'is_user_story',
 		'gitlab_id'
 	];
