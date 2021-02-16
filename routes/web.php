@@ -55,6 +55,9 @@ Route::group(
             Auth::logout();
             return redirect('login');
         });
+
+        Route::resource('workspaces', 'WorkspaceController')
+            ->only(['index', 'store', 'destroy']);
     }
 );
 
