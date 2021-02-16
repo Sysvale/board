@@ -6,17 +6,64 @@
 			dense
 			dark
 		>
-			<v-toolbar-title>Trelássio</v-toolbar-title>
+			<v-btn
+				text
+				to="/workspace/select"
+				class="mr-3"
+				icon
+			>
+				<v-icon>dashboard</v-icon>
+			</v-btn>
+			<v-icon
+				v-if="workspaces && currentWorkspace"
+				color="white"
+				class="mr-5"
+			>
+				keyboard_arrow_right
+			</v-icon>
+			<v-menu
+				v-if="workspaces && currentWorkspace"
+			>
+				<template v-slot:activator="{ on, attrs }">
+					<v-btn
+						color="primary"
+						dark
+						v-bind="attrs"
+						v-on="on"
+					>
+						{{ currentWorkspace.name }}
+						<v-icon>
+							keyboard_arrow_down
+						</v-icon>
+					</v-btn>
+				</template>
+				<v-list>
+					<v-list-item
+						v-for="(workspace, index) in workspaces"
+						:key="index"
+					>
+						<v-btn
+							link
+							text
+							@click="getToFromWorkspace(workspace.id)"
+						>
+							{{ workspace.name }}
+						</v-btn>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 			<v-spacer/>
 
 			<v-btn
+				v-if="currentWorkspace"
 				text
-					to="/planning"
+				:to="`/workspace/${currentWorkspace.id}/planning`"
 				class="mr-3"
 			>
 				Planning
 			</v-btn>
 			<v-btn
+				v-if="currentWorkspace"
 				text
 				:to="sprintRoute"
 			>
@@ -50,10 +97,20 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 
 export default {
 	mounted() {
+		this.getWorkspaces().then((data) => {
+			this.setWorkspaces(data);
+			if(this.$route.params && this.$route.params.workspaceId) {
+				this.setSelectedWorkspace(this.workspaces.filter(({
+					id
+				}) => id == this.$route.params.workspaceId)[0]);
+			} else {
+				this.setSelectedWorkspace(null)
+			}
+		});
 		this.getMembers().then((data) => {
 			this.setMembers(data);
 		});
@@ -68,6 +125,11 @@ export default {
 		});
 	},
 	computed: {
+		...mapState('workspaces', {
+			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
+			selectedWorkspace: 'selectedWorkspace',
+			workspaces: 'items',
+		}),
 		...mapState('members', {
 			loadingMembers: ({ getMembers }) => getMembers.isFetching,
 		}),
@@ -82,11 +144,17 @@ export default {
 			loadingBoards: ({ getBoards }) => getBoards.isFetching,
 		}),
 
+		...mapGetters('workspaces', ['currentWorkspace']),
+		...mapGetters('teams', {
+			teamByWorkspace: 'itemsByWorkspace',
+		}),
+
 		loading() {
 			return this.loadingMembers
 				|| this.loadingLabels
 				|| this.loadingTeams
-				|| this.loadingBoards;
+				|| this.loadingBoards
+				|| this.loadingWorkspaces;
 		},
 
 		sprintRoute() {
@@ -94,21 +162,31 @@ export default {
 				return `${this.$route.params.teamId}`;
 			}
 			if(this.teams && this.teams.length) {
-				return `/sprint/${this.teams[0].id}`;
+				return `/workspace/${this.currentWorkspace.id}/sprint/${this.teams[0].id}`;
 			}
 			return 'sprint';
 		}
 	},
 	watch: {
 		'$route'(to, from) {
+			if(to.params && to.params.workspaceId) {
+				this.setSelectedWorkspace(this.workspaces.filter(({ id }) => id == to.params.workspaceId)[0]);
+			} else {
+				this.setSelectedWorkspace(null)
+			}
+
 			if(to.meta && to.meta.title) {
 				document.title = `${to.meta.title} | Trelássio`
 				return;
 			}
-			to.from.title = 'Trelássio';
+
+			to.meta.title = 'Trelássio';
 		},
 	},
 	methods: {
+		...mapActions('workspaces', [
+			'getWorkspaces',
+		]),
 		...mapActions('members', [
 			'getMembers',
 		]),
@@ -121,6 +199,10 @@ export default {
 		...mapActions('boards', [
 			'getBoards',
 		]),
+		...mapMutations('workspaces', {
+			setWorkspaces: 'setItems',
+			setSelectedWorkspace: 'setSelectedWorkspace',
+		}),
 		...mapMutations('members', {
 			setMembers: 'setItems',
 		}),
@@ -136,6 +218,29 @@ export default {
 		logout() {
 			return window.location.href = '/logout';
 		},
+		getToFromWorkspace(workspaceId) {
+			if(workspaceId === this.currentWorkspace.id) return;
+			const name = this.$route.name;
+			const params = {
+					workspaceId,
+					teamId: name === 'sprint' ? this.teamByWorkspace[0].id : null
+			};
+			this.$router.push({
+				name,
+				params: {
+					...Object
+						.keys(params)
+						.filter((key) => !!params[key])
+						.reduce((acc, curr) => {
+							acc = {
+								[curr]: params[curr],
+								...acc,
+							};
+							return acc;
+						}, {}),
+				}
+			});
+		}
 	}
 }
 </script>
