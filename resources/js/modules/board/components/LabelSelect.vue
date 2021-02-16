@@ -9,7 +9,7 @@
 	</div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import LabelItem from './LabelItem';
 import LabelList from './LabelList.vue';
 
@@ -31,8 +31,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('labels', {
-			labels: 'items',
+		...mapGetters('labels', {
+			labels: 'itemsByWorkspace',
 		}),
 	},
 

@@ -280,7 +280,7 @@
 	</v-dialog>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import MemberList from './MemberList';
 import LabelList from './LabelList';
 import MemberSelect from './MemberSelect';
@@ -329,11 +329,11 @@ export default {
 	},
 
 	computed: {
-		...mapState('labels', {
-			labels: 'items',
+		...mapGetters('labels', {
+			labels: 'itemsByWorkspace',
 		}),
-		...mapState('teams', {
-			teams: 'items',
+		...mapGetters('teams', {
+			teams: 'itemsByWorkspace',
 		}),
 		
 		isTask() {

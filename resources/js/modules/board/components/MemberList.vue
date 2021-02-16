@@ -19,7 +19,7 @@
 	</div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import MemberItem from './MemberItem.vue';
 export default {
   components: { MemberItem },
@@ -39,8 +39,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('members', {
-			rawMembers: 'items',
+		...mapGetters('members', {
+			rawMembers: 'itemsByWorkspace',
 		}),
 		computedMembers() {
 			return this.rawMembers.filter(item => _.includes(this.members, item.id));
