@@ -11,6 +11,7 @@ import boards from './boards'
 import issues from './issues';
 import sprint from './sprint';
 import events from './events';
+import workspaces from './workspaces';
 
 export default new Vuex.Store({
 	namespaced: true,
@@ -23,5 +24,6 @@ export default new Vuex.Store({
 		issues,
 		sprint,
 		events,
+		workspaces,
 	}
 });
