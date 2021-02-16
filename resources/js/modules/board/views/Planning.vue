@@ -11,6 +11,7 @@
 			class="px-2"
 		>
 			<v-expansion-panel
+				v-if="currentWorkspace && !currentWorkspace.settings.noPlanningProblems"
 				:key="PlanningGroups.PROBLEMS"
 				@change="handleProblemsPanelChange"
 			>
@@ -86,6 +87,7 @@ import {
 import {
 	getCardsByListsIds,
 } from '../services/cards';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -100,6 +102,11 @@ export default {
 			PlanningGroups
 		}
 	},
+
+	computed: {
+		...mapGetters('workspaces', ['currentWorkspace'])
+	},
+
 	methods: {
 		getPlanningLists,
 		getIssuesLists,

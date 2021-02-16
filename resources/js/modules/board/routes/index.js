@@ -8,7 +8,7 @@ export default [
 		},
 	},
 	{
-		path: '/planning',
+		path: '/workspace/:workspaceId/planning',
 		name: 'planning',
 		component: () => import('../views/Planning'),
 		meta: {
@@ -16,7 +16,7 @@ export default [
 		},
 	},
 	{
-		path: '/sprint/:teamId',
+		path: '/workspace/:workspaceId/sprint/:teamId',
 		name: 'sprint',
 		component: () => import('../views/Sprint'),
 		meta: {
@@ -30,6 +30,14 @@ export default [
 		component: () => import('../views/MemberSettings'),
 		meta: {
 			title: 'Membros',
+		},
+	},
+	{
+		path: '/workspace/select',
+		name: 'workspace.select',
+		component: () => import('../views/WorkspaceSelection'),
+		meta: {
+			title: 'Selecione seu Workspace',
 		},
 	},
 ];
