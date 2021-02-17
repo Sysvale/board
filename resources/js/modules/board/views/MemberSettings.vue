@@ -53,9 +53,10 @@
 									</v-row>
 									<v-row>
 										<v-select
-											v-model="selectedItem.teamId"
+											v-model="selectedItem.teamIds"
 											:items="teams"
-											placeholder="Time"
+											:multiple="true"
+											placeholder="Time(s)"
 											return
 											item-text="name"
 											item-value="id"
@@ -103,11 +104,6 @@
 					</v-dialog>
 				</v-toolbar>
 			</template>
-			<template
-        v-slot:item.teamName="{ item }"
-      >
-        {{ teamName(item) }}
-      </template>
 			<template v-slot:item.actions="{ item }">
 				<v-btn
 					icon
@@ -167,7 +163,7 @@ export default {
 					text: 'Time',
 					align: 'start',
 					sortable: true,
-					value: 'teamName',
+					value: 'teams',
 				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
@@ -226,7 +222,7 @@ export default {
 		...mapMutations('members', [
 			'setItems',
 		]),
-	
+
 		editItem (item) {
 			this.editMode = true;
 			this.selectedItem = Object.assign({}, item);
