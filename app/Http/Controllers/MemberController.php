@@ -28,13 +28,11 @@ class MemberController extends Controller
 		
 		if (!$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
-			$token = Str::random(60);
 
 			$user = User::create([
 				'name' => $in->name,
 				'email' => $in->email,
 				'password' => Hash::make($generatedPassword),
-				'token' => $token,
 			]);
 		}
 

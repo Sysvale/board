@@ -32,8 +32,10 @@ class WelcomeMail extends Mailable
     {
         $first_name = explode(' ', $this->user->name)[0];
 
+        $token = app('auth.password.broker')->createToken($this->user);
+
         $url = route('password.reset', [
-            'token' => $this->user->token,
+            'token' => $token,
             'email' => $this->user->email,
         ]);
 
