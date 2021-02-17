@@ -12,6 +12,7 @@
 </head>
 <body>
   <div id="app"></div>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script src="{{ mix('js/app.min.js') }}" defer></script>
 </body>
 </html>
