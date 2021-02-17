@@ -5,11 +5,16 @@ namespace App;
 use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use App\Events\UserRegisteredEvent;
 
 class User extends Authenticatable
 {
 	use Notifiable;
 	use SoftDeletes;
+
+	protected $dispatchesEvents = [
+		'created' => UserRegisteredEvent::class,
+	];
 
 	/**
 	 * The attributes that are mass assignable.
@@ -17,7 +22,7 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'email', 'password',
+		'name', 'email', 'password', 'token'
 	];
 
 	/**
