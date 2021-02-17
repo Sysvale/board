@@ -12,6 +12,8 @@ import issues from './issues';
 import sprint from './sprint';
 import events from './events';
 
+import settingsModules from '../../settings/store';
+
 export default new Vuex.Store({
 	namespaced: true,
 	modules: {
@@ -23,5 +25,6 @@ export default new Vuex.Store({
 		issues,
 		sprint,
 		events,
+		...settingsModules,
 	}
 });
