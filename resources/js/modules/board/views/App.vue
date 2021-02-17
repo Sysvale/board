@@ -53,6 +53,13 @@
 				</v-list>
 			</v-menu>
 			<v-spacer/>
+				<img
+					v-if="currentWorkspace"
+					src="/images/logo.svg"
+					height="35px"
+					title="aka Trelindo"
+				/>
+			<v-spacer/>
 
 			<v-btn
 				v-if="currentWorkspace"
