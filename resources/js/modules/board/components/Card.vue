@@ -3,6 +3,7 @@
 		v-if="item"
 		v-model="dialog"
 		width="500"
+		@click:outside="showDeleteConfirmation = false"
 	>
 		<template v-slot:activator="{}">
 				<v-card
