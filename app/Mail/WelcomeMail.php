@@ -40,7 +40,7 @@ class WelcomeMail extends Mailable
         ]);
 
         return $this
-            ->subject('Bem vindo!')
+            ->subject('Bem vindo ao Trelássio!')
 			->markdown('vendor.emails.welcome', ['url' => $url,'name' => $first_name]);
     }
 }
