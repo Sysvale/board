@@ -23,8 +23,7 @@ export default {
 	getters: {
 		itemsByWorkspace(state, _, __, rootGetters) {
 			return state.items.filter(({ workspaceId }) => {
-				// return workspaceId === rootGetters['workspaces/currentWorkspace'].id
-				return true;
+				return workspaceId === rootGetters['workspaces/currentWorkspace'].id;
 			})
 		},
 	},
