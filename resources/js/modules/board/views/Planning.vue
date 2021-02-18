@@ -103,7 +103,7 @@ export default {
 	},
 	data() {
 		return {
-			panels: [1],
+			panels: [this.currentWorkspace && !this.currentWorkspace.settings.noPlanningProblems ? 1 : 0],
 			syncing: false,
 			wasSynced: true,
 			PlanningGroups
