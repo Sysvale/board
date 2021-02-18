@@ -132,15 +132,10 @@
 </template>
 
 <script>
-import SprintTabContent from '../components/SprintTabContent.vue';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
-	components: {
-		SprintTabContent,
-	},
-
 	props: {
 		teamId: {
 			type: String,
