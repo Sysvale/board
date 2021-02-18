@@ -1,4 +1,5 @@
 import makeRequestStore from '../../../core/utils/makeRequestStore';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
 	getTeams
@@ -28,7 +29,7 @@ export default {
 	},
 	mutations: {
 		setItems(state, payload) {
-			state.items = payload;
+			state.items = convertKeysToCamelCase(payload);
 		},
 	},
 }
