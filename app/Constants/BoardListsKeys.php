@@ -27,6 +27,12 @@ class BoardListsKeys extends BagOfConstants
 		self::DEPLOY
 	];
 
+	const SHORTED_LISTS = [
+		self::TODO,
+		self::DEVELOPMENT,
+		self::DEPLOY
+	];
+
 	const EXTENDED_LISTS = [
 		self::PO_REVIEW,
 		self::REVIEWED
