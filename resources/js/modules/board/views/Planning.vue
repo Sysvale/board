@@ -1,5 +1,7 @@
 <template>
 	<v-container
+		v-if="!!currentWorkspace"
+		:key="currentWorkspace ? currentWorkspace.name : 'planning'"
 		fluid
 		class="px-2 py-5"
 	>
@@ -42,7 +44,7 @@
 					/>
 					<board
 						v-if="wasSynced"
-						namespace="problems"
+						:namespace="`${currentWorkspace.name}problems`"
 						:getLists="getIssuesLists"
 						:getCards="getCardsByListsIds"
 					/>
@@ -61,8 +63,13 @@
 				</v-expansion-panel-header>
 				<v-expansion-panel-content>
 					<board
-						namespace="planning"
-						:getLists="getPlanningLists"
+						:namespace="`${currentWorkspace.name}planning`"
+						:getLists="{
+							resolver: getPlanningLists,
+							params: {
+								workspaceId: currentWorkspace.id,
+							}
+						}"
 						:getCards="getCardsByListsIds"
 					/>
 				</v-expansion-panel-content>
