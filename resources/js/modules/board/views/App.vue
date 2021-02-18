@@ -11,7 +11,6 @@
 				class="mr-3"
 			>
 				<img
-					v-if="currentWorkspace"
 					src="/images/logo.svg"
 					height="35px"
 					title="aka Trelindo"
