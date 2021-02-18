@@ -14,6 +14,7 @@ class Team extends Model
 		'name',
 		'key',
 		'extended_task_flow',
+		'short_task_flow',
 		'workspace_id',
 	];
 
