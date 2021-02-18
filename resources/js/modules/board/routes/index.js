@@ -27,14 +27,6 @@ export default [
 		props: true,
 	},
 	{
-		path: '/settings/members',
-		name: 'settings.members',
-		component: () => import('../views/MemberSettings'),
-		meta: {
-			title: 'Membros',
-		},
-	},
-	{
 		path: '/workspace/select',
 		name: 'workspace.select',
 		component: () => import('../views/WorkspaceSelection'),

@@ -7,4 +7,20 @@ export default [
 			title: 'Workspaces',
 		},
 	},
+	{
+		path: '/settings/members',
+		name: 'settings.members',
+		component: () => import('../views/Members'),
+		meta: {
+			title: 'Membros',
+		},
+	},
+	{
+		path: '/settings',
+		name: 'settings',
+		component: () => import('../views/Home'),
+		meta: {
+			title: 'Configurações',
+		},
+	},
 ];

@@ -2,11 +2,17 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
-	getWorkspaces
-} from '../services/workspaces';
+	getMembers,
+	createMember,
+	updateMember,
+	deleteMember,
+} from '../services/members';
 
 const modules = [
-	{ getWorkspaces },
+	{ getMembers },
+	{ createMember },
+	{ updateMember },
+	{ deleteMember },
 ];
 
 export default {
@@ -19,19 +25,17 @@ export default {
 	},
 	state: {
 		items: [],
-		selectedWorkpace: null,
 	},
 	getters: {
-		currentWorkspace(state) {
-			return state.selectedWorkpace;
+		itemsByWorkspace(state, _, __, rootGetters) {
+			return state.items.filter(({ workspaceIds }) => {
+				return workspaceIds.indexOf(rootGetters['workspaces/currentWorkspace'].id) > -1;
+			})
 		},
 	},
 	mutations: {
 		setItems(state, payload) {
 			state.items = convertKeysToCamelCase(payload);
-		},
-		setSelectedWorkspace(state, workspace) {
-			state.selectedWorkpace = workspace;
 		},
 	},
 }
