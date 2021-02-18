@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Constants\BoardListsKeys;
 use App\Constants\LabelKeys;
 use App\Constants\TeamKeys;
 use App\Models\BoardList;
@@ -46,6 +47,7 @@ class SetupManagementWorkspace extends Command
 		$this->createLabels();
 		$this->createTeams();
 		$this->createSprintBoardLists();
+		$this->createDoingBoardList();
 		$this->info('Tudo pronto!');
 	}
 
@@ -135,6 +137,21 @@ class SetupManagementWorkspace extends Command
 
 		if ($value) {
 			$this->info('Times inseridos com sucesso');
+		}
+	}
+
+	private function createDoingBoardList()
+	{
+		$this->info('Criando doing board list...');
+
+		$value = BoardList::create([
+			'name' => 'Doing',
+			'key' => BoardListsKeys::DOING,
+			'position' => 1,
+		]);
+
+		if ($value) {
+			$this->info('Doing board list criado com sucesso');
 		}
 	}
 
