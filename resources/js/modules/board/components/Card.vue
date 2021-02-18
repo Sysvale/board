@@ -268,13 +268,40 @@
 				class="d-flex justify-start"
 			>
 				<v-btn
+					v-if="!showDeleteConfirmation"
 					outlined
 					color="red"
 					small
-					@click="$emit('delete')"
+					@click="showDeleteConfirmation = true"
 				>
 					Excluir
 				</v-btn>
+				<div
+					v-else
+				>
+					<div>
+						Tem certeza que deseja excluir esse card?
+						<div class="mb-3">
+							<div class="grey--text caption">Essa ação não poderá ser desfeita</div>
+						</div>
+					</div>
+					<v-btn
+						outlined
+						color="red"
+						small
+						@click="$emit('delete')"
+					>
+						Sim
+					</v-btn>
+					<v-btn
+						outlined
+						color="secondary"
+						small
+						@click="showDeleteConfirmation = false"
+					>
+						Não
+					</v-btn>
+				</div>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
@@ -325,6 +352,7 @@ export default {
 			CHECKLIST_TAB,
 			tabs: [MAIN_TAB, CHECKLIST_TAB],
 			selectedTab: MAIN_TAB,
+			showDeleteConfirmation: false,
 		};
 	},
 
