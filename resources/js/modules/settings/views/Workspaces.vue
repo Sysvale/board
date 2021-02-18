@@ -53,21 +53,23 @@
 									<v-row>
 										<v-select
 											v-model="selectedItem.teamIds"
-											:items="teams"
+											:items="computedTeams"
 											:multiple="true"
 											placeholder="Time(s)"
 											return
+											chips
 											item-text="name"
 											item-value="id"
 										/>
 									</v-row>
 									<v-row>
 										<v-select
-											v-model="selectedItem.labels"
-											:items="labels"
+											v-model="selectedItem.labelIds"
+											:items="computedLabels"
 											:multiple="true"
 											placeholder="Categorias(s)"
 											return
+											chips
 											item-text="name"
 											item-value="id"
 										/>
@@ -172,7 +174,7 @@ export default {
 					text: 'Times',
 					align: 'start',
 					sortable: true,
-					value: 'teams',
+					value: 'teamNames',
 				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
@@ -209,6 +211,26 @@ export default {
 		loading() {
 			return this.isGetting || this.isCreating || this.isUpdating || this.isRemoving;
 		},
+
+		computedTeams() {
+			if (this.editMode) {
+				return this.teams.filter(({ workspaceId }) => {
+					return !workspaceId || workspaceId === this.selectedItem.id;
+				});
+			}
+
+			return this.teams.filter(({ workspaceId }) => !workspaceId);
+		},
+
+		computedLabels() {
+			if (this.editMode) {
+				return this.labels.filter(({ workspaceId }) => {
+					return !workspaceId || workspaceId === this.selectedItem.id;
+				});
+			}
+
+			return this.labels.filter(({ workspaceId }) => !workspaceId);
+		},
 	},
 
 	watch: {
@@ -229,9 +251,25 @@ export default {
 			'createWorkspace',
 		]),
 
-		...mapMutations('workspaces', [
-			'setItems',
+		...mapActions('teams', [
+			'getTeams',
 		]),
+
+		...mapMutations('teams', {
+			setTeams: 'setItems',
+		}),
+
+		...mapActions('labels', [
+			'getLabels',
+		]),
+
+		...mapMutations('labels', {
+			setLabels: 'setItems',
+		}),
+
+		...mapMutations('workspaces', {
+			setWorkspaces: 'setItems',
+		}),
 
 		editItem (item) {
 			this.editMode = true;
@@ -248,7 +286,7 @@ export default {
 			const deletedId = _.clone(this.selectedItem.id);
 			this.deleteWorkspace(this.selectedItem.id)
 				.then(() => {
-					this.fetchWorkspaces();
+					this.reloadData();
 				})
 			this.closeDelete();
 		},
@@ -273,23 +311,41 @@ export default {
 			if (this.editMode) {
 				this.updateWorkspace(convertKeysToSnakeCase(this.selectedItem))
 					.then((item) => {
-						this.fetchWorkspaces();
+						this.reloadData();
 					});
 			} else {
 				this.createWorkspace(convertKeysToSnakeCase(this.selectedItem))
 					.then((item) => {
-						this.fetchWorkspaces();
+						this.reloadData();
 					});
 			}
 			this.close();
 		},
 
+		reloadData() {
+			this.fetchWorkspaces();
+			this.fetchTeams();
+			this.fetchLabels();
+		},
+
 		fetchWorkspaces() {
 			this.getWorkspaces().then((items) => {
-				this.setItems(items);
+				this.setWorkspaces(items);
 			})
 			.finally(() => {
 				this.selectedItem = {};
+			});
+		},
+
+		fetchTeams() {
+			this.getTeams().then((items) => {
+				this.setTeams(items);
+			});
+		},
+
+		fetchLabels() {
+			this.getLabels().then((items) => {
+				this.setLabels(items);
 			});
 		},
 	},

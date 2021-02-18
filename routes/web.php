@@ -56,8 +56,7 @@ Route::group(
             return redirect('login');
         });
 
-        Route::resource('workspaces', 'WorkspaceController')
-            ->only(['index', 'store', 'destroy']);
+        Route::apiResource('workspaces', 'WorkspaceController');
     }
 );
 

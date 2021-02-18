@@ -23,6 +23,6 @@ class Label extends Model
 
 	public function workspace()
 	{
-		$this->belongsTo(Workspace::class);
+		return $this->belongsTo(Workspace::class);
 	}
 }
