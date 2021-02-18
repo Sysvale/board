@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constants\BoardListsKeys;
 use App\Models\BoardList;
 use App\Models\Team;
+use App\Models\Workspace;
 use Illuminate\Http\Request;
 
 class BoardListController extends Controller
@@ -32,13 +33,13 @@ class BoardListController extends Controller
 			->values();
 	}
 
-	public function getPlanningLists()
+	public function getPlanningLists(Workspace $workspace)
 	{
 		$planningLists = [
 			BoardListsKeys::BACKLOG,
 		];
 
-		$teams = Team::get();
+		$teams = Team::where('workspace_id', $workspace->id)->get();
 		$planningLists = array_merge(
 			$planningLists,
 			$teams->map(
