@@ -272,9 +272,10 @@ export default {
 		},
 
 		save () {
+			const email = this.selectedItem.email ? (this.selectedItem.email + this.emailSuffix) : null; 
 			const member = {
 				...this.selectedItem,
-				email: this.selectedItem.email + this.emailSuffix,
+				email,
 			};
 			console.log(member);
 

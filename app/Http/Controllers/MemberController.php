@@ -26,7 +26,7 @@ class MemberController extends Controller
 
 		$isRegisteredUser = User::where('email', $in->email)->exists();
 		
-		if (!$isRegisteredUser) {
+		if (isset($in->email) && !$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
 
 			$user = User::create([
