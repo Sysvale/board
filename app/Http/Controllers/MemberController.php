@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Notifications\WelcomeNotification as WelcomeNotification;
 
 class MemberController extends Controller
 {
@@ -19,6 +23,18 @@ class MemberController extends Controller
 			'team_id' => $in->team_id,
 			'avatar_url' => $in->avatar_url,
 		]);
+
+		$isRegisteredUser = User::where('email', $in->email)->exists();
+		
+		if (isset($in->email) && !$isRegisteredUser) {
+			$generatedPassword = Str::random(12);
+
+			$user = User::create([
+				'name' => $in->name,
+				'email' => $in->email,
+				'password' => Hash::make($generatedPassword),
+			]);
+		}
 
 		return $member;
 	}

@@ -52,6 +52,13 @@
 										></v-text-field>
 									</v-row>
 									<v-row>
+										<v-text-field
+											v-model="selectedItem.email"
+											label="Email"
+											:suffix="emailSuffix"
+										/>
+									</v-row>
+									<v-row>
 										<v-select
 											v-model="selectedItem.teamId"
 											:items="teams"
@@ -104,10 +111,10 @@
 				</v-toolbar>
 			</template>
 			<template
-        v-slot:item.teamName="{ item }"
-      >
-        {{ teamName(item) }}
-      </template>
+				v-slot:item.teamName="{ item }"
+			>
+				{{ teamName(item) }}
+			</template>
 			<template v-slot:item.actions="{ item }">
 				<v-btn
 					icon
@@ -173,6 +180,7 @@ export default {
 			],
 			editMode: false,
 			selectedItem: {},
+			emailSuffix: '@sysvale.com',
 		}
 	},
 
@@ -264,13 +272,19 @@ export default {
 		},
 
 		save () {
+			const email = this.selectedItem.email ? (this.selectedItem.email + this.emailSuffix) : null; 
+			const member = {
+				...this.selectedItem,
+				email,
+			};
+
 			if (this.editMode) {
-				this.updateMember(convertKeysToSnakeCase(this.selectedItem))
+				this.updateMember(convertKeysToSnakeCase(member))
 					.then((item) => {
 						this.fetchMembers();
 					});
 			} else {
-				this.createMember(convertKeysToSnakeCase(this.selectedItem))
+				this.createMember(convertKeysToSnakeCase(member))
 					.then((item) => {
 						this.fetchMembers();
 					});
