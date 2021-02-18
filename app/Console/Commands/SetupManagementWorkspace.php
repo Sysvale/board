@@ -73,7 +73,7 @@ class SetupManagementWorkspace extends Command
 	
 			[
 				'name' => 'Comercial',
-				'key' => LabelKeys::COMMERCIAL,
+				'key' => LabelKeys::SALES,
 				'color' => '#3171A3',
 				'text_color' => '#fff',
 			],
