@@ -127,7 +127,7 @@ import {
 	getDefaultLists,
 	getDevlogLists,
 } from '../services/sprint'
-import {  mapActions, mapGetters } from 'vuex';
+import {  mapActions, mapState } from 'vuex';
 import {
 	NOT_PLANNED,
 	IMPEDIMENTS,
@@ -173,8 +173,8 @@ export default {
 	},
 
 	computed: {
-		...mapGetters('boards', {
-			boards: 'itemsByWorkspace',
+		...mapState('boards', {
+			boards: 'items',
 		}),
 
 		computedEstimatedAmout() {
