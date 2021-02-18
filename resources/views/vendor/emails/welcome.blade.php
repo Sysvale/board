@@ -5,7 +5,7 @@
     </h2>
     <br>
     <p>
-        Seu email foi cadastrado na board da Sysvale, aka Trelássio.<br>
+        Seu email foi cadastrado no {{ config('app.name') }}<br>
         Clique no botão abaixo para definir sua senha para acessar a plataforma.
     </p>
 <br>
