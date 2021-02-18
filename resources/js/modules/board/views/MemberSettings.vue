@@ -277,7 +277,6 @@ export default {
 				...this.selectedItem,
 				email,
 			};
-			console.log(member);
 
 			if (this.editMode) {
 				this.updateMember(convertKeysToSnakeCase(member))
