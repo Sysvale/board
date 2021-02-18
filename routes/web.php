@@ -23,7 +23,7 @@ Route::redirect('/', 'login');
 Route::group(
     ['middleware' => ['auth']], function () {
         Route::get('/lists/default', 'BoardListController@getDefaultLists');
-        Route::get('/lists/planning', 'BoardListController@getPlanningLists');
+        Route::get('/lists/planning/{workspace}', 'BoardListController@getPlanningLists');
         Route::get('/lists/issues/', 'BoardListController@getIssuesLists');
         Route::get('/lists/devlog', 'BoardListController@getDevlogLists');
 
