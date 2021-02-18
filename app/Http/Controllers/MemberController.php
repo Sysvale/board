@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use App\Models\TeamMember;
-use Illuminate\Http\Request;
 use App\Http\Resources\MemberResource;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Notifications\WelcomeNotification as WelcomeNotification;
 
 class MemberController extends Controller
 {
@@ -20,9 +24,22 @@ class MemberController extends Controller
 			'name' => 'required',
 			'team_ids' => 'required|array',
 			'avatar_url' => 'nullable|string',
+			'email' => 'required|email',
 		]);
 
 		$member = Member::create($data);
+
+		$isRegisteredUser = User::where('email', $request->email)->exists();
+		
+		if (isset($request->email) && !$isRegisteredUser) {
+			$generatedPassword = Str::random(12);
+
+			$user = User::create([
+				'name' => $request->name,
+				'email' => $request->email,
+				'password' => Hash::make($generatedPassword),
+			]);
+		}
 
 		$this->syncTeams($member, $data['team_ids']);
 
