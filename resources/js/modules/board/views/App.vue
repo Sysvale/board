@@ -170,7 +170,6 @@ export default {
 	computed: {
 		...mapState('workspaces', {
 			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
-			selectedWorkspace: 'selectedWorkspace',
 			workspaces: 'items',
 		}),
 		...mapState('members', {
