@@ -30,6 +30,8 @@ class MemberController extends Controller
 		$member = Member::create($data);
 
 		$isRegisteredUser = User::where('email', $request->email)->exists();
+
+		$this->syncTeams($member, $data['team_ids']);
 		
 		if (isset($request->email) && !$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
@@ -40,8 +42,6 @@ class MemberController extends Controller
 				'password' => Hash::make($generatedPassword),
 			]);
 		}
-
-		$this->syncTeams($member, $data['team_ids']);
 
 		return new MemberResource($member);
 	}
