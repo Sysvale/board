@@ -6,14 +6,17 @@
 			dense
 			dark
 		>
-			<v-btn
-				text
-				to="/workspace/select"
+			<a
+				href="/workspace/select"
 				class="mr-3"
-				icon
 			>
-				<v-icon>dashboard</v-icon>
-			</v-btn>
+				<img
+					v-if="currentWorkspace"
+					src="/images/logo.svg"
+					height="35px"
+					title="aka Trelindo"
+				/>
+			</a>
 			<v-icon
 				v-if="workspaces && currentWorkspace"
 				color="white"
@@ -52,30 +55,53 @@
 					</v-list-item>
 				</v-list>
 			</v-menu>
+			<v-icon
+				v-if="workspaces && currentWorkspace"
+				color="white"
+				class="mx-5"
+			>
+				keyboard_arrow_right
+			</v-icon>
+			<v-menu
+				v-if="workspaces && currentWorkspace"
+			>
+				<template v-slot:activator="{ on, attrs }">
+					<v-btn
+						color="secondary"
+						dark
+						v-bind="attrs"
+						v-on="on"
+					>
+						{{ currentPage }}
+						<v-icon>
+							keyboard_arrow_down
+						</v-icon>
+					</v-btn>
+				</template>
+				<v-list>
+					<v-list-item>
+						<v-btn
+							text
+							:to="`/workspace/${currentWorkspace.id}/planning`"
+						>
+							Planning
+						</v-btn>
+					</v-list-item>
+					<v-list-item>
+						<v-btn
+							text
+							:to="sprintRoute"
+						>
+							Sprint
+						</v-btn>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 			<v-spacer/>
-				<img
-					v-if="currentWorkspace"
-					src="/images/logo.svg"
-					height="35px"
-					title="aka Trelindo"
-				/>
+				
 			<v-spacer/>
 
-			<v-btn
-				v-if="currentWorkspace"
-				text
-				:to="`/workspace/${currentWorkspace.id}/planning`"
-				class="mr-3"
-			>
-				Planning
-			</v-btn>
-			<v-btn
-				v-if="currentWorkspace"
-				text
-				:to="sprintRoute"
-			>
-				Sprint
-			</v-btn>
+			
 			<v-btn
 				icon
 				@click="logout()"
@@ -134,6 +160,13 @@ export default {
 			this.setWorkspaces(data);
 		});
 	},
+
+	data() {
+		return {
+			currentPage: 'Planning',
+		}
+	},
+
 	computed: {
 		...mapState('workspaces', {
 			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
@@ -189,6 +222,7 @@ export default {
 			}
 
 			if(to.meta && to.meta.title) {
+				this.currentPage = to.meta.title;
 				document.title = `${to.meta.title} | Trelássio`
 				return;
 			}
