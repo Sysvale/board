@@ -280,7 +280,7 @@
 					v-else
 				>
 					<div>
-						Tem certeza que deseja excluir esse card?
+						Tem certeza que deseja excluir este card?
 						<div class="mb-3">
 							<div class="grey--text caption">Essa ação não poderá ser desfeita</div>
 						</div>
