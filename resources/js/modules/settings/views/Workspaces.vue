@@ -72,6 +72,12 @@
 											item-value="id"
 										/>
 									</v-row>
+									<v-row>
+										<v-text-field
+											v-model="selectedItem.lootieFile"
+											label="URL do Lootie File"
+										></v-text-field>
+									</v-row>
 								</v-container>
 							</v-card-text>
 
