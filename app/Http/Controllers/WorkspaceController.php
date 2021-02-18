@@ -24,6 +24,7 @@ class WorkspaceController extends Controller
 			'name' => 'required|string|unique:workspaces',
 			'team_ids' => 'nullable|array',
 			'label_ids' => 'nullable|array',
+			'settings' => 'nullable|array',
 		]);
 
 		$workspace = Workspace::create($data);
@@ -39,6 +40,7 @@ class WorkspaceController extends Controller
 			'name' => 'required|string',
 			'team_ids' => 'nullable|array',
 			'label_ids' => 'nullable|array',
+			'settings' => 'nullable|array',
 		]);
 
 		$workspace->update($data);

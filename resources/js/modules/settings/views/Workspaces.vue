@@ -80,6 +80,17 @@
 											label="URL do Lootie File"
 										></v-text-field>
 									</v-row>
+									<v-row>
+										<v-switch
+											v-model="selectedItem.settings.noPlanningProblems"
+											label="Esconder board Suporte, issues e débitos técnicos"
+										></v-switch>
+
+										<v-switch
+											v-model="selectedItem.settings.noSprintDevlog"
+											label="Esconder board Sprint Devlog"
+										></v-switch>
+									</v-row>
 								</v-container>
 							</v-card-text>
 
@@ -179,7 +190,12 @@ export default {
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
 			editMode: false,
-			selectedItem: {},
+			selectedItem: {
+				settings: {},
+			},
+			defaultItem: {
+				settings: {},
+			},
 		}
 	},
 
@@ -244,6 +260,7 @@ export default {
 	},
 
 	methods: {
+		isEmpty: (arg) => _.isEmpty(arg),
 		...mapActions('workspaces', [
 			'getWorkspaces',
 			'deleteWorkspace',
