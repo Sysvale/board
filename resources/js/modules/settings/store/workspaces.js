@@ -25,12 +25,12 @@ export default {
 	},
 	state: {
 		items: [],
-		selectedWorkpace: null,
+		selectedWorkspace: null,
 	},
 	getters: {
 		currentWorkspace(state) {
 			//TODO converKeysToCamelCase deeper
-			let copy = _.clone(state.selectedWorkpace);
+			let copy = _.clone(state.selectedWorkspace);
 			if(!copy) return copy;
 			copy.settings = convertKeysToCamelCase(copy.settings);
 			return copy;
@@ -41,7 +41,7 @@ export default {
 			state.items = convertKeysToCamelCase(payload);
 		},
 		setSelectedWorkspace(state, workspace) {
-			state.selectedWorkpace = workspace;
+			state.selectedWorkspace = workspace;
 		},
 	},
 }
