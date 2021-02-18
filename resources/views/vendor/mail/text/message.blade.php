@@ -2,7 +2,7 @@
     {{-- Header --}}
     @slot('header')
         @component('mail::header', ['url' => config('app.url')])
-            Trelássio
+            {{ config('app.name') }}
         @endcomponent
     @endslot
 
