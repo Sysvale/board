@@ -1,28 +1,26 @@
 <template>
-<v-container>
-	<v-skeleton-loader
-		v-if="loading"
-		class="mx-auto"
-		type="table"
-	></v-skeleton-loader>
-	<v-data-table
-		v-else
-		:headers="headers"
-		:items="members"
-		sort-by="name"
-		class="elevation-1"
-	>
+	<v-container>
+		<v-skeleton-loader
+			v-if="loading"
+			class="mx-auto"
+			type="table"
+		></v-skeleton-loader>
+
+		<v-data-table
+			v-else
+			:headers="headers"
+			:items="workspaces"
+			sort-by="name"
+			class="elevation-1"
+		>
 			<template v-slot:top>
 				<v-toolbar
 					flat
 				>
-					<v-toolbar-title>Membros</v-toolbar-title>
-					<v-divider
-						class="mx-4"
-						inset
-						vertical
-					></v-divider>
+					<v-toolbar-title>Workspaces</v-toolbar-title>
+
 					<v-spacer></v-spacer>
+
 					<v-dialog
 						v-model="dialog"
 						max-width="500px"
@@ -35,9 +33,10 @@
 								v-bind="attrs"
 								v-on="on"
 							>
-								Novo membro
+								Novo workspace
 							</v-btn>
 						</template>
+
 						<v-card>
 							<v-card-title>
 								<span class="headline">{{ formTitle }}</span>
@@ -63,10 +62,15 @@
 										/>
 									</v-row>
 									<v-row>
-										<v-text-field
-											v-model="selectedItem.avatarUrl"
-											label="URL do avatar"
-										></v-text-field>
+										<v-select
+											v-model="selectedItem.labels"
+											:items="labels"
+											:multiple="true"
+											placeholder="Categorias(s)"
+											return
+											item-text="name"
+											item-value="id"
+										/>
 									</v-row>
 								</v-container>
 							</v-card-text>
@@ -80,6 +84,7 @@
 								>
 									Cancelar
 								</v-btn>
+
 								<v-btn
 									color="blue darken-1"
 									text
@@ -91,6 +96,7 @@
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
+
 					<v-dialog v-model="dialogDelete" max-width="500px">
 						<v-card>
 							<v-card-title class="headline">Deseja mesmo deletar {{ selectedItem.name }}?</v-card-title>
@@ -104,6 +110,7 @@
 					</v-dialog>
 				</v-toolbar>
 			</template>
+
 			<template v-slot:item.actions="{ item }">
 				<v-btn
 					icon
@@ -116,6 +123,7 @@
 						edit
 					</v-icon>
 				</v-btn>
+
 				<v-btn
 					icon
 					@click="deleteItem(item)"
@@ -132,15 +140,10 @@
 </template>
 
 <script>
-import SprintTabContent from '../components/SprintTabContent.vue';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
-	components: {
-		SprintTabContent,
-	},
-
 	props: {
 		teamId: {
 			type: String,
@@ -160,7 +163,7 @@ export default {
 					value: 'name',
 				},
 				{
-					text: 'Time',
+					text: 'Times',
 					align: 'start',
 					sortable: true,
 					value: 'teams',
@@ -174,7 +177,7 @@ export default {
 
 	computed: {
 		formTitle () {
-			return !this.editMode ? 'Novo membro' : 'Editar item';
+			return !this.editMode ? 'Novo workspace' : 'Editar workspace';
 		},
 
 		formIsValid () {
@@ -185,41 +188,42 @@ export default {
 			teams: 'items',
 		}),
 
-		...mapState('members', {
-			members: state => state.items,
-			isGetting: ({ getMembers }) => getMembers.isFetching,
-			isCreating: ({ createMember }) => createMember.isFetching,
-			isUpdating: ({ updateMember }) => updateMember.isFetching,
-			isRemoving: ({ deleteMember }) => deleteMember.isFetching,
+		...mapState('labels', {
+			labels: 'items',
+		}),
+
+		...mapState('workspaces', {
+			workspaces: state => state.items,
+			isGetting: ({ getWorkspaces }) => getWorkspaces.isFetching,
+			isCreating: ({ createWorkspace }) => createWorkspace.isFetching,
+			isUpdating: ({ updateWorkspace }) => updateWorkspace.isFetching,
+			isRemoving: ({ deleteWorkspace }) => deleteWorkspace.isFetching,
 		}),
 
 		loading() {
 			return this.isGetting || this.isCreating || this.isUpdating || this.isRemoving;
 		},
-
-		teamName() {
-			return item => item.teamId ? this.teams.filter((team) => team.id === item.teamId)[0].name : '--';
-		}
 	},
 
 	watch: {
 		dialog (val) {
 			val || this.close();
 		},
+
 		dialogDelete (val) {
 			val || this.closeDelete();
 		},
 	},
 
 	methods: {
-		...mapActions('members', [
-			'getMembers',
-			'deleteMember',
-			'updateMember',
-			'createMember',
+		...mapActions('workspaces', [
+			'getWorkspaces',
+			'deleteWorkspace',
+			'updateWorkspace',
+			'createWorkspace',
 		]),
 
-		...mapMutations('members', [
+		...mapMutations('workspaces', [
 			'setItems',
 		]),
 
@@ -236,9 +240,9 @@ export default {
 
 		deleteItemConfirm () {
 			const deletedId = _.clone(this.selectedItem.id);
-			this.deleteMember(this.selectedItem.id)
+			this.deleteWorkspace(this.selectedItem.id)
 				.then(() => {
-					this.fetchMembers();
+					this.fetchWorkspaces();
 				})
 			this.closeDelete();
 		},
@@ -261,21 +265,21 @@ export default {
 
 		save () {
 			if (this.editMode) {
-				this.updateMember(convertKeysToSnakeCase(this.selectedItem))
+				this.updateWorkspace(convertKeysToSnakeCase(this.selectedItem))
 					.then((item) => {
-						this.fetchMembers();
+						this.fetchWorkspaces();
 					});
 			} else {
-				this.createMember(convertKeysToSnakeCase(this.selectedItem))
+				this.createWorkspace(convertKeysToSnakeCase(this.selectedItem))
 					.then((item) => {
-						this.fetchMembers();
+						this.fetchWorkspaces();
 					});
 			}
 			this.close();
 		},
 
-		fetchMembers() {
-			this.getMembers().then((items) => {
+		fetchWorkspaces() {
+			this.getWorkspaces().then((items) => {
 				this.setItems(items);
 			})
 			.finally(() => {

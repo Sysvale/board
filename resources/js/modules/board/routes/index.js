@@ -1,3 +1,5 @@
+import settingsRoutes from '../../settings/routes';
+
 export default [
 	{
 		path: '/home',
@@ -40,4 +42,5 @@ export default [
 			title: 'Selecione seu Workspace',
 		},
 	},
+	...settingsRoutes,
 ];

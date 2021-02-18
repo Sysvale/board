@@ -2,27 +2,23 @@
 
 namespace App\Models;
 
-use App\Models\Workspace;
+use App\Models\Team;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
-class Label extends Model
+class Workspace extends Model
 {
 	use SoftDeletes;
 
 	protected $fillable = [
 		'name',
-		'key',
-		'color',
-		'text_color',
-		'workspace_id',
 	];
 
 	protected $appends = ['id'];
 	protected $hidden = ['_id'];
 
-	public function workspace()
+	public function teams()
 	{
-		$this->belongsTo(Workspace::class);
+		return $this->hasMany(Team::class);
 	}
 }

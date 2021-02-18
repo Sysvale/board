@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Workspace;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
@@ -13,6 +14,7 @@ class Team extends Model
 		'name',
 		'key',
 		'extended_task_flow',
+		'workspace_id',
 	];
 
 	protected $appends = ['id'];
@@ -21,5 +23,10 @@ class Team extends Model
 	public function cards()
 	{
 		return $this->hasMany('App\Models\Card');
+	}
+
+	public function workspace()
+	{
+		return $this->belongsTo(Workspace::class);
 	}
 }

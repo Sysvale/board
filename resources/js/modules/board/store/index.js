@@ -13,6 +13,8 @@ import sprint from './sprint';
 import events from './events';
 import workspaces from './workspaces';
 
+import settingsModules from '../../settings/store';
+
 export default new Vuex.Store({
 	namespaced: true,
 	modules: {
@@ -25,5 +27,6 @@ export default new Vuex.Store({
 		sprint,
 		events,
 		workspaces,
+		...settingsModules,
 	}
 });

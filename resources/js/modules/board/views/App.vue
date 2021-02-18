@@ -130,6 +130,9 @@ export default {
 		this.getBoards().then((data) => {
 			this.setBoards(data);
 		});
+		this.getWorkspaces().then((data) => {
+			this.setWorkspaces(data);
+		});
 	},
 	computed: {
 		...mapState('workspaces', {
@@ -149,6 +152,9 @@ export default {
 		}),
 		...mapState('boards', {
 			loadingBoards: ({ getBoards }) => getBoards.isFetching,
+		}),
+		...mapState('workspaces', {
+			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
 		}),
 
 		...mapGetters('workspaces', ['currentWorkspace']),
@@ -206,6 +212,9 @@ export default {
 		...mapActions('boards', [
 			'getBoards',
 		]),
+		...mapActions('workspaces', [
+			'getWorkspaces',
+		]),
 		...mapMutations('workspaces', {
 			setWorkspaces: 'setItems',
 			setSelectedWorkspace: 'setSelectedWorkspace',
@@ -221,6 +230,9 @@ export default {
 		}),
 		...mapMutations('boards', {
 			setBoards: 'setItems',
+		}),
+		...mapMutations('workspaces', {
+			setWorkspaces: 'setItems',
 		}),
 		logout() {
 			return window.location.href = '/logout';
