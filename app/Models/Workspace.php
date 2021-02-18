@@ -14,6 +14,7 @@ class Workspace extends Model
 	protected $fillable = [
 		'name',
 		'lottie_file',
+		'settings',
 	];
 
 	protected $appends = ['id'];
