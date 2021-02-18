@@ -20,6 +20,8 @@ class WorkspaceResource extends JsonResource
 			'team_ids' => $this->team_ids,
 			'label_ids' => $this->label_ids,
 			'team_names' => $this->team_names,
+			'lootie_file' => $this->lootie_file,
+			'settings' => $this->settings,
 		];
 	}
 }
