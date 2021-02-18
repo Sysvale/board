@@ -6,6 +6,7 @@ class BoardListsKeys extends BagOfConstants
 {
 	const TODO = 'todo';
 	const DEVELOPMENT = 'development';
+	const DOING = 'doing';
 	const CODE_REVIEW = 'codeReview';
 	const DONE = 'done';
 	const DEPLOY = 'deploy';
@@ -29,8 +30,8 @@ class BoardListsKeys extends BagOfConstants
 
 	const SHORTED_LISTS = [
 		self::TODO,
-		self::DEVELOPMENT,
-		self::DEPLOY
+		self::DOING,
+		self::DONE,
 	];
 
 	const EXTENDED_LISTS = [
