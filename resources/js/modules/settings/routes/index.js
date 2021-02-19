@@ -1,8 +1,12 @@
+import Home from '../views/Home.vue';
+import Members from '../views/Members.vue';
+import Workspaces from '../views/Workspaces.vue';
+
 export default [
 	{
 		path: '/settings/workspaces',
 		name: 'settings.workspaces',
-		component: () => import('../views/Workspaces'),
+		component: Workspaces,
 		meta: {
 			title: 'Workspaces',
 		},
@@ -10,7 +14,7 @@ export default [
 	{
 		path: '/settings/members',
 		name: 'settings.members',
-		component: () => import('../views/Members'),
+		component: Members,
 		meta: {
 			title: 'Membros',
 		},
@@ -18,7 +22,7 @@ export default [
 	{
 		path: '/settings',
 		name: 'settings',
-		component: () => import('../views/Home'),
+		component: Home,
 		meta: {
 			title: 'Configurações',
 		},
