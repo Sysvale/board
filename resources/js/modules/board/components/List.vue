@@ -61,47 +61,77 @@
 	<list-container
 		v-else
 	>
-		<header class="mb-2 px-2 py-2 text--black d-flex">
-			<v-btn
-				icon
-				small
-				@click="colapsed = true"
-			>
-				<v-icon>
-					keyboard_arrow_right
-				</v-icon>
-			</v-btn>
-			<div class="flex-grow-1 d-flex align-center">
-				<span class="mb-0 text-uppercase font-weight-medium text--secondary">
-					<span>
-						<small>{{ $attrs.title }}</small>
-						<span class="ml-3 text--secondary mb-0">
-							<small>{{ $attrs.list.length }}</small>
+		<header class="mb-2 text--black">
+			<div class="d-flex px-2 py-2">
+				<v-btn
+					icon
+					small
+					@click="colapsed = true"
+				>
+					<v-icon>
+						keyboard_arrow_right
+					</v-icon>
+				</v-btn>
+				<div class="flex-grow-1 d-flex align-center">
+					<span class="mb-0 text-uppercase font-weight-medium text--secondary">
+						<span>
+							<small>{{ $attrs.title }}</small>
+							<span class="ml-3 text--secondary mb-0">
+								<small>{{ $attrs.list.length }}</small>
+							</span>
 						</span>
+						<div
+							v-if="hasSomeEstimatedCard && pointsSum"
+							class="d-flex"
+						>
+							<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
+						</div>
 					</span>
-					<div
-						v-if="hasSomeEstimatedCard && pointsSum"
-						class="d-flex"
-					>
-						<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
-					</div>
-				</span>
+				</div>
 			</div>
-			<div class="d-flex justify-end">
+			<div class="mt-n1 mx-n1">
+				<v-card
+					color="#2EB88D"
+					text-color="white"
+					flat
+					style="border-radius: 0!important"
+					@click="editGoal = true"
+				>
+					<v-card-text
+						v-if="!editGoal"
+					>
+						O objetivo da sprint é que todos tenham uma sprint muito boa e maravilhosa
+					</v-card-text>
+					<v-textarea
+						v-else
+						v-model="newCardTitle"
+						auto-grow
+						autofocus
+						color="#1C6E54"
+						class="pb-0 mx-1"
+						@blur="handleEditGoal"
+						@keydown.enter="handleEditGoal"
+						@keydown.esc="clear"
+					/>
+				</v-card>
+			</div>
+			<div class="mt-3">
 				<v-btn
 					block
 					small
 					depressed
 					:disabled="$attrs.loading"
-					color="white"
+					color="transparent"
 					class="px-0"
 					@click="createMode = true"
 				>
 					<v-icon
+						v-if="false"
 						color="rgba(0, 0, 0, 0.5)"
 					>
 						add
 					</v-icon>
+					Adicionar card...
 				</v-btn>
 			</div>
 		</header>
@@ -175,6 +205,7 @@ export default {
 			newCardTitle: null,
 			createMode: false,
 			colapsed: false,
+			editGoal: false,
 		};
 	},
 
@@ -213,9 +244,14 @@ export default {
 			}
 			this.createMode = false;
 		},
+		handleEditGoal() {
+			this.editGoal = false;
+			console.log('ooiiii');
+		},
 		clear() {
 			this.newCardTitle = null;
 			this.createMode = false;
+			this.editGoal = false;
 		}
 	},
 
