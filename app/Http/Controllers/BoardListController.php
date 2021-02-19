@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Constants\BoardListsKeys;
 use App\Models\BoardList;
 use App\Models\Team;
+use App\Models\Workspace;
 use Illuminate\Http\Request;
 
 class BoardListController extends Controller
@@ -32,13 +33,13 @@ class BoardListController extends Controller
 			->values();
 	}
 
-	public function getPlanningLists()
+	public function getPlanningLists(Workspace $workspace)
 	{
 		$planningLists = [
 			BoardListsKeys::BACKLOG,
 		];
 
-		$teams = Team::get();
+		$teams = Team::where('workspace_id', $workspace->id)->get();
 		$planningLists = array_merge(
 			$planningLists,
 			$teams->map(
@@ -76,11 +77,15 @@ class BoardListController extends Controller
 		$default_lists = BoardListsKeys::DEFAULT_LISTS;
 
 		if ($team_id) {
-			$extended_task_flow = Team::where('_id', $team_id)
-				->first()
-				->extended_task_flow;
-			if ($extended_task_flow) {
-				$default_lists = array_merge($default_lists, BoardListsKeys::EXTENDED_LISTS);
+			$team = Team::where('_id', $team_id)
+				->first();
+
+			if ($team->short_task_flow) {
+				return BoardListsKeys::SHORTED_LISTS;
+			}
+
+			if ($team->extended_task_flow) {
+				return array_merge($default_lists, BoardListsKeys::EXTENDED_LISTS);
 			}
 		}
 

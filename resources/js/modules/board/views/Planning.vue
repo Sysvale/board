@@ -1,5 +1,7 @@
 <template>
 	<v-container
+		v-if="!!currentWorkspace"
+		:key="currentWorkspace ? currentWorkspace.name : 'planning'"
 		fluid
 		class="px-2 py-5"
 	>
@@ -11,6 +13,7 @@
 			class="px-2"
 		>
 			<v-expansion-panel
+				v-if="currentWorkspace && !currentWorkspace.settings.noPlanningProblems"
 				:key="PlanningGroups.PROBLEMS"
 				@change="handleProblemsPanelChange"
 			>
@@ -41,7 +44,7 @@
 					/>
 					<board
 						v-if="wasSynced"
-						namespace="problems"
+						:namespace="`${currentWorkspace.name}problems`"
 						:getLists="getIssuesLists"
 						:getCards="getCardsByListsIds"
 					/>
@@ -60,8 +63,13 @@
 				</v-expansion-panel-header>
 				<v-expansion-panel-content>
 					<board
-						namespace="planning"
-						:getLists="getPlanningLists"
+						:namespace="`${currentWorkspace.name}planning`"
+						:getLists="{
+							resolver: getPlanningLists,
+							params: {
+								workspaceId: currentWorkspace.id,
+							}
+						}"
 						:getCards="getCardsByListsIds"
 					/>
 				</v-expansion-panel-content>
@@ -86,6 +94,7 @@ import {
 import {
 	getCardsByListsIds,
 } from '../services/cards';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -94,12 +103,17 @@ export default {
 	},
 	data() {
 		return {
-			panels: [1],
+			panels: [this.currentWorkspace && !this.currentWorkspace.settings.noPlanningProblems ? 1 : 0],
 			syncing: false,
 			wasSynced: true,
 			PlanningGroups
 		}
 	},
+
+	computed: {
+		...mapGetters('workspaces', ['currentWorkspace'])
+	},
+
 	methods: {
 		getPlanningLists,
 		getIssuesLists,

@@ -3,6 +3,7 @@
 		v-if="item"
 		v-model="dialog"
 		width="500"
+		@click:outside="showDeleteConfirmation = false"
 	>
 		<template v-slot:activator="{}">
 				<v-card
@@ -268,19 +269,46 @@
 				class="d-flex justify-start"
 			>
 				<v-btn
+					v-if="!showDeleteConfirmation"
 					outlined
 					color="red"
 					small
-					@click="$emit('delete')"
+					@click="showDeleteConfirmation = true"
 				>
 					Excluir
 				</v-btn>
+				<div
+					v-else
+				>
+					<div>
+						Tem certeza que deseja excluir este card?
+						<div class="mb-3">
+							<div class="grey--text caption">Essa ação não poderá ser desfeita</div>
+						</div>
+					</div>
+					<v-btn
+						outlined
+						color="red"
+						small
+						@click="$emit('delete')"
+					>
+						Sim
+					</v-btn>
+					<v-btn
+						outlined
+						color="secondary"
+						small
+						@click="showDeleteConfirmation = false"
+					>
+						Não
+					</v-btn>
+				</div>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import MemberList from './MemberList';
 import LabelList from './LabelList';
 import MemberSelect from './MemberSelect';
@@ -325,15 +353,16 @@ export default {
 			CHECKLIST_TAB,
 			tabs: [MAIN_TAB, CHECKLIST_TAB],
 			selectedTab: MAIN_TAB,
+			showDeleteConfirmation: false,
 		};
 	},
 
 	computed: {
-		...mapState('labels', {
-			labels: 'items',
+		...mapGetters('labels', {
+			labels: 'itemsByWorkspace',
 		}),
-		...mapState('teams', {
-			teams: 'items',
+		...mapGetters('teams', {
+			teams: 'itemsByWorkspace',
 		}),
 		
 		isTask() {

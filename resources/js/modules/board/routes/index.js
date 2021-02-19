@@ -1,3 +1,5 @@
+import settingsRoutes from '../../settings/routes';
+
 export default [
 	{
 		path: '/home',
@@ -8,7 +10,7 @@ export default [
 		},
 	},
 	{
-		path: '/planning',
+		path: '/workspace/:workspaceId/planning',
 		name: 'planning',
 		component: () => import('../views/Planning'),
 		meta: {
@@ -16,7 +18,7 @@ export default [
 		},
 	},
 	{
-		path: '/sprint/:teamId',
+		path: '/workspace/:workspaceId/sprint/:teamId',
 		name: 'sprint',
 		component: () => import('../views/Sprint'),
 		meta: {
@@ -25,11 +27,12 @@ export default [
 		props: true,
 	},
 	{
-		path: '/settings/members',
-		name: 'settings.members',
-		component: () => import('../views/MemberSettings'),
+		path: '/workspace/select',
+		name: 'workspace.select',
+		component: () => import('../views/WorkspaceSelection'),
 		meta: {
-			title: 'Membros',
+			title: 'Selecione seu Workspace',
 		},
 	},
+	...settingsRoutes,
 ];

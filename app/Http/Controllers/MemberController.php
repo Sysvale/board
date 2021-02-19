@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\TeamMember;
+use App\Http\Resources\MemberResource;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -13,50 +15,77 @@ class MemberController extends Controller
 {
 	public function index()
 	{
-		return Member::orderBy('name', 'ASC')->get();
+		return MemberResource::collection(Member::orderBy('name', 'ASC')->get());
 	}
 
-	public function store(Request $in)
+	public function store(Request $request)
 	{
-		$member = Member::create([
-			'name' => $in->name,
-			'team_id' => $in->team_id,
-			'avatar_url' => $in->avatar_url,
+		$data = $request->validate([
+			'name' => 'required',
+			'team_ids' => 'required|array',
+			'avatar_url' => 'nullable|string',
+			'email' => 'required|email',
 		]);
 
-		$isRegisteredUser = User::where('email', $in->email)->exists();
+		$member = Member::create($data);
+
+		$isRegisteredUser = User::where('email', $request->email)->exists();
+
+		$this->syncTeams($member, $data['team_ids']);
 		
-		if (isset($in->email) && !$isRegisteredUser) {
+		if (isset($request->email) && !$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
 
 			$user = User::create([
-				'name' => $in->name,
-				'email' => $in->email,
+				'name' => $request->name,
+				'email' => $request->email,
 				'password' => Hash::make($generatedPassword),
 			]);
 		}
 
-		return $member;
+		return new MemberResource($member);
 	}
 
-	public function update(Request $in, $id)
+	public function update(Request $request, Member $member)
 	{
-		$params = [
-			'name' => $in->name,
-			'team_id' => $in->team_id,
-			'avatar_url' => $in->avatar_url,
-		];
+		$data = $request->validate([
+			'name' => 'required',
+			'team_ids' => 'required|array',
+			'avatar_url' => 'nullable|string',
+		]);
 
-		$member = Member::where('_id', $id);
-		$member->update($params);
+		$member->update($data);
+		$this->syncTeams($member, $data['team_ids']);
 
-		return $member->get()->first();
+		return new MemberResource($member);
 	}
 
 	public function destroy($id)
 	{
 		$member = Member::where('_id', $id)
 			->delete();
+
 		return $member;
+	}
+
+	private function syncTeams(Member $member, array $team_ids): void
+	{
+		$current = $member->team_ids;
+
+		$to_remove = array_diff($current, $team_ids);
+		$to_add = array_diff($team_ids, $current);
+
+		if (!empty($to_remove)) {
+			TeamMember::whereIn('team_id', $to_remove)
+				->where('member_id', $member->id)
+				->delete();
+		}
+
+		foreach ($to_add as $team_id) {
+			TeamMember::create([
+				'team_id' => $team_id,
+				'member_id' => $member->id,
+			]);
+		}
 	}
 }

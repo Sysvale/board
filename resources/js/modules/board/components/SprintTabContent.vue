@@ -79,6 +79,7 @@
 			</v-expansion-panel-content>
 		</v-expansion-panel>
 		<v-expansion-panel
+			v-if="!currentWorkspace.settings.noSprintDevlog"
 			:key="`sprintDevlog-${teamId}`"
 		>
 			<v-expansion-panel-header>
@@ -127,7 +128,7 @@ import {
 	getDefaultLists,
 	getDevlogLists,
 } from '../services/sprint'
-import { mapState, mapActions, mapMutations } from 'vuex';
+import {  mapActions, mapGetters, mapState } from 'vuex';
 import {
 	NOT_PLANNED,
 	IMPEDIMENTS,
@@ -176,6 +177,8 @@ export default {
 		...mapState('boards', {
 			boards: 'items',
 		}),
+
+		...mapGetters('workspaces', ['currentWorkspace']),
 
 		computedEstimatedAmout() {
 			if(this.estimatedAmount === 1) {

@@ -18,7 +18,7 @@
 	</div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import LabelItem from './LabelItem';
 
 export default {
@@ -46,8 +46,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('labels', {
-			rawLabels: 'items',
+		...mapGetters('labels', {
+			rawLabels: 'itemsByWorkspace',
 		}),
 		computedLabels() {
 			return this.rawLabels.filter(item => _.includes(this.labels, item.id));

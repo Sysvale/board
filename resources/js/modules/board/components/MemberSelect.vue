@@ -58,7 +58,7 @@
 	</div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import MemberItem from './MemberItem';
 import MemberList from './MemberList.vue';
 
@@ -83,8 +83,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('members', {
-			members: 'items',
+		...mapGetters('members', {
+			members: 'itemsByWorkspace',
 		}),
 	},
 

@@ -26,12 +26,14 @@
 								<strong>{{ story.estimated }} pt(s)</strong>
 							</v-chip>
 						</div>
-						<v-img
-							src="https://miro.medium.com/max/2684/1*gPH1OunEUZPZNjFi7WycSA.png"
-							width="250px"
-							class="mb-3"
-							title="Image by Undraw.co"
-						/>
+						<lottie-player
+								src="https://assets8.lottiefiles.com/packages/lf20_pfajtmk1.json"
+								background="white"
+								speed="1"
+								style="width: 250px; height: 250px;margin: 0 auto; background: white"
+								autoplay
+							>
+						</lottie-player>
 						<div>
 							{{ story.title }}
 						</div>

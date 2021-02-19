@@ -26,6 +26,13 @@ export default {
 	state: {
 		items: [],
 	},
+	getters: {
+		itemsByWorkspace(state, _, __, rootGetters) {
+			return state.items.filter(({ workspaceIds }) => {
+				return workspaceIds.indexOf(rootGetters['workspaces/currentWorkspace'].id) > -1;
+			})
+		},
+	},
 	mutations: {
 		setItems(state, payload) {
 			state.items = convertKeysToCamelCase(payload);

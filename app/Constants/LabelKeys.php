@@ -16,4 +16,11 @@ class LabelKeys extends BagOfConstants
 	const UX = 'ux';
 	const APP = 'app';
 	const EXPORT = 'export';
+	const FINANCIAL = 'financial';
+	const PM = 'pm';
+	const COMUNICATION = 'comunication';
+	const SALES = 'sales';
+	const PROJECTS = 'projects';
+	const CITY_MANAGEMENT = 'cityManagement';
+	const PRODUCT = 'product';
 }
