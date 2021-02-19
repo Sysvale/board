@@ -13,7 +13,7 @@
 	</span>
 </template>
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
 	props: {
 		teamId: {
@@ -23,8 +23,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('teams', {
-			teams: 'items',
+		...mapGetters('teams', {
+			teams: 'itemsByWorkspace',
 		}),
 	},
 

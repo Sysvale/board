@@ -52,10 +52,18 @@
 										></v-text-field>
 									</v-row>
 									<v-row>
+										<v-text-field
+											v-model="selectedItem.email"
+											label="Email"
+											:suffix="emailSuffix"
+										/>
+									</v-row>
+									<v-row>
 										<v-select
-											v-model="selectedItem.teamId"
+											v-model="selectedItem.teamIds"
 											:items="teams"
-											placeholder="Time"
+											:multiple="true"
+											placeholder="Time(s)"
 											return
 											item-text="name"
 											item-value="id"
@@ -103,11 +111,6 @@
 					</v-dialog>
 				</v-toolbar>
 			</template>
-			<template
-        v-slot:item.teamName="{ item }"
-      >
-        {{ teamName(item) }}
-      </template>
 			<template v-slot:item.actions="{ item }">
 				<v-btn
 					icon
@@ -136,15 +139,10 @@
 </template>
 
 <script>
-import SprintTabContent from '../components/SprintTabContent.vue';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
-	components: {
-		SprintTabContent,
-	},
-
 	props: {
 		teamId: {
 			type: String,
@@ -167,12 +165,13 @@ export default {
 					text: 'Time',
 					align: 'start',
 					sortable: true,
-					value: 'teamName',
+					value: 'teams',
 				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
 			editMode: false,
 			selectedItem: {},
+			emailSuffix: '@sysvale.com',
 		}
 	},
 
@@ -226,7 +225,7 @@ export default {
 		...mapMutations('members', [
 			'setItems',
 		]),
-	
+
 		editItem (item) {
 			this.editMode = true;
 			this.selectedItem = Object.assign({}, item);
@@ -264,13 +263,19 @@ export default {
 		},
 
 		save () {
+			const email = this.selectedItem.email ? (this.selectedItem.email + this.emailSuffix) : null; 
+			const member = {
+				...this.selectedItem,
+				email,
+			};
+
 			if (this.editMode) {
-				this.updateMember(convertKeysToSnakeCase(this.selectedItem))
+				this.updateMember(convertKeysToSnakeCase(member))
 					.then((item) => {
 						this.fetchMembers();
 					});
 			} else {
-				this.createMember(convertKeysToSnakeCase(this.selectedItem))
+				this.createMember(convertKeysToSnakeCase(member))
 					.then((item) => {
 						this.fetchMembers();
 					});

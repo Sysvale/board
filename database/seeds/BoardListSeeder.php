@@ -49,7 +49,7 @@ class BoardListSeeder extends Seeder
 			],
 			[
 				'name' => 'Code Review',
-				'key' => BoardListsKeys::DEVELOPMENT,
+				'key' => BoardListsKeys::CODE_REVIEW,
 				'position' => 12,
 			],
 			[

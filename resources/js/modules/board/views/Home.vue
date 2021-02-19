@@ -64,7 +64,7 @@ export default {
 		redirect() {
 			this.showRetryButton = false;
 			this.$router.replace({
-				name: 'planning',
+				name: 'workspace.select',
 			}).then(() => {
 				this.errorAutoRedirect = false;
 			});

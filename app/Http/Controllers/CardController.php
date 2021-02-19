@@ -104,6 +104,8 @@ class CardController extends Controller
 			$card->is_user_story = true;
 			$card->save();
 		}
+		
+		unset($card->boardList);
 
 		return $card;
 	}
@@ -111,7 +113,6 @@ class CardController extends Controller
 	public function update(Request $in, $id)
 	{
 		$params = [
-			'board_list_id' => $in->board_list_id ?? $in->board_list['id'],
 			'title' => $in->title,
 			'link' => $in->link,
 			'labels' => $in->labels,
@@ -122,19 +123,19 @@ class CardController extends Controller
 			'checklist' => $in->checklist,
 			'board_id' => $in->board_id ?? $in->board['id'],
 		];
+		
+		$query = Card::where('_id', $id);
+		$query->update($params);
 
-		$list_key = BoardList::where('_id', $params['board_list_id'])->first()->key;
+		$card = $query->get()->first();
 
-		if ($this->isListAnUserStoryHolder($list_key)) {
-			$params['is_user_story'] = true;
-		} else {
-			$params['is_user_story'] = false;
-		}
+		$list_key = BoardList::where('_id', $card->boardList->id)->first()->key;
+		
+		$card->is_user_story = $this->isListAnUserStoryHolder($list_key);
 
-		$card = Card::where('_id', $id);
-		$card->update($params);
+		$card->save();
 
-		return $card->get()->first();
+		return $card;
 	}
 
 	public function updateCardsPositions(Request $in)

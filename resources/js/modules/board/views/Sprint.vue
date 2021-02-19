@@ -31,7 +31,7 @@
 
 <script>
 import SprintTabContent from '../components/SprintTabContent.vue';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
 	components: {
@@ -46,8 +46,8 @@ export default {
 	},
 
 	computed: {
-		...mapState('teams', {
-			teams: 'items',
+		...mapGetters('teams', {
+			teams: 'itemsByWorkspace',
 		}),
 	},
 }
