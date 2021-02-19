@@ -70,7 +70,15 @@
 								workspaceId: currentWorkspace.id,
 							}
 						}"
-						:getCards="getCardsByListsIds"
+						:getCards="{
+							resolver: getCardsByListsIds,
+							params: {
+								workspaceId: currentWorkspace.id,
+							}
+						}"
+						:cardMiddleware="{
+							workspaceId: currentWorkspace.id,
+						}"
 					/>
 				</v-expansion-panel-content>
 			</v-expansion-panel>
