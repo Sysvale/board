@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\BoardKeys;
 use App\Constants\BoardListsKeys;
 use App\Constants\GitlabLabelKeys;
 use App\Constants\LabelKeys;
-use App\Models\Board;
 use App\Models\BoardList;
 use App\Models\Card;
 use App\Models\Label;
@@ -41,7 +39,7 @@ class CardController extends Controller
 			function ($item) use (&$payload, &$cards, $board_lists, $in) {
 				$sub_query = $cards->where('board_list_id', $item);
 				
-				// se a lista n sprint for devlog deve fazer o filtro pro time nem por board
+				// se a lista n for sprint devlog n deve fazer o filtro por time nem por board
 				if (!preg_match("/([a-zA-Z0-9()]*)(Dev)/", $board_lists[$item]->key)) {
 					if ($in->board_id) {
 						$sub_query = $sub_query->where('board_id', $in->board_id);
@@ -49,6 +47,10 @@ class CardController extends Controller
 					if ($in->team_id) {
 						$sub_query = $sub_query->where('team_id', $in->team_id);
 					}
+				}
+
+				if ($board_lists[$item]->key == BoardListsKeys::BACKLOG && $in->workspace_id) {
+					$sub_query = $sub_query->where('workspace_id', $in->workspace_id);
 				}
 
 				$payload[$item] = $sub_query
@@ -98,6 +100,7 @@ class CardController extends Controller
 			'board_id' => $in->board_id,
 			'labels' => $in->labels,
 			'link' => $in->link,
+			'workspace_id' => $in->workspace_id,
 		]);
 
 		if ($card->boardList && $this->isListAnUserStoryHolder($card->boardList->key)) {
@@ -122,6 +125,7 @@ class CardController extends Controller
 			'acceptance_criteria' => $in->acceptance_criteria,
 			'checklist' => $in->checklist,
 			'board_id' => $in->board_id ?? $in->board['id'],
+			'workspace_id' => $in->workspace_id,
 		];
 		
 		$query = Card::where('_id', $id);
