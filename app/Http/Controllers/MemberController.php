@@ -32,13 +32,14 @@ class MemberController extends Controller
 		$isRegisteredUser = User::where('email', $request->email)->exists();
 
 		$this->syncTeams($member, $data['team_ids']);
-		
+
 		if (isset($request->email) && !$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
 
-			$user = User::create([
+			User::create([
 				'name' => $request->name,
 				'email' => $request->email,
+				'member_id' => $member->id,
 				'password' => Hash::make($generatedPassword),
 			]);
 		}
@@ -52,10 +53,17 @@ class MemberController extends Controller
 			'name' => 'required',
 			'team_ids' => 'required|array',
 			'avatar_url' => 'nullable|string',
+			'email' => 'nullable|string',
 		]);
 
 		$member->update($data);
 		$this->syncTeams($member, $data['team_ids']);
+
+		if ($member->user) {
+			$member->user->update([
+				'email' => $data['email'],
+			]);
+		}
 
 		return new MemberResource($member);
 	}
