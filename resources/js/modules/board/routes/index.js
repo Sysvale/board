@@ -1,10 +1,15 @@
 import settingsRoutes from '../../settings/routes';
 
+import Home from '../views/Home.vue';
+import Planning from '../views/Planning.vue';
+import Sprint from '../views/Sprint.vue';
+import WorkspaceSelection from '../views/WorkspaceSelection.vue';
+
 export default [
 	{
 		path: '/home',
 		name: 'home',
-		component: () => import('../views/Home'),
+		component: Home,
 		meta: {
 			title: 'Home',
 		},
@@ -12,7 +17,7 @@ export default [
 	{
 		path: '/workspace/:workspaceId/planning',
 		name: 'planning',
-		component: () => import('../views/Planning'),
+		component: Planning,
 		meta: {
 			title: 'Planning',
 		},
@@ -20,7 +25,7 @@ export default [
 	{
 		path: '/workspace/:workspaceId/sprint/:teamId',
 		name: 'sprint',
-		component: () => import('../views/Sprint'),
+		component: Sprint,
 		meta: {
 			title: 'Sprint',
 		},
@@ -29,7 +34,7 @@ export default [
 	{
 		path: '/workspace/select',
 		name: 'workspace.select',
-		component: () => import('../views/WorkspaceSelection'),
+		component: WorkspaceSelection,
 		meta: {
 			title: 'Selecione seu Workspace',
 		},

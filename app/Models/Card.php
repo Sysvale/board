@@ -22,7 +22,8 @@ class Card extends Model
 		'acceptance_criteria',
 		'checklist',
 		'is_user_story',
-		'gitlab_id'
+		'gitlab_id',
+		'workspace_id',
 	];
 	protected $appends = ['id'];
 	protected $hidden = ['_id', 'board_list']; //esse segundo n sei como parar de mandar a parada kkk
