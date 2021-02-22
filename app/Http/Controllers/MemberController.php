@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Models\Member;
 use App\Models\TeamMember;
-use App\Http\Resources\MemberResource;
-use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use App\Http\Resources\MemberResource;
+use Illuminate\Support\Facades\Response;
 use App\Notifications\WelcomeNotification as WelcomeNotification;
 
 class MemberController extends Controller
@@ -68,12 +69,15 @@ class MemberController extends Controller
 		return new MemberResource($member);
 	}
 
-	public function destroy($id)
+	public function destroy(Member $member)
 	{
-		$member = Member::where('_id', $id)
-			->delete();
+		if ($member->user) {
+			$member->user->delete();
+		}
 
-		return $member;
+		$member->delete();
+
+		return Response::json('Membro excluído com sucesso!');
 	}
 
 	private function syncTeams(Member $member, array $team_ids): void
