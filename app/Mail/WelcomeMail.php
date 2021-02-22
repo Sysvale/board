@@ -11,36 +11,41 @@ use App\User;
 
 class WelcomeMail extends Mailable
 {
-    use Queueable, SerializesModels;
-    public $user;
+	use Queueable, SerializesModels;
 
-    /**
-    * Create a new message instance.
-    
-    * @return void
-    */
-    public function __construct(User $user) {
-        $this->user = $user;
-    }
+	protected $user;
 
-        /**
-    * Build the message.
-    
-    * @return $this
-    */
-    public function build()
-    {
-        $first_name = explode(' ', $this->user->name)[0];
+	/**
+	* Create a new message instance.
 
-        $token = app('auth.password.broker')->createToken($this->user);
+	* @return void
+	*/
+	public function __construct(User $user)
+	{
+		$this->user = $user;
+	}
 
-        $url = route('password.reset', [
-            'token' => $token,
-            'email' => $this->user->email,
-        ]);
+	/**
+	* Build the message.
 
-        return $this
-            ->subject('Bem vindo ao Trelássio!')
-			->markdown('vendor.emails.welcome', ['url' => $url,'name' => $first_name]);
-    }
+	* @return $this
+	*/
+	public function build()
+	{
+		$first_name = explode(' ', $this->user->name)[0];
+
+		$token = app('auth.password.broker')->createToken($this->user);
+
+		$url = route('password.reset', [
+			'token' => $token,
+			'email' => $this->user->email,
+		]);
+
+		return $this
+			->subject('Bem vindo ao Trelássio!')
+			->markdown('vendor.emails.welcome', [
+				'url' => $url,
+				'name' => $first_name
+			]);
+	}
 }
