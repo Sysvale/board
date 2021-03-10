@@ -8,6 +8,11 @@ export const DEVLOG = 'devlog';
 export const BACKLOG = 'backlog';
 export const HELPDESK = 'helpDesk';
 export const DEVTASK = 'devtask';
+export const AVENGERS = 'avangers';
+export const STEPPER = 'stepper';
+export const BREAKOUT_ONE = 'breakoutOne';
+export const SYS_IN = 'sysin';
+export const SYS_OUT = 'sysout';
 
 export default {
     TODO,
@@ -20,4 +25,9 @@ export default {
     BACKLOG,
     HELPDESK,
     DEVTASK,
+    AVENGERS,
+    STEPPER,
+    BREAKOUT_ONE,
+    SYS_IN,
+    SYS_OUT,
 };
