@@ -8,6 +8,7 @@
 				v-for="list in lists"
 				:id="list.id"
 				:key="list.id"
+				:keyValue="list.key"
 				:title="list.name"
 				:list="getList(list.id)"
 				:group="namespace"
