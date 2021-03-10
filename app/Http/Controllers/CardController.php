@@ -105,6 +105,8 @@ class CardController extends Controller
 
 		if ($card->boardList && $this->isListAnUserStoryHolder($card->boardList->key)) {
 			$card->is_user_story = true;
+			$card->has_metric = $in->has_metric;
+			$card->is_recurrent = $in->is_recurrent;
 			$card->save();
 		}
 		
@@ -136,6 +138,11 @@ class CardController extends Controller
 		$list_key = BoardList::where('_id', $card->boardList->id)->first()->key;
 		
 		$card->is_user_story = $this->isListAnUserStoryHolder($list_key);
+
+		if ($card->is_user_story) {
+			$card->has_metric = $in->has_metric;
+			$card->is_recurrent = $in->is_recurrent;
+		}
 
 		$card->save();
 
