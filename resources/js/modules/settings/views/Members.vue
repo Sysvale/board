@@ -75,6 +75,17 @@
 											label="URL do avatar"
 										></v-text-field>
 									</v-row>
+
+									<v-row>
+										<v-btn
+											v-if="showResendWelcomeEmail(selectedItem)"
+											outlined
+											small
+											@click="resendWelcomeMailOnClick(selectedItem)"
+										>
+											Reenviar e-mail de boas vindas
+										</v-btn>
+									</v-row>
 								</v-container>
 							</v-card-text>
 
@@ -194,10 +205,15 @@ export default {
 			isCreating: ({ createMember }) => createMember.isFetching,
 			isUpdating: ({ updateMember }) => updateMember.isFetching,
 			isRemoving: ({ deleteMember }) => deleteMember.isFetching,
+			isResending: ({ resendWelcomeMail }) => resendWelcomeMail.isFetching,
 		}),
 
 		loading() {
-			return this.isGetting || this.isCreating || this.isUpdating || this.isRemoving;
+			return this.isGetting
+				|| this.isCreating
+				|| this.isUpdating
+				|| this.isRemoving
+				|| this.isResending;
 		},
 
 		teamName() {
@@ -220,6 +236,7 @@ export default {
 			'deleteMember',
 			'updateMember',
 			'createMember',
+			'resendWelcomeMail',
 		]),
 
 		...mapMutations('members', [
@@ -263,7 +280,7 @@ export default {
 		},
 
 		save () {
-			const email = this.selectedItem.email ? (this.selectedItem.email + this.emailSuffix) : null; 
+			const email = this.selectedItem.email ? (this.selectedItem.email + this.emailSuffix) : null;
 			const member = {
 				...this.selectedItem,
 				email,
@@ -290,6 +307,19 @@ export default {
 			.finally(() => {
 				this.selectedItem = {};
 			});
+		},
+
+		showResendWelcomeEmail(member) {
+			return this.editMode && (
+				!!member.email
+				&& !member.hasLogin
+			);
+		},
+
+		resendWelcomeMailOnClick({ userId }) {
+			if (userId !== null) {
+				this.resendWelcomeMail(userId);
+			}
 		},
 	},
 }

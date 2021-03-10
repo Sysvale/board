@@ -6,6 +6,7 @@ use Jenssegers\Mongodb\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Events\UserRegisteredEvent;
+use App\Models\Member;
 
 class User extends Authenticatable
 {
@@ -22,7 +23,11 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'email', 'password',
+		'name',
+		'email',
+		'password',
+		'member_id',
+		'configured_password',
 	];
 
 	/**
@@ -42,4 +47,9 @@ class User extends Authenticatable
 	protected $casts = [
 		'email_verified_at' => 'datetime',
 	];
+
+	public function member()
+	{
+		return $this->belongsTo(Member::class);
+	}
 }
