@@ -10,6 +10,7 @@ import boards from './boards'
 import issues from './issues';
 import sprint from './sprint';
 import events from './events';
+import goals from './goals';
 
 import settingsModules from '../../settings/store';
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
 		issues,
 		sprint,
 		events,
+		goals,
 		...settingsModules,
 	}
 });

@@ -50,6 +50,8 @@ Route::group(
         Route::resource('events', 'EventController')->only(['store', 'update', 'destroy']);
         Route::get('/events/{team}', 'EventController@getEventsByTeam');
 
+        Route::resource('goals', 'GoalController');
+
         Route::get('/logout', function () {
             Auth::logout();
             return redirect('login');
