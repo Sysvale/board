@@ -36,6 +36,7 @@ class BoardListController extends Controller
 	public function getPlanningLists(Workspace $workspace)
 	{
 		$planningLists = [
+			BoardListsKeys::NOT_PRIORIZED,
 			BoardListsKeys::BACKLOG,
 		];
 
@@ -49,7 +50,9 @@ class BoardListController extends Controller
 			)->toArray()
 		);
 
-		return BoardList::whereIn('key', $planningLists)->get();
+		return BoardList::whereIn('key', $planningLists)
+			->orderBy('position')
+			->get();
 	}
 
 	public function getIssuesLists()
