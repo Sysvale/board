@@ -259,8 +259,8 @@
 				<div class="mt-3 mb-3">
 					<switch-button
 						v-model="item.hasMetric"
-						active-background-color="#2EB88D"
-						active-text-color="white"
+						active-background-color="#23B1C7"
+						active-text-color="black"
 						class="mr-3"
 					>
 						<v-icon left>assessment</v-icon>
@@ -268,7 +268,7 @@
 					</switch-button>
 					<switch-button
 						v-model="item.isRecurrent"
-						active-background-color="#F05F71"
+						active-background-color="#FCBB5A"
 						active-text-color="black"
 						class="mr-3"
 					>
