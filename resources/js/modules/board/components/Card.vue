@@ -6,16 +6,16 @@
 		@click:outside="showDeleteConfirmation = false"
 	>
 		<template v-slot:activator="{}">
-				<v-card
-					class="task-card px-3 py-3"
-					v-bind="$attrs"
-					v-on="$listeners"
-					hover
-					:ripple="false"
-					@click="showModal"
-					@mouseover="hover = true"
-					@mouseleave="hover = false"
-				>
+			<v-card
+				class="task-card px-3 py-3"
+				v-bind="$attrs"
+				hover
+				:ripple="false"
+				v-on="$listeners"
+				@click="showModal"
+				@mouseover="hover = true"
+				@mouseleave="hover = false"
+			>
 				<div class="d-flex align-center">
 					<v-chip
 						v-if="item.number"
@@ -76,34 +76,34 @@
 						</v-chip>
 					</div>
 				</div>
-					<div
-						class="gray--text py-0"
-					>
-						<slot />
-					</div>
-					<div
-						v-if="isTask"
-						class="d-flex align-center pt-2"
-					>
-						<member-list
-							:members="item.members"
-						/>
-						<div class="d-flex flex-grow-1 justify-end">
-							<link-chip
-								v-if="item.link"
-								:link="item.link"
-							/>
-						</div>
-					</div>
-					<div
-							v-else-if="item.teamId"
-							class="mt-2"
-					>
-						<team-chip
-							:team-id="item.teamId"
+				<div
+					class="gray--text py-0"
+				>
+					<slot />
+				</div>
+				<div
+					v-if="isTask"
+					class="d-flex align-center pt-2"
+				>
+					<member-list
+						:members="item.members"
+					/>
+					<div class="d-flex flex-grow-1 justify-end">
+						<link-chip
+							v-if="item.link"
+							:link="item.link"
 						/>
 					</div>
-				</v-card>
+				</div>
+				<div
+					v-else-if="item.teamId"
+					class="mt-2"
+				>
+					<team-chip
+						:team-id="item.teamId"
+					/>
+				</div>
+			</v-card>
 		</template>
 		<v-card
 			class="px-5 py-5"
@@ -126,8 +126,8 @@
 				<v-layout class="py-5">
 					<h3
 						v-if="!titleInEditMode"
-						@click="handleEditMode"
 						class="black--text"
+						@click="handleEditMode"
 					>
 						{{ item.title }}
 					</h3>
@@ -142,7 +142,9 @@
 					/>
 				</v-layout>
 			</v-container>
-			<v-divider/>
+
+			<v-divider />
+
 			<v-container
 				v-if="isTask"
 			>
@@ -283,7 +285,9 @@
 					<div>
 						Tem certeza que deseja excluir este card?
 						<div class="mb-3">
-							<div class="grey--text caption">Essa ação não poderá ser desfeita</div>
+							<div class="grey--text caption">
+								Essa ação não poderá ser desfeita
+							</div>
 						</div>
 					</div>
 					<v-btn
@@ -309,14 +313,14 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import MemberList from './MemberList';
-import LabelList from './LabelList';
-import MemberSelect from './MemberSelect';
-import LabelSelect from './LabelSelect';
-import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
-import ChecklistForm from './ChecklistForm';
-import LinkChip from './LinkChip';
-import TeamChip from './TeamChip';
+import MemberList from './MemberList.vue';
+import LabelList from './LabelList.vue';
+import MemberSelect from './MemberSelect.vue';
+import LabelSelect from './LabelSelect.vue';
+import AcceptanceCriteriaForm from './AcceptanceCriteriaForm.vue';
+import ChecklistForm from './ChecklistForm.vue';
+import LinkChip from './LinkChip.vue';
+import TeamChip from './TeamChip.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 const MAIN_TAB = 'Informações gerais';
@@ -364,13 +368,13 @@ export default {
 		...mapGetters('teams', {
 			teams: 'itemsByWorkspace',
 		}),
-		
+
 		isTask() {
-			return !!!this.item.isUserStory;
+			return !this.item.isUserStory;
 		},
 		estimated() {
-			if(+this.item.estimated === 1) {
-				return `${this.item.estimated} pt`
+			if (+this.item.estimated === 1) {
+				return `${this.item.estimated} pt`;
 			}
 			return `${this.item.estimated} pts`;
 		},
@@ -380,37 +384,37 @@ export default {
 		},
 
 		checklistLabel() {
-			const doneLenght = this.item.checklist.filter((item) => {
-				return !!item.done;
-			}).length;
+			const doneLenght = this.item.checklist.filter((item) => !!item.done).length;
 			const { length } = this.item.checklist;
+
 			return `${doneLenght}/${length}`;
 		},
 
 		allDoneInChecklist() {
-			return this.item.checklist.filter((item) => {
-				return !!item.done;
-			}).length === this.item.checklist.length;
+			return this.item.checklist.filter(
+				(item) => !!item.done,
+			).length === this.item.checklist.length;
 		},
 
 		tabTitle() {
-			return tab => {
-				switch(tab) {
-					case CHECKLIST_TAB:
-						if(this.hasChecklist) {
-							return `${tab} (${this.checklistLabel})`;
-						}
-						return tab;
-					default:
-						return tab;
+			return (tab) => {
+				switch (tab) {
+				case CHECKLIST_TAB:
+					if (this.hasChecklist) {
+						return `${tab} (${this.checklistLabel})`;
+					}
+					return tab;
+
+				default:
+					return tab;
 				}
-			}
+			};
 		},
 	},
 
 	watch: {
 		item: {
-			handler(newValue, oldValue) {
+			handler(newValue) {
 				this.updateCard(convertKeysToSnakeCase(newValue));
 			},
 			deep: true,
@@ -428,17 +432,20 @@ export default {
 
 		handleSave() {
 			this.titleInEditMode = false;
-			if(!this.cloneTitle || this.cloneTitle.trim().length === 0 ) {
+
+			if (!this.cloneTitle || this.cloneTitle.trim().length === 0) {
 				return;
 			}
+
 			this.item.title = _.clone(this.cloneTitle);
+
 			this.$emit('save');
 		},
 
 		handleEditMode() {
 			this.cloneTitle = _.clone(this.item.title);
 			this.titleInEditMode = true;
-		}
+		},
 	},
-}
+};
 </script>

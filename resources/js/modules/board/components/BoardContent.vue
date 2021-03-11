@@ -42,10 +42,9 @@
 import { createNamespacedHelpers, mapActions } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
-import List from '../components/List.vue';
-import BoardContainer from '../components/BoardContainer.vue';
+import List from './List.vue';
+import BoardContainer from './BoardContainer.vue';
 import makeBoardStore from '../../../core/utils/makeBoardStore';
-import generateUUID from '../../../core/utils/generateUUID';
 
 export default {
 	components: {
@@ -72,36 +71,29 @@ export default {
 		},
 	},
 
+	data() {
+		return {
+			snackbar: false,
+		};
+	},
+
 	beforeCreate() {
-		let namespace = this.$options.propsData.namespace;
-		let lists = this.$options.propsData.lists;
-		let cards = this.$options.propsData.cards;
-		if(
-			lists && lists.length > 0
+		const { namespace, lists, cards } = this.$options.propsData;
+
+		if (lists && lists.length > 0
 			&& cards && !_.isEmpty(cards)
 		) {
-	
-			if(!this.$store.hasModule([
-				namespace, 'board'
-			])) {
-				this.$store.registerModule([
-					namespace, 'board'
-				], makeBoardStore(lists));
+			if (!this.$store.hasModule([namespace, 'board'])) {
+				this.$store.registerModule([namespace, 'board'], makeBoardStore(lists));
 			}
 
-			let nestedNamespace = `${namespace}/board`;
-	
-			const {
-				mapActions,
-				mapMutations,
-				mapGetters,
-				mapState,
-			} = createNamespacedHelpers(nestedNamespace);
-	
+			const nestedNamespace = `${namespace}/board`;
+			const {	mapMutations } = createNamespacedHelpers(nestedNamespace);
+
 			this.$options.computed = {
 				...makeFormFields(
 					nestedNamespace,
-					[...lists.map(({ id }) => id)]
+					[...lists.map(({ id }) => id)],
 				),
 				...this.$options.computed,
 			};
@@ -137,12 +129,6 @@ export default {
 				...this.$options.methods,
 			};
 			this.$store.commit(`${nestedNamespace}/setCards`, cards);
-		}
-	},
-
-	data() {
-		return {
-			snackbar: false,
 		}
 	},
 
