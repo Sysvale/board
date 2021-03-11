@@ -17,6 +17,24 @@
 					@mouseleave="hover = false"
 				>
 				<div class="d-flex align-center">
+					<v-tooltip
+						v-if="isNotPriorizedWithPendingInfo"
+						bottom
+					>
+						<template v-slot:activator="{ on, attrs }">
+							<v-chip
+								v-bind="attrs"
+								v-on="on"
+								color="#FCBB5A"
+								text-color="black"
+								small
+								class="mr-2"
+							>
+								<v-icon small>warning_amber</v-icon>
+							</v-chip>
+						</template>
+						Existem informações pendentes
+					</v-tooltip>
 					<v-chip
 						v-if="item.number"
 						color="#efefef"
@@ -270,7 +288,7 @@
 						Qual o problema?
 					</div>
 					<v-textarea
-						v-model="item.demand"
+						v-model="item.description"
 						flat
 						outlined
 						auto-grow
@@ -465,6 +483,12 @@ export default {
 
 		isNotPriorized() {
 			return true;
+		},
+
+		isNotPriorizedWithPendingInfo() {
+			const hasDescription = this.item.description && this.item.description.trim() !== '';
+			const hasRating = this.item.rating && this.item.rating > 0;
+			return this.isNotPriorized && (!hasDescription || !hasRating);
 		},
 
 		estimated() {
