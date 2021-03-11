@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\CardTypes;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
@@ -21,16 +22,17 @@ class Card extends Model
 		'labels',
 		'acceptance_criteria',
 		'checklist',
-		'is_user_story',
+		'type',
 		'gitlab_id',
 		'workspace_id',
 	];
-	protected $appends = ['id'];
+
+	protected $appends = ['id', 'is_user_story', 'is_not_priorized', 'is_task'];
 	protected $hidden = ['_id', 'board_list']; //esse segundo n sei como parar de mandar a parada kkk
 
 	//relacionamento com members????????
 	//relacionamento com labels????????
-	
+
 	public function boardList()
 	{
 		return $this->belongsTo('App\Models\BoardList');
@@ -54,5 +56,20 @@ class Card extends Model
 	public function scopeFromGitlab($query)
 	{
 		return $query->where('from_gitlab', true);
+	}
+
+	public function getIsUserStoryAttribute()
+	{
+		return $this->type === CardTypes::USER_STORY;
+	}
+
+	public function getIsTaskAttribute()
+	{
+		return $this->type === CardTypes::TASK;
+	}
+
+	public function getIsNotPrioritizedAttribute()
+	{
+		return $this->type === CardTypes::NOT_PRIORITIZED;
 	}
 }

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\BoardListsKeys;
-use App\Constants\GitlabLabelKeys;
-use App\Constants\LabelKeys;
-use App\Models\BoardList;
 use App\Models\Card;
-use App\Models\Label;
 use App\Models\Team;
 use App\Models\Event;
+use App\Models\Label;
+use App\Models\BoardList;
+use App\Constants\LabelKeys;
 use App\Utils\GitlabHandler;
 use Illuminate\Http\Request;
+use App\Constants\BoardListsKeys;
+use App\Constants\GitlabLabelKeys;
+use App\Http\Requests\StoreCardRequest;
 
 class CardController extends Controller
 {
@@ -38,7 +39,7 @@ class CardController extends Controller
 		collect($in->lists_ids)->each(
 			function ($item) use (&$payload, &$cards, $board_lists, $in) {
 				$sub_query = $cards->where('board_list_id', $item);
-				
+
 				// se a lista n for sprint devlog n deve fazer o filtro por time nem por board
 				if (!preg_match("/([a-zA-Z0-9()]*)(Dev)/", $board_lists[$item]->key)) {
 					if ($in->board_id) {
@@ -89,99 +90,61 @@ class CardController extends Controller
 		];
 	}
 
-	public function store(Request $in)
+	public function store(StoreCardRequest $request)
 	{
-		$card = Card::create([
-			'board_list_id' => $in->board_list_id,
-			'title' => $in->title,
-			'user_story_id' => $in->user_story_id,
-			'members' => $in->members,
-			'team_id' => $in->team_id,
-			'board_id' => $in->board_id,
-			'labels' => $in->labels,
-			'link' => $in->link,
-			'workspace_id' => $in->workspace_id,
-		]);
-
-		if ($card->boardList && $this->isListAnUserStoryHolder($card->boardList->key)) {
-			$card->is_user_story = true;
-			$card->save();
-		}
-		
-		unset($card->boardList);
+		$card = Card::create($request->validated());
 
 		return $card;
 	}
 
-	public function update(Request $in, $id)
+	public function update(Request $request, Card $card)
 	{
 		$params = [
-			'title' => $in->title,
-			'link' => $in->link,
-			'labels' => $in->labels,
-			'members' => $in->members,
-			'estimated' => $in->estimated,
-			'team_id' => $in->team_id ?? $in->team['id'],
-			'acceptance_criteria' => $in->acceptance_criteria,
-			'checklist' => $in->checklist,
-			'board_id' => $in->board_id ?? $in->board['id'],
-			'workspace_id' => $in->workspace_id,
+			'title' => $request->title,
+			'link' => $request->link,
+			'labels' => $request->labels,
+			'members' => $request->members,
+			'estimated' => $request->estimated,
+			'team_id' => $request->team_id ?? $request->team['id'],
+			'acceptance_criteria' => $request->acceptance_criteria,
+			'checklist' => $request->checklist,
+			'board_id' => $request->board_id ?? $request->board['id'],
+			'workspace_id' => $request->workspace_id,
+			'type' => $request->type,
 		];
-		
-		$query = Card::where('_id', $id);
-		$query->update($params);
 
-		$card = $query->get()->first();
-
-		$list_key = BoardList::where('_id', $card->boardList->id)->first()->key;
-		
-		$card->is_user_story = $this->isListAnUserStoryHolder($list_key);
-
+		$card->fill($params);
 		$card->save();
 
 		return $card;
 	}
 
-	public function updateCardsPositions(Request $in)
+	public function updateCardsPositions(Request $request)
 	{
-		$requestCards = collect($in->cards);
+		$request->validate([
+			'cards' => 'nullable|array',
+			'cards.*.position' => 'required',
+			'cards.*.board_list_id' => 'required',
+			'cards.*.type' => 'required',
+		]);
 
-		$result = $requestCards
-			->each(
-				function ($requestCard) {
-					$card = Card::where('_id', $requestCard['id'])->first();
-					$card->position = $requestCard['position'];
-					$card->board_list_id = $requestCard['board_list_id']
-						?? $card->board_list_id;
-					$card->save();
-				}
-			);
+		$result = collect($request->cards)->each(function ($request_card) {
+			$card = Card::where('_id', $request_card['id'])->first();
+			$card->position = $request_card['position'];
+			$card->board_list_id = $request_card['board_list_id'] ?? $card->board_list_id;
+			$card->type = $request_card['type'];
+
+			$card->save();
+		});
 
 		return $result;
 	}
 
-	public function destroy($id)
+	public function destroy($card)
 	{
-		$card = Card::where('_id', $id)
-			->delete();
-		return $card;
-	}
+		$card->delete();
 
-	private function isListAnUserStoryHolder($key)
-	{
-		$teams = Team::get()->map(function ($item) {
-			return $item['key'];
-		});
-		$user_story_holders = array_merge(
-			$teams->toArray(),
-			[
-				BoardListsKeys::BACKLOG
-			]
-		);
-		return in_array(
-			$key,
-			$user_story_holders
-		);
+		return $card;
 	}
 
 	public function synchronize()

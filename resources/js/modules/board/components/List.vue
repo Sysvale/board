@@ -170,6 +170,13 @@ export default {
 		ListSkeletonLoader,
 	},
 
+	props: {
+		acceptsCardType: {
+			type: String,
+			default: TASK,
+		},
+	},
+
 	data() {
 		return {
 			newCardTitle: null,
@@ -204,13 +211,16 @@ export default {
 
 	methods: {
 		handleAdd() {
-			if(this.newCardTitle && this.newCardTitle.trim() !== '') {
+			if (this.newCardTitle && this.newCardTitle.trim() !== '') {
 				this.$emit('add', {
 					title: this.newCardTitle,
 					boardListId: this.$attrs.id,
+					type: this.acceptsCardType,
 				});
+
 				this.newCardTitle = null;
 			}
+
 			this.createMode = false;
 		},
 		clear() {

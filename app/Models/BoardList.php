@@ -13,7 +13,8 @@ class BoardList extends Model
 		'name',
 		'position',
 		'key',
-		'user_story_holder'
+		'user_story_holder',
+		'accepts_card_type',
 	];
 
 	protected $appends = ['id'];

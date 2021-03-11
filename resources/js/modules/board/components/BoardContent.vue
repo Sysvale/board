@@ -8,6 +8,7 @@
 				v-for="list in lists"
 				:id="list.id"
 				:key="list.id"
+				:accepts-card-type="list.acceptsCardType"
 				:title="list.name"
 				:list="getList(list.id)"
 				:group="namespace"
@@ -110,18 +111,21 @@ export default {
 					...acc,
 					[list.id]: {
 						handler: (newValue) => {
-							this.updateCardsPositions(
+							if (newValue !== null && newValue.length > 0) {
+								this.updateCardsPositions(
 									newValue.map((item, position) => (convertKeysToSnakeCase({
 										id: item.id,
 										position,
 										boardListId: list.id,
-									})))
-							);
+										type: list.acceptsCardType,
+									}))),
+								);
+							}
 						},
 					},
-				}), {})
+				}), {}),
 			};
-	
+
 			this.$options.methods = {
 				...mapMutations([
 					...lists.map(({ id }) => `set${id}`),
@@ -155,10 +159,9 @@ export default {
 			return this[boardListId];
 		},
 
-		handleAdd({ boardListId, title }) {
+		handleAdd(newCardData) {
 			this.createCard(convertKeysToSnakeCase({
-				boardListId,
-				title,
+				...newCardData,
 				...this.cardMiddleware,
 			})).then((data) => {
 				this.addNewTask({ ...data });
@@ -174,7 +177,7 @@ export default {
 		reload() {
 			window.location.reload();
 			this.snackbar = false;
-		}
-	}
-}
+		},
+	},
+};
 </script>
