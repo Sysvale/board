@@ -108,19 +108,18 @@
 			</div>
 			<div
 				v-if="isAGoalableList"
-				class="mt-n1 mx-n1"
+				class="mt-1 mx-1"
 			>
 				<v-alert
 					v-if="!editGoal"
-					border="left"
-					color="secondary"
-					icon="flag"
-					text
+					color="#efefef"
+					style="cursor:pointer"
 					@click="enableEditGoal"
 				>
 					<span
 						:class="goalAlertTextStyle"
 					>
+						<v-icon small>flag</v-icon>
 						{{ getGoalByKey($attrs.keyValue).title || 'Informe aqui o objetivo da sprint' }}
 					</span>
 				</v-alert>
@@ -260,10 +259,10 @@ export default {
 
 		goalAlertTextStyle() {
 			if (this.getGoalByKey(this.$attrs.keyValue).title) {
-				return '';
+				return 'subtitle-2';
 			}
 
-			return 'grey--text text--darken-1 subtitle-2';
+			return 'grey--text text--darken-1 subtitle-2 font-italic';
 		},
 	},
 
