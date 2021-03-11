@@ -118,7 +118,11 @@
 					text
 					@click="enableEditGoal"
 				>
-					{{ getGoalByKey($attrs.keyValue).title }}
+					<span
+						:class="goalAlertTextStyle"
+					>
+						{{ getGoalByKey($attrs.keyValue).title || 'Informe aqui o objetivo da sprint' }}
+					</span>
 				</v-alert>
 				<v-textarea
 						v-else
@@ -252,7 +256,15 @@ export default {
 		pointsSum() {
 			const sum = _.sum(this.$attrs.list.map(card => +card.estimated || 0));
 			return sum ? `${sum} pt${sum === 1 ? '' : 's'}` : null;
-		}
+		},
+
+		goalAlertTextStyle() {
+			if (this.getGoalByKey(this.$attrs.keyValue).title) {
+				return '';
+			}
+
+			return 'grey--text text--darken-1 subtitle-2';
+		},
 	},
 
 	methods: {
