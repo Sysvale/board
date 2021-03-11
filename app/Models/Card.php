@@ -24,6 +24,8 @@ class Card extends Model
 		'is_user_story',
 		'gitlab_id',
 		'workspace_id',
+		'has_metric',
+		'is_recurrent',
 	];
 	protected $appends = ['id'];
 	protected $hidden = ['_id', 'board_list']; //esse segundo n sei como parar de mandar a parada kkk

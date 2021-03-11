@@ -23,9 +23,49 @@
 						text-color="#555"
 						small
 						label
-						class="mb-2"
 					>
 						#{{ item.number }}
+					</v-chip>
+					<v-tooltip
+						v-if="!isTask && item.hasMetric"
+						bottom
+					>
+						<template v-slot:activator="{ on, attrs }">
+								<v-icon
+									v-bind="attrs"
+									v-on="on"
+									class="mx-2"
+								>
+									assessment
+								</v-icon>
+						</template>
+						Possui métrica
+					</v-tooltip>
+					<v-tooltip
+						v-if="!isTask && item.isRecurrent"
+						bottom
+					>
+						<template v-slot:activator="{ on, attrs }">
+								<v-icon
+									v-bind="attrs"
+									v-on="on"
+								>
+									restore
+								</v-icon>
+						</template>
+						É recorrente
+					</v-tooltip>
+					<v-spacer
+						v-if="!isTask && item.estimated"
+					/>
+					<v-chip
+						v-if="!isTask && item.estimated"
+						color="gray"
+						text-color="black"
+						label
+						small
+					>
+						<strong>{{ estimated }}</strong>
 					</v-chip>
 					<v-chip
 						v-if="hasChecklist"
@@ -62,18 +102,6 @@
 							:labels="item.labels"
 							small
 						/>
-						<v-spacer
-							v-if="!isTask && item.estimated"
-						/>
-						<v-chip
-							v-if="!isTask && item.estimated"
-							color="gray"
-							text-color="black"
-							label
-							small
-						>
-							<strong>{{ estimated }}</strong>
-						</v-chip>
 					</div>
 				</div>
 					<div
@@ -228,6 +256,26 @@
 			<v-container
 				v-else
 			>
+				<div class="mt-3 mb-3">
+					<switch-button
+						v-model="item.hasMetric"
+						active-background-color="#23B1C7"
+						active-text-color="black"
+						class="mr-3"
+					>
+						<v-icon left>assessment</v-icon>
+						Possui métrica
+					</switch-button>
+					<switch-button
+						v-model="item.isRecurrent"
+						active-background-color="#FCBB5A"
+						active-text-color="black"
+						class="mr-3"
+					>
+						<v-icon left>restore</v-icon>
+						É recorrente
+					</switch-button>
+				</div>
 				<div class="mb-2">
 					<strong>Esforço estimado</strong>
 				</div>
@@ -317,6 +365,7 @@ import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
 import ChecklistForm from './ChecklistForm';
 import LinkChip from './LinkChip';
 import TeamChip from './TeamChip';
+import SwitchButton from './SwitchButton.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 const MAIN_TAB = 'Informações gerais';
@@ -332,6 +381,7 @@ export default {
 		ChecklistForm,
 		LinkChip,
 		TeamChip,
+		SwitchButton,
 	},
 
 	props: {
