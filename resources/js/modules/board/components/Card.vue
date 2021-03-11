@@ -25,9 +25,10 @@
 							<v-chip
 								v-bind="attrs"
 								v-on="on"
-								color="#FCBB5A"
+								color="#FDD291"
 								text-color="black"
 								small
+								label
 								class="mr-2"
 							>
 								<v-icon small>warning_amber</v-icon>
@@ -90,6 +91,7 @@
 						color="gray"
 						text-color="black"
 						label
+						outlined
 						small
 					>
 						<strong>{{ estimated }}</strong>
@@ -167,6 +169,16 @@
 				<div
 					class="d-flex"
 				>
+					<v-chip
+						v-if="isNotPriorizedWithPendingInfo"
+						color="#FDD291"
+						text-color="black"
+						small
+						label
+						class="mr-2"
+					>
+						<v-icon small>warning_amber</v-icon>
+					</v-chip>
 					<v-chip
 						v-if="item.number"
 						color="gray"
