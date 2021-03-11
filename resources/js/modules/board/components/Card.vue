@@ -26,11 +26,14 @@
 					>
 						#{{ item.number }}
 					</v-chip>
-					<small class="d-flex align-center mx-2">
+					<small
+						v-if="isNotPriorized && item.rating"
+						class="d-flex align-center mx-2"
+					>
 						<v-icon small>
 							local_fire_department
 						</v-icon>
-						3
+						{{ item.rating }}
 					</small>
 					<v-tooltip
 						v-if="!isTask && item.hasMetric"
