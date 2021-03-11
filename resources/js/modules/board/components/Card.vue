@@ -26,6 +26,12 @@
 					>
 						#{{ item.number }}
 					</v-chip>
+					<small class="d-flex align-center mx-2">
+						<v-icon small>
+							local_fire_department
+						</v-icon>
+						3
+					</small>
 					<v-tooltip
 						v-if="!isTask && item.hasMetric"
 						bottom
@@ -254,6 +260,38 @@
 				</v-tabs-items>
 			</v-container>
 			<v-container
+				v-else-if="isNotPriorized"
+			>
+				<div>
+					<div class="pb-2">
+						Qual o problema?
+					</div>
+					<v-textarea
+						v-model="item.demand"
+						flat
+						outlined
+						auto-grow
+						autofocus
+					/>
+				</div>
+				<div>
+					<div class="pb-2">
+						Qual o grau de importância do problema?
+					</div>
+					<tooltip-rating
+						v-model="item.rating"
+						color="red"
+						:tooltips="[
+							'Tooltip 1',
+							'Tooltip 2',
+							'Tooltip 3',
+							'Tooltip 4',
+							'Tooltip 5',
+						]"
+					/>
+				</div>
+			</v-container>
+			<v-container
 				v-else
 			>
 				<div class="mt-3 mb-3">
@@ -367,6 +405,7 @@ import LinkChip from './LinkChip';
 import TeamChip from './TeamChip';
 import SwitchButton from './SwitchButton.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+import TooltipRating from './TooltipRating.vue';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -382,6 +421,7 @@ export default {
 		LinkChip,
 		TeamChip,
 		SwitchButton,
+		TooltipRating,
 	},
 
 	props: {
@@ -416,8 +456,14 @@ export default {
 		}),
 		
 		isTask() {
+			return false;
 			return !!!this.item.isUserStory;
 		},
+
+		isNotPriorized() {
+			return true;
+		},
+
 		estimated() {
 			if(+this.item.estimated === 1) {
 				return `${this.item.estimated} pt`
