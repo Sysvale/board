@@ -41,17 +41,29 @@ class StoreCardRequest extends FormRequest
 	protected function getRulesByType(): array
 	{
 		if ($this->type === CardTypes::NOT_PRIORITIZED) {
-			return $this->userStoryAspirantRules();
+			return $this->notPrioritizedRules();
+		}
+
+		if ($this->type === CardTypes::USER_STORY) {
+			return $this->userStoryRules();
 		}
 
 		return [];
 	}
 
-	protected function userStoryAspirantRules(): array
+	protected function notPrioritizedRules(): array
 	{
 		return [
 			'rating' => 'nullable|numeric|min:0|max:5',
 			'description' => 'nullable|string',
+		];
+	}
+
+	protected function userStoryRules(): array
+	{
+		return [
+			'has_metric' => 'nullable|boolean',
+			'is_recurrent' => 'nullable|boolean',
 		];
 	}
 }
