@@ -66,51 +66,80 @@
 	<list-container
 		v-else
 	>
-		<header class="mb-2 px-2 py-2 text--black d-flex">
-			<v-btn
-				icon
-				small
-				@click="colapsed = true"
-			>
-				<v-icon>
-					keyboard_arrow_right
-				</v-icon>
-			</v-btn>
-
-			<div class="flex-grow-1 d-flex align-center">
-				<span class="mb-0 text-uppercase font-weight-medium text--secondary">
-					<span>
-						<small>{{ $attrs.title }}</small>
-						<span class="ml-3 text--secondary mb-0">
-							<small>{{ $attrs.list.length }}</small>
-						</span>
-					</span>
-
-					<div
-						v-if="hasSomeEstimatedCard && pointsSum"
-						class="d-flex"
-					>
-						<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
-					</div>
-				</span>
-			</div>
-
-			<div class="d-flex justify-end">
+		<header class="mb-2 text--black">
+			<div class="d-flex px-2 py-2">
 				<v-btn
-					block
+					icon
 					small
-					depressed
-					:disabled="$attrs.loading"
-					color="white"
-					class="px-0"
-					@click="createMode = true"
+					@click="colapsed = true"
 				>
-					<v-icon
-						color="rgba(0, 0, 0, 0.5)"
-					>
-						add
+					<v-icon>
+						keyboard_arrow_right
 					</v-icon>
 				</v-btn>
+				<div class="flex-grow-1 d-flex align-center">
+					<span class="mb-0 text-uppercase font-weight-medium text--secondary">
+						<span>
+							<small>{{ $attrs.title }}</small>
+							<span class="ml-3 text--secondary mb-0">
+								<small>{{ $attrs.list.length }}</small>
+							</span>
+						</span>
+						<div
+							v-if="hasSomeEstimatedCard && pointsSum"
+							class="d-flex"
+						>
+							<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
+						</div>
+					</span>
+				</div>
+				<div class="d-flex justify-end">
+					<v-btn
+						block
+						small
+						depressed
+						:disabled="$attrs.loading"
+						color="white"
+						class="px-0"
+						@click="createMode = true"
+					>
+						<v-icon
+							color="rgba(0, 0, 0, 0.5)"
+						>
+							add
+						</v-icon>
+					</v-btn>
+				</div>
+			</div>
+			<div
+				v-if="isAGoalableList"
+				class="mt-n1 mx-n1"
+			>
+				<v-alert
+					v-if="!editGoal"
+					border="left"
+					color="secondary"
+					icon="flag"
+					text
+					@click="enableEditGoal"
+				>
+					<span
+						:class="goalAlertTextStyle"
+					>
+						{{ getGoalByKey($attrs.keyValue).title || 'Informe aqui o objetivo da sprint' }}
+					</span>
+				</v-alert>
+				<v-textarea
+					v-else
+					v-model="getGoalByKey($attrs.keyValue).title"
+					auto-grow
+					autofocus
+					color="secondary"
+					class="pb-0 mx-1"
+					@blur="handleEditGoal"
+					@keydown.enter="handleEditGoal"
+					@keydown.esc="clear"
+				/>
 			</div>
 		</header>
 
@@ -169,6 +198,16 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+import {
+	BACKLOG,
+	AVENGERS,
+	STEPPER,
+	BREAKOUT_ONE,
+	SYS_OUT,
+	SYS_IN,
+} from '../constants/BoardListKeys';
 import Card from './Card.vue';
 import ListContainer from './ListContainer.vue';
 import ListSkeletonLoader from './ListSkeletonLoader.vue';
@@ -193,10 +232,25 @@ export default {
 			newCardTitle: null,
 			createMode: false,
 			colapsed: false,
+			editGoal: false,
 		};
 	},
 
 	computed: {
+		...mapGetters('goals', ['getGoalByKey']),
+
+		isAGoalableList() {
+			const goalableLists = [
+				BACKLOG,
+				AVENGERS,
+				STEPPER,
+				BREAKOUT_ONE,
+				SYS_OUT,
+				SYS_IN,
+			];
+			return goalableLists.indexOf(this.$attrs.keyValue) > -1;
+		},
+
 		cardsQuantity() {
 			const { length } = this.$attrs.list;
 
@@ -219,9 +273,19 @@ export default {
 			const sum = _.sum(this.$attrs.list.map((card) => +card.estimated || 0));
 			return sum ? `${sum} pt${sum === 1 ? '' : 's'}` : null;
 		},
+
+		goalAlertTextStyle() {
+			if (this.getGoalByKey(this.$attrs.keyValue).title) {
+				return '';
+			}
+
+			return 'grey--text text--darken-1 subtitle-2';
+		},
 	},
 
 	methods: {
+		...mapActions('goals', ['updateGoal']),
+
 		handleAdd() {
 			if (this.newCardTitle && this.newCardTitle.trim() !== '') {
 				this.$emit('add', {
@@ -236,9 +300,23 @@ export default {
 			this.createMode = false;
 		},
 
+		enableEditGoal() {
+			this.editGoal = true;
+		},
+
+		handleEditGoal() {
+			this.editGoal = false;
+			const payload = convertKeysToSnakeCase({
+				...this.getGoalByKey(this.$attrs.keyValue),
+			});
+
+			this.updateGoal(payload);
+		},
+
 		clear() {
 			this.newCardTitle = null;
 			this.createMode = false;
+			this.editGoal = false;
 		},
 	},
 };

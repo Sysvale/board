@@ -50,12 +50,16 @@ Route::group(
         Route::resource('events', 'EventController')->only(['store', 'update', 'destroy']);
         Route::get('/events/{team}', 'EventController@getEventsByTeam');
 
+        Route::resource('goals', 'GoalController');
+
         Route::get('/logout', function () {
             Auth::logout();
             return redirect('login');
         });
 
         Route::apiResource('workspaces', 'WorkspaceController');
+
+        Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
     }
 );
 

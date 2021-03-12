@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use App\Models\Member;
 use App\Models\TeamMember;
-use App\Http\Resources\MemberResource;
-use App\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use App\Http\Resources\MemberResource;
+use Illuminate\Support\Facades\Response;
 use App\Notifications\WelcomeNotification as WelcomeNotification;
 
 class MemberController extends Controller
@@ -32,13 +33,14 @@ class MemberController extends Controller
 		$isRegisteredUser = User::where('email', $request->email)->exists();
 
 		$this->syncTeams($member, $data['team_ids']);
-		
+
 		if (isset($request->email) && !$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
 
-			$user = User::create([
+			User::create([
 				'name' => $request->name,
 				'email' => $request->email,
+				'member_id' => $member->id,
 				'password' => Hash::make($generatedPassword),
 			]);
 		}
@@ -52,20 +54,30 @@ class MemberController extends Controller
 			'name' => 'required',
 			'team_ids' => 'required|array',
 			'avatar_url' => 'nullable|string',
+			'email' => 'nullable|string',
 		]);
 
 		$member->update($data);
 		$this->syncTeams($member, $data['team_ids']);
 
+		if ($member->user) {
+			$member->user->update([
+				'email' => $data['email'],
+			]);
+		}
+
 		return new MemberResource($member);
 	}
 
-	public function destroy($id)
+	public function destroy(Member $member)
 	{
-		$member = Member::where('_id', $id)
-			->delete();
+		if ($member->user) {
+			$member->user->delete();
+		}
 
-		return $member;
+		$member->delete();
+
+		return Response::json('Membro excluído com sucesso!');
 	}
 
 	private function syncTeams(Member $member, array $team_ids): void

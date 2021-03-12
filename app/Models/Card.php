@@ -27,6 +27,8 @@ class Card extends Model
 		'workspace_id',
 		'description',
 		'rating',
+		'has_metric',
+		'is_recurrent',
 	];
 
 	protected $appends = ['id', 'is_user_story', 'is_not_prioritized', 'is_task'];

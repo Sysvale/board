@@ -109,6 +109,10 @@ class CardController extends Controller
 			'board_id' => $request->board_id ?? $request->board['id'],
 			'workspace_id' => $request->workspace_id,
 			'type' => $request->type,
+			'has_metric' => $request->has_metric,
+			'is_recurrent' => $request->is_recurrent,
+			'rating' => $request->rating,
+			'description' => $request->description,
 		];
 
 		$card->fill($params);
