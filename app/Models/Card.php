@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use App\Constants\CardTypes;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
@@ -30,6 +31,7 @@ class Card extends Model
 		'rating',
 		'has_metric',
 		'is_recurrent',
+		'user_id',
 	];
 
 	protected $appends = ['id', 'is_user_story', 'is_not_prioritized', 'is_task'];
@@ -56,6 +58,11 @@ class Card extends Model
 	public function board()
 	{
 		return $this->belongsTo('App\Models\Board');
+	}
+
+	public function user()
+	{
+		return $this->belongsTo(User::class);
 	}
 
 	public function scopeFromGitlab($query)

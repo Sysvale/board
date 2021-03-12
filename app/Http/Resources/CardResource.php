@@ -36,6 +36,7 @@ class CardResource extends JsonResource
 			'is_task' => $this->is_task,
 			'has_metric' => $this->has_metric,
 			'is_recurrent' => $this->is_recurrent,
+			'user' => $this->when(isset($this->user), $this->user),
 			'acceptance_criteria' => $this->when(
 				isset($this->acceptance_criteria),
 				$this->acceptance_criteria
