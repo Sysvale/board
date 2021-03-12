@@ -6,17 +6,17 @@
 		@click:outside="showDeleteConfirmation = false"
 	>
 		<template v-slot:activator="{}">
-				<v-card
-					class="task-card px-3 py-3"
-					:style="agingStyle"
-					v-bind="$attrs"
-					v-on="$listeners"
-					hover
-					:ripple="false"
-					@click="showModal"
-					@mouseover="hover = true"
-					@mouseleave="hover = false"
-				>
+			<v-card
+				class="task-card px-3 py-3"
+				:style="agingStyle"
+				v-bind="$attrs"
+				v-on="$listeners"
+				hover
+				:ripple="false"
+				@click="showModal"
+				@mouseover="hover = true"
+				@mouseleave="hover = false"
+			>
 				<div class="d-flex align-center">
 					<v-tooltip
 						v-if="isNotPriorizedWithPendingInfo"
@@ -134,34 +134,34 @@
 						/>
 					</div>
 				</div>
-					<div
-						class="gray--text py-0"
-					>
-						<slot />
-					</div>
-					<div
-						v-if="isTask"
-						class="d-flex align-center pt-2"
-					>
-						<member-list
-							:members="item.members"
-						/>
-						<div class="d-flex flex-grow-1 justify-end">
-							<link-chip
-								v-if="item.link"
-								:link="item.link"
-							/>
-						</div>
-					</div>
-					<div
-							v-else-if="item.teamId"
-							class="mt-2"
-					>
-						<team-chip
-							:team-id="item.teamId"
+				<div
+					class="gray--text py-0"
+				>
+					<slot />
+				</div>
+				<div
+					v-if="isTask"
+					class="d-flex align-center pt-2"
+				>
+					<member-list
+						:members="item.members"
+					/>
+					<div class="d-flex flex-grow-1 justify-end">
+						<link-chip
+							v-if="item.link"
+							:link="item.link"
 						/>
 					</div>
-				</v-card>
+				</div>
+				<div
+						v-else-if="item.teamId"
+						class="mt-2"
+				>
+					<team-chip
+						:team-id="item.teamId"
+					/>
+				</div>
+			</v-card>
 		</template>
 		<v-card
 			class="px-5 py-5"
@@ -546,21 +546,21 @@ export default {
 		agingStyle() {
 			const start = moment(this.item.createdAt, 'YYYY-MM-DD');
 			const end = moment();
-			const diff = moment.duration(start.diff(end)).asDays();
+			const diff = moment.duration(end.diff(start)).asDays();
 
-			if (diff <= 7) {
-				return 'background-color: #FFFFFF';
+			if (diff <= 7 || this.hover) {
+				return 'opacity: 1';
 			}
 
 			if (diff <= 14) {
-				return 'background-color: #F0F3FA';
+				return 'opacity: .70';
 			}
 
 			if (diff <= 21) {
-				return 'background-color: #DDE2E7';
+				return 'opacity: .35';
 			}
 
-			return 'background-color: #ABB5BF';
+			return 'opacity: .10';
 		},
 	},
 
