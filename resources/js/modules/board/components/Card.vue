@@ -8,6 +8,7 @@
 		<template v-slot:activator="{}">
 				<v-card
 					class="task-card px-3 py-3"
+					:style="agingStyle"
 					v-bind="$attrs"
 					v-on="$listeners"
 					hover
@@ -501,6 +502,26 @@ export default {
 						return tab;
 				}
 			}
+		},
+
+		agingStyle() {
+			const start = moment(this.item.createdAt, 'YYYY-MM-DD');
+			const end = moment();
+			const diff = moment.duration(start.diff(end)).asDays();
+
+			if (diff <= 7) {
+				return 'background-color: #FFFFFF';
+			}
+
+			if (diff <= 14) {
+				return 'background-color: #F0F3FA';
+			}
+
+			if (diff <= 21) {
+				return 'background-color: #DDE2E7';
+			}
+
+			return 'background-color: #ABB5BF';
 		},
 	},
 
