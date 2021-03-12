@@ -398,6 +398,10 @@ export default {
 			type: Object,
 			default: () => {},
 		},
+		listType: {
+			type: String,
+			default: 'task',
+		}
 	},
 
 	data() {
@@ -425,8 +429,9 @@ export default {
 		}),
 
 		isTask() {
-			return !this.item.isUserStory;
+			return this.listType === 'task';
 		},
+
 		estimated() {
 			if (+this.item.estimated === 1) {
 				return `${this.item.estimated} pt`;
@@ -470,9 +475,7 @@ export default {
 	watch: {
 		item: {
 			handler(newValue) {
-				if (this.dialog) {
-					this.updateCard(convertKeysToSnakeCase(newValue));
-				}
+				this.updateCard(convertKeysToSnakeCase(newValue));
 			},
 			deep: true,
 		},

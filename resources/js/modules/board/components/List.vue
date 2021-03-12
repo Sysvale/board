@@ -182,6 +182,7 @@
 					>
 						<card
 							:item="item"
+							:list-type="acceptsCardType"
 							@save="handleAdd"
 							@delete="$emit('delete', {
 								id: item.id,
