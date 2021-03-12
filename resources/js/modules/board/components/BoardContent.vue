@@ -76,7 +76,6 @@ export default {
 	data() {
 		return {
 			snackbar: false,
-			shouldUpdate: true,
 		};
 	},
 
@@ -106,7 +105,7 @@ export default {
 					...acc,
 					[list.id]: {
 						handler: (newValue) => {
-							if (newValue !== null && newValue.length > 0 && this.shouldUpdate) {
+							if (newValue !== null && newValue.length > 0) {
 								const cardsToUpdate = newValue.map((item, position) => (convertKeysToSnakeCase({
 									id: item.id,
 									position,
@@ -114,20 +113,7 @@ export default {
 									type: list.acceptsCardType,
 								})));
 
-								this.updateCardsPositions(cardsToUpdate).then((updatedCards) => {
-									const oldList = JSON.stringify(newValue);
-									const newList = JSON.stringify(convertKeysToCamelCase(updatedCards));
-									if (oldList !== newList) {
-										updatedCards.forEach((item) => {
-											this.setCard(item);
-										});
-
-										this.shouldUpdate = false;
-										this.$nextTick(() => {
-											this.shouldUpdate = true;
-										});
-									}
-								});
+								this.updateCardsPositions(cardsToUpdate);
 							}
 						},
 					},
