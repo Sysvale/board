@@ -133,6 +133,9 @@ import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 
 export default {
 	mounted() {
+		document.title = this.$route && this.$route.meta
+			? `${this.$route.meta.title} | Trelássio`  : 'Trelássio';
+
 		this.getWorkspaces().then((data) => {
 			this.setWorkspaces(data);
 			if(this.$route.params && this.$route.params.workspaceId) {
@@ -231,8 +234,6 @@ export default {
 				document.title = `${to.meta.title} | Trelássio`
 				return;
 			}
-
-			to.meta.title = 'Trelássio';
 		},
 	},
 	methods: {
