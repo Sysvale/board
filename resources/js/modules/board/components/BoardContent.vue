@@ -42,6 +42,7 @@
 import { createNamespacedHelpers, mapActions } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 import List from './List.vue';
 import BoardContainer from './BoardContainer.vue';
 import makeBoardStore from '../../../core/utils/makeBoardStore';
@@ -74,6 +75,7 @@ export default {
 	data() {
 		return {
 			snackbar: false,
+			shouldUpdate: true,
 		};
 	},
 
@@ -103,15 +105,28 @@ export default {
 					...acc,
 					[list.id]: {
 						handler: (newValue) => {
-							if (newValue !== null && newValue.length > 0) {
-								this.updateCardsPositions(
-									newValue.map((item, position) => (convertKeysToSnakeCase({
-										id: item.id,
-										position,
-										boardListId: list.id,
-										type: list.acceptsCardType,
-									}))),
-								);
+							if (newValue !== null && newValue.length > 0 && this.shouldUpdate) {
+								const cardsToUpdate = newValue.map((item, position) => (convertKeysToSnakeCase({
+									id: item.id,
+									position,
+									boardListId: list.id,
+									type: list.acceptsCardType,
+								})));
+
+								this.updateCardsPositions(cardsToUpdate).then((updatedCards) => {
+									const oldList = JSON.stringify(newValue);
+									const newList = JSON.stringify(convertKeysToCamelCase(updatedCards));
+									if (oldList !== newList) {
+										updatedCards.forEach((item) => {
+											this.setCard(item);
+										});
+
+										this.shouldUpdate = false;
+										this.$nextTick(() => {
+											this.shouldUpdate = true;
+										});
+									}
+								});
 							}
 						},
 					},

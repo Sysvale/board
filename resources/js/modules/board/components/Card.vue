@@ -415,7 +415,9 @@ export default {
 	watch: {
 		item: {
 			handler(newValue) {
-				this.updateCard(convertKeysToSnakeCase(newValue));
+				if (this.dialog) {
+					this.updateCard(convertKeysToSnakeCase(newValue));
+				}
 			},
 			deep: true,
 		},
