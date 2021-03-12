@@ -18,6 +18,25 @@
 					@mouseleave="hover = false"
 				>
 				<div class="d-flex align-center">
+					<v-tooltip
+						v-if="isNotPriorizedWithPendingInfo"
+						bottom
+					>
+						<template v-slot:activator="{ on, attrs }">
+							<v-chip
+								v-bind="attrs"
+								v-on="on"
+								color="#FDD291"
+								text-color="black"
+								small
+								label
+								class="mr-2"
+							>
+								<v-icon small>warning_amber</v-icon>
+							</v-chip>
+						</template>
+						Existem informações pendentes
+					</v-tooltip>
 					<v-chip
 						v-if="item.number"
 						color="#efefef"
@@ -27,11 +46,14 @@
 					>
 						#{{ item.number }}
 					</v-chip>
-					<small class="d-flex align-center mx-2">
+					<small
+						v-if="isNotPriorized && item.rating"
+						class="d-flex align-center mx-2"
+					>
 						<v-icon small>
 							local_fire_department
 						</v-icon>
-						3
+						{{ item.rating }}
 					</small>
 					<v-tooltip
 						v-if="!isTask && item.hasMetric"
@@ -70,6 +92,7 @@
 						color="gray"
 						text-color="black"
 						label
+						outlined
 						small
 					>
 						<strong>{{ estimated }}</strong>
@@ -147,6 +170,16 @@
 				<div
 					class="d-flex"
 				>
+					<v-chip
+						v-if="isNotPriorizedWithPendingInfo"
+						color="#FDD291"
+						text-color="black"
+						small
+						label
+						class="mr-2"
+					>
+						<v-icon small>warning_amber</v-icon>
+					</v-chip>
 					<v-chip
 						v-if="item.number"
 						color="gray"
@@ -268,7 +301,7 @@
 						Qual o problema?
 					</div>
 					<v-textarea
-						v-model="item.demand"
+						v-model="item.description"
 						flat
 						outlined
 						auto-grow
@@ -463,6 +496,12 @@ export default {
 
 		isNotPriorized() {
 			return true;
+		},
+
+		isNotPriorizedWithPendingInfo() {
+			const hasDescription = this.item.description && this.item.description.trim() !== '';
+			const hasRating = this.item.rating && this.item.rating > 0;
+			return this.isNotPriorized && (!hasDescription || !hasRating);
 		},
 
 		estimated() {
