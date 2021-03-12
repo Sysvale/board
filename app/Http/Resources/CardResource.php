@@ -26,7 +26,6 @@ class CardResource extends JsonResource
 			'members' => $this->when(isset($this->members), $this->members),
 			'labels' => $this->when(isset($this->labels), $this->labels),
 			'checklist' => $this->when(isset($this->checklist), $this->checklist),
-			'type' => $this->when(isset($this->type), $this->type),
 			'gitlab_id' => $this->when(isset($this->gitlab_id), $this->gitlab_id),
 			'workspace_id' => $this->when(isset($this->workspace_id), $this->workspace_id),
 			'description' => $this->when(isset($this->description), $this->description),
