@@ -12,6 +12,7 @@ class Card extends Model
 
 	protected $fillable = [
 		'board_list_id',
+		'number',
 		'team_id',
 		'board_id',
 		'user_story_id',
