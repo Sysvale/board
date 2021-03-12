@@ -29,7 +29,7 @@ class Card extends Model
 		'rating',
 	];
 
-	protected $appends = ['id', 'is_user_story', 'is_not_priorized', 'is_task'];
+	protected $appends = ['id', 'is_user_story', 'is_not_prioritized', 'is_task'];
 	protected $hidden = ['_id', 'board_list']; //esse segundo n sei como parar de mandar a parada kkk
 
 	//relacionamento com members????????
