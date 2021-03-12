@@ -12,6 +12,7 @@ use App\Utils\GitlabHandler;
 use Illuminate\Http\Request;
 use App\Constants\BoardListsKeys;
 use App\Constants\GitlabLabelKeys;
+use App\Http\Resources\CardResource;
 use App\Http\Requests\StoreCardRequest;
 
 class CardController extends Controller
@@ -25,13 +26,13 @@ class CardController extends Controller
 
 	public function getCardsByListsIds(Request $in)
 	{
-		$query = Card::whereIn('board_list_id', $in->lists_ids);
+		$card_query = Card::whereIn('board_list_id', $in->lists_ids);
 
 		if ($in->user_story_id) {
-			$query = $query->where('user_story_id', $in->user_story_id);
+			$card_query = $card_query->where('user_story_id', $in->user_story_id);
 		}
 
-		$cards = $query->get();
+		$cards = $card_query->get();
 
 		$board_lists = BoardList::get()->keyBy('id');
 
@@ -54,9 +55,8 @@ class CardController extends Controller
 					$sub_query = $sub_query->where('workspace_id', $in->workspace_id);
 				}
 
-				$payload[$item] = $sub_query
-					->sortBy('position')
-					->values();
+				$card_resource = CardResource::collection($sub_query->sortBy('position')->values());
+				$payload[$item] = $card_resource->resolve();
 			}
 		);
 
@@ -74,13 +74,11 @@ class CardController extends Controller
 			->sortBy('position')
 			->values();
 
-		return $cards;
+		return CardResource::collection($cards);
 	}
 
 	public function getCurrentSprintSummaryByTeam(Team $team)
 	{
-		$cards = Card::where('team_id', $team->id)->get();
-
 		return [
 			'impediments_amount' => Event::where('team_id', $team->id)->count(),
 			'estimated_amount' =>  Card::where(
@@ -94,7 +92,7 @@ class CardController extends Controller
 	{
 		$card = Card::create($request->validated());
 
-		return $card;
+		return new CardResource($card);
 	}
 
 	public function update(Request $request, Card $card)
@@ -116,7 +114,7 @@ class CardController extends Controller
 		$card->fill($params);
 		$card->save();
 
-		return $card;
+		return new CardResource($card);
 	}
 
 	public function updateCardsPositions(Request $request)
@@ -128,23 +126,26 @@ class CardController extends Controller
 			'cards.*.type' => 'required',
 		]);
 
-		$result = collect($request->cards)->each(function ($request_card) {
+		$cards = [];
+		foreach ($request->cards as $request_card) {
 			$card = Card::where('_id', $request_card['id'])->first();
 			$card->position = $request_card['position'];
 			$card->board_list_id = $request_card['board_list_id'] ?? $card->board_list_id;
 			$card->type = $request_card['type'];
 
 			$card->save();
-		});
 
-		return $result;
+			$cards[] = $card;
+		}
+
+		return CardResource::collection($cards);
 	}
 
 	public function destroy($card)
 	{
 		$card->delete();
 
-		return $card;
+		return new CardResource($card);
 	}
 
 	public function synchronize()
