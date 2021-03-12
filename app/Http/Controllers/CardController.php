@@ -145,7 +145,7 @@ class CardController extends Controller
 		return CardResource::collection($cards);
 	}
 
-	public function destroy($card)
+	public function destroy(Card $card)
 	{
 		$card->delete();
 
