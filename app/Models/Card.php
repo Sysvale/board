@@ -25,6 +25,8 @@ class Card extends Model
 		'type',
 		'gitlab_id',
 		'workspace_id',
+		'description',
+		'rating',
 	];
 
 	protected $appends = ['id', 'is_user_story', 'is_not_priorized', 'is_task'];
