@@ -21,13 +21,13 @@
 										{{ icon }}
 									</v-icon>
 							</template>
-							{{ tooltipMessage(props.index) }}
+							{{ tooltipMessage(props.index).tooltip }}
 						</v-tooltip>
 				</template>
 			</v-rating>
 			<div v-if="tooltipMessage(internalValue - 1)">
 				<small>
-					<strong>Selecionado: </strong>{{ tooltipMessage(internalValue - 1) }}
+					<strong>Selecionado: </strong>{{ tooltipMessage(internalValue - 1).value }}
 				</small>
 			</div>
 		</div>
