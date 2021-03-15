@@ -210,7 +210,9 @@
 					/>
 				</v-layout>
 			</v-container>
-
+			<div class="mb-3 px-3">
+				<small>{{ createdBy }}</small>
+			</div>
 			<v-divider />
 
 			<v-container
@@ -317,13 +319,7 @@
 					<tooltip-rating
 						v-model="item.rating"
 						color="red"
-						:tooltips="[
-							'Tooltip 1',
-							'Tooltip 2',
-							'Tooltip 3',
-							'Tooltip 4',
-							'Tooltip 5',
-						]"
+						:tooltips="tooltipsRating"
 					/>
 				</div>
 			</v-container>
@@ -575,6 +571,37 @@ export default {
 
 			return 'opacity: .10';
 		},
+
+		createdBy() {
+			const user = !!this.item.user ?  ` por: ${(this.item.user.name || this.item.user.email)} ` : '';
+			const createdAt = `em ${moment(this.item.createdAt).format('DD/MM/YY [às] HH:mm')}`;
+			return `Criado${user}${createdAt}`;
+		},
+
+		tooltipsRating() {
+			return [
+				{
+					tooltip: 'Tooltip 1',
+					value: 'Tooltip v1',
+				},
+				{
+					tooltip: 'Tooltip 2',
+					value: 'Tooltip v2',
+				},
+				{
+					tooltip: 'Tooltip 3',
+					value: 'Tooltip v3',
+				},
+				{
+					tooltip: 'Tooltip 4',
+					value: 'Tooltip v4',
+				},
+				{
+					tooltip: 'Tooltip 5',
+					value: 'Tooltip v5',
+				},
+			];
+		}
 	},
 
 	watch: {
