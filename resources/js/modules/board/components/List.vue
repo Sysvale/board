@@ -125,12 +125,12 @@
 						:class="goalAlertTextStyle"
 					>
 						<v-icon small>flag</v-icon>
-						{{ getGoalByKey($attrs.keyValue).title || 'Informe aqui o objetivo da sprint' }}
+						{{ getGoalByKey(keyValue).title || 'Informe aqui o objetivo da sprint' }}
 					</span>
 				</v-alert>
 				<v-textarea
 					v-else
-					v-model="getGoalByKey($attrs.keyValue).title"
+					v-model="getGoalByKey(keyValue).title"
 					auto-grow
 					autofocus
 					color="secondary"
@@ -226,6 +226,10 @@ export default {
 			type: String,
 			default: TASK,
 		},
+		keyValue: {
+			type: String,
+			default: null,
+		},
 	},
 
 	data() {
@@ -249,7 +253,7 @@ export default {
 				SYS_OUT,
 				SYS_IN,
 			];
-			return goalableLists.indexOf(this.$attrs.keyValue) > -1;
+			return goalableLists.indexOf(this.keyValue) > -1;
 		},
 
 		cardsQuantity() {
@@ -276,7 +280,7 @@ export default {
 		},
 
 		goalAlertTextStyle() {
-			if (this.getGoalByKey(this.$attrs.keyValue).title) {
+			if (this.getGoalByKey(this.keyValue).title) {
 				return 'subtitle-2';
 			}
 
@@ -320,7 +324,7 @@ export default {
 		handleEditGoal() {
 			this.editGoal = false;
 			const payload = convertKeysToSnakeCase({
-				...this.getGoalByKey(this.$attrs.keyValue),
+				...this.getGoalByKey(this.keyValue),
 			});
 
 			this.updateGoal(payload);
