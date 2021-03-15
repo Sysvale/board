@@ -58,7 +58,6 @@
 								<v-icon
 									small
 									v-bind="attrs"
-									class="mx-2"
 									v-on="on"
 								>
 									local_fire_department
