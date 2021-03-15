@@ -10,7 +10,7 @@
 				:key="list.id"
 				:accepts-card-type="list.acceptsCardType"
 				:key-value="list.key"
-				:title="list.name"
+				:name="list.name"
 				:list="getList(list.id)"
 				:group="namespace"
 				@add="handleAdd"
