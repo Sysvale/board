@@ -553,6 +553,8 @@ export default {
 		},
 
 		agingStyle() {
+			if(!this.isNotPriorized) return '';
+
 			const start = moment(this.item.createdAt, 'YYYY-MM-DD');
 			const end = moment();
 			const diff = moment.duration(end.diff(start)).asDays();
