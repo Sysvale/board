@@ -133,6 +133,9 @@ import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
 
 export default {
 	mounted() {
+		document.title = this.$route && this.$route.meta
+			? `${this.$route.meta.title} | Trelássio`  : 'Trelássio';
+
 		this.getWorkspaces().then((data) => {
 			this.setWorkspaces(data);
 			if(this.$route.params && this.$route.params.workspaceId) {
@@ -157,6 +160,9 @@ export default {
 		});
 		this.getWorkspaces().then((data) => {
 			this.setWorkspaces(data);
+		});
+		this.getGoals().then((data) => {
+			this.setGoals(data);
 		});
 	},
 
@@ -187,6 +193,9 @@ export default {
 		...mapState('workspaces', {
 			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
 		}),
+		...mapState('goals', {
+			loadingGoals: ({ getGoals }) => getGoals.isFetching,
+		}),
 
 		...mapGetters('workspaces', ['currentWorkspace']),
 		...mapGetters('teams', {
@@ -198,7 +207,8 @@ export default {
 				|| this.loadingLabels
 				|| this.loadingTeams
 				|| this.loadingBoards
-				|| this.loadingWorkspaces;
+				|| this.loadingWorkspaces
+				|| this.loadingGoals;
 		},
 
 		sprintRoute() {
@@ -224,8 +234,6 @@ export default {
 				document.title = `${to.meta.title} | Trelássio`
 				return;
 			}
-
-			to.meta.title = 'Trelássio';
 		},
 	},
 	methods: {
@@ -247,6 +255,9 @@ export default {
 		...mapActions('workspaces', [
 			'getWorkspaces',
 		]),
+		...mapActions('goals', [
+			'getGoals',
+		]),
 		...mapMutations('workspaces', {
 			setWorkspaces: 'setItems',
 			setSelectedWorkspace: 'setSelectedWorkspace',
@@ -265,6 +276,9 @@ export default {
 		}),
 		...mapMutations('workspaces', {
 			setWorkspaces: 'setItems',
+		}),
+		...mapMutations('goals', {
+			setGoals: 'setItems',
 		}),
 		logout() {
 			return window.location.href = '/logout';

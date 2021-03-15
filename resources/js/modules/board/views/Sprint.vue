@@ -21,6 +21,17 @@
 				:key="team.id"
 				:value="team.id"
 			>
+				<div class="mx-3 my-3">
+					<v-alert
+						v-if="getGoalByTeamId(team.id) && getGoalByTeamId(team.id).title"
+						border="left"
+						color="secondary"
+						icon="flag"
+						text
+					>
+						{{ getGoalByTeamId(team.id).title }}
+					</v-alert>
+				</div>
 				<sprint-tab-content
 					:team-id="team.id"
 				/>
@@ -49,6 +60,7 @@ export default {
 		...mapGetters('teams', {
 			teams: 'itemsByWorkspace',
 		}),
+		...mapGetters('goals', ['getGoalByTeamId']),
 	},
 }
 </script>

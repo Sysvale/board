@@ -1,7 +1,7 @@
 @component('mail::message')
 <div>
     <h2>
-    Eae {{ $user->name }},
+    Eae {{ $name }},
     </h2>
     <br>
     <p>

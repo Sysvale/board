@@ -7,7 +7,7 @@
 			class="px-1 py-2"
 			flat
 			outlined
-			color="#efefef"
+			color="transparent"
 		>
 			<slot />
 		</v-card>

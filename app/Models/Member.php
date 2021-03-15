@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\User;
 use App\Models\TeamMember;
+use Illuminate\Support\Str;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
@@ -17,6 +19,26 @@ class Member extends Model
 
 	protected $appends = ['id'];
 	protected $hidden = ['_id'];
+
+	public function user()
+	{
+		return $this->hasOne(User::class, 'member_id');
+	}
+
+	public function getFullEmailAttribute()
+	{
+		return optional($this->user)->email ?? '';
+	}
+
+	public function getEmailAttribute()
+	{
+		return Str::before($this->full_email, '@sysvale.com');
+	}
+
+	public function getHasLoginAttribute()
+	{
+		return !!optional($this->user)->configured_password;
+	}
 
 	public function teamMembers()
 	{

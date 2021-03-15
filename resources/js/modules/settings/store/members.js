@@ -6,6 +6,7 @@ import {
 	createMember,
 	updateMember,
 	deleteMember,
+	resendWelcomeMail,
 } from '../services/members';
 
 const modules = [
@@ -13,6 +14,7 @@ const modules = [
 	{ createMember },
 	{ updateMember },
 	{ deleteMember },
+	{ resendWelcomeMail },
 ];
 
 export default {

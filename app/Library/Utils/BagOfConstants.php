@@ -14,4 +14,9 @@ abstract class BagOfConstants
 			return !is_array($value) && !is_object($value);
 		});
 	}
+
+	public static function allJoin()
+	{
+		return implode(',', static::all());
+	}
 }

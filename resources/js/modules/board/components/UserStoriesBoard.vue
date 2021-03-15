@@ -15,10 +15,41 @@
 						flat
 					>
 						<div
-							v-if="story.estimated"
-							class="py-3 text-right"
+							v-if="story.hasMetric || story.isRecurrent || story.estimated"
+							class="py-3 d-flex justify-end"
 						>
+							<v-tooltip
+								v-if="story.hasMetric"
+								bottom
+							>
+								<template v-slot:activator="{ on, attrs }">
+										<v-icon
+											v-bind="attrs"
+											v-on="on"
+											class="mr-2"
+										>
+											assessment
+										</v-icon>
+								</template>
+								Possui métrica
+							</v-tooltip>
+							<v-tooltip
+								v-if="story.isRecurrent"
+								bottom
+							>
+								<template v-slot:activator="{ on, attrs }">
+										<v-icon
+											v-bind="attrs"
+											v-on="on"
+											class="mr-2"
+										>
+											restore
+										</v-icon>
+								</template>
+								É recorrente
+							</v-tooltip>
 							<v-chip
+								v-if="story.estimated"
 								color="gray"
 								text-color="black"
 								label

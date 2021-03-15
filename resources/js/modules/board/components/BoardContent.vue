@@ -8,6 +8,8 @@
 				v-for="list in lists"
 				:id="list.id"
 				:key="list.id"
+				:accepts-card-type="list.acceptsCardType"
+				:key-value="list.key"
 				:title="list.name"
 				:list="getList(list.id)"
 				:group="namespace"
@@ -41,10 +43,10 @@
 import { createNamespacedHelpers, mapActions } from 'vuex';
 import makeFormFields from '../../../core/utils/makeFormFields';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
-import List from '../components/List.vue';
-import BoardContainer from '../components/BoardContainer.vue';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
+import List from './List.vue';
+import BoardContainer from './BoardContainer.vue';
 import makeBoardStore from '../../../core/utils/makeBoardStore';
-import generateUUID from '../../../core/utils/generateUUID';
 
 export default {
 	components: {
@@ -71,36 +73,29 @@ export default {
 		},
 	},
 
+	data() {
+		return {
+			snackbar: false,
+		};
+	},
+
 	beforeCreate() {
-		let namespace = this.$options.propsData.namespace;
-		let lists = this.$options.propsData.lists;
-		let cards = this.$options.propsData.cards;
-		if(
-			lists && lists.length > 0
+		const { namespace, lists, cards } = this.$options.propsData;
+
+		if (lists && lists.length > 0
 			&& cards && !_.isEmpty(cards)
 		) {
-	
-			if(!this.$store.hasModule([
-				namespace, 'board'
-			])) {
-				this.$store.registerModule([
-					namespace, 'board'
-				], makeBoardStore(lists));
+			if (!this.$store.hasModule([namespace, 'board'])) {
+				this.$store.registerModule([namespace, 'board'], makeBoardStore(lists));
 			}
 
-			let nestedNamespace = `${namespace}/board`;
-	
-			const {
-				mapActions,
-				mapMutations,
-				mapGetters,
-				mapState,
-			} = createNamespacedHelpers(nestedNamespace);
-	
+			const nestedNamespace = `${namespace}/board`;
+			const {	mapMutations } = createNamespacedHelpers(nestedNamespace);
+
 			this.$options.computed = {
 				...makeFormFields(
 					nestedNamespace,
-					[...lists.map(({ id }) => id)]
+					[...lists.map(({ id }) => id)],
 				),
 				...this.$options.computed,
 			};
@@ -110,18 +105,21 @@ export default {
 					...acc,
 					[list.id]: {
 						handler: (newValue) => {
-							this.updateCardsPositions(
-									newValue.map((item, position) => (convertKeysToSnakeCase({
-										id: item.id,
-										position,
-										boardListId: list.id,
-									})))
-							);
+							if (newValue !== null && newValue.length > 0) {
+								const cardsToUpdate = newValue.map((item, position) => (convertKeysToSnakeCase({
+									id: item.id,
+									position,
+									boardListId: list.id,
+									type: list.acceptsCardType,
+								})));
+
+								this.updateCardsPositions(cardsToUpdate);
+							}
 						},
 					},
-				}), {})
+				}), {}),
 			};
-	
+
 			this.$options.methods = {
 				...mapMutations([
 					...lists.map(({ id }) => `set${id}`),
@@ -133,12 +131,6 @@ export default {
 				...this.$options.methods,
 			};
 			this.$store.commit(`${nestedNamespace}/setCards`, cards);
-		}
-	},
-
-	data() {
-		return {
-			snackbar: false,
 		}
 	},
 
@@ -155,10 +147,9 @@ export default {
 			return this[boardListId];
 		},
 
-		handleAdd({ boardListId, title }) {
+		handleAdd(newCardData) {
 			this.createCard(convertKeysToSnakeCase({
-				boardListId,
-				title,
+				...newCardData,
 				...this.cardMiddleware,
 			})).then((data) => {
 				this.addNewTask({ ...data });
@@ -174,7 +165,7 @@ export default {
 		reload() {
 			window.location.reload();
 			this.snackbar = false;
-		}
-	}
-}
+		},
+	},
+};
 </script>
