@@ -376,6 +376,7 @@ import LinkChip from './LinkChip.vue';
 import TeamChip from './TeamChip.vue';
 import SwitchButton from './SwitchButton.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+import { TASK } from '../constants/CardTypes';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -400,8 +401,8 @@ export default {
 		},
 		listType: {
 			type: String,
-			default: 'task',
-		}
+			default: TASK,
+		},
 	},
 
 	data() {
@@ -429,7 +430,7 @@ export default {
 		}),
 
 		isTask() {
-			return this.listType === 'task';
+			return this.listType === TASK;
 		},
 
 		estimated() {
