@@ -78,7 +78,7 @@
 								class="mx-2"
 								v-on="on"
 							>
-								assessment
+								insights
 							</v-icon>
 						</template>
 						Possui métrica
@@ -347,7 +347,7 @@
 						class="mr-3"
 					>
 						<v-icon left>
-							assessment
+							insights
 						</v-icon>
 						Possui métrica
 					</switch-button>
