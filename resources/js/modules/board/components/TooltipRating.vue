@@ -75,7 +75,7 @@ export default {
 			if(this.hoveredIndex === -1) {
 				return props.isFilled ? this.color : '';
 			}
-			return props.index <= this.hoveredIndex ? this.color : ''
+			return props.index <= this.hoveredIndex ? this.color : '';
 		}
 	}
 }
