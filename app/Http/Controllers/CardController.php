@@ -115,7 +115,11 @@ class CardController extends Controller
 			'description' => $request->description,
 		];
 
-		$card->fill($params);
+		$cleaned_data = array_filter($params, function ($value) {
+			return !is_null($value) && $value !== '';
+		});
+
+		$card->fill($cleaned_data);
 		$card->save();
 
 		return new CardResource($card);
