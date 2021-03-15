@@ -7,10 +7,10 @@
 	>
 		<template v-slot:activator="{}">
 			<v-card
-				class="task-card px-3 py-3"
-				:style="agingStyle"
 				v-bind="$attrs"
 				v-on="$listeners"
+				class="task-card px-3 py-3"
+				:style="agingStyle"
 				hover
 				:ripple="false"
 				@click="showModal"
@@ -60,13 +60,13 @@
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
-								<v-icon
-									v-bind="attrs"
-									v-on="on"
-									class="mx-2"
-								>
-									assessment
-								</v-icon>
+							<v-icon
+								v-bind="attrs"
+								class="mx-2"
+								v-on="on"
+							>
+								assessment
+							</v-icon>
 						</template>
 						Possui métrica
 					</v-tooltip>
@@ -75,12 +75,12 @@
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
-								<v-icon
-									v-bind="attrs"
-									v-on="on"
-								>
-									restore
-								</v-icon>
+							<v-icon
+								v-bind="attrs"
+								v-on="on"
+							>
+								restore
+							</v-icon>
 						</template>
 						É recorrente
 					</v-tooltip>
@@ -154,8 +154,8 @@
 					</div>
 				</div>
 				<div
-						v-else-if="item.teamId"
-						class="mt-2"
+					v-else-if="item.teamId"
+					class="mt-2"
 				>
 					<team-chip
 						:team-id="item.teamId"
@@ -194,8 +194,8 @@
 				<v-layout class="py-5">
 					<h3
 						v-if="!titleInEditMode"
-						@click="handleEditMode"
 						class="black--text"
+						@click="handleEditMode"
 					>
 						{{ item.title }}
 					</h3>
@@ -210,7 +210,9 @@
 					/>
 				</v-layout>
 			</v-container>
-			<v-divider/>
+
+			<v-divider />
+
 			<v-container
 				v-if="isTask"
 			>
@@ -335,7 +337,9 @@
 						active-text-color="black"
 						class="mr-3"
 					>
-						<v-icon left>assessment</v-icon>
+						<v-icon left>
+							assessment
+						</v-icon>
 						Possui métrica
 					</switch-button>
 					<switch-button
@@ -344,7 +348,9 @@
 						active-text-color="black"
 						class="mr-3"
 					>
-						<v-icon left>restore</v-icon>
+						<v-icon left>
+							restore
+						</v-icon>
 						É recorrente
 					</switch-button>
 				</div>
@@ -403,7 +409,9 @@
 					<div>
 						Tem certeza que deseja excluir este card?
 						<div class="mb-3">
-							<div class="grey--text caption">Essa ação não poderá ser desfeita</div>
+							<div class="grey--text caption">
+								Essa ação não poderá ser desfeita
+							</div>
 						</div>
 					</div>
 					<v-btn
@@ -427,19 +435,21 @@
 		</v-card>
 	</v-dialog>
 </template>
+
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import MemberList from './MemberList';
-import LabelList from './LabelList';
-import MemberSelect from './MemberSelect';
-import LabelSelect from './LabelSelect';
-import AcceptanceCriteriaForm from './AcceptanceCriteriaForm';
-import ChecklistForm from './ChecklistForm';
-import LinkChip from './LinkChip';
-import TeamChip from './TeamChip';
+import MemberList from './MemberList.vue';
+import LabelList from './LabelList.vue';
+import MemberSelect from './MemberSelect.vue';
+import LabelSelect from './LabelSelect.vue';
+import AcceptanceCriteriaForm from './AcceptanceCriteriaForm.vue';
+import ChecklistForm from './ChecklistForm.vue';
+import LinkChip from './LinkChip.vue';
+import TeamChip from './TeamChip.vue';
 import SwitchButton from './SwitchButton.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import TooltipRating from './TooltipRating.vue';
+import { NOT_PRIORITIZED, TASK } from '../constants/CardTypes';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -463,6 +473,10 @@ export default {
 			type: Object,
 			default: () => {},
 		},
+		listType: {
+			type: String,
+			default: 'task',
+		}
 	},
 
 	data() {
@@ -488,14 +502,13 @@ export default {
 		...mapGetters('teams', {
 			teams: 'itemsByWorkspace',
 		}),
-		
+
 		isTask() {
-			return false;
-			return !!!this.item.isUserStory;
+			return this.listType === TASK;
 		},
 
 		isNotPriorized() {
-			return true;
+			return this.listType === NOT_PRIORITIZED;
 		},
 
 		isNotPriorizedWithPendingInfo() {
@@ -505,8 +518,8 @@ export default {
 		},
 
 		estimated() {
-			if(+this.item.estimated === 1) {
-				return `${this.item.estimated} pt`
+			if (+this.item.estimated === 1) {
+				return `${this.item.estimated} pt`;
 			}
 			return `${this.item.estimated} pts`;
 		},
@@ -516,31 +529,31 @@ export default {
 		},
 
 		checklistLabel() {
-			const doneLenght = this.item.checklist.filter((item) => {
-				return !!item.done;
-			}).length;
+			const doneLenght = this.item.checklist.filter((item) => !!item.done).length;
 			const { length } = this.item.checklist;
+
 			return `${doneLenght}/${length}`;
 		},
 
 		allDoneInChecklist() {
-			return this.item.checklist.filter((item) => {
-				return !!item.done;
-			}).length === this.item.checklist.length;
+			return this.item.checklist.filter(
+				(item) => !!item.done,
+			).length === this.item.checklist.length;
 		},
 
 		tabTitle() {
-			return tab => {
-				switch(tab) {
-					case CHECKLIST_TAB:
-						if(this.hasChecklist) {
-							return `${tab} (${this.checklistLabel})`;
-						}
-						return tab;
-					default:
-						return tab;
+			return (tab) => {
+				switch (tab) {
+				case CHECKLIST_TAB:
+					if (this.hasChecklist) {
+						return `${tab} (${this.checklistLabel})`;
+					}
+					return tab;
+
+				default:
+					return tab;
 				}
-			}
+			};
 		},
 
 		agingStyle() {
@@ -566,7 +579,7 @@ export default {
 
 	watch: {
 		item: {
-			handler(newValue, oldValue) {
+			handler(newValue) {
 				this.updateCard(convertKeysToSnakeCase(newValue));
 			},
 			deep: true,
@@ -584,17 +597,20 @@ export default {
 
 		handleSave() {
 			this.titleInEditMode = false;
-			if(!this.cloneTitle || this.cloneTitle.trim().length === 0 ) {
+
+			if (!this.cloneTitle || this.cloneTitle.trim().length === 0) {
 				return;
 			}
+
 			this.item.title = _.clone(this.cloneTitle);
+
 			this.$emit('save');
 		},
 
 		handleEditMode() {
 			this.cloneTitle = _.clone(this.item.title);
 			this.titleInEditMode = true;
-		}
+		},
 	},
-}
+};
 </script>
