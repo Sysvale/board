@@ -7,6 +7,7 @@ use App\Models\Team;
 use App\Models\Event;
 use App\Models\Label;
 use App\Models\BoardList;
+use App\Constants\CardTypes;
 use App\Constants\LabelKeys;
 use App\Utils\GitlabHandler;
 use Illuminate\Http\Request;
@@ -69,10 +70,9 @@ class CardController extends Controller
 			->first()->id;
 
 		$cards = Card::where('board_list_id', $sprintListId)
-			->where('is_user_story', true)
-			->get()
-			->sortBy('position')
-			->values();
+			->where('type', CardTypes::USER_STORY)
+			->orderBy('position')
+			->get();
 
 		return CardResource::collection($cards);
 	}
@@ -115,7 +115,11 @@ class CardController extends Controller
 			'description' => $request->description,
 		];
 
-		$card->fill($params);
+		$cleaned_data = array_filter($params, function ($value) {
+			return !is_null($value) && $value !== '';
+		});
+
+		$card->fill($cleaned_data);
 		$card->save();
 
 		return new CardResource($card);

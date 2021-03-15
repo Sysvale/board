@@ -53,7 +53,11 @@ class UpdateCardFlagToCardType extends Command
 
 	protected function tasks()
 	{
-		return Card::whereNull('is_user_story')->orWhere('is_user_story', false);
+		return Card::whereNull('type')
+			->where(function ($query) {
+				return $query->whereNull('is_user_story')
+					->orWhere('is_user_story', false);
+			});
 	}
 
 	protected function userStories()

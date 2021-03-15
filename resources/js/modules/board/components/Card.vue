@@ -471,8 +471,8 @@ export default {
 		},
 		listType: {
 			type: String,
-			default: 'task',
-		}
+			default: TASK,
+		},
 	},
 
 	data() {
