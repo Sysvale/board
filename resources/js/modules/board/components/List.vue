@@ -169,6 +169,7 @@
 					:key="`${$attrs.id}-${$attrs.list.length}`"
 					v-bind="$attrs"
 					v-on="$listeners"
+					:style="placeholderStyle"
 				>
 					<component
 						:is="true ? 'v-flex' : 'div'"
@@ -281,6 +282,18 @@ export default {
 
 			return 'grey--text text--darken-1 subtitle-2 font-italic';
 		},
+
+		placeholderStyle() {
+			if(this.$attrs.list && this.$attrs.list.length > 0) return {};
+			return {
+				minHeight: '50px',
+				border: '1px dashed #ccc',
+				borderRadius: '3px',
+				backgroundImage: `url('/images/empty-list.svg')`,
+				backgroundSize: '57px 14px',
+				backgroundPosition: 'center center',
+			};
+		}
 	},
 
 	methods: {
