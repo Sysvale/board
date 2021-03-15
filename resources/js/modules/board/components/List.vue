@@ -25,10 +25,10 @@
 						class="mb-3 text-uppercase font-weight-medium text--secondary"
 						v-on="on"
 					>
-						{{ $attrs.title }}
+						{{ $attrs.name }}
 					</small>
 				</template>
-				<span>{{ $attrs.title }}</span>
+				<span>{{ $attrs.name }}</span>
 			</v-tooltip>
 
 			<v-tooltip top>
@@ -80,16 +80,42 @@
 				<div class="flex-grow-1 d-flex align-center">
 					<span class="mb-0 text-uppercase font-weight-medium text--secondary">
 						<span>
-							<small>{{ $attrs.title }}</small>
+							<small>{{ $attrs.name }}</small>
 							<span class="ml-3 text--secondary mb-0">
 								<small>{{ $attrs.list.length }}</small>
 							</span>
 						</span>
-						<div
-							v-if="hasSomeEstimatedCard && pointsSum"
-							class="d-flex"
-						>
-							<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
+						<div class="d-flex align-center">
+							<div
+								v-if="hasSomeEstimatedCard && pointsSum"
+								class="d-flex mr-2"
+							>
+								<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
+							</div>
+							<v-tooltip
+								v-if="isAGoalableList && $attrs.list && $attrs.list.length > 0"
+								bottom
+							>
+								<template v-slot:activator="{ on, attrs }">
+									<small
+										v-bind="attrs"
+										v-on="on"
+										class="font-weight-bold metric-ratio-badge px-2"
+										:style="{
+											color: withMetricRatioConfig.color,
+											backgroundColor: withMetricRatioConfig.backgroundColor,
+										}"
+									>
+										<v-icon
+											color="white"
+										>
+											insights
+										</v-icon>
+										{{ withMetricRatioConfig.value }}
+									</small>
+								</template>
+								{{ withMetricRatioConfig.tooltip }}
+							</v-tooltip>
 						</div>
 					</span>
 				</div>
@@ -297,7 +323,50 @@ export default {
 				backgroundSize: '57px 14px',
 				backgroundPosition: 'center center',
 			};
-		}
+		},
+
+		withMetricRatioConfig() {
+			const hasMetricLength = this.$attrs.list.filter((item) => item.hasMetric).length;
+			const { length } = this.$attrs.list;
+			const ratio = Math.round((hasMetricLength / length) * 100);
+
+			const pluralTranslation = length === 1 ? 'história possui' : 'histórias possuem';
+			const tooltip = `${hasMetricLength} de ${length} ${pluralTranslation} métrica`;
+
+			if(ratio < 50) {
+				return {
+					value: `${ratio}%`,
+					backgroundColor: '#ED3B51',
+					color: 'white',
+					tooltip,
+				}
+			}
+
+			if(ratio >= 50 && ratio < 60) {
+				return {
+					value: `${ratio}%`,
+					backgroundColor: '#FBAA32',
+					color: 'white',
+					tooltip,
+				}
+			}
+
+			if(ratio >= 60) {
+				return {
+					value: `${ratio}%`,
+					backgroundColor: '#29A37D',
+					color: 'white',
+					tooltip,
+				}
+			}
+
+			return {
+				value: `${ratio}%`,
+				backgroundColor: 'gray',
+				color: 'black',
+				tooltip,
+			}
+		},
 	},
 
 	methods: {
@@ -370,5 +439,9 @@ export default {
 /* Handle on hover */
 #cards-container::-webkit-scrollbar-thumb:hover {
 	background: rgba(0, 0, 0, 0.20);
+}
+
+.metric-ratio-badge {
+	border-radius: 4px;
 }
 </style>
