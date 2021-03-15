@@ -49,7 +49,7 @@ export default {
 		},
 		tooltips: {
 			type: Array,
-			default: [],
+			default: () => ([]),
 		}
 	},
 	data() {
