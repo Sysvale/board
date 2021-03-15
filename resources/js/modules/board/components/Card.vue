@@ -583,24 +583,24 @@ export default {
 		tooltipsRating() {
 			return [
 				{
-					tooltip: 'Tooltip 1',
-					value: 'Tooltip v1',
+					tooltip: 'Muito baixo',
+					value: 'Muito baixo. Não precisa ser feito a menos que haja tempo extra disponível.',
 				},
 				{
-					tooltip: 'Tooltip 2',
-					value: 'Tooltip v2',
+					tooltip: 'Baixo',
+					value: 'Baixo. Pequena melhoria em um contexto específico do sistema.',
 				},
 				{
-					tooltip: 'Tooltip 3',
-					value: 'Tooltip v3',
+					tooltip: 'Médio',
+					value: 'Médio. Melhoria significativa em um contexto específico do sistema.',
 				},
 				{
-					tooltip: 'Tooltip 4',
-					value: 'Tooltip v4',
+					tooltip: 'Alto',
+					value: 'Alto. Inconsistências e/ou falhas graves no sistema.',
 				},
 				{
-					tooltip: 'Tooltip 5',
-					value: 'Tooltip v5',
+					tooltip: 'Muito alto (incêndio)',
+					value: 'Muito alto. Faz com que o sistema pare de funcionar e/ou afete algum contrato.',
 				},
 			];
 		}
