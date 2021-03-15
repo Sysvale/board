@@ -77,6 +77,7 @@
 								v-bind="attrs"
 								class="mx-2"
 								v-on="on"
+								small
 							>
 								insights
 							</v-icon>
@@ -91,6 +92,7 @@
 							<v-icon
 								v-bind="attrs"
 								v-on="on"
+								small
 							>
 								restore
 							</v-icon>
@@ -102,10 +104,9 @@
 					/>
 					<v-chip
 						v-if="!isTask && item.estimated"
-						color="gray"
+						color="white"
 						text-color="black"
 						label
-						outlined
 						small
 					>
 						<strong>{{ estimated }}</strong>

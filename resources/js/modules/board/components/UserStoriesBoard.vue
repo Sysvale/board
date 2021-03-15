@@ -28,7 +28,7 @@
 											v-on="on"
 											class="mr-2"
 										>
-											assessment
+											insights
 										</v-icon>
 								</template>
 								Possui métrica
@@ -48,14 +48,11 @@
 								</template>
 								É recorrente
 							</v-tooltip>
-							<v-chip
+							<strong
 								v-if="story.estimated"
-								color="gray"
-								text-color="black"
-								label
 							>
-								<strong>{{ story.estimated }} pt(s)</strong>
-							</v-chip>
+								{{ story.estimated }} pt(s)
+							</strong>
 						</div>
 						<lottie-player
 								src="https://assets8.lottiefiles.com/packages/lf20_pfajtmk1.json"
