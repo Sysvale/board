@@ -575,9 +575,9 @@ export default {
 		},
 
 		createdBy() {
-			const user = !!this.item.user ?  ` por: ${(this.item.user.name || this.item.user.email)} ` : '';
+			const user = !!this.item.user ?  `por: ${(this.item.user.name || this.item.user.email)}` : '';
 			const createdAt = `em ${this.item.createdAt}`;
-			return `Criado${user}${createdAt}`;
+			return `Criado ${user} ${createdAt}`;
 		},
 
 		tooltipsRating() {
