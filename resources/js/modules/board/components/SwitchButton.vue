@@ -11,7 +11,7 @@
 		@click="$emit('input', !value)"
 	>
 			<slot>
-				switch {{ value.toString() }}
+				switch {{ value }}
 			</slot>
 	</v-btn>
 </template>
