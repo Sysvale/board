@@ -36,7 +36,7 @@ class BoardListController extends Controller
 	public function getPlanningLists(Workspace $workspace)
 	{
 		$planningLists = [
-			BoardListsKeys::NOT_PRIORIZED,
+			BoardListsKeys::NOT_PRIORITIZED,
 			BoardListsKeys::BACKLOG,
 		];
 

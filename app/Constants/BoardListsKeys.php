@@ -19,7 +19,7 @@ class BoardListsKeys extends BagOfConstants
 	const REVIEWED = 'reviewed';
 	const DESIGN_SYSTEM = 'designSystem';
 	const SYS_SECURITY = 'sysSecurity';
-	const NOT_PRIORIZED = 'notPriorized';
+	const NOT_PRIORITIZED = 'notPrioritized';
 
 	const DEFAULT_LISTS = [
 		self::TODO,
