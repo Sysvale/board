@@ -555,7 +555,7 @@ export default {
 		agingStyle() {
 			if(!this.isNotPriorized) return '';
 
-			const start = moment(this.item.createdAt, 'YYYY-MM-DD');
+			const start = moment(this.item.createdAt, 'DD-MM-YYYY HH:mm');
 			const end = moment();
 			const diff = moment.duration(end.diff(start)).asDays();
 
@@ -576,7 +576,7 @@ export default {
 
 		createdBy() {
 			const user = !!this.item.user ?  ` por: ${(this.item.user.name || this.item.user.email)} ` : '';
-			const createdAt = `em ${moment(this.item.createdAt).format('DD/MM/YY [às] HH:mm')}`;
+			const createdAt = `em ${this.item.createdAt}`;
 			return `Criado${user}${createdAt}`;
 		},
 
