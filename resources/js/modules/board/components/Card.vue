@@ -46,15 +46,29 @@
 					>
 						#{{ item.number }}
 					</v-chip>
-					<small
+
+					<v-tooltip
 						v-if="isNotPriorized && item.rating"
-						class="d-flex align-center mx-2"
+						bottom
 					>
-						<v-icon small>
-							local_fire_department
-						</v-icon>
-						{{ item.rating }}
-					</small>
+						<template v-slot:activator="{ on, attrs }">
+							<small
+								class="d-flex align-center mx-2"
+							>
+								<v-icon
+									small
+									v-bind="attrs"
+									class="mx-2"
+									v-on="on"
+								>
+									local_fire_department
+								</v-icon>
+								{{ item.rating }}
+							</small>
+						</template>
+						{{ `Grau de importância: ${tooltipsRating[item.rating - 1].tooltip}` }}
+					</v-tooltip>
+
 					<v-tooltip
 						v-if="!isTask && item.hasMetric"
 						bottom

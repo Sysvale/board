@@ -1,36 +1,36 @@
 <template>
-		<div>
-			<v-rating
-				v-model="internalValue"
-			>
-				<template
-					v-slot:item="props">
-					<v-tooltip
-							bottom
+	<div>
+		<v-rating
+			v-model="internalValue"
+		>
+			<template
+				v-slot:item="props">
+				<v-tooltip
+					bottom
+				>
+					<template v-slot:activator="{ on, attrs }">
+						<v-icon
+							v-bind="attrs"
+							:color="getColor(props)"
+							large
+							v-on="on"
+							@mouseover="hoveredIndex = props.index"
+							@mouseleave="hoveredIndex = -1"
+							@click="props.click"
 						>
-							<template v-slot:activator="{ on, attrs }">
-									<v-icon
-										v-bind="attrs"
-										v-on="on"
-										large
-										:color="getColor(props)"
-										@mouseover="hoveredIndex = props.index"
-										@mouseleave="hoveredIndex = -1"
-										@click="props.click"
-									>
-										{{ icon }}
-									</v-icon>
-							</template>
-							{{ tooltipMessage(props.index).tooltip }}
-						</v-tooltip>
-				</template>
-			</v-rating>
-			<div v-if="tooltipMessage(internalValue - 1)">
-				<small>
-					<strong>Selecionado: </strong>{{ tooltipMessage(internalValue - 1).value }}
-				</small>
-			</div>
+							{{ icon }}
+						</v-icon>
+					</template>
+					{{ tooltipMessage(props.index).tooltip }}
+				</v-tooltip>
+			</template>
+		</v-rating>
+		<div v-if="tooltipMessage(internalValue - 1)">
+			<small>
+				<strong>Selecionado: </strong>{{ tooltipMessage(internalValue - 1).value }}
+			</small>
 		</div>
+	</div>
 </template>
 <script>
 export default {
@@ -50,7 +50,7 @@ export default {
 		tooltips: {
 			type: Array,
 			default: () => ([]),
-		}
+		},
 	},
 	data() {
 		return {
@@ -76,8 +76,8 @@ export default {
 				return props.isFilled ? this.color : '';
 			}
 			return props.index <= this.hoveredIndex ? this.color : '';
-		}
-	}
+		},
+	},
 }
 </script>
 <style scoped>
