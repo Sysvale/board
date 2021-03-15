@@ -7,16 +7,36 @@
 	>
 		<template v-slot:activator="{}">
 			<v-card
-				class="task-card px-3 py-3"
 				v-bind="$attrs"
+				v-on="$listeners"
+				class="task-card px-3 py-3"
+				:style="agingStyle"
 				hover
 				:ripple="false"
-				v-on="$listeners"
 				@click="showModal"
 				@mouseover="hover = true"
 				@mouseleave="hover = false"
 			>
 				<div class="d-flex align-center">
+					<v-tooltip
+						v-if="isNotPriorizedWithPendingInfo"
+						bottom
+					>
+						<template v-slot:activator="{ on, attrs }">
+							<v-chip
+								v-bind="attrs"
+								v-on="on"
+								color="#FDD291"
+								text-color="black"
+								small
+								label
+								class="mr-2"
+							>
+								<v-icon small>warning_amber</v-icon>
+							</v-chip>
+						</template>
+						Existem informações pendentes
+					</v-tooltip>
 					<v-chip
 						v-if="item.number"
 						color="#efefef"
@@ -26,8 +46,30 @@
 					>
 						#{{ item.number }}
 					</v-chip>
+
 					<v-tooltip
-						v-if="!isTask && item.hasMetric"
+						v-if="isNotPriorized && item.rating"
+						bottom
+					>
+						<template v-slot:activator="{ on, attrs }">
+							<small
+								class="d-flex align-center mx-2"
+							>
+								<v-icon
+									small
+									v-bind="attrs"
+									v-on="on"
+								>
+									local_fire_department
+								</v-icon>
+								{{ item.rating }}
+							</small>
+						</template>
+						{{ `Grau de importância: ${tooltipsRating[item.rating - 1].tooltip}` }}
+					</v-tooltip>
+
+					<v-tooltip
+						v-if="isUserStory && item.hasMetric"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -42,7 +84,7 @@
 						Possui métrica
 					</v-tooltip>
 					<v-tooltip
-						v-if="!isTask && item.isRecurrent"
+						v-if="isUserStory && item.isRecurrent"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -63,6 +105,7 @@
 						color="gray"
 						text-color="black"
 						label
+						outlined
 						small
 					>
 						<strong>{{ estimated }}</strong>
@@ -141,6 +184,16 @@
 					class="d-flex"
 				>
 					<v-chip
+						v-if="isNotPriorizedWithPendingInfo"
+						color="#FDD291"
+						text-color="black"
+						small
+						label
+						class="mr-2"
+					>
+						<v-icon small>warning_amber</v-icon>
+					</v-chip>
+					<v-chip
 						v-if="item.number"
 						color="gray"
 						text-color="black"
@@ -170,7 +223,9 @@
 					/>
 				</v-layout>
 			</v-container>
-
+			<div class="mb-3 px-3">
+				<small>{{ createdBy }}</small>
+			</div>
 			<v-divider />
 
 			<v-container
@@ -254,6 +309,32 @@
 						</div>
 					</v-tab-item>
 				</v-tabs-items>
+			</v-container>
+			<v-container
+				v-else-if="isNotPriorized"
+			>
+				<div>
+					<div class="pb-2">
+						Qual o problema?
+					</div>
+					<v-textarea
+						v-model="item.description"
+						flat
+						outlined
+						auto-grow
+						autofocus
+					/>
+				</div>
+				<div>
+					<div class="pb-2">
+						Qual o grau de importância do problema?
+					</div>
+					<tooltip-rating
+						v-model="item.rating"
+						color="red"
+						:tooltips="tooltipsRating"
+					/>
+				</div>
 			</v-container>
 			<v-container
 				v-else
@@ -376,7 +457,8 @@ import LinkChip from './LinkChip.vue';
 import TeamChip from './TeamChip.vue';
 import SwitchButton from './SwitchButton.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
-import { TASK } from '../constants/CardTypes';
+import TooltipRating from './TooltipRating.vue';
+import { NOT_PRIORITIZED, TASK, USER_STORY } from '../constants/CardTypes';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -392,6 +474,7 @@ export default {
 		LinkChip,
 		TeamChip,
 		SwitchButton,
+		TooltipRating,
 	},
 
 	props: {
@@ -433,6 +516,20 @@ export default {
 			return this.listType === TASK;
 		},
 
+		isNotPriorized() {
+			return this.listType === NOT_PRIORITIZED;
+		},
+
+		isUserStory() {
+			return this.listType === USER_STORY;
+		},
+
+		isNotPriorizedWithPendingInfo() {
+			const hasDescription = this.item.description && this.item.description.trim() !== '';
+			const hasRating = this.item.rating && this.item.rating > 0;
+			return this.isNotPriorized && (!hasDescription || !hasRating);
+		},
+
 		estimated() {
 			if (+this.item.estimated === 1) {
 				return `${this.item.estimated} pt`;
@@ -471,6 +568,59 @@ export default {
 				}
 			};
 		},
+
+		agingStyle() {
+			if(!this.isNotPriorized) return '';
+
+			const start = moment(this.item.createdAt, 'DD-MM-YYYY HH:mm');
+			const end = moment();
+			const diff = moment.duration(end.diff(start)).asDays();
+
+			if (diff <= 7 || this.hover) {
+				return 'opacity: 1';
+			}
+
+			if (diff <= 14) {
+				return 'opacity: .70';
+			}
+
+			if (diff <= 21) {
+				return 'opacity: .35';
+			}
+
+			return 'opacity: .10';
+		},
+
+		createdBy() {
+			const user = !!this.item.user ?  `por: ${(this.item.user.name || this.item.user.email)}` : '';
+			const createdAt = `em ${this.item.createdAt}`;
+			return `Criado ${user} ${createdAt}`;
+		},
+
+		tooltipsRating() {
+			return [
+				{
+					tooltip: 'Muito baixo',
+					value: 'Muito baixo. Não precisa ser feito a menos que haja tempo extra disponível.',
+				},
+				{
+					tooltip: 'Baixo',
+					value: 'Baixo. Pequena melhoria em um contexto específico do sistema.',
+				},
+				{
+					tooltip: 'Médio',
+					value: 'Médio. Melhoria significativa em um contexto específico do sistema.',
+				},
+				{
+					tooltip: 'Alto',
+					value: 'Alto. Inconsistências e/ou falhas graves no sistema.',
+				},
+				{
+					tooltip: 'Muito alto (incêndio)',
+					value: 'Muito alto. Faz com que o sistema pare de funcionar e/ou afete algum contrato.',
+				},
+			];
+		}
 	},
 
 	watch: {

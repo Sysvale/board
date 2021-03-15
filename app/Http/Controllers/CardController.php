@@ -52,7 +52,12 @@ class CardController extends Controller
 					}
 				}
 
-				if ($board_lists[$item]->key == BoardListsKeys::BACKLOG && $in->workspace_id) {
+				if (in_array(
+					$board_lists[$item]->key,
+					[BoardListsKeys::BACKLOG, BoardListsKeys::NOT_PRIORITIZED]
+				)
+					&& $in->workspace_id
+				) {
 					$sub_query = $sub_query->where('workspace_id', $in->workspace_id);
 				}
 
