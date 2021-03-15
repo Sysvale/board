@@ -17,7 +17,7 @@ class CardResource extends JsonResource
 		return [
 			'id' => $this->id,
 			'number' => $this->number,
-			'created_at' => $this->created_at->format('d/m/Y'),
+			'created_at' => optional($this->created_at)->format('d/m/Y'),
 			'estimated' => $this->when(isset($this->estimated), $this->estimated),
 			'board_list_id' => $this->when(isset($this->board_list_id), $this->board_list_id),
 			'team_id' => $this->when(isset($this->team_id), $this->team_id),
