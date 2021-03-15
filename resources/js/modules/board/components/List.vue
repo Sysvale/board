@@ -17,30 +17,33 @@
 					keyboard_arrow_down
 				</v-icon>
 			</v-btn>
+
 			<v-tooltip bottom>
 				<template v-slot:activator="{ on, attrs }">
 					<small
 						v-bind="attrs"
-						v-on="on"
 						class="mb-3 text-uppercase font-weight-medium text--secondary"
+						v-on="on"
 					>
 						{{ $attrs.title }}
 					</small>
 				</template>
 				<span>{{ $attrs.title }}</span>
 			</v-tooltip>
+
 			<v-tooltip top>
 				<template v-slot:activator="{ on, attrs }">
 					<small
 						v-bind="attrs"
-						v-on="on"
 						class="mb-3 text--secondary"
+						v-on="on"
 					>
 						{{ $attrs.list.length }}
 					</small>
 				</template>
 				<span>{{ $attrs.list.length }}</span>
 			</v-tooltip>
+
 			<v-tooltip
 				v-if="hasSomeEstimatedCard && pointsSum"
 				top
@@ -48,16 +51,18 @@
 				<template v-slot:activator="{ on, attrs }">
 					<small
 						v-bind="attrs"
-						v-on="on"
 						class="text--primary"
+						v-on="on"
 					>
 						<strong>{{ pointsSum }}</strong>
 					</small>
 				</template>
+
 				<span>{{ pointsSum }}</span>
 			</v-tooltip>
 		</div>
 	</v-card>
+
 	<list-container
 		v-else
 	>
@@ -125,18 +130,19 @@
 					</span>
 				</v-alert>
 				<v-textarea
-						v-else
-						v-model="getGoalByKey($attrs.keyValue).title"
-						auto-grow
-						autofocus
-						color="secondary"
-						class="pb-0 mx-1"
-						@blur="handleEditGoal"
-						@keydown.enter="handleEditGoal"
-						@keydown.esc="clear"
-					/>
+					v-else
+					v-model="getGoalByKey($attrs.keyValue).title"
+					auto-grow
+					autofocus
+					color="secondary"
+					class="pb-0 mx-1"
+					@blur="handleEditGoal"
+					@keydown.enter="handleEditGoal"
+					@keydown.esc="clear"
+				/>
 			</div>
 		</header>
+
 		<v-textarea
 			v-if="createMode"
 			v-model="newCardTitle"
@@ -148,6 +154,7 @@
 			@keydown.enter="handleAdd"
 			@keydown.esc="clear"
 		/>
+
 		<v-fade-transition
 			hide-on-leave
 		>
@@ -160,30 +167,31 @@
 				class="pb-1"
 			>
 				<draggable
+					:key="`${$attrs.id}-${$attrs.list.length}`"
 					v-bind="$attrs"
 					v-on="$listeners"
-					:key="`${$attrs.id}-${$attrs.list.length}`"
 				>
-						<component
-							:is="true ? 'v-flex' : 'div'"
-							v-for="(item, i) in $attrs.list"
-							:key="item.id"
-							:class="{
-								'mt-2': i > 0,
-							}"
-							class="mx-1"
+					<component
+						:is="true ? 'v-flex' : 'div'"
+						v-for="(item, i) in $attrs.list"
+						:key="item.id"
+						:class="{
+							'mt-2': i > 0,
+						}"
+						class="mx-1"
+					>
+						<card
+							:item="item"
+							:list-type="acceptsCardType"
+							@save="handleAdd"
+							@delete="$emit('delete', {
+								id: item.id,
+								boardListId: $attrs.id
+							})"
 						>
-							<card
-								:item="item"
-								@save="handleAdd"
-								@delete="$emit('delete', {
-									id: item.id,
-									boardListId: $attrs.id
-								})"
-							>
-								{{ item.title }}
-							</card>
-						</component>
+							{{ item.title }}
+						</card>
+					</component>
 				</draggable>
 			</div>
 		</v-fade-transition>
@@ -201,15 +209,23 @@ import {
 	SYS_OUT,
 	SYS_IN,
 } from '../constants/BoardListKeys';
-import Card from './Card';
-import ListContainer from './ListContainer';
-import ListSkeletonLoader from './ListSkeletonLoader';
+import Card from './Card.vue';
+import ListContainer from './ListContainer.vue';
+import ListSkeletonLoader from './ListSkeletonLoader.vue';
+import { TASK } from '../constants/CardTypes';
 
 export default {
 	components: {
 		Card,
 		ListContainer,
 		ListSkeletonLoader,
+	},
+
+	props: {
+		acceptsCardType: {
+			type: String,
+			default: TASK,
+		},
 	},
 
 	data() {
@@ -238,23 +254,24 @@ export default {
 
 		cardsQuantity() {
 			const { length } = this.$attrs.list;
-			if(!length) {
+
+			if (!length) {
 				return '0 cartões';
 			}
-			if(length === 1) {
+
+			if (length === 1) {
 				return '1 cartão';
 			}
+
 			return `${length} cartões`;
 		},
 
 		hasSomeEstimatedCard() {
-			return this.$attrs.list.reduce((acc, curr) => {
-				return acc || curr.estimated !== null;
-			}, false);
+			return this.$attrs.list.reduce((acc, curr) => acc || curr.estimated !== null, false);
 		},
 
 		pointsSum() {
-			const sum = _.sum(this.$attrs.list.map(card => +card.estimated || 0));
+			const sum = _.sum(this.$attrs.list.map((card) => +card.estimated || 0));
 			return sum ? `${sum} pt${sum === 1 ? '' : 's'}` : null;
 		},
 
@@ -271,13 +288,16 @@ export default {
 		...mapActions('goals', ['updateGoal']),
 
 		handleAdd() {
-			if(this.newCardTitle && this.newCardTitle.trim() !== '') {
+			if (this.newCardTitle && this.newCardTitle.trim() !== '') {
 				this.$emit('add', {
 					title: this.newCardTitle,
 					boardListId: this.$attrs.id,
+					type: this.acceptsCardType,
 				});
+
 				this.newCardTitle = null;
 			}
+
 			this.createMode = false;
 		},
 
@@ -298,10 +318,10 @@ export default {
 			this.newCardTitle = null;
 			this.createMode = false;
 			this.editGoal = false;
-		}
+		},
 	},
+};
 
-}
 </script>
 <style scoped>
 .vertical-text {
