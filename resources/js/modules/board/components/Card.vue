@@ -70,7 +70,7 @@
 					</v-tooltip>
 
 					<v-tooltip
-						v-if="!isTask && item.hasMetric"
+						v-if="isUserStory && item.hasMetric"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -85,7 +85,7 @@
 						Possui métrica
 					</v-tooltip>
 					<v-tooltip
-						v-if="!isTask && item.isRecurrent"
+						v-if="isUserStory && item.isRecurrent"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -459,7 +459,7 @@ import TeamChip from './TeamChip.vue';
 import SwitchButton from './SwitchButton.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import TooltipRating from './TooltipRating.vue';
-import { NOT_PRIORITIZED, TASK } from '../constants/CardTypes';
+import { NOT_PRIORITIZED, TASK, USER_STORY } from '../constants/CardTypes';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -519,6 +519,10 @@ export default {
 
 		isNotPriorized() {
 			return this.listType === NOT_PRIORITIZED;
+		},
+
+		isUserStory() {
+			return this.listType === USER_STORY;
 		},
 
 		isNotPriorizedWithPendingInfo() {
