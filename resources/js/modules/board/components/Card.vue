@@ -75,7 +75,7 @@
 						<template v-slot:activator="{ on, attrs }">
 							<v-icon
 								v-bind="attrs"
-								class="mx-2"
+								class="ml-2"
 								v-on="on"
 								small
 							>
@@ -92,6 +92,7 @@
 							<v-icon
 								v-bind="attrs"
 								v-on="on"
+								class="ml-2"
 								small
 							>
 								restore
