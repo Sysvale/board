@@ -103,11 +103,12 @@
 										class="font-weight-bold metric-ratio-badge px-2"
 										:style="{
 											color: withMetricRatioConfig.color,
-											backgroundColor: withMetricRatioConfig.backgroundColor,
+											border: `1px solid ${withMetricRatioConfig.color}`,
+											backgroundColor: `${withMetricRatioConfig.color}0A`,
 										}"
 									>
 										<v-icon
-											color="white"
+											:color="withMetricRatioConfig.color"
 										>
 											insights
 										</v-icon>
@@ -336,8 +337,7 @@ export default {
 			if(ratio < 50) {
 				return {
 					value: `${ratio}%`,
-					backgroundColor: '#ED3B51',
-					color: 'white',
+					color: '#ED3B51',
 					tooltip,
 				}
 			}
@@ -345,8 +345,7 @@ export default {
 			if(ratio >= 50 && ratio < 60) {
 				return {
 					value: `${ratio}%`,
-					backgroundColor: '#FBAA32',
-					color: 'white',
+					color: '#FBAA32',
 					tooltip,
 				}
 			}
@@ -354,16 +353,14 @@ export default {
 			if(ratio >= 60) {
 				return {
 					value: `${ratio}%`,
-					backgroundColor: '#29A37D',
-					color: 'white',
+					color: '#29A37D',
 					tooltip,
 				}
 			}
 
 			return {
 				value: `${ratio}%`,
-				backgroundColor: 'gray',
-				color: 'black',
+				color: 'gray',
 				tooltip,
 			}
 		},
