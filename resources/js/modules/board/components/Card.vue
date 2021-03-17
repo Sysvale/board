@@ -75,10 +75,11 @@
 						<template v-slot:activator="{ on, attrs }">
 							<v-icon
 								v-bind="attrs"
-								class="mx-2"
+								class="ml-2"
 								v-on="on"
+								small
 							>
-								assessment
+								insights
 							</v-icon>
 						</template>
 						Possui métrica
@@ -91,6 +92,8 @@
 							<v-icon
 								v-bind="attrs"
 								v-on="on"
+								class="ml-2"
+								small
 							>
 								restore
 							</v-icon>
@@ -102,10 +105,9 @@
 					/>
 					<v-chip
 						v-if="!isTask && item.estimated"
-						color="gray"
+						color="white"
 						text-color="black"
 						label
-						outlined
 						small
 					>
 						<strong>{{ estimated }}</strong>
@@ -347,7 +349,7 @@
 						class="mr-3"
 					>
 						<v-icon left>
-							assessment
+							insights
 						</v-icon>
 						Possui métrica
 					</switch-button>
