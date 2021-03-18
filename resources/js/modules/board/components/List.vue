@@ -197,6 +197,8 @@
 					v-bind="$attrs"
 					v-on="$listeners"
 					:style="placeholderStyle"
+					@start="drag = true"
+					@unchoose="drag = false"
 				>
 					<component
 						:is="true ? 'v-flex' : 'div'"
@@ -265,6 +267,7 @@ export default {
 			createMode: false,
 			colapsed: false,
 			editGoal: false,
+			drag: false,
 		};
 	},
 
@@ -315,14 +318,23 @@ export default {
 		},
 
 		placeholderStyle() {
-			if(this.$attrs.list && this.$attrs.list.length > 0) return {};
-			return {
-				minHeight: '50px',
+			const baseStyle = {
 				border: '1px dashed #ccc',
 				borderRadius: '3px',
+			};
+			if(this.$attrs.list && this.$attrs.list.length > 0) {
+				let dragMakesListEmpty = this.drag && this.$attrs.list.length === 1;
+				return {
+					minHeight: '50px',
+					...(dragMakesListEmpty ? baseStyle : {}),
+				};
+			}
+			return {
+				minHeight: '50px',
 				backgroundImage: `url('/images/empty-list.svg')`,
 				backgroundSize: '57px 14px',
 				backgroundPosition: 'center center',
+				...baseStyle,
 			};
 		},
 
