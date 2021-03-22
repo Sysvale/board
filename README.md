@@ -42,7 +42,7 @@
   $ docker-compose exec board-server chown -R www-data:www-data bootstrap/cache/
   ```
 
-- Realize o *build* do *fronted*:
+- Realize o *build* do *frontend*:
 
   ```bash
   $ docker-compose exec board-server npm run watch
