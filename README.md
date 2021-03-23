@@ -3,12 +3,12 @@
 </p>
 
 <div align="center">
-  <p align="center">Uma visão diferente para trabalhar com Scrum em multiplas equipes.</p>
+  <p align="center">Uma ferramenta para ajudar na gestão de tarefas de múltiplos times utilizando o Scrum</p>
 </div>
 
-### Configurando o Trellásio
+### Configurando o Trelássio
 
-<small>* você deverá ter o [docker](https://docs.docker.com/engine/install/) e [docker-compose](https://docs.docker.com/compose/install/) instalado em sua máquina.</small>
+<small>⚠️ ATENÇÃO ⚠️ Você deverá ter o [docker](https://docs.docker.com/engine/install/) e [docker-compose](https://docs.docker.com/compose/install/) instalado em sua máquina.</small>
 
 - Subindo o container docker:
 
