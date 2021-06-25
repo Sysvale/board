@@ -21,6 +21,13 @@ class BoardListsKeys extends BagOfConstants
 	const SYS_SECURITY = 'sysSecurity';
 	const NOT_PRIORITIZED = 'notPrioritized';
 
+	const TODO_DT = 'todoDt';
+	const DOING_DT_NORMAL = 'doingDtNormal';
+	const DOING_DT_MEETINGS = 'doingDtMeetings';
+	const DOING_DT_HOT_BUG = 'doingDtHotBug';
+	const WAITING_ONE_APPROVE = 'waitingOneApprove';
+	const WAITING_TWO_APPROVES = 'waitingTwoApproves';
+
 	const DEFAULT_LISTS = [
 		self::TODO,
 		self::DEVELOPMENT,
@@ -47,5 +54,15 @@ class BoardListsKeys extends BagOfConstants
 		self::DESIGN_SYSTEM,
 		self::SYS_SECURITY,
 		self::DEVLOG,
+	];
+
+	const DT_LISTS = [
+		self::TODO_DT,
+		self::DOING_DT_NORMAL,
+		self::DOING_DT_MEETINGS,
+		self::DOING_DT_HOT_BUG,
+		self::WAITING_ONE_APPROVE,
+		self::WAITING_TWO_APPROVES,
+		self::DEPLOY,
 	];
 }
