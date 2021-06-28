@@ -6,6 +6,7 @@ use App\Constants\BoardListsKeys;
 use App\Constants\LabelKeys;
 use App\Constants\TeamKeys;
 use App\Models\BoardList;
+use App\Models\Goal;
 use App\Models\Label;
 use App\Models\Team;
 use Illuminate\Console\Command;
@@ -55,53 +56,40 @@ class SetupManagementWorkspace extends Command
 	{
 		$managementLabels = [
 			[
-				'name' => 'Gente e Gestão',
-				'key' => LabelKeys::PM,
-				'color' => '#815AA5',
-				'text_color' => '#fff',
+				'name' => 'Hotfix',
+				'key' => LabelKeys::HOTFIX,
+				'color' => '#CC2A48',
+				'text_color' => 'white',
 			],
 			[
-				'name' => 'Financeiro',
-				'key' => LabelKeys::FINANCIAL,
-				'color' => '#028D29',
-				'text_color' => '#fff',
-			],
-			[
-				'name' => 'Comunicação',
-				'key' => LabelKeys::COMUNICATION,
+				'name' => 'Bugfix',
+				'key' => LabelKeys::BUGFIX,
 				'color' => '#FFAA2B',
-				'text_color' => 'rgba(0, 0, 0, 0.75)',
-			],
-	
-			[
-				'name' => 'Comercial',
-				'key' => LabelKeys::SALES,
-				'color' => '#3171A3',
-				'text_color' => '#fff',
-			],
-			[
-				'name' => 'Projetos',
-				'key' => LabelKeys::PROJECTS,
-				'color' => '#54EF1A',
 				'text_color' => 'rgba(0, 0, 0, 0.75)',
 			],
 			[
 				'name' => 'Reunião',
 				'key' => LabelKeys::MEET,
-				'color' => '#EC6646',
+				'color' => '#815AA5',
 				'text_color' => '#fff',
 			],
 			[
-				'name' => 'Gestão de cidades',
-				'key' => LabelKeys::CITY_MANAGEMENT,
-				'color' => '#97D480',
+				'name' => 'Feature',
+				'key' => LabelKeys::FEATURE,
+				'color' => '#028D29',
+				'text_color' => '#fff',
+			],
+			[
+				'name' => 'Débito técnico',
+				'key' => LabelKeys::TECHINICAL_DEBIT,
+				'color' => '#FFAA2B',
 				'text_color' => 'rgba(0, 0, 0, 0.75)',
 			],
 	
 			[
-				'name' => 'Produto',
-				'key' => LabelKeys::PRODUCT,
-				'color' => '#21222E',
+				'name' => 'Discovery',
+				'key' => LabelKeys::DISCOVERY,
+				'color' => '#3171A3',
 				'text_color' => '#fff',
 			],
 		];
@@ -120,14 +108,8 @@ class SetupManagementWorkspace extends Command
 	{
 		$teams = [
 			[
-				'name' => 'SysIN',
-				'key' => TeamKeys::SYS_IN,
-				'short_task_flow' => true,
-			],
-			[
-				'name' => 'SysOUT',
-				'key' => TeamKeys::SYS_OUT,
-				'short_task_flow' => true,
+				'name' => 'DataTeam',
+				'key' => TeamKeys::DATA_TEAM,
 			],
 		];
 
@@ -145,13 +127,43 @@ class SetupManagementWorkspace extends Command
 		$this->info('Criando doing board list...');
 
 		$value = BoardList::create([
-			'name' => 'Doing',
-			'key' => BoardListsKeys::DOING,
+			'name' => 'To do - 20',
+			'key' => BoardListsKeys::TODO_DT,
 			'position' => 1,
 		]);
 
+		$value = BoardList::create([
+			'name' => 'Doing (Normal) - 5',
+			'key' => BoardListsKeys::DOING_DT_NORMAL,
+			'position' => 2,
+		]);
+
+		$value = BoardList::create([
+			'name' => 'Doing (Meetings) - 2',
+			'key' => BoardListsKeys::DOING_DT_MEETINGS,
+			'position' => 3,
+		]);
+
+		$value = BoardList::create([
+			'name' => 'Doing (Hotfix ou bugfix) - 2',
+			'key' => BoardListsKeys::DOING_DT_HOT_BUG,
+			'position' => 4,
+		]);
+
+		$value = BoardList::create([
+			'name' => 'Waiting 1 approve - 2',
+			'key' => BoardListsKeys::WAITING_ONE_APPROVE,
+			'position' => 5,
+		]);
+
+		$value = BoardList::create([
+			'name' => 'Waiting 2 approves - 2',
+			'key' => BoardListsKeys::DOING,
+			'position' => 6,
+		]);
+
 		if ($value) {
-			$this->info('Doing board list criado com sucesso');
+			$this->info('Boards criadas com sucesso');
 		}
 	}
 

@@ -23,4 +23,9 @@ class LabelKeys extends BagOfConstants
 	const PROJECTS = 'projects';
 	const CITY_MANAGEMENT = 'cityManagement';
 	const PRODUCT = 'product';
+	const BUGFIX = 'bugfix';
+	const HOTFIX = 'hotfix';
+	const FEATURE = 'feature';
+	const TECHINICAL_DEBIT = 'techinical_debt';
+	const DISCOVERY = 'discovery';
 }

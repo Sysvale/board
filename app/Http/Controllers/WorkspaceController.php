@@ -8,6 +8,7 @@ use App\Models\Workspace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\WorkspaceResource;
+use App\Models\Goal;
 
 class WorkspaceController extends Controller
 {
@@ -24,13 +25,18 @@ class WorkspaceController extends Controller
 			'name' => 'required|string|unique:workspaces',
 			'team_ids' => 'nullable|array',
 			'label_ids' => 'nullable|array',
-			'lootie_file' => 'nullable|string',
+			'lottie_file' => 'nullable|string',
 			'settings' => 'nullable|array',
 		]);
 
 		$workspace = Workspace::create($data);
 		$workspace->associateMany(Team::class, $data['team_ids']);
 		$workspace->associateMany(Label::class, $data['label_ids']);
+
+		Goal::create([
+			'title' => 'Defina um objetivo',
+			'workspace_id' => $workspace->id,
+		]);
 
 		return new WorkspaceResource($workspace);
 	}

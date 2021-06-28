@@ -9,4 +9,5 @@ class TeamKeys extends BagOfConstants
 	const BREAKOUT_ONE = 'breakoutOne';
 	const SYS_IN = 'sysIn';
 	const SYS_OUT = 'sysOut';
+	const DATA_TEAM = 'dataTeam';
 }
