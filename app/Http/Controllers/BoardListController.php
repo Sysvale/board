@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\BoardListsKeys;
+use App\Constants\TeamKeys;
 use App\Models\BoardList;
 use App\Models\Team;
 use App\Models\Workspace;
@@ -82,6 +83,10 @@ class BoardListController extends Controller
 		if ($team_id) {
 			$team = Team::where('_id', $team_id)
 				->first();
+
+			if ($team->key === TeamKeys::DATA_TEAM) {
+				return BoardListsKeys::DT_LISTS;
+			}
 
 			if ($team->short_task_flow) {
 				return BoardListsKeys::SHORTED_LISTS;
