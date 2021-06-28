@@ -106,7 +106,7 @@
 						first-time="08:00"
 						first-interval="8"
 						locale="pt-BR"
-						interval-count="9"
+						interval-count="13"
 						interval-height="80"
 						@click:event="showEvent"
 						@click:more="viewDay"
@@ -217,7 +217,7 @@
 											full-width
 											format="24hr"
 											min="08:00"
-											max="17:00"
+											max="21:00"
 											@click:minute="$refs.startMenu.save(selectedEvent.startTime)"
 										></v-time-picker>
 									</v-menu>
@@ -251,7 +251,7 @@
 											v-model="selectedEvent.endTime"
 											full-width
 											format="24hr"
-											max="17:00"
+											max="21:00"
 											:min="selectedEvent.startTime || '08:00'"
 											@click:minute="$refs.endMenu.save(selectedEvent.endTime)"
 										></v-time-picker>
