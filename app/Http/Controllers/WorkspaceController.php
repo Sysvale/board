@@ -33,13 +33,10 @@ class WorkspaceController extends Controller
 		$workspace->associateMany(Team::class, $data['team_ids']);
 		$workspace->associateMany(Label::class, $data['label_ids']);
 
-		collect($data['team_ids'])->each(function ($item) use ($workspace) {
-			$goal = Goal::create([
-				'title' => 'Defina um objetivo',
-				'workspace_id' => $workspace->id,
-				'team_id' => $item,
-			]);
-		});
+		Goal::create([
+			'title' => 'Defina um objetivo',
+			'workspace_id' => $workspace->id,
+		]);
 
 		return new WorkspaceResource($workspace);
 	}
