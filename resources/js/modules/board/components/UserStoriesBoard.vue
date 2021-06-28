@@ -15,9 +15,19 @@
 						flat
 					>
 						<div
-							v-if="story.hasMetric || story.isRecurrent || story.estimated"
+							v-if="story.hasMetric || story.isRecurrent || story.estimated || story.number"
 							class="py-3 d-flex justify-end"
 						>
+							<v-chip
+								v-if="story.number"
+								color="#efefef"
+								text-color="#555"
+								small
+								label
+							>
+								#{{ story.number }}
+							</v-chip>
+							<v-spacer/>
 							<v-tooltip
 								v-if="story.hasMetric"
 								bottom
