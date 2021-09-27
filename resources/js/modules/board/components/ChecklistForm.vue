@@ -14,7 +14,12 @@
 				>
 					<template #default="{ active, toggle }">
 						<v-list-item-action v-if="!editMode || selectedIndex !== i">
-							<v-checkbox v-model="item.done" @click="toggle"></v-checkbox>
+							<v-checkbox
+								v-model="item.done"
+								:readonly="readonly"
+								@click="toggle"
+							>
+							</v-checkbox>
 						</v-list-item-action>
 
 						<v-list-item-content>
@@ -73,6 +78,9 @@
 				@keydown.enter="handleAdd"
 			/>
 			<v-btn
+				elevation="0"
+				outlined
+				color="#333"
 				@click="handleAdd"
 			>
 				{{ addButtonText }}
@@ -87,6 +95,10 @@ export default {
 			type: Array,
 			default: () => [],
 		},
+		readonly: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	data() {
@@ -100,7 +112,7 @@ export default {
 
 	computed: {
 		addButtonText() {
-			return 'Adicionar';
+			return 'Adicionar item';
 		}
 	},
 
