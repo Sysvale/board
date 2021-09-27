@@ -121,26 +121,29 @@
 					</span>
 				</div>
 				<div class="d-flex justify-end">
-					<v-btn
-						block
-						small
-						depressed
-						:disabled="$attrs.loading"
-						color="white"
-						class="px-0"
-						@click="createMode = true"
+					<div
+						class="d-flex align-items-center"
 					>
-						<v-icon
-							color="rgba(0, 0, 0, 0.5)"
+						<card-from-process-modal
+							v-if="keyValue !== BACKLOG && keyValue !== NOT_PRIORITIZED"
+							:process-only="isAGoalableList"
+							@create="handleAddFromProcess"
+						/>
+						<v-btn
+							small
+							depressed
+							:disabled="$attrs.loading"
+							class="px-0"
+							icon
+							@click="createMode = true"
 						>
-							add
-						</v-icon>
-					</v-btn>
-					<card-from-process-modal
-						v-if="keyValue !== BACKLOG && keyValue !== NOT_PRIORITIZED"
-						:process-only="isAGoalableList"
-						@create="handleAddFromProcess"
-					/>
+							<v-icon
+								color="rgba(0, 0, 0, 0.5)"
+							>
+								add
+							</v-icon>
+						</v-btn>
+					</div>
 				</div>
 			</div>
 			<div
