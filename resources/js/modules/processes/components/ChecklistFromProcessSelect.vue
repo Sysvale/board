@@ -15,29 +15,32 @@
 			v-else
 		>
 			<v-card
-				outlined
 				elevation="0"
 			>
 				<v-card-text>
 					<v-row>
-						<v-select
+						<v-autocomplete
 							v-model="selectedProcess"
 							:items="processes"
 							placeholder="Processo"
 							return-object
 							item-text="name"
+							outlined
+							dense
 							:disabled="loading"
 						/>
 					</v-row>
 					<v-row
 						v-if="!processOnly"
 					>
-						<v-select
+						<v-autocomplete
 							v-if="selectedProcess"
 							v-model="selectedChecklist"
 							:items="selectedProcess.checklists"
 							placeholder="Checklist"
 							return-object
+							outlined
+							dense
 							item-text="title"
 							item-value="items"
 							:disabled="loading"
@@ -120,6 +123,9 @@ export default {
 			handler(value) {
 				if(value) {
 					this.fetchProcesses();
+				} else {
+					this.selectedProcess = null;
+					this.selectedChecklist = null;
 				}
 			},
 			immediate: true,
