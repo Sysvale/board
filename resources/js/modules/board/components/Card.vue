@@ -669,7 +669,7 @@ export default {
 		},
 
 		handleCreateChecklistFromProcessSelect(checklist) {
-			this.item.checklist = checklist;
+			this.$set(this.item, 'checklist', checklist);
 		}
 	},
 };
