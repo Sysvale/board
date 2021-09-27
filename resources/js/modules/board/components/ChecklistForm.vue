@@ -50,25 +50,27 @@
 								</span>
 							</v-list-item-title>
 						</v-list-item-content>
-						<v-btn
-							v-if="!item.done && (!editMode || selectedIndex !== i)"
-							icon
-							@click="handleEdit(i)"
-						>
-							<v-icon>edit</v-icon>
-						</v-btn>
-						<v-btn
-							v-if="!editMode || selectedIndex !== i"
-							icon
-							@click="handleRemove(i)"
-						>
-							<v-icon>delete</v-icon>
-						</v-btn>
+						<div v-if="!noActions">
+							<v-btn
+								v-if="!item.done && (!editMode || selectedIndex !== i)"
+								icon
+								@click="handleEdit(i)"
+							>
+								<v-icon>edit</v-icon>
+							</v-btn>
+							<v-btn
+								v-if="!editMode || selectedIndex !== i"
+								icon
+								@click="handleRemove(i)"
+							>
+								<v-icon>delete</v-icon>
+							</v-btn>
+						</div>
 					</template>
 				</v-list-item>
 			</v-list-item-group>
 		</v-list>
-		<div class="d-flex mt-2">
+		<div v-if="!hideCreation" class="d-flex mt-2">
 			<v-text-field
 				v-model="newItem"
 				outlined
@@ -96,6 +98,14 @@ export default {
 			default: () => [],
 		},
 		readonly: {
+			type: Boolean,
+			default: false,
+		},
+		noActions: {
+			type: Boolean,
+			default: false,
+		},
+		hideCreation: {
 			type: Boolean,
 			default: false,
 		},
