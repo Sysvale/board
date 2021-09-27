@@ -29,9 +29,9 @@ export default {
 		items: [],
 	},
 	getters: {
-		itemsByWorkspace(state, _, __, rootGetters) {
-			return state.items.filter(({ workspaceId }) => {
-				return workspaceId === rootGetters['workspaces/currentWorkspace'].id;
+		itemsByTeam(state) {
+			return (teamId) => state.items.filter(({ teamIds }) => {
+				return teamIds.indexOf(teamId) > -1;
 			})
 		},
 	},
