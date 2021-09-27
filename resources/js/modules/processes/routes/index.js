@@ -4,7 +4,7 @@ import Edit from '../views/Edit.vue';
 
 export default [
 	{
-		path: '/processesy',
+		path: '/process',
 		name: 'processes',
 		component: Home,
 		meta: {
@@ -12,7 +12,7 @@ export default [
 		},
 	},
 	{
-		path: '/processesy/edit/:id',
+		path: '/process/edit/:id',
 		name: 'processes.edit',
 		component: Edit,
 		meta: {
@@ -21,7 +21,7 @@ export default [
 		props: true,
 	},
 	{
-		path: '/processesy/new',
+		path: '/process/new',
 		name: 'processes.new',
 		component: Create,
 		meta: {

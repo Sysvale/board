@@ -78,14 +78,14 @@ export default {
 		removeProcess() {
 			this.deleteProcess(this.id)
 				.then(() => {
-					this.$router.push('/processesy');
+					this.$router.push('/process');
 				});
 		},
 
 		save () {
 			this.updateProcess(convertKeysToSnakeCase(this.form))
 				.then(() => {
-					this.$router.push('/processesy');
+					this.$router.push('/process');
 				});
 		},
 	},

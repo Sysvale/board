@@ -125,7 +125,7 @@
 				color="blue darken-1"
 				text
 				large
-				@click="() => $router.push('/processesy/')"
+				@click="() => $router.push('/process/')"
 			>
 				Cancelar
 			</v-btn>

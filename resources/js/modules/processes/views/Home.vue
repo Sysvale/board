@@ -27,7 +27,7 @@
 						color="primary"
 						dark
 						class="mb-2"
-						to="/processesy/new"
+						to="/process/new"
 					>
 						Novo processo
 					</v-btn>
@@ -48,7 +48,7 @@
 				</v-btn>
 				<v-btn
 					icon
-					:to="`/processesy/edit/${item.id}`"
+					:to="`/process/edit/${item.id}`"
 				>
 					<v-icon
 						small
