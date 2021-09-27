@@ -1,4 +1,5 @@
 import settingsRoutes from '../../settings/routes';
+import processesRoutes from '../../processes/routes';
 
 import Home from '../views/Home.vue';
 import Planning from '../views/Planning.vue';
@@ -40,4 +41,5 @@ export default [
 		},
 	},
 	...settingsRoutes,
+	...processesRoutes,
 ];
