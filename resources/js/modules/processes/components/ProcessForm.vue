@@ -9,16 +9,20 @@
 					<v-text-field
 						v-model="form.name"
 						label="Nome"
+						outlined
+						dense
 					></v-text-field>
 				</v-row>
 				<v-row>
-					<v-select
+					<v-autocomplete
 						v-model="form.teamIds"
 						:items="teams"
 						:multiple="true"
 						placeholder="Time(s)"
 						return
+						dense
 						chips
+						outlined
 						item-text="name"
 						item-value="id"
 					/>
@@ -44,7 +48,14 @@
 								<v-expansion-panel-content>
 									<checklist-form
 										v-model="item.items"
+										readonly
 									/>
+									<inline-delete-confirmation
+										class="mb-3"
+										confirm-message="Tem certeza que deseja excluir essa checklist?"
+										@delete="removeChecklist(i)"
+									/>
+									<v-divider/>
 								</v-expansion-panel-content>
 							</v-expansion-panel>
 						</v-expansion-panels>
@@ -56,10 +67,12 @@
 								<v-btn
 									color="primary"
 									dark
-									class="my-2 text-left"
+									outlined
+									class="my-2 mt-5 text-left"
 									v-bind="attrs"
 									v-on="on"
 								>
+									<v-icon small>add</v-icon>
 									Adicionar checklist
 								</v-btn>
 							</template>
@@ -72,9 +85,12 @@
 										<v-text-field
 											v-model="newChecklistForm.title"
 											label="Título"
+											outlined
+											dense
 										></v-text-field>
 										<checklist-form
 											v-model="newChecklistForm.items"
+											readonly
 										/>
 									</v-container>
 								</v-card-text>
@@ -90,7 +106,6 @@
 
 									<v-btn
 										color="blue darken-1"
-										text
 										:disabled="!checklistFormIsValid"
 										@click="saveNewChecklist"
 									>
@@ -109,14 +124,16 @@
 			<v-btn
 				color="blue darken-1"
 				text
-				to="/processesy"
+				large
+				@click="() => $router.push('/processesy/')"
 			>
 				Cancelar
 			</v-btn>
 
 			<v-btn
-				color="blue darken-1"
-				text
+				color="blue"
+				primary
+				large
 				:disabled="!formIsValid"
 				@click="$emit('save')"
 			>
@@ -128,9 +145,10 @@
 <script>
 import { mapState } from 'vuex';
 import ChecklistForm from '../../board/components/ChecklistForm.vue';
+import InlineDeleteConfirmation from '../../board/components/InlineDeleteConfirmation.vue';
 
 export default {
-	components: { ChecklistForm },
+	components: { ChecklistForm, InlineDeleteConfirmation },
 	props: {
 		value: {
 			type: Object,
@@ -206,7 +224,13 @@ export default {
 				items: [],
 			};
 			this.dialog = false;
-		}
+		},
+
+		removeChecklist(index) {
+			this.form.checklists = [
+				...this.form.checklists.filter((_, i) => i !== index),
+			];
+		},
 	},
 }
 </script>
