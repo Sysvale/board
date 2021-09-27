@@ -12,45 +12,11 @@
 			editing
 			@save="save"
 		/>
-		<div class="mt-5">
-			<v-btn
-				v-if="!showDeleteConfirmation"
-				text
-				color="red"
-				small
-				@click="showDeleteConfirmation = true"
-			>
-				Excluir
-			</v-btn>
-			<div
-				v-else
-			>
-				<div>
-					Tem certeza que deseja excluir este processo?
-					<div class="mb-3">
-						<div class="grey--text caption">
-							Essa ação não poderá ser desfeita
-						</div>
-					</div>
-				</div>
-				<v-btn
-					outlined
-					color="red"
-					small
-					@click="removeProcess"
-				>
-					Sim
-				</v-btn>
-				<v-btn
-					outlined
-					color="secondary"
-					small
-					@click="showDeleteConfirmation = false"
-				>
-					Não
-				</v-btn>
-			</div>
-		</div>
+		<inline-delete-confirmation
+			class="mt-5"
+			confirm-message="Tem certeza que deseja excluir esse processo?"
+			@delete="removeProcess"
+		/>
 	</v-container>
 </template>
 
@@ -58,10 +24,11 @@
 import { mapActions, mapState } from 'vuex';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
+import InlineDeleteConfirmation from '../../board/components/InlineDeleteConfirmation.vue';
 import ProcessForm from '../components/ProcessForm.vue';
 
 export default {
-  components: { ProcessForm },
+  components: { ProcessForm, InlineDeleteConfirmation },
 	props: {
 		id: {
 			type: String,
@@ -72,7 +39,6 @@ export default {
 	data() {
 		return {
 			form: this.selectedProcess,
-			showDeleteConfirmation: false,
 		}
 	},
 
