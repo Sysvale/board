@@ -24,7 +24,7 @@ class ProcessController extends Controller
 	public function store(Request $request)
 	{
 		$data = $request->validate([
-			'name' => 'required|string|unique:processes',
+			'name' => 'required|string',
 			'team_ids' => 'required|array',
 			'checklists' => 'required|array',
 		]);
