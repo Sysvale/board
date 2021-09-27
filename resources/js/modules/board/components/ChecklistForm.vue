@@ -39,7 +39,9 @@
 									/>
 								</span>
 								<span v-else>
-									{{ item.description }}
+									<div
+										v-html="getHtmlFromDescription(item.description)"
+									/>
 								</span>
 							</v-list-item-title>
 						</v-list-item-content>
@@ -147,6 +149,19 @@ export default {
 			this.selectedIndex = -1;
 			this.editItem = null;
 		},
+
+		getHtmlFromDescription(description) {
+			let derText = description;
+			let elements = derText.match(/\[.*?\)/g);
+			if( elements != null && elements.length > 0){
+				for(let el of elements){
+					let text = el.match(/\[(.*?)\]/)[1];
+					let url = el.match(/\((.*?)\)/)[1];
+					derText = derText.replace(el,`<a href="${url}" target="_blank" @click.stop>${text}</a>`)
+				}
+			}
+			return derText;
+		}
 	}
 }
 </script>
