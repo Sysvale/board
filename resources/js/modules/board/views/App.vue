@@ -188,6 +188,9 @@ export default {
 		this.getGoals().then((data) => {
 			this.setGoals(data);
 		});
+		this.getProcesses().then((data) => {
+			this.setProcesses(data);
+		});
 	},
 
 	data() {
@@ -220,6 +223,9 @@ export default {
 		...mapState('goals', {
 			loadingGoals: ({ getGoals }) => getGoals.isFetching,
 		}),
+		...mapState('processes', {
+			loadingProcesses: ({ getProcesses }) => getGoals.isFetching,
+		}),
 
 		...mapGetters('workspaces', ['currentWorkspace']),
 		...mapGetters('teams', {
@@ -232,7 +238,8 @@ export default {
 				|| this.loadingTeams
 				|| this.loadingBoards
 				|| this.loadingWorkspaces
-				|| this.loadingGoals;
+				|| this.loadingGoals
+				|| this.loadingProcesses;
 		},
 
 		sprintRoute() {
@@ -282,6 +289,9 @@ export default {
 		...mapActions('goals', [
 			'getGoals',
 		]),
+		...mapActions('processes', [
+			'getProcesses',
+		]),
 		...mapMutations('workspaces', {
 			setWorkspaces: 'setItems',
 			setSelectedWorkspace: 'setSelectedWorkspace',
@@ -303,6 +313,9 @@ export default {
 		}),
 		...mapMutations('goals', {
 			setGoals: 'setItems',
+		}),
+		...mapMutations('processes', {
+			setProcesses: 'setItems',
 		}),
 		logout() {
 			return window.location.href = '/logout';
