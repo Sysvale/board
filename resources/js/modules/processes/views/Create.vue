@@ -46,7 +46,7 @@ export default {
 		save () {
 			this.createProcess(convertKeysToSnakeCase(this.form))
 				.then((item) => {
-					console.log(item, 'tudo certo');
+					this.$router.push('/processesy');
 				});
 		},
 	},
