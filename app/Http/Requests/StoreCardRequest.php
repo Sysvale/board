@@ -35,6 +35,7 @@ class StoreCardRequest extends FormRequest
 			'labels' => 'nullable|string',
 			'link' => 'nullable|string',
 			'workspace_id' => 'nullable|string',
+			'checklist' => 'nullable|array',
 		];
 	}
 
