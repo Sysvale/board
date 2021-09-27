@@ -29,7 +29,9 @@
 							:disabled="loading"
 						/>
 					</v-row>
-					<v-row>
+					<v-row
+						v-if="!processOnly"
+					>
 						<v-select
 							v-if="selectedProcess"
 							v-model="selectedChecklist"
@@ -52,7 +54,9 @@
 							Ao criar uma checklist a partir de um processo, os itens atuais serão substituídos.
 						</v-alert>
 					</v-row>
-					<v-row>
+					<v-row
+						v-if="!externalCreation"
+					>
 						<v-spacer></v-spacer>
 						<v-btn
 							color="blue darken-1"
@@ -83,13 +87,25 @@ export default {
 		withAlert: {
 			type: Boolean,
 			default: false,
-		}
+		},
+		processOnly: {
+			type: Boolean,
+			default: false,
+		},
+		externalCreation: {
+			type: Boolean,
+			default: false,
+		},
+		formFirst: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	data() {
 		return {
 			selectedProcess: null,
 			selectedChecklist: null,
-			createMode: false,
+			createMode: this.formFirst,
 		};
 	},
 	computed: {
@@ -100,11 +116,26 @@ export default {
 	},
 
 	watch: {
-		createMode(value) {
-			if(value) {
-				this.fetchProcesses();
-			}
-		}
+		createMode: {
+			handler(value) {
+				if(value) {
+					this.fetchProcesses();
+				}
+			},
+			immediate: true,
+		},
+		selectedProcess: {
+			handler(newValue) {
+				this.$emit('process-selected', newValue);
+			},
+			deep: true,
+		},
+		selectedChecklist: {
+			handler(newValue) {
+				this.$emit('checklist-selected', newValue);
+			},
+			deep: true,
+		},
 	},
 	methods: {
 		isEmpty: (arg) => _.isEmpty(arg),
