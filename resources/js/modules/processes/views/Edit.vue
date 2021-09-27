@@ -12,6 +12,45 @@
 			editing
 			@save="save"
 		/>
+		<div class="mt-5">
+			<v-btn
+				v-if="!showDeleteConfirmation"
+				text
+				color="red"
+				small
+				@click="showDeleteConfirmation = true"
+			>
+				Excluir
+			</v-btn>
+			<div
+				v-else
+			>
+				<div>
+					Tem certeza que deseja excluir este processo?
+					<div class="mb-3">
+						<div class="grey--text caption">
+							Essa ação não poderá ser desfeita
+						</div>
+					</div>
+				</div>
+				<v-btn
+					outlined
+					color="red"
+					small
+					@click="removeProcess"
+				>
+					Sim
+				</v-btn>
+				<v-btn
+					outlined
+					color="secondary"
+					small
+					@click="showDeleteConfirmation = false"
+				>
+					Não
+				</v-btn>
+			</div>
+		</div>
 	</v-container>
 </template>
 
@@ -33,6 +72,7 @@ export default {
 	data() {
 		return {
 			form: this.selectedProcess,
+			showDeleteConfirmation: false,
 		}
 	},
 
@@ -42,6 +82,7 @@ export default {
 			processes: state => state.items,
 			isUpdating: ({ updateProcess }) => updateProcess.isFetching,
 			isFetching: ({ getProcess }) => getProcess.isFetching,
+			isDeleting: ({ deleteProcess }) => deleteProcess.isFetching,
 		}),
 
 		selectedProcess() {
@@ -58,6 +99,7 @@ export default {
 		...mapActions('processes', [
 			'getProcess',
 			'updateProcess',
+			'deleteProcess',
 		]),
 
 		fetchProcess() {
@@ -65,6 +107,13 @@ export default {
 				.then((item) => {
 					this.form = convertKeysToCamelCase(item);
 				})
+		},
+
+		removeProcess() {
+			this.deleteProcess(this.id)
+				.then(() => {
+					this.$router.push('/processesy');
+				});
 		},
 
 		save () {
