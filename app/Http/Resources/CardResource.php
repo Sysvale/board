@@ -40,6 +40,7 @@ class CardResource extends JsonResource
 				isset($this->acceptance_criteria),
 				$this->acceptance_criteria
 			),
+			'first_default_board_list_id' => $this->first_default_board_list_id,
 		];
 	}
 }
