@@ -33,6 +33,7 @@ class Card extends Model
 		'is_recurrent',
 		'user_id',
 		'estimated',
+		'status',
 	];
 
 	protected $appends = ['id', 'is_user_story', 'is_not_prioritized', 'is_task'];

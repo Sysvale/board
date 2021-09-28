@@ -118,6 +118,7 @@ class CardController extends Controller
 			'is_recurrent' => $request->is_recurrent,
 			'rating' => $request->rating,
 			'description' => $request->description,
+			'status' => $request->status,
 		];
 
 		$cleaned_data = array_filter($params, function ($value) {
