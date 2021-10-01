@@ -17,6 +17,7 @@
 						<v-list-item-action v-if="!editMode || selectedIndex !== i">
 							<v-checkbox
 								v-model="item.done"
+								:readonly="readonly"
 								@click="toggle"
 							/>
 						</v-list-item-action>
@@ -40,32 +41,36 @@
 								</span>
 
 								<span v-else>
-									{{ item.description }}
+									<div v-html="getHtmlFromDescription(item.description)" />
 								</span>
 							</v-list-item-title>
 						</v-list-item-content>
+						<div v-if="!noActions">
+							<v-btn
+								v-if="!item.done && (!editMode || selectedIndex !== i)"
+								icon
+								@click="handleEdit(i)"
+							>
+								<v-icon>edit</v-icon>
+							</v-btn>
 
-						<v-btn
-							v-if="!item.done && (!editMode || selectedIndex !== i)"
-							icon
-							@click="handleEdit(i)"
-						>
-							<v-icon>edit</v-icon>
-						</v-btn>
-
-						<v-btn
-							v-if="!editMode || selectedIndex !== i"
-							icon
-							@click="handleRemove(i)"
-						>
-							<v-icon>delete</v-icon>
-						</v-btn>
+							<v-btn
+								v-if="!editMode || selectedIndex !== i"
+								icon
+								@click="handleRemove(i)"
+							>
+								<v-icon>delete</v-icon>
+							</v-btn>
+						</div>
 					</template>
 				</v-list-item>
 			</v-list-item-group>
 		</v-list>
 
-		<div class="d-flex mt-2">
+		<div
+			v-if="!hideCreation"
+			class="d-flex mt-2"
+		>
 			<v-text-field
 				v-model="newItem"
 				outlined
@@ -76,9 +81,12 @@
 			/>
 
 			<v-btn
+				elevation="0"
+				outlined
+				color="#333"
 				@click="handleAdd"
 			>
-				{{ addButtonText }}
+				{{ addBuletttonText }}
 			</v-btn>
 		</div>
 	</div>
@@ -90,6 +98,18 @@ export default {
 		value: {
 			type: Array,
 			default: () => [],
+		},
+		readonly: {
+			type: Boolean,
+			default: false,
+		},
+		noActions: {
+			type: Boolean,
+			default: false,
+		},
+		hideCreation: {
+			type: Boolean,
+			default: false,
 		},
 	},
 
@@ -104,7 +124,7 @@ export default {
 
 	computed: {
 		addButtonText() {
-			return 'Adicionar';
+			return 'Adicionar item';
 		},
 	},
 
@@ -153,6 +173,19 @@ export default {
 			this.editMode = false;
 			this.selectedIndex = -1;
 			this.editItem = null;
+		},
+
+		getHtmlFromDescription(description) {
+			let derText = description;
+			const elements = derText.match(/\[.*?\)/g);
+			if (elements != null && elements.length > 0) {
+				for (let el of elements) {
+					let text = el.match(/\[(.*?)\]/)[1];
+					let url = el.match(/\((.*?)\)/)[1];
+					derText = derText.replace(el,`<a href="${url}" target="_blank" @click.stop>${text}</a>`);
+				}
+			}
+			return derText;
 		},
 	},
 };

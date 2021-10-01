@@ -58,6 +58,7 @@ Route::group(
         });
 
         Route::apiResource('workspaces', 'WorkspaceController');
+        Route::apiResource('processes', 'ProcessController');
 
         Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
     }

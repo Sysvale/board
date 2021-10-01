@@ -101,25 +101,30 @@
 			<v-spacer/>
 
 			<v-btn
+				v-if="false"
+				class="mr-3"
+				color="yellow"
+				style="color:black!important"
+				to="/process/"
+			>
+				Central de Processos
+			</v-btn>
+
+			<v-btn
 				class="mr-3"
 				color="white"
 				style="color:rgb(253, 94, 205)!important"
 				href="https://app.elofy.com.br/"
 				target="_blank"
 			>
-				<v-img
-					src="/images/elofy.png"
-					class="mr-1"
-					height="16px"
-					width="16px"
-				/>
-				Acessar Elofy
-				<v-icon
-					small
-					class="ml-1"
-				>
-					open_in_new
-				</v-icon>
+				<div>
+					<v-img
+						src="/images/elofy.png"
+						class=""
+						height="25px"
+						width="25px"
+					/>
+				</div>
 			</v-btn>
 			<v-btn
 				icon

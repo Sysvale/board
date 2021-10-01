@@ -139,18 +139,6 @@ class SetupManagementWorkspace extends Command
 		]);
 
 		$value = BoardList::create([
-			'name' => 'Doing (Meetings) - 2',
-			'key' => BoardListsKeys::DOING_DT_MEETINGS,
-			'position' => 3,
-		]);
-
-		$value = BoardList::create([
-			'name' => 'Doing (Hotfix ou bugfix) - 2',
-			'key' => BoardListsKeys::DOING_DT_HOT_BUG,
-			'position' => 4,
-		]);
-
-		$value = BoardList::create([
 			'name' => 'Waiting 1 approve - 2',
 			'key' => BoardListsKeys::WAITING_ONE_APPROVE,
 			'position' => 5,

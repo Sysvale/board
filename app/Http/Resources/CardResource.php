@@ -36,10 +36,12 @@ class CardResource extends JsonResource
 			'has_metric' => $this->when(isset($this->has_metric), $this->has_metric),
 			'is_recurrent' => $this->when(isset($this->is_recurrent), $this->is_recurrent),
 			'user' => $this->when(isset($this->user), $this->user),
+			'status' => $this->when(isset($this->status), $this->status),
 			'acceptance_criteria' => $this->when(
 				isset($this->acceptance_criteria),
 				$this->acceptance_criteria
 			),
+			'first_default_board_list_id' => $this->first_default_board_list_id,
 		];
 	}
 }

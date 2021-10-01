@@ -13,6 +13,7 @@ import events from './events';
 import goals from './goals';
 
 import settingsModules from '../../settings/store';
+import processesModules from '../../processes/store';
 
 export default new Vuex.Store({
 	namespaced: true,
@@ -26,5 +27,6 @@ export default new Vuex.Store({
 		events,
 		goals,
 		...settingsModules,
+		...processesModules,
 	}
 });
