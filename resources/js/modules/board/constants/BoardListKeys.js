@@ -13,6 +13,7 @@ export const STEPPER = 'stepper';
 export const BREAKOUT_ONE = 'breakoutOne';
 export const SYS_IN = 'sysIn';
 export const SYS_OUT = 'sysOut';
+export const NOT_PRIORITIZED = 'notPrioritized';
 
 export default {
     TODO,
@@ -30,4 +31,5 @@ export default {
     BREAKOUT_ONE,
     SYS_IN,
     SYS_OUT,
+    NOT_PRIORITIZED,
 };

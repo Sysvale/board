@@ -13,6 +13,7 @@ use App\Utils\GitlabHandler;
 use Illuminate\Http\Request;
 use App\Constants\BoardListsKeys;
 use App\Constants\GitlabLabelKeys;
+use App\Constants\TeamKeys;
 use App\Http\Resources\CardResource;
 use App\Http\Requests\StoreCardRequest;
 
@@ -96,6 +97,10 @@ class CardController extends Controller
 	public function store(StoreCardRequest $request)
 	{
 		$card = Card::create($request->validated());
+
+		if ($request->team_key) {
+			$card->first_default_board_list_id = $this->getFirstDefaultBoardListId($request->team_key);
+		}
 
 		return new CardResource($card);
 	}
@@ -225,5 +230,23 @@ class CardController extends Controller
 		})->filter();
 
 		return Label::whereIn('key', $labels_keys)->pluck('_id')->toArray();
+	}
+
+	private function getFirstDefaultBoardListId($team_key)
+	{
+		$output = BoardListsKeys::DEFAULT_LISTS;
+		if ($team_key) {
+			$team = Team::where('key', $team_key)
+			->first();
+			
+			if ($team->key === TeamKeys::DATA_TEAM) {
+				$output = BoardListsKeys::DT_LISTS;
+			}
+			
+			if ($team->short_task_flow) {
+				$output = BoardListsKeys::SHORTED_LISTS;
+			}
+		}
+		return BoardList::where('key', $output[0])->get()->first()->id;
 	}
 }

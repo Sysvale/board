@@ -147,12 +147,25 @@ export default {
 			return this[boardListId];
 		},
 
-		handleAdd(newCardData) {
+		handleAdd({ subTasks, teamKey, ...newCardData }) {
 			this.createCard(convertKeysToSnakeCase({
 				...newCardData,
 				...this.cardMiddleware,
+				teamKey: subTasks ? teamKey : null,
 			})).then((data) => {
 				this.addNewTask({ ...data });
+				const { firstDefaultBoardListId } = convertKeysToCamelCase(data);
+				if (subTasks) {
+					subTasks.forEach((task) => {
+						this.createCard(convertKeysToSnakeCase({
+							title: task.title,
+							checklist: task.items,
+							userStoryId: data.id,
+							type: 'task',
+							boardListId: firstDefaultBoardListId,
+						}));
+					});
+				}
 			});
 		},
 

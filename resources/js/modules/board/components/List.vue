@@ -121,21 +121,29 @@
 					</span>
 				</div>
 				<div class="d-flex justify-end">
-					<v-btn
-						block
-						small
-						depressed
-						:disabled="$attrs.loading"
-						color="white"
-						class="px-0"
-						@click="createMode = true"
+					<div
+						class="d-flex align-items-center"
 					>
-						<v-icon
-							color="rgba(0, 0, 0, 0.5)"
+						<card-from-process-modal
+							v-if="keyValue !== BACKLOG && keyValue !== NOT_PRIORITIZED"
+							:process-only="isAGoalableList"
+							@create="handleAddFromProcess"
+						/>
+						<v-btn
+							small
+							depressed
+							:disabled="$attrs.loading"
+							class="px-0"
+							icon
+							@click="createMode = true"
 						>
-							add
-						</v-icon>
-					</v-btn>
+							<v-icon
+								color="rgba(0, 0, 0, 0.5)"
+							>
+								add
+							</v-icon>
+						</v-btn>
+					</div>
 				</div>
 			</div>
 			<div
@@ -237,17 +245,20 @@ import {
 	BREAKOUT_ONE,
 	SYS_OUT,
 	SYS_IN,
+	NOT_PRIORITIZED,
 } from '../constants/BoardListKeys';
 import Card from './Card.vue';
 import ListContainer from './ListContainer.vue';
 import ListSkeletonLoader from './ListSkeletonLoader.vue';
 import { TASK } from '../constants/CardTypes';
+import CardFromProcessModal from '../../processes/components/CardFromProcessModal.vue';
 
 export default {
 	components: {
 		Card,
 		ListContainer,
 		ListSkeletonLoader,
+		CardFromProcessModal,
 	},
 
 	props: {
@@ -268,6 +279,9 @@ export default {
 			colapsed: false,
 			editGoal: false,
 			drag: false,
+			selectedProcess: null,
+			BACKLOG,
+			NOT_PRIORITIZED,
 		};
 	},
 
@@ -383,16 +397,46 @@ export default {
 
 		handleAdd() {
 			if (this.newCardTitle && this.newCardTitle.trim() !== '') {
-				this.$emit('add', {
+				let output = {
 					title: this.newCardTitle,
 					boardListId: this.$attrs.id,
 					type: this.acceptsCardType,
+				};
+				if (this.selectedProcess) {
+					const processOnly = this.isAGoalableList;
+					if(processOnly) {
+						output = {
+							...output,
+							subTasks: this.selectedProcess.checklists,
+							teamKey: this.keyValue,
+						}
+					} else {
+						output = {
+							...output,
+							checklist: this.selectedProcess.items,
+						}
+					}
+				}
+
+				this.$emit('add', {
+					...output,
 				});
 
 				this.newCardTitle = null;
+				this.selectedProcess = null;
 			}
 
 			this.createMode = false;
+		},
+
+		handleAddFromProcess(process) {
+			this.selectedProcess = process;
+			if(this.isAGoalableList) {
+				this.newCardTitle = process.name;
+			} else {
+				this.newCardTitle = process.title;
+			}
+			this.handleAdd();
 		},
 
 		enableEditGoal() {

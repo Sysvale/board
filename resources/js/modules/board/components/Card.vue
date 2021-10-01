@@ -302,6 +302,12 @@
 						<div
 							class="py-5"
 						>
+							<div class="my-5">
+								<checklist-from-process-select
+									:with-alert="!!item.checklist && item.checklist.length > 0"
+									@create="handleCreateChecklistFromProcessSelect"
+								/>
+							</div>
 							<div class="pb-2 grey--text caption">
 								Items:
 							</div>
@@ -461,6 +467,7 @@ import SwitchButton from './SwitchButton.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import TooltipRating from './TooltipRating.vue';
 import { NOT_PRIORITIZED, TASK, USER_STORY } from '../constants/CardTypes';
+import ChecklistFromProcessSelect from '../../processes/components/ChecklistFromProcessSelect.vue';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -477,6 +484,7 @@ export default {
 		TeamChip,
 		SwitchButton,
 		TooltipRating,
+		ChecklistFromProcessSelect,
 	},
 
 	props: {
@@ -659,6 +667,10 @@ export default {
 			this.cloneTitle = _.clone(this.item.title);
 			this.titleInEditMode = true;
 		},
+
+		handleCreateChecklistFromProcessSelect(checklist) {
+			this.$set(this.item, 'checklist', checklist);
+		}
 	},
 };
 </script>
