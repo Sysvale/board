@@ -23,8 +23,6 @@ class BoardListsKeys extends BagOfConstants
 
 	const TODO_DT = 'todoDt';
 	const DOING_DT_NORMAL = 'doingDtNormal';
-	const DOING_DT_MEETINGS = 'doingDtMeetings';
-	const DOING_DT_HOT_BUG = 'doingDtHotBug';
 	const WAITING_ONE_APPROVE = 'waitingOneApprove';
 	const WAITING_TWO_APPROVES = 'waitingTwoApproves';
 
@@ -59,8 +57,6 @@ class BoardListsKeys extends BagOfConstants
 	const DT_LISTS = [
 		self::TODO_DT,
 		self::DOING_DT_NORMAL,
-		self::DOING_DT_MEETINGS,
-		self::DOING_DT_HOT_BUG,
 		self::WAITING_ONE_APPROVE,
 		self::WAITING_TWO_APPROVES,
 		self::DEPLOY,
