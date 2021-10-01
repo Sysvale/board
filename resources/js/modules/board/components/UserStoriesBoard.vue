@@ -78,7 +78,14 @@
 						<div
 							class="pt-3"
 						>
-							<v-divider/>
+							<user-story-pipeline
+								v-model="story.status"
+								:pipeline-mode="pipelineMode(story.status)"
+								style="cursor:pointer"
+								@mouseover.native="pipelineHovered = true"
+								@mouseleave.native="pipelineHovered = false"
+								@status-changed="handleStatusChange(story, $event)"
+							/>
 						</div>
 						<v-expansion-panels
 							v-if="story.acceptanceCriteria && story.acceptanceCriteria.length > 0"
@@ -140,7 +147,7 @@
 </template>
 
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers, mapActions } from 'vuex';
 import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
@@ -159,12 +166,15 @@ import {
 import {
 	getCardsByListsIds,
 } from '../services/cards';
+import UserStoryPipeline from './UserStoryPipeline.vue';
+import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
 	components: {
 		ListContainer,
 		BoardContainer,
 		Board,
+		UserStoryPipeline,
 	},
 
 	beforeCreate() {
@@ -229,6 +239,21 @@ export default {
 		},
 	},
 
+	data() {
+		return{
+			pipelineHovered: false,
+		};
+	},
+
+	computed: {
+		pipelineMode() {
+			return status => {
+				if(!!status && status !== 'development') return true;
+				if(this.pipelineHovered) return true;
+			}
+		}
+	},
+
 	mounted() {
 		this.getUserStoriesByTeam(this.teamId).then((data) => {
 			this.setItems(data);
@@ -238,6 +263,15 @@ export default {
 	methods: {
 		getDefaultLists,
 		getCardsByListsIds,
+		...mapActions('cards', [
+			'updateCard',
+		]),
+		handleStatusChange(story, status) {
+			this.updateCard(convertKeysToSnakeCase({
+				...story,
+				status,
+			}));
+		}
 	}
 }
 </script>
