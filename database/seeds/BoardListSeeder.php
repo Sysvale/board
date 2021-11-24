@@ -82,7 +82,7 @@ class BoardListSeeder extends Seeder
 				'name' => 'Backlog',
 				'key' => BoardListsKeys::BACKLOG,
 				'user_story_holder' => true,
-				'position' => 4,
+				'position' => 0,
 			],
 		]);
 	}
