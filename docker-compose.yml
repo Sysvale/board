@@ -15,9 +15,9 @@ services:
     working_dir: /home/board/
     mem_limit: 2g
     depends_on:
-      - board_mongo
+      - mongo
 
-  board_mongo:
+  mongo:
     image: mongo:4.2
     volumes:
       - './.docker/mongo/data:/data/db:z'
