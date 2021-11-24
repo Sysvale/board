@@ -23,7 +23,7 @@
 							@click="goTo(workspace.id)"
 						>
 							<lottie-player
-								:src="workspace.lootieFile"
+								:src="workspace.lottieFile"
 								background="white"
 								speed="1"
 								style="width: 250px; height: 250px;margin: 0 auto; background: white"
