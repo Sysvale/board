@@ -1,2 +1,3 @@
-docker-compose exec board-server $*
+#!/bin/bash
 
+docker-compose exec board-server $*
