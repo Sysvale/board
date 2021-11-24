@@ -55,6 +55,7 @@ class SetupNewTeams extends Command
 		$this->info('Iniciando...');
 		$this->createLabels();
 		$this->createTeams();
+		$this->createDummyGoalsToTeams();
 		$this->createSprintBoardLists();
 		$this->createDoingBoardList();
 		$this->info('Tudo pronto!');
@@ -81,11 +82,10 @@ class SetupNewTeams extends Command
 			'key',
 			'color',
 			'text_color',
-		]);
+		])->toArray();
 
 		$this->info('Criando labels...');
 
-		
 		$value = Label::insert($labels_to_duplicate);
 
 		if ($value) {
@@ -110,7 +110,7 @@ class SetupNewTeams extends Command
 
 		$value = BoardList::create([
 			'name' => 'To do',
-			'key' => BoardListsKeys::TO_DO,
+			'key' => BoardListsKeys::TODO,
 			'position' => 1,
 		]);
 
@@ -145,13 +145,13 @@ class SetupNewTeams extends Command
 
 	private function createSprintBoardLists()
 	{
-		$teams = Team::whereIn('key', collect($teams_to_insert)->map(function ($item) { return $item['key']; }));
+		$teams = $this->getTeamsByKeys();
 		
 		$this->info('Criando sprint board lists...');
 
 		$teams->each(function ($team) {
 			$board_list_not_exists = BoardList::where('key', $team->key)->count() === 0;
-			if ($board_list_not_exists === 0) {
+			if ($board_list_not_exists) {
 				$value = BoardList::create([
 					'name' => 'Sprint - '. $team->name,
 					'key' => $team->key,
@@ -164,5 +164,29 @@ class SetupNewTeams extends Command
 				}
 			}
 		});
+	}
+
+	private function createDummyGoalsToTeams()
+	{
+		$this->info('Criando dummy goals...');
+
+		$teams = $this->getTeamsByKeys();
+
+		$teams->each(function ($team) {
+			Goal::create([
+				'title' => 'Defina um objetivo da sprint',
+				'team_id' => $team->id,
+			]);
+		});
+
+		$this->info('Dummy goals criados com sucesso...');
+	}
+
+	private function getTeamsByKeys()
+	{
+		return Team::whereIn('key', collect($this->teams_to_insert)
+			->map(function ($item) {
+				return $item['key'];
+			}));
 	}
 }
