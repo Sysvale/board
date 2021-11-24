@@ -35,8 +35,8 @@ class SetupNewTeams extends Command
 
 	private $teams_to_insert = [
 		[
-			'name' => 'Le Novinhos',
-			'key' => TeamKeys::LITTLE_NEWS,
+			'name' => 'Grasshopper',
+			'key' => TeamKeys::GRASSHOPPER,
 		]
 	];
 
