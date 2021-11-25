@@ -10,12 +10,15 @@
 				v-bind="$attrs"
 				v-on="$listeners"
 				class="task-card px-3 py-3"
-				:style="agingStyle"
+				:style="{
+					...agingStyle,
+					...backgroundStyle,
+				}"
 				hover
 				:ripple="false"
 				@click="showModal"
-				@mouseover="hover = true"
-				@mouseleave="hover = false"
+				@mouseover="mouseoverHandler"
+				@mouseleave="mouseleaveHandler"
 			>
 				<div class="d-flex align-center">
 					<v-tooltip
@@ -210,6 +213,7 @@
 					<h3
 						v-if="!titleInEditMode"
 						class="black--text"
+
 						@click="handleEditMode"
 					>
 						{{ item.title }}
@@ -511,6 +515,7 @@ export default {
 			tabs: [MAIN_TAB, CHECKLIST_TAB],
 			selectedTab: MAIN_TAB,
 			showDeleteConfirmation: false,
+			backgroundStyle: {},
 		};
 	},
 
@@ -630,7 +635,7 @@ export default {
 					value: 'Muito alto. Faz com que o sistema pare de funcionar e/ou afete algum contrato.',
 				},
 			];
-		}
+		},
 	},
 
 	watch: {
@@ -670,7 +675,36 @@ export default {
 
 		handleCreateChecklistFromProcessSelect(checklist) {
 			this.$set(this.item, 'checklist', checklist);
-		}
+		},
+
+		mouseoverHandler() {
+			this.hover = true;
+			this.backgroundStyle = this.getBackgroundStyle();
+		},
+
+		mouseleaveHandler() {
+			this.hover = false;
+			this.backgroundStyle = {};
+		},
+
+		getBackgroundStyle() {
+			const urls = [
+				'https://getthelook.com.br/wp-content/uploads/2015/12/anisan.gif',
+				'https://anymacsolution.files.wordpress.com/2017/12/santa-claus-animated-gif-6.gif?w=380',
+				'https://i.giphy.com/media/S6O2GuDzHJCoVD7NFm/giphy.webp',
+				'https://i.giphy.com/media/kfozgIgxf5qyvWwByh/giphy.webp',
+			];
+
+			const index = Math.floor(Math.random() * urls.length);
+
+			return {
+				backgroundImage: `url(${urls[index]})`,
+				backgroundSize: '100%',
+				backgroundPosition: '0px 0px',
+				backgroundRepeat: 'no-repeat',
+				border: 'none',
+			};
+		},
 	},
 };
 </script>
