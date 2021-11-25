@@ -47,7 +47,7 @@ class WorkspaceController extends Controller
 			'name' => 'required|string',
 			'team_ids' => 'nullable|array',
 			'label_ids' => 'nullable|array',
-			'lootie_file' => 'nullable|string',
+			'lottie_file' => 'nullable|string',
 			'settings' => 'nullable|array',
 		]);
 

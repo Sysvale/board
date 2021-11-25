@@ -245,6 +245,7 @@ import {
 	BREAKOUT_ONE,
 	SYS_OUT,
 	SYS_IN,
+	GRASSHOPPER,
 	NOT_PRIORITIZED,
 } from '../constants/BoardListKeys';
 import Card from './Card.vue';
@@ -296,6 +297,7 @@ export default {
 				BREAKOUT_ONE,
 				SYS_OUT,
 				SYS_IN,
+				GRASSHOPPER,
 			];
 			return goalableLists.indexOf(this.keyValue) > -1;
 		},
