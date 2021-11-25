@@ -3,6 +3,7 @@
 use App\Constants\TeamKeys;
 use Illuminate\Database\Seeder;
 use App\Models\Team;
+use App\Models\Goal;
 
 class TeamSeeder extends Seeder
 {
@@ -21,6 +22,11 @@ class TeamSeeder extends Seeder
 			$list->key = $item['key'];
 			$list->extended_task_flow = $item['extended_task_flow'] ?? false;
 			$list->save();
+
+			Goal::create([
+				'title' => 'Defina um objetivo da sprint',
+				'team_id' => $list->id,
+			]);
 		});
 	}
 

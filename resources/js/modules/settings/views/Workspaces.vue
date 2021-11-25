@@ -77,7 +77,7 @@
 									<v-row>
 										<v-text-field
 											v-model="selectedItem.lottieFile"
-											label="URL do Lootie File"
+											label="URL do Lottie File"
 										></v-text-field>
 									</v-row>
 									<v-row>

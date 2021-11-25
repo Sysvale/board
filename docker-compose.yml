@@ -1,23 +1,31 @@
 version: '2'
+
 services:
   board-server:
-    image: lissonpsantos2/ubuntu-phps
-    restart: always
+    image: elaynelemos/ubuntu-20.04-laravel-6.x:node-12.x-php-7.4-apache-2
     volumes:
-      - ./:/home/server/
+      - ./:/home/board/
     ports:
       - 8090:80
     stdin_open: true
     tty: true
     entrypoint:
+      - ".docker/bin/entrypoint.sh"
       - bash
-      - "entrypoint.sh"
-    working_dir: /home/server/
+    working_dir: /home/board/
     mem_limit: 2g
+    depends_on:
+      - mongo
 
   mongo:
-    image: 'mongo'
+    image: mongo:4.2
     volumes:
       - './.docker/mongo/data:/data/db:z'
     ports:
       - '27003:27017'
+
+volumes:
+  mongodb_data:
+    driver: local
+  server_data:
+    driver: local
