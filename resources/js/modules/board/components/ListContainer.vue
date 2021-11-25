@@ -22,8 +22,8 @@ export default {
 
 <style scoped>
 .list-container {
-	max-width: 280px;
-	min-width: 280px;
+	max-width: 290px;
+	min-width: 290px;
 	padding: 0px!important;
 }
 </style>
