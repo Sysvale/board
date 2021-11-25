@@ -14,16 +14,10 @@
 	</v-container>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
 <style scoped>
 .list-container {
-	max-width: 290px;
-	min-width: 290px;
+	max-width: 300px;
+	min-width: 300px;
 	padding: 0px!important;
 }
 </style>
