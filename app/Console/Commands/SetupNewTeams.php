@@ -55,9 +55,9 @@ class SetupNewTeams extends Command
 		$this->info('Iniciando...');
 		$this->createLabels();
 		$this->createTeams();
-		$this->createDummyGoalsToTeams();
 		$this->createSprintBoardLists();
 		$this->createDoingBoardList();
+		$this->createDummyGoalsToTeams();
 		$this->info('Tudo pronto!');
 	}
 
@@ -173,13 +173,15 @@ class SetupNewTeams extends Command
 		$teams = $this->getTeamsByKeys();
 
 		$teams->each(function ($team) {
-			Goal::create([
+			$value = Goal::create([
 				'title' => 'Defina um objetivo da sprint',
 				'team_id' => $team->id,
 			]);
-		});
 
-		$this->info('Dummy goals criados com sucesso...');
+			if($value) {
+				$this->info('Dummy goal criado com sucesso para o time ' . $team->name);
+			}
+		});
 	}
 
 	private function getTeamsByKeys()
@@ -187,6 +189,6 @@ class SetupNewTeams extends Command
 		return Team::whereIn('key', collect($this->teams_to_insert)
 			->map(function ($item) {
 				return $item['key'];
-			}));
+			}))->get();
 	}
 }
