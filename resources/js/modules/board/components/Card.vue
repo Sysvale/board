@@ -8,14 +8,13 @@
 		<template v-slot:activator="{}">
 			<v-card
 				v-bind="$attrs"
-				v-on="$listeners"
 				class="task-card px-3 py-3"
 				:style="{
 					...agingStyle,
-					...backgroundStyle,
 				}"
 				hover
 				:ripple="false"
+				v-on="$listeners"
 				@click="showModal"
 				@mouseover="mouseoverHandler"
 				@mouseleave="mouseleaveHandler"
@@ -515,7 +514,6 @@ export default {
 			tabs: [MAIN_TAB, CHECKLIST_TAB],
 			selectedTab: MAIN_TAB,
 			showDeleteConfirmation: false,
-			backgroundStyle: {},
 		};
 	},
 
@@ -679,31 +677,10 @@ export default {
 
 		mouseoverHandler() {
 			this.hover = true;
-			this.backgroundStyle = this.getBackgroundStyle();
 		},
 
 		mouseleaveHandler() {
 			this.hover = false;
-			this.backgroundStyle = {};
-		},
-
-		getBackgroundStyle() {
-			const urls = [
-				'https://getthelook.com.br/wp-content/uploads/2015/12/anisan.gif',
-				'https://anymacsolution.files.wordpress.com/2017/12/santa-claus-animated-gif-6.gif?w=380',
-				'https://i.giphy.com/media/S6O2GuDzHJCoVD7NFm/giphy.webp',
-				'https://i.giphy.com/media/kfozgIgxf5qyvWwByh/giphy.webp',
-			];
-
-			const index = Math.floor(Math.random() * urls.length);
-
-			return {
-				backgroundImage: `url(${urls[index]})`,
-				backgroundSize: '100%',
-				backgroundPosition: '0px 0px',
-				backgroundRepeat: 'no-repeat',
-				border: 'none',
-			};
 		},
 	},
 };
