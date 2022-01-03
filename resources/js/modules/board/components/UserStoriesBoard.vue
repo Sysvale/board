@@ -65,7 +65,7 @@
 							</strong>
 						</div>
 						<lottie-player
-								src="https://assets8.lottiefiles.com/packages/lf20_s3rmq1ty.json"
+								src="https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json"
 								background="white"
 								speed="1"
 								style="width: 250px; height: 250px;margin: 0 auto; background: white"
