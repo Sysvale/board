@@ -35,20 +35,23 @@
 				</div>
 			</li>
 		</ul>
-		<div class="d-flex mt-2">
+		<div class="mt-2">
 			<v-text-field
 				v-model="newCriteria"
 				outlined
 				flat
 				dense
-				class="mr-2"
+				hide-details
+				class="mb-2"
 				@keydown.enter="handleAdd"
 			/>
-			<v-btn
-				@click="handleAdd"
-			>
-				{{ addButtonText }}
-			</v-btn>
+			<div class="d-flex justify-end">
+				<v-btn
+					@click="handleAdd"
+				>
+					{{ addButtonText }}
+				</v-btn>
+			</div>
 		</div>
 	</div>
 </template>
@@ -64,30 +67,30 @@ export default {
 	data() {
 		return {
 			newCriteria: null,
-		}
+		};
 	},
 
 	computed: {
 		addButtonText() {
-			if(this.editMode) {
+			if (this.editMode) {
 				return 'Salvar';
 			}
 			return 'Adicionar';
-		}
+		},
 	},
 
 	methods: {
 		handleAdd() {
-			if(this.newCriteria === null || this.newCriteria.trim() === '' ) return;
+			if (this.newCriteria === null || this.newCriteria.trim() === '') return;
 			this.$emit('input', [...(this.value || []), this.newCriteria]);
 			this.newCriteria = null;
 		},
 
 		handleRemove(index) {
 			this.$emit('input', [
-				...this.value.filter((_, i) => index !== i)
+				...this.value.filter((_, i) => index !== i),
 			]);
 		},
-	}
-}
+	},
+};
 </script>
