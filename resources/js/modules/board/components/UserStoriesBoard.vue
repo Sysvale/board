@@ -88,10 +88,10 @@
 							/>
 						</div>
 						<v-expansion-panels
-							v-if="story.acceptanceCriteria && story.acceptanceCriteria.length > 0"
 							flat
 						>
 							<v-expansion-panel
+								v-if="story.acceptanceCriteria && story.acceptanceCriteria.length > 0"
 								class="px-0 py-0"
 							>
 								<v-expansion-panel-header
@@ -108,6 +108,28 @@
 											:key="criteria"
 										>
 											{{ criteria }}
+										</li>
+									</ul>
+								</v-expansion-panel-content>
+							</v-expansion-panel>
+							<v-expansion-panel
+								v-if="story.artifacts && story.artifacts.length > 0"
+								class="px-0 py-0"
+							>
+								<v-expansion-panel-header
+									class="px-0 py-0"
+								>
+									Artefatos
+								</v-expansion-panel-header>
+								<v-expansion-panel-content
+									class="px-0 py-0"
+								>
+									<ul>
+										<li
+											v-for="artifact in story.artifacts"
+											:key="artifact"
+										>
+											<artifact-item :artifact="artifact" />
 										</li>
 									</ul>
 								</v-expansion-panel-content>
