@@ -115,6 +115,7 @@ class CardController extends Controller
 			'estimated' => $request->estimated,
 			'team_id' => $request->team_id ?? $request->team['id'],
 			'acceptance_criteria' => $request->acceptance_criteria,
+			'artifacts' => $request->artifacts,
 			'checklist' => $request->checklist,
 			'board_id' => $request->board_id ?? $request->board['id'],
 			'workspace_id' => $request->workspace_id,
