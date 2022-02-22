@@ -6,28 +6,24 @@
 		>
 			Ainda não há nenhum item na sua checklist.
 		</div>
+
 		<v-list flat>
 			<v-list-item-group>
 				<v-list-item
 					v-for="(item, i) in value"
 					:key="i"
 				>
-					<template #default="{ active, toggle }">
+					<template #default="{ toggle }">
 						<v-list-item-action v-if="!editMode || selectedIndex !== i">
 							<v-checkbox
 								v-model="item.done"
 								:readonly="readonly"
 								@click="toggle"
-							>
-							</v-checkbox>
+							/>
 						</v-list-item-action>
 
 						<v-list-item-content>
-							<v-list-item-title
-								:class="{
-									'done': item.done
-								}"
-							>
+							<v-list-item-title :class="{ 'done': item.done }">
 								<span v-if="editMode && selectedIndex === i">
 									<v-text-field
 										v-model="editItem"
@@ -43,10 +39,9 @@
 										@blur="finishEdit(i)"
 									/>
 								</span>
+
 								<span v-else>
-									<div
-										v-html="getHtmlFromDescription(item.description)"
-									/>
+									<div v-html="getHtmlFromDescription(item.description)" />
 								</span>
 							</v-list-item-title>
 						</v-list-item-content>
@@ -58,6 +53,7 @@
 							>
 								<v-icon>edit</v-icon>
 							</v-btn>
+
 							<v-btn
 								v-if="!editMode || selectedIndex !== i"
 								icon
@@ -70,7 +66,11 @@
 				</v-list-item>
 			</v-list-item-group>
 		</v-list>
-		<div v-if="!hideCreation" class="d-flex mt-2">
+
+		<div
+			v-if="!hideCreation"
+			class="d-flex mt-2"
+		>
 			<v-text-field
 				v-model="newItem"
 				outlined
@@ -79,17 +79,19 @@
 				class="mr-2"
 				@keydown.enter="handleAdd"
 			/>
+
 			<v-btn
 				elevation="0"
 				outlined
 				color="#333"
 				@click="handleAdd"
 			>
-				{{ addButtonText }}
+				{{ addBuletttonText }}
 			</v-btn>
 		</div>
 	</div>
 </template>
+
 <script>
 export default {
 	props: {
@@ -117,18 +119,18 @@ export default {
 			editItem: null,
 			editMode: false,
 			selectedIndex: -1,
-		}
+		};
 	},
 
 	computed: {
 		addButtonText() {
 			return 'Adicionar item';
-		}
+		},
 	},
 
 	methods: {
 		handleAdd() {
-			if(this.newItem === null || this.newItem.trim() === '' ) return;
+			if (this.newItem === null || this.newItem.trim() === '') return;
 			this.$emit('input', [...(this.value || []), {
 				description: this.newItem,
 			}]);
@@ -137,19 +139,20 @@ export default {
 
 		handleRemove(index) {
 			this.$emit('input', [
-				...this.value.filter((_, i) => index !== i)
+				...this.value.filter((_, i) => index !== i),
 			]);
 		},
 
 		handleToggle(index) {
 			this.$emit('input', [
 				...this.value.map((item, i) => {
-					if(index === i) {
-						item.done = !!!item.done;
+					if (index === i) {
+						item.done = !item.done;
 					}
+
 					return item;
-				})
-			])
+				}),
+			]);
 		},
 
 		handleEdit(index) {
@@ -161,7 +164,7 @@ export default {
 		finishEdit(index) {
 			this.$emit('input', [
 				...this.value.map((item, i) => {
-					if(index === i) {
+					if (index === i) {
 						item.description = this.editItem;
 					}
 					return item;
@@ -174,22 +177,28 @@ export default {
 
 		getHtmlFromDescription(description) {
 			let derText = description;
-			let elements = derText.match(/\[.*?\)/g);
-			if( elements != null && elements.length > 0){
-				for(let el of elements){
+			const elements = derText.match(/\[.*?\)/g);
+			if (elements != null && elements.length > 0) {
+				for (let el of elements) {
 					let text = el.match(/\[(.*?)\]/)[1];
 					let url = el.match(/\((.*?)\)/)[1];
-					derText = derText.replace(el,`<a href="${url}" target="_blank" @click.stop>${text}</a>`)
+					derText = derText.replace(el,`<a href="${url}" target="_blank" @click.stop>${text}</a>`);
 				}
 			}
 			return derText;
-		}
-	}
-}
+		},
+	},
+};
 </script>
+
 <style scoped>
 .done {
 	text-decoration: line-through;
 	opacity: 0.3;
+}
+
+.v-list-item__subtitle, .v-list-item__title {
+	flex: 1 1 100%;
+	white-space: normal !important;
 }
 </style>
