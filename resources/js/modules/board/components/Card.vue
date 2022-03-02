@@ -102,6 +102,22 @@
 						</template>
 						É recorrente
 					</v-tooltip>
+					<v-tooltip
+						v-if="isUserStory && item.isTechinicalWork"
+						bottom
+					>
+						<template v-slot:activator="{ on, attrs }">
+							<v-icon
+								v-bind="attrs"
+								v-on="on"
+								class="ml-2"
+								small
+							>
+								construction
+							</v-icon>
+						</template>
+						Trabalho Técnico
+					</v-tooltip>
 					<v-spacer
 						v-if="!isTask && item.estimated"
 					/>
@@ -350,12 +366,12 @@
 			<v-container
 				v-else
 			>
-				<div class="mt-3 mb-3">
+				<div class="mb-3">
 					<switch-button
 						v-model="item.hasMetric"
-						active-background-color="#23B1C7"
-						active-text-color="black"
-						class="mr-3"
+						active-background-color="#CC3381"
+						active-text-color="white"
+						class="mr-3 mt-3"
 					>
 						<v-icon left>
 							insights
@@ -366,12 +382,23 @@
 						v-model="item.isRecurrent"
 						active-background-color="#FCBB5A"
 						active-text-color="black"
-						class="mr-3"
+						class="mr-3 mt-3"
 					>
 						<v-icon left>
 							restore
 						</v-icon>
 						É recorrente
+					</switch-button>
+					<switch-button
+						v-model="item.isTechinicalWork"
+						active-background-color="#7BD0F4"
+						active-text-color="black"
+						class="mr-3 mt-3"
+					>
+						<v-icon left>
+							construction
+						</v-icon>
+						Trabalho técnico
 					</switch-button>
 				</div>
 				<div class="mb-2">
