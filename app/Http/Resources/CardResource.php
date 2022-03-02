@@ -42,6 +42,7 @@ class CardResource extends JsonResource
 				isset($this->acceptance_criteria),
 				$this->acceptance_criteria
 			),
+			'artifacts' => $this->when(isset($this->artifacts), $this->artifacts),
 			'first_default_board_list_id' => $this->first_default_board_list_id,
 		];
 	}
