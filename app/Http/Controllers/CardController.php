@@ -121,6 +121,7 @@ class CardController extends Controller
 			'type' => $request->type,
 			'has_metric' => $request->has_metric,
 			'is_recurrent' => $request->is_recurrent,
+			'is_techinical_work' => $request->is_techinical_work,
 			'rating' => $request->rating,
 			'description' => $request->description,
 			'status' => $request->status,
