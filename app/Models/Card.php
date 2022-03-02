@@ -23,6 +23,7 @@ class Card extends Model
 		'members',
 		'labels',
 		'acceptance_criteria',
+		'artifacts',
 		'checklist',
 		'type',
 		'gitlab_id',

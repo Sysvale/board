@@ -27,14 +27,16 @@
 						<template v-slot:activator="{ on, attrs }">
 							<v-chip
 								v-bind="attrs"
-								v-on="on"
 								color="#FDD291"
 								text-color="black"
 								small
 								label
 								class="mr-2"
+								v-on="on"
 							>
-								<v-icon small>warning_amber</v-icon>
+								<v-icon small>
+									warning_amber
+								</v-icon>
 							</v-chip>
 						</template>
 						Existem informações pendentes
@@ -78,8 +80,8 @@
 							<v-icon
 								v-bind="attrs"
 								class="ml-2"
-								v-on="on"
 								small
+								v-on="on"
 							>
 								insights
 							</v-icon>
@@ -93,9 +95,9 @@
 						<template v-slot:activator="{ on, attrs }">
 							<v-icon
 								v-bind="attrs"
-								v-on="on"
 								class="ml-2"
 								small
+								v-on="on"
 							>
 								restore
 							</v-icon>
@@ -195,7 +197,9 @@
 						label
 						class="mr-2"
 					>
-						<v-icon small>warning_amber</v-icon>
+						<v-icon small>
+							warning_amber
+						</v-icon>
 					</v-chip>
 					<v-chip
 						v-if="item.number"
@@ -401,15 +405,43 @@
 						:value="team.id"
 					/>
 				</v-radio-group>
-
-				<div
-					class="mb-2"
+				<v-expansion-panels
+					class="mb-1"
+					flat
 				>
-					<strong>Critérios de aceitação</strong>
-				</div>
-				<acceptance-criteria-form
-					v-model="item.acceptanceCriteria"
-				/>
+					<v-expansion-panel
+						class="px-0 py-0"
+					>
+						<v-expansion-panel-header
+							class="px-0 py-0"
+						>
+							<strong>
+								Critérios de aceitação
+							</strong>
+						</v-expansion-panel-header>
+						<v-expansion-panel-content>
+							<acceptance-criteria-form
+								v-model="item.acceptanceCriteria"
+							/>
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+					<v-expansion-panel
+						class="px-0 py-0"
+					>
+						<v-expansion-panel-header
+							class="px-0 py-0"
+						>
+							<strong>
+								Artefatos
+							</strong>
+						</v-expansion-panel-header>
+						<v-expansion-panel-content>
+							<artifacts-form
+								v-model="item.artifacts"
+							/>
+						</v-expansion-panel-content>
+					</v-expansion-panel>
+				</v-expansion-panels>
 			</v-container>
 			<v-card-actions
 				class="d-flex justify-start"
@@ -471,6 +503,7 @@ import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import TooltipRating from './TooltipRating.vue';
 import { NOT_PRIORITIZED, TASK, USER_STORY } from '../constants/CardTypes';
 import ChecklistFromProcessSelect from '../../processes/components/ChecklistFromProcessSelect.vue';
+import ArtifactsForm from './ArtifactsForm.vue';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -488,6 +521,7 @@ export default {
 		SwitchButton,
 		TooltipRating,
 		ChecklistFromProcessSelect,
+		ArtifactsForm,
 	},
 
 	props: {
@@ -583,7 +617,7 @@ export default {
 		},
 
 		agingStyle() {
-			if(!this.isNotPriorized) return '';
+			if (!this.isNotPriorized) return '';
 
 			const start = moment(this.item.createdAt, 'DD-MM-YYYY HH:mm');
 			const end = moment();
@@ -605,7 +639,7 @@ export default {
 		},
 
 		createdBy() {
-			const user = !!this.item.user ?  `por: ${(this.item.user.name || this.item.user.email)}` : '';
+			const user = this.item.user ? `por: ${(this.item.user.name || this.item.user.email)}` : '';
 			const createdAt = `em ${this.item.createdAt}`;
 			return `Criado ${user} ${createdAt}`;
 		},
