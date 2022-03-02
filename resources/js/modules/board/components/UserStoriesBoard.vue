@@ -59,7 +59,7 @@
 								É recorrente
 							</v-tooltip>
 							<v-tooltip
-								v-if="story.isTechinicalWork"
+								v-if="story.isTechnicalWork"
 								bottom
 							>
 								<template v-slot:activator="{ on, attrs }">
@@ -295,8 +295,8 @@ export default {
 				status,
 			}));
 		},
-		getLottieFile({ isTechinicalWork }) {
-			if (isTechinicalWork) {
+		getLottieFile({ isTechnicalWork }) {
+			if (isTechnicalWork) {
 				return 'https://assets4.lottiefiles.com/packages/lf20_sy9zodcx.json';
 			}
 			return 'https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json';

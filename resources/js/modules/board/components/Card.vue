@@ -103,7 +103,7 @@
 						É recorrente
 					</v-tooltip>
 					<v-tooltip
-						v-if="isUserStory && item.isTechinicalWork"
+						v-if="isUserStory && item.isTechnicalWork"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -390,7 +390,7 @@
 						É recorrente
 					</switch-button>
 					<switch-button
-						v-model="item.isTechinicalWork"
+						v-model="item.isTechnicalWork"
 						active-background-color="#7BD0F4"
 						active-text-color="black"
 						class="mr-3 mt-3"
