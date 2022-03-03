@@ -16,7 +16,7 @@
 					>
 						<div
 							v-if="story.hasMetric || story.isRecurrent || story.estimated || story.number"
-							class="py-3 d-flex justify-end"
+							class="py-3 d-flex justify-end align-center"
 						>
 							<v-chip
 								v-if="story.number"
@@ -27,19 +27,19 @@
 							>
 								#{{ story.number }}
 							</v-chip>
-							<v-spacer/>
+							<v-spacer />
 							<v-tooltip
 								v-if="story.hasMetric"
 								bottom
 							>
 								<template v-slot:activator="{ on, attrs }">
-										<v-icon
-											v-bind="attrs"
-											v-on="on"
-											class="mr-2"
-										>
-											insights
-										</v-icon>
+									<v-icon
+										class="mr-2"
+										v-bind="attrs"
+										v-on="on"
+									>
+										insights
+									</v-icon>
 								</template>
 								Possui métrica
 							</v-tooltip>
@@ -48,15 +48,38 @@
 								bottom
 							>
 								<template v-slot:activator="{ on, attrs }">
-										<v-icon
-											v-bind="attrs"
-											v-on="on"
-											class="mr-2"
-										>
-											restore
-										</v-icon>
+									<v-icon
+										class="mr-2"
+										v-bind="attrs"
+										v-on="on"
+									>
+										restore
+									</v-icon>
 								</template>
 								É recorrente
+							</v-tooltip>
+							<v-tooltip
+								v-if="story.isTechnicalWork"
+								bottom
+							>
+								<template v-slot:activator="{ on, attrs }">
+									<v-chip
+										text-color="black"
+										color="#7BD0F4"
+										title="Trabalho técnico"
+										label
+										class="mr-2 px-1 py-1 label-item"
+										v-bind="attrs"
+										v-on="on"
+									>
+										<div class="text-uppercase font-weight-medium">
+											<v-icon>
+												construction
+											</v-icon>
+										</div>
+									</v-chip>
+								</template>
+								Trabalho técnico
 							</v-tooltip>
 							<strong
 								v-if="story.estimated"
@@ -65,7 +88,7 @@
 							</strong>
 						</div>
 						<lottie-player
-								src="https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json"
+								:src="getLottieFile(story)"
 								background="white"
 								speed="1"
 								style="width: 250px; height: 250px;margin: 0 auto; background: white"
@@ -88,10 +111,10 @@
 							/>
 						</div>
 						<v-expansion-panels
-							v-if="story.acceptanceCriteria && story.acceptanceCriteria.length > 0"
 							flat
 						>
 							<v-expansion-panel
+								v-if="story.acceptanceCriteria && story.acceptanceCriteria.length > 0"
 								class="px-0 py-0"
 							>
 								<v-expansion-panel-header
@@ -112,6 +135,28 @@
 									</ul>
 								</v-expansion-panel-content>
 							</v-expansion-panel>
+							<v-expansion-panel
+								v-if="story.artifacts && story.artifacts.length > 0"
+								class="px-0 py-0"
+							>
+								<v-expansion-panel-header
+									class="px-0 py-0"
+								>
+									Artefatos
+								</v-expansion-panel-header>
+								<v-expansion-panel-content
+									class="px-0 py-0"
+								>
+									<ul>
+										<li
+											v-for="artifact in story.artifacts"
+											:key="artifact"
+										>
+											<artifact-item :artifact="artifact" />
+										</li>
+									</ul>
+								</v-expansion-panel-content>
+							</v-expansion-panel>
 						</v-expansion-panels>
 					</v-card>
 				</div>
@@ -121,13 +166,13 @@
 				>
 					<board
 						:namespace="story.id"
-						:getLists="{
+						:get-lists="{
 							resolver: getDefaultLists,
 							params: {
 								teamId,
 							}
 						}"
-						:getCards="{
+						:get-cards="{
 							resolver: getCardsByListsIds,
 							params: {
 								userStoryId: story.id,
@@ -140,7 +185,7 @@
 				</div>
 			</div>
 			<div class="py-5">
-				<v-divider/>
+				<v-divider />
 			</div>
 		</section>
 	</div>
@@ -151,9 +196,8 @@ import { createNamespacedHelpers, mapActions } from 'vuex';
 import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
-import Board from '../components/Board.vue';
-import BoardContainer from '../components/BoardContainer.vue';
-import ListContainer from '../components/ListContainer.vue';
+import Board from './Board.vue';
+import ArtifactItem from './ArtifactItem.vue';
 
 import {
 	getDefaultLists,
@@ -171,23 +215,45 @@ import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
 	components: {
-		ListContainer,
-		BoardContainer,
+		ArtifactItem,
 		Board,
 		UserStoryPipeline,
 	},
 
-	beforeCreate() {
-		let teamId = this.$options.propsData.teamId;
+	props: {
+		teamId: {
+			type: String,
+			default: null,
+		},
+	},
 
-		if(teamId) {
-			let modules = [
+	data() {
+		return {
+			pipelineHovered: false,
+		};
+	},
+
+	computed: {
+		pipelineMode() {
+			return (status) => {
+				if (!!status && status !== 'development') return true;
+				if (this.pipelineHovered) return true;
+				return false;
+			};
+		},
+	},
+
+	beforeCreate() {
+		const { teamId } = this.$options.propsData;
+
+		if (teamId) {
+			const modules = [
 				{ getUserStoriesByTeam },
 			];
 
-			let namespace = `userStories-${teamId}`;
+			const namespace = `userStories-${teamId}`;
 
-			if(!this.$store.hasModule(namespace)) {
+			if (!this.$store.hasModule(namespace)) {
 				this.$store.registerModule(namespace, {
 					namespaced: true,
 					modules: {
@@ -208,18 +274,19 @@ export default {
 			}
 
 			const {
+				// eslint-disable-next-line no-shadow
 				mapActions,
 				mapMutations,
 				mapState,
 			} = createNamespacedHelpers(namespace);
-	
+
 			this.$options.computed = {
 				...mapState({
 					userStories: 'items',
 				}),
 				...this.$options.computed,
 			};
-	
+
 			this.$options.methods = {
 				...mapActions([
 					'getUserStoriesByTeam',
@@ -229,28 +296,6 @@ export default {
 				]),
 				...this.$options.methods,
 			};
-		}
-	},
-
-	props: {
-		teamId: {
-			type: String,
-			default: null,
-		},
-	},
-
-	data() {
-		return{
-			pipelineHovered: false,
-		};
-	},
-
-	computed: {
-		pipelineMode() {
-			return status => {
-				if(!!status && status !== 'development') return true;
-				if(this.pipelineHovered) return true;
-			}
 		}
 	},
 
@@ -271,7 +316,13 @@ export default {
 				...story,
 				status,
 			}));
-		}
+		},
+		getLottieFile({ isTechnicalWork }) {
+			if (isTechnicalWork) {
+				return 'https://assets4.lottiefiles.com/packages/lf20_sy9zodcx.json';
+			}
+			return 'https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json';
+		},
 	}
 }
 </script>

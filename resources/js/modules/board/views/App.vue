@@ -14,7 +14,7 @@
 					src="/images/logo.svg"
 					height="35px"
 					title="aka Trelindo"
-				/>
+				>
 			</a>
 			<v-icon
 				v-if="workspaces && currentWorkspace"
@@ -96,12 +96,9 @@
 					</v-list-item>
 				</v-list>
 			</v-menu>
-			<v-spacer/>
-				
-			<v-spacer/>
-
+			<v-spacer />
+			<v-spacer />
 			<v-btn
-				v-if="false"
 				class="mr-3"
 				color="yellow"
 				style="color:black!important"
@@ -110,22 +107,37 @@
 				Central de Processos
 			</v-btn>
 
-			<v-btn
-				class="mr-3"
-				color="white"
-				style="color:rgb(253, 94, 205)!important"
-				href="https://app.elofy.com.br/"
-				target="_blank"
-			>
-				<div>
-					<v-img
-						src="/images/elofy.png"
-						class=""
-						height="25px"
-						width="25px"
-					/>
-				</div>
-			</v-btn>
+			<v-menu offset-y>
+				<template v-slot:activator="{ on, attrs }">
+					<v-btn
+						color="#FFEFF9"
+						dark
+						v-bind="attrs"
+						v-on="on"
+					>
+						<span style="color: black">Links úteis</span>
+					</v-btn>
+				</template>
+				<v-list>
+					<v-list-item
+						v-for="(item, index) in utilLinks"
+						:key="index"
+					>
+						<v-list-item-title>
+							<v-btn
+								:href="item.link"
+								target="_blank"
+								text
+							>
+								{{ item.text }}
+								<v-icon class="ml-2">
+									open_in_new
+								</v-icon>
+							</v-btn>
+						</v-list-item-title>
+					</v-list-item>
+				</v-list>
+			</v-menu>
 			<v-btn
 				icon
 				@click="logout()"
@@ -154,47 +166,20 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from 'vuex';
+import {
+	mapActions,
+	mapGetters,
+	mapMutations,
+	mapState,
+} from 'vuex';
 
 export default {
-	mounted() {
-		document.title = this.$route && this.$route.meta
-			? `${this.$route.meta.title} | Trelássio`  : 'Trelássio';
-
-		this.getWorkspaces().then((data) => {
-			this.setWorkspaces(data);
-			if(this.$route.params && this.$route.params.workspaceId) {
-				this.setSelectedWorkspace(this.workspaces.filter(({
-					id
-				}) => id == this.$route.params.workspaceId)[0]);
-			} else {
-				this.setSelectedWorkspace(null)
-			}
-		});
-		this.getMembers().then((data) => {
-			this.setMembers(data);
-		});
-		this.getLabels().then((data) => {
-			this.setLabels(data);
-		});
-		this.getTeams().then((data) => {
-			this.setTeams(data);
-		});
-		this.getBoards().then((data) => {
-			this.setBoards(data);
-		});
-		this.getWorkspaces().then((data) => {
-			this.setWorkspaces(data);
-		});
-		this.getGoals().then((data) => {
-			this.setGoals(data);
-		});
-	},
 
 	data() {
 		return {
 			currentPage: 'Planning',
-		}
+			utilLinks: [],
+		};
 	},
 
 	computed: {
@@ -237,30 +222,68 @@ export default {
 		},
 
 		sprintRoute() {
-			if(this.$route && this.$route.name === 'sprint') {
+			if (this.$route && this.$route.name === 'sprint') {
 				return `${this.$route.params.teamId}`;
 			}
-			if(this.teams && this.teams.length) {
+			if (this.teams && this.teams.length) {
 				return `/workspace/${this.currentWorkspace.id}/sprint/${this.teams[0].id}`;
 			}
 			return 'sprint';
-		}
+		},
 	},
+
 	watch: {
-		'$route'(to, from) {
-			if(to.params && to.params.workspaceId) {
-				this.setSelectedWorkspace(this.workspaces.filter(({ id }) => id == to.params.workspaceId)[0]);
+		$route(to) {
+			if (to.params && to.params.workspaceId) {
+				this.setSelectedWorkspace(this.workspaces
+					.filter(({ id }) => id === to.params.workspaceId)[0]);
 			} else {
-				this.setSelectedWorkspace(null)
+				this.setSelectedWorkspace(null);
 			}
 
-			if(to.meta && to.meta.title) {
+			if (to.meta && to.meta.title) {
 				this.currentPage = to.meta.title;
-				document.title = `${to.meta.title} | Trelássio`
-				return;
+				document.title = `${to.meta.title} | Trelássio`;
 			}
 		},
 	},
+
+	mounted() {
+		this.utilLinks = JSON.parse(process.env.MIX_UTIL_LINKS || '[]');
+
+		document.title = this.$route && this.$route.meta
+			? `${this.$route.meta.title} | Trelássio` : 'Trelássio';
+
+		this.getWorkspaces().then((data) => {
+			this.setWorkspaces(data);
+			if (this.$route.params && this.$route.params.workspaceId) {
+				this.setSelectedWorkspace(this.workspaces.filter(({
+					id,
+				}) => id === this.$route.params.workspaceId)[0]);
+			} else {
+				this.setSelectedWorkspace(null);
+			}
+		});
+		this.getMembers().then((data) => {
+			this.setMembers(data);
+		});
+		this.getLabels().then((data) => {
+			this.setLabels(data);
+		});
+		this.getTeams().then((data) => {
+			this.setTeams(data);
+		});
+		this.getBoards().then((data) => {
+			this.setBoards(data);
+		});
+		this.getWorkspaces().then((data) => {
+			this.setWorkspaces(data);
+		});
+		this.getGoals().then((data) => {
+			this.setGoals(data);
+		});
+	},
+
 	methods: {
 		...mapActions('workspaces', [
 			'getWorkspaces',
@@ -306,14 +329,14 @@ export default {
 			setGoals: 'setItems',
 		}),
 		logout() {
-			return window.location.href = '/logout';
+			window.location.href = '/logout';
 		},
 		getToFromWorkspace(workspaceId) {
-			if(workspaceId === this.currentWorkspace.id) return;
-			const name = this.$route.name;
+			if (workspaceId === this.currentWorkspace.id) return;
+			const { name } = this.$route;
 			const params = {
-					workspaceId,
-					teamId: name === 'sprint' ? this.teamByWorkspace[0].id : null
+				workspaceId,
+				teamId: name === 'sprint' ? this.teamByWorkspace[0].id : null,
 			};
 			this.$router.push({
 				name,
@@ -328,11 +351,11 @@ export default {
 							};
 							return acc;
 						}, {}),
-				}
+				},
 			});
-		}
-	}
-}
+		},
+	},
+};
 </script>
 <style scoped>
 .v-application {
