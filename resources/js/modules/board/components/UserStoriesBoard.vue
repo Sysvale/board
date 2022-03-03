@@ -16,7 +16,7 @@
 					>
 						<div
 							v-if="story.hasMetric || story.isRecurrent || story.estimated || story.number"
-							class="py-3 d-flex justify-end"
+							class="py-3 d-flex justify-end align-center"
 						>
 							<v-chip
 								v-if="story.number"
@@ -58,6 +58,29 @@
 								</template>
 								É recorrente
 							</v-tooltip>
+							<v-tooltip
+								v-if="story.isTechnicalWork"
+								bottom
+							>
+								<template v-slot:activator="{ on, attrs }">
+									<v-chip
+										text-color="black"
+										color="#7BD0F4"
+										title="Trabalho técnico"
+										label
+										class="mr-2 px-1 py-1 label-item"
+										v-bind="attrs"
+										v-on="on"
+									>
+										<div class="text-uppercase font-weight-medium">
+											<v-icon>
+												construction
+											</v-icon>
+										</div>
+									</v-chip>
+								</template>
+								Trabalho técnico
+							</v-tooltip>
 							<strong
 								v-if="story.estimated"
 							>
@@ -65,12 +88,13 @@
 							</strong>
 						</div>
 						<lottie-player
-							src="https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json"
-							background="white"
-							speed="1"
-							style="width: 250px; height: 250px;margin: 0 auto; background: white"
-							autoplay
-						/>
+								:src="getLottieFile(story)"
+								background="white"
+								speed="1"
+								style="width: 250px; height: 250px;margin: 0 auto; background: white"
+								autoplay
+							>
+						</lottie-player>
 						<div>
 							{{ story.title }}
 						</div>
@@ -293,8 +317,14 @@ export default {
 				status,
 			}));
 		},
-	},
-};
+		getLottieFile({ isTechnicalWork }) {
+			if (isTechnicalWork) {
+				return 'https://assets4.lottiefiles.com/packages/lf20_sy9zodcx.json';
+			}
+			return 'https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json';
+		},
+	}
+}
 </script>
 <style scoped>
 .v-expansion-panel-content__wrap {

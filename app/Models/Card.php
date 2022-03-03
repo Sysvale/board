@@ -32,6 +32,7 @@ class Card extends Model
 		'rating',
 		'has_metric',
 		'is_recurrent',
+		'is_technical_work',
 		'user_id',
 		'estimated',
 		'status',
