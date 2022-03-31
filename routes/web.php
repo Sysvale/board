@@ -61,6 +61,8 @@ Route::group(
         Route::apiResource('processes', 'ProcessController');
 
         Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
+
+        Route::get('/reports/sprint-overview/{team}', 'SprintReportController@getCurrentSprintOverviewByTeam');
     }
 );
 
