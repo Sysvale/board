@@ -8,15 +8,13 @@ use App\Models\BoardList;
 use App\Models\Team;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
+use App\Services\BoardListService;
 
 class BoardListController extends Controller
 {
 	public function getDefaultLists(Request $in)
 	{
-		return BoardList::whereIn('key', $this->getDefaultTaskLists($in->team_id))
-			->get()
-			->sortBy('position')
-			->values();
+		return (new BoardListService())->getDefaultLists($in->team_id);
 	}
 
 	public function getDevlogLists(Request $in)
@@ -74,29 +72,5 @@ class BoardListController extends Controller
 			->get()
 			->sortBy('position')
 			->values();
-	}
-
-	private function getDefaultTaskLists($team_id)
-	{
-		$default_lists = BoardListsKeys::DEFAULT_LISTS;
-
-		if ($team_id) {
-			$team = Team::where('_id', $team_id)
-				->first();
-
-			if ($team->key === TeamKeys::DATA_TEAM) {
-				return BoardListsKeys::DT_LISTS;
-			}
-
-			if ($team->short_task_flow) {
-				return BoardListsKeys::SHORTED_LISTS;
-			}
-
-			if ($team->extended_task_flow) {
-				return array_merge($default_lists, BoardListsKeys::EXTENDED_LISTS);
-			}
-		}
-
-		return $default_lists;
 	}
 }
