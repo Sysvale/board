@@ -15,6 +15,7 @@
 				:group="namespace"
 				@add="handleAdd"
 				@delete="handleDelete"
+				@deleteAllCards="handleDeleteAllCards"
 			/>
 			<v-snackbar
 				v-model="snackbar"
@@ -125,6 +126,7 @@ export default {
 					...lists.map(({ id }) => `set${id}`),
 					'addNewTask',
 					'removeTask',
+					'removeAllTasks',
 					'setCards',
 					'setCard',
 				]),
@@ -137,6 +139,7 @@ export default {
 	methods: {
 		...mapActions('cards', [
 			'deleteCard',
+			'deleteManyCards',
 			'createCard',
 			'updateCard',
 			'updateCardsPositions',
@@ -172,6 +175,12 @@ export default {
 		handleDelete({ boardListId, id }) {
 			this.deleteCard(id).then(() => {
 				this.removeTask({ boardListId, id });
+			});
+		},
+
+		handleDeleteAllCards(payload) {
+			this.deleteManyCards(payload).then(() => {
+				this.removeAllTasks(payload);
 			});
 		},
 

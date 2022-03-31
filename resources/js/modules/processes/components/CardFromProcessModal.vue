@@ -4,20 +4,20 @@
 		width="600"
 	>
 		<template v-slot:activator="{ on, attrs }">
-			<v-btn
-				small
-				depressed
+			<div
+				class="d-flex"
 				:disabled="$attrs.loading"
 				v-bind="attrs"
 				v-on="on"
-				icon
 			>
 				<v-icon
 					color="rgba(0, 0, 0, 0.5)"
+					class="mr-2"
 				>
 					post_add
 				</v-icon>
-			</v-btn>
+				Criar a partir de um processo
+			</div>
 		</template>
 
 		<v-card>
