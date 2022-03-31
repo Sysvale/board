@@ -7,3 +7,5 @@ export const getDevlogLists = (params) => http.get('/lists/devlog', { params });
 export const getPlanningLists = () => http.get('/lists/planning');
 
 export const getCurrentSprintSummaryByTeam = (teamId) => http.get(`/sprint/summary/current/${teamId}`);
+
+export const getCurrentSprintOverviewByTeam = (teamId) => http.get(`/reports/sprint-overview/${teamId}`);
