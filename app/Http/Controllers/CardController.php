@@ -169,6 +169,18 @@ class CardController extends Controller
 		return new CardResource($card);
 	}
 
+	public function destroyMany(Request $request)
+	{
+		$request->validate([
+			'ids' => 'required|array|min:1',
+			'ids.*' => 'required|exists:cards,_id',
+		]);
+
+		Card::destroy($request->ids);
+
+		return response()->json(null, 204);
+	}
+
 	public function synchronize()
 	{
 		$issues = $this->handler->getAllIssues();
