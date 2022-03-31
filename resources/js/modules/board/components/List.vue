@@ -124,11 +124,6 @@
 					<div
 						class="d-flex align-items-center"
 					>
-						<card-from-process-modal
-							v-if="keyValue !== BACKLOG && keyValue !== NOT_PRIORITIZED"
-							:process-only="isAGoalableList"
-							@create="handleAddFromProcess"
-						/>
 						<v-btn
 							small
 							depressed
@@ -143,6 +138,47 @@
 								add
 							</v-icon>
 						</v-btn>
+						<v-menu
+							top
+							min-width="300px"
+							close-on-click
+							close-on-content-click
+						>
+							<template v-slot:activator="{ on, attrs }">
+								<v-btn
+									v-bind="attrs"
+									icon
+									small
+									v-on="on"
+								>
+									<v-icon
+										color="rgba(0, 0, 0, 0.5)"
+									>
+										more_vert
+									</v-icon>
+								</v-btn>
+							</template>
+
+							<v-list>
+								<v-list-item
+									:disabled="$attrs.list.length === 0"
+									@click="confirmDeleteAllCards"
+								>
+									<v-icon class="mr-2">
+										delete_outline
+									</v-icon>
+									Remover todos os cards
+								</v-list-item>
+								<v-list-item
+									v-if="keyValue !== BACKLOG && keyValue !== NOT_PRIORITIZED"
+								>
+									<card-from-process-modal
+										:process-only="isAGoalableList"
+										@create="handleAddFromProcess"
+									/>
+								</v-list-item>
+							</v-list>
+						</v-menu>
 					</div>
 				</div>
 			</div>
@@ -237,6 +273,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import swal from 'sweetalert2';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import {
 	BACKLOG,
@@ -443,6 +480,28 @@ export default {
 
 		enableEditGoal() {
 			this.editGoal = true;
+		},
+
+		confirmDeleteAllCards() {
+			if (this.$attrs.list.length === 0) {
+				return;
+			}
+
+			swal.fire({
+				type: 'warning',
+				title: 'Tem certeza?',
+				text: 'Esta ação não poderá ser desfeita.',
+				confirmButtonText: 'Sim, Apagar',
+				showCancelButton: true,
+				cancelButtonText: 'Cancelar',
+			}).then((result) => {
+				if (result.value) {
+					this.$emit('deleteAllCards', {
+						ids: this.$attrs.list.map((card) => card.id),
+						boardListId: this.$attrs.id,
+					});
+				}
+			});
 		},
 
 		handleEditGoal() {

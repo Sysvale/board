@@ -26,6 +26,8 @@ Route::group(
         Route::get('/lists/issues/', 'BoardListController@getIssuesLists');
         Route::get('/lists/devlog', 'BoardListController@getDevlogLists');
 
+        Route::delete('cards/delete-many', 'CardController@destroyMany')
+            ->name('cards.destroy_many');
         Route::resource('cards', 'CardController')->only(['store', 'update', 'destroy']);
         Route::get(
             '/cards/impediments/{team}',
@@ -61,6 +63,8 @@ Route::group(
         Route::apiResource('processes', 'ProcessController');
 
         Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
+
+        Route::get('/reports/sprint-overview/{team}', 'SprintReportController@getCurrentSprintOverviewByTeam');
     }
 );
 

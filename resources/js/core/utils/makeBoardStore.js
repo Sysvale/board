@@ -86,6 +86,12 @@ export default (lists, modules = []) => {
 					...state[boardListId].filter((card) => card.id !== id),
 				];
 			},
+			removeAllTasks(state, payload) {
+				const { boardListId, ids } = convertKeysToCamelCase(payload);
+				state[boardListId] = [
+					...state[boardListId].filter((card) => !ids.includes(card.id)),
+				];
+			},
 		},
 		getters: {
 			...generateGetters(lists),

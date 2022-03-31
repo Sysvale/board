@@ -16,6 +16,7 @@ use App\Constants\GitlabLabelKeys;
 use App\Constants\TeamKeys;
 use App\Http\Resources\CardResource;
 use App\Http\Requests\StoreCardRequest;
+use App\Services\CardService;
 
 class CardController extends Controller
 {
@@ -72,15 +73,7 @@ class CardController extends Controller
 
 	public function getUserStoriesByTeam(Team $team)
 	{
-		$sprintListId = BoardList::where('key', $team->key)
-			->first()->id;
-
-		$cards = Card::where('board_list_id', $sprintListId)
-			->where('type', CardTypes::USER_STORY)
-			->orderBy('position')
-			->get();
-
-		return CardResource::collection($cards);
+		return (new CardService())->getUserStoriesByTeam($team->key);
 	}
 
 	public function getCurrentSprintSummaryByTeam(Team $team)
@@ -167,6 +160,18 @@ class CardController extends Controller
 		$card->delete();
 
 		return new CardResource($card);
+	}
+
+	public function destroyMany(Request $request)
+	{
+		$request->validate([
+			'ids' => 'required|array|min:1',
+			'ids.*' => 'required|exists:cards,_id',
+		]);
+
+		Card::destroy($request->ids);
+
+		return response()->json(null, 204);
 	}
 
 	public function synchronize()

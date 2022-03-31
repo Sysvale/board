@@ -2,10 +2,12 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 
 import {
 	getCurrentSprintSummaryByTeam,
+	getCurrentSprintOverviewByTeam,
 } from '../services/sprint';
 
 const modules = [
 	{ getCurrentSprintSummaryByTeam },
+	{ getCurrentSprintOverviewByTeam },
 ];
 
 export default {
@@ -16,4 +18,4 @@ export default {
 			...makeRequestStore(module),
 		}), {}),
 	},
-}
+};

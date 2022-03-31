@@ -2,6 +2,7 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 
 import {
 	deleteCard,
+	deleteManyCards,
 	createCard,
 	updateCard,
 	updateCardsPositions,
@@ -11,6 +12,7 @@ import {
 
 const modules = [
 	{ deleteCard },
+	{ deleteManyCards },
 	{ createCard },
 	{ updateCard },
 	{ updateCardsPositions },

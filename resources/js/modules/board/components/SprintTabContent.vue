@@ -70,6 +70,32 @@
 					<span class="text--secondary mb-0">
 						{{ computedEstimatedAmout }}
 					</span>
+					<v-dialog
+						v-model="dialog"
+						width="100%"
+						height="100%"
+						scrollable
+						@click:outside="dialog = false"
+						@keydown="dialog = false"
+					>
+						<template v-slot:activator="{ on, attrs }">
+							<v-btn
+								text
+								class="ml-auto"
+								v-bind="attrs"
+								v-on="on"
+								@click.stop
+							>
+								Visão geral
+							</v-btn>
+						</template>
+						<v-card>
+							<sprint-backlog-overview
+								v-if="dialog"
+								:team-id="teamId"
+							/>
+						</v-card>
+					</v-dialog>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -120,6 +146,7 @@
 import UserStoriesBoard from './UserStoriesBoard.vue';
 import Board from './Board.vue';
 import EventsBoard from './EventsBoard.vue';
+import SprintBacklogOverview from './SprintBacklogOverview.vue';
 import {
 	getCardsByListsIds,
 } from '../services/cards';
@@ -142,6 +169,7 @@ export default {
 		UserStoriesBoard,
 		Board,
 		EventsBoard,
+		SprintBacklogOverview,
 	},
 
 	props: {
@@ -151,25 +179,17 @@ export default {
 		},
 	},
 
-	mounted() {
-		this.getCurrentSprintSummaryByTeam(this.teamId)
-			.then((data) => {
-				const { impedimentsAmount, estimatedAmount } = convertKeysToCamelCase(data);
-				this.impedimentsAmount = impedimentsAmount;
-				this.estimatedAmount = estimatedAmount;
-			});
-	},
-
 	data() {
 		return {
 			panels: [
-				2
+				2,
 			],
 			NOT_PLANNED,
 			IMPEDIMENTS,
 			SPRINT_DEVLOG,
 			impedimentsAmount: 0,
 			estimatedAmount: 0,
+			dialog: false,
 		};
 	},
 
@@ -181,11 +201,20 @@ export default {
 		...mapGetters('workspaces', ['currentWorkspace']),
 
 		computedEstimatedAmout() {
-			if(this.estimatedAmount === 1) {
+			if (this.estimatedAmount === 1) {
 				return `${this.estimatedAmount} pt`;
 			}
 			return `${this.estimatedAmount} pts`;
-		}
+		},
+	},
+
+	mounted() {
+		this.getCurrentSprintSummaryByTeam(this.teamId)
+			.then((data) => {
+				const { impedimentsAmount, estimatedAmount } = convertKeysToCamelCase(data);
+				this.impedimentsAmount = impedimentsAmount;
+				this.estimatedAmount = estimatedAmount;
+			});
 	},
 
 	methods: {
