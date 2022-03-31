@@ -143,6 +143,15 @@
 								add
 							</v-icon>
 						</v-btn>
+						<v-btn
+							icon
+							small
+							@click="confirmDeleteAllCards"
+						>
+							<v-icon>
+								delete_outline
+							</v-icon>
+						</v-btn>
 					</div>
 				</div>
 			</div>
@@ -237,6 +246,7 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import swal from 'sweetalert2';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import {
 	BACKLOG,
@@ -443,6 +453,28 @@ export default {
 
 		enableEditGoal() {
 			this.editGoal = true;
+		},
+
+		confirmDeleteAllCards() {
+			if (this.$attrs.list.length === 0) {
+				return;
+			}
+
+			swal.fire({
+				type: 'warning',
+				title: 'Tem certeza?',
+				text: 'Esta ação não poderá ser desfeita.',
+				confirmButtonText: 'Sim, Apagar',
+				showCancelButton: true,
+				cancelButtonText: 'Cancelar',
+			}).then((result) => {
+				if (result.value) {
+					this.$emit('deleteAllCards', {
+						ids: this.$attrs.list.map((card) => card.id),
+						boardListId: this.$attrs.id,
+					});
+				}
+			});
 		},
 
 		handleEditGoal() {
