@@ -23,7 +23,7 @@ class BoardListController extends Controller
 
 		$default_lists = array_merge(
 			$default_lists,
-			$this->getDefaultTaskLists($in->team_id)
+			(new BoardListService())->getDefaultTaskLists($in->team_id)
 		);
 
 		return BoardList::whereIn('key', $default_lists)

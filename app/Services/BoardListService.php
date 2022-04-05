@@ -20,7 +20,7 @@ class BoardListService
 			->values();
 	}
 
-	private function getDefaultTaskLists($team_id)
+	public function getDefaultTaskLists($team_id)
 	{
 		$default_lists = BoardListsKeys::DEFAULT_LISTS;
 
