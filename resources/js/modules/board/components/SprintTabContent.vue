@@ -38,12 +38,7 @@
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-notPlanned`"
-					:getLists="{
-						resolver: getDefaultLists,
-						params: {
-							teamId,
-						},
-					}"
+					:lists="defaultListsToTeam"
 					:getCards="{
 						resolver: getCardsByListsIds,
 						params: {
@@ -68,7 +63,7 @@
 					</v-icon>
 					<h3 class="mb-0 mr-2">Sprint Backlog</h3>
 					<span class="text--secondary mb-0">
-						{{ computedEstimatedAmout }}
+						{{ computedEstimatedAmount }}
 					</span>
 					<v-dialog
 						v-model="dialog"
@@ -119,12 +114,7 @@
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-dev`"
-					:getLists="{
-						resolver: getDevlogLists,
-						params: {
-							teamId,
-						}
-					}"
+					:lists="defaultDevlogListsToTeam"
 					:getCards="{
 						resolver: getCardsByListsIds,
 						params: {
@@ -143,6 +133,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters, mapState } from 'vuex';
 import UserStoriesBoard from './UserStoriesBoard.vue';
 import Board from './Board.vue';
 import EventsBoard from './EventsBoard.vue';
@@ -152,17 +143,13 @@ import {
 } from '../services/cards';
 
 import {
-	getDefaultLists,
-	getDevlogLists,
-} from '../services/sprint'
-import {  mapActions, mapGetters, mapState } from 'vuex';
-import {
 	NOT_PLANNED,
 	IMPEDIMENTS,
 	SPRINT_DEVLOG,
 } from '../constants/BoardKeys';
 
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
+import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
 export default {
 	components: {
@@ -190,6 +177,8 @@ export default {
 			impedimentsAmount: 0,
 			estimatedAmount: 0,
 			dialog: false,
+			defaultListsToTeam: [],
+			defaultDevlogListsToTeam: [],
 		};
 	},
 
@@ -200,7 +189,7 @@ export default {
 
 		...mapGetters('workspaces', ['currentWorkspace']),
 
-		computedEstimatedAmout() {
+		computedEstimatedAmount() {
 			if (this.estimatedAmount === 1) {
 				return `${this.estimatedAmount} pt`;
 			}
@@ -215,20 +204,28 @@ export default {
 				this.impedimentsAmount = impedimentsAmount;
 				this.estimatedAmount = estimatedAmount;
 			});
+
+		this.getDefaultLists(convertKeysToSnakeCase({ teamId: this.teamId })).then((data) => {
+			this.defaultListsToTeam = convertKeysToCamelCase(data);
+		});
+
+		this.getDevlogLists(convertKeysToSnakeCase({ teamId: this.teamId })).then((data) => {
+			this.defaultDevlogListsToTeam = convertKeysToCamelCase(data);
+		});
 	},
 
 	methods: {
-		getDefaultLists,
-		getDevlogLists,
 		getCardsByListsIds,
 
 		...mapActions('sprint', [
 			'getCurrentSprintSummaryByTeam',
+			'getDefaultLists',
+			'getDevlogLists',
 		]),
 
 		getBoardId(key) {
-			return this.boards.filter(item => item.key === key)[0].id;
-		}
+			return this.boards.filter((item) => item.key === key)[0].id;
+		},
 	},
-}
+};
 </script>
