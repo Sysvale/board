@@ -54,6 +54,29 @@ class BoardListController extends Controller
 			->get();
 	}
 
+	public function getCompanyPlanningLists()
+	{
+		$planningLists = [
+			BoardListsKeys::NOT_PRIORITIZED,
+			BoardListsKeys::BACKLOG,
+		];
+
+		$workspaces = Workspace::get();
+
+		$planningLists = array_merge(
+			$planningLists,
+			$workspaces->map(
+				function ($item) {
+					return 'backlog-' . $item->id;
+				}
+			)->toArray()
+		);
+
+		return BoardList::whereIn('key', $planningLists)
+			->orderBy('position')
+			->get();
+	}
+
 	public function getIssuesLists()
 	{
 		$issuesLists = BoardListsKeys::DEFAULT_ISSUES_LISTS;
