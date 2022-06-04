@@ -35,8 +35,8 @@ class BoardListController extends Controller
 	public function getPlanningLists(Workspace $workspace)
 	{
 		$planningLists = [
-			BoardListsKeys::NOT_PRIORITIZED,
-			BoardListsKeys::BACKLOG,
+			BoardListsKeys::NOT_PRIORITIZED.'-'.$workspace->id,
+			BoardListsKeys::BACKLOG.'-'.$workspace->id,
 		];
 
 		$teams = Team::where('workspace_id', $workspace->id)->get();
