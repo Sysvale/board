@@ -52,39 +52,52 @@ class CreateBacklogListByWorkspaceCommand extends Command
 		$not_prioritized_board_list = BoardList::where('key', BoardListsKeys::BACKLOG)->first();
 
 		$workspaces->each(function ($workspace) use ($backlog_board_list, $not_prioritized_board_list) {
-			$value = BoardList::create([
-				'name' => 'Backlog - ' . $workspace->name,
-				'key' => BoardListsKeys::BACKLOG . '-' . $workspace->id,
-				'accepts_card_type' => 'user-story',
-				'position' => 1,
-			]);
+			$new_backlog_board_list = $this->createBoardList(BoardListsKeys::BACKLOG, $workspace, 1);
+			$this->setupCardsInToNewBoardList($workspace, $backlog_board_list, $new_backlog_board_list);
 
-			$cards = Card::where('board_list_id', $backlog_board_list->id)
-				->where('workspace_id', $workspace->id)
-				->get();
+			$new_not_prioritized_board_list = $this->createBoardList(BoardListsKeys::NOT_PRIORITIZED, $workspace, 0);
+			$this->setupCardsInToNewBoardList($workspace, $not_prioritized_board_list, $new_not_prioritized_board_list);
+		});
 
-			$cards->each(function($card) use ($value){
-				$card->board_list_id = $value->id;
-				$card->save();
-			});
+		$this->info('Finalizado!');
+	}
 
-			$value = BoardList::create([
-				'name' => 'Não Priorizados - ' . $workspace->name,
-				'key' => BoardListsKeys::NOT_PRIORITIZED . '-' . $workspace->id,
-				'accepts_card_type' => 'user-story',
-				'position' => 0,
-			]);
+	private function createBoardList($key, $workspace, $position)
+	{
+		return BoardList::create([
+			'name' => $this->getBoardListLabel($key, $workspace),
+			'key' => $this->getBoardListKey($key, $workspace),
+			'accepts_card_type' => 'user-story',
+			'position' => $position,
+		]);
+	}
 
+	private function getBoardListLabel($key, $workspace)
+	{
+		$label = 'Backlog';
+		if($key === BoardListsKeys::NOT_PRIORITIZED) {
+			$label = 'Não priorizados';
+		}
 
-			$cards = Card::where('board_list_id', $not_prioritized_board_list->id)
-				->where('workspace_id', $workspace->id)
-				->get();
-			
-			$cards->each(function($card) use ($value){
-				$card->board_list_id = $value->id;
-				$card->save();
-			});
+		$label = $label . ' - ' . $workspace->name;
 
+		return $label;
+	}
+
+	private function getBoardListKey($key, $workspace)
+	{
+		return $key.'-'.$workspace->id;
+	}
+
+	private function setupCardsInToNewBoardList($workspace, $old_board_list, $new_board_list)
+	{
+		$cards = Card::where('board_list_id', $old_board_list->id)
+			->where('workspace_id', $workspace->id)
+			->get();
+
+		$cards->each(function($card) use ($new_board_list){
+			$card->board_list_id = $new_board_list->id;
+			$card->save();
 		});
 	}
 }
