@@ -59,18 +59,7 @@ class CreateBacklogListByWorkspaceCommand extends Command
 				'position' => 1,
 			]);
 
-			$value = BoardList::create([
-				'name' => 'Não Priorizados - ' . $workspace->name,
-				'key' => BoardListsKeys::NOT_PRIORITIZED . '-' . $workspace->id,
-				'accepts_card_type' => 'user-story',
-				'position' => 0,
-			]);
-
 			$cards = Card::where('board_list_id', $backlog_board_list->id)
-				->where('workspace_id', $workspace->id)
-				->get();
-
-			$cards = Card::where('board_list_id', $not_prioritized_board_list->id)
 				->where('workspace_id', $workspace->id)
 				->get();
 
@@ -78,6 +67,24 @@ class CreateBacklogListByWorkspaceCommand extends Command
 				$card->board_list_id = $value->id;
 				$card->save();
 			});
+
+			$value = BoardList::create([
+				'name' => 'Não Priorizados - ' . $workspace->name,
+				'key' => BoardListsKeys::NOT_PRIORITIZED . '-' . $workspace->id,
+				'accepts_card_type' => 'user-story',
+				'position' => 0,
+			]);
+
+
+			$cards = Card::where('board_list_id', $not_prioritized_board_list->id)
+				->where('workspace_id', $workspace->id)
+				->get();
+			
+			$cards->each(function($card) use ($value){
+				$card->board_list_id = $value->id;
+				$card->save();
+			});
+
 		});
 	}
 }
