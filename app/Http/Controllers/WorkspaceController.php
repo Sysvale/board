@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use App\Http\Resources\WorkspaceResource;
 use App\Models\Goal;
+use App\Models\BoardList;
+use App\Constants\BoardListsKeys;
 
 class WorkspaceController extends Controller
 {
@@ -38,6 +40,9 @@ class WorkspaceController extends Controller
 			'workspace_id' => $workspace->id,
 		]);
 
+		$this->createBoardList(BoardListsKeys::NOT_PRIORITIZED, $workspace, 0);
+		$this->createBoardList(BoardListsKeys::BACKLOG, $workspace, 1);
+
 		return new WorkspaceResource($workspace);
 	}
 
@@ -55,15 +60,64 @@ class WorkspaceController extends Controller
 		$workspace->syncTeams($data['team_ids'] ?? []);
 		$workspace->syncLabels($data['label_ids'] ?? []);
 
+		$this->updateBoardList(BoardListsKeys::BACKLOG, $workspace);
+		$this->updateBoardList(BoardListsKeys::NOT_PRIORITIZED, $workspace);
+
 		return new WorkspaceResource($workspace);
 	}
 
 	public function destroy(Workspace $workspace)
 	{
+		$this->removeBoardList(BoardListsKeys::BACKLOG, $workspace);
+		$this->removeBoardList(BoardListsKeys::NOT_PRIORITIZED, $workspace);
+
 		$workspace->teams()->unset('workspace_id');
 		$workspace->labels()->unset('workspace_id');
 		$workspace->delete();
 
 		return Response::json('Deletado com sucesso.', 200);
+	}
+
+	private function createBoardList($key, $workspace, $position)
+	{
+		BoardList::create([
+			'name' => $this->getBoardListLabel($key, $workspace),
+			'key' => $this->getBoardListKey($key, $workspace),
+			'accepts_card_type' => 'user-story',
+			'position' => $position,
+		]);
+	}
+
+	private function updateBoardList($key, $workspace)
+	{
+		$board_list = BoardList::where('key', $this->getBoardListKey($key, $workspace))->first();
+
+		$board_list->name = $this->getBoardListLabel($key, $workspace);
+
+		$board_list->save();
+	}
+
+	private function removeBoardList($key, $workspace)
+	{
+		$board_list = BoardList::where('key', $this->getBoardListKey($key, $workspace))->first();
+
+		$board_list->delete();
+	}
+
+	private function getBoardListLabel($key, $workspace)
+	{
+		$label = 'Backlog';
+		if($key === BoardListsKeys::NOT_PRIORITIZED) {
+			$label = 'Não priorizados';
+		}
+
+		$label = $label . ' - ' . $workspace->name;
+
+		return $label;
+	}
+
+	private function getBoardListKey($key, $workspace)
+	{
+		return $key.'-'.$workspace->id;
 	}
 }
