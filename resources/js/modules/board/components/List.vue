@@ -336,7 +336,8 @@ export default {
 				SYS_IN,
 				GRASSHOPPER,
 			];
-			return goalableLists.indexOf(this.keyValue) > -1;
+			const [keyToEvaluate] = this.keyValue.split('-');
+			return goalableLists.indexOf(keyToEvaluate) > -1;
 		},
 
 		cardsQuantity() {

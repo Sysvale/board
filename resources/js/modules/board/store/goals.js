@@ -30,9 +30,9 @@ export default {
 	getters: {
 		getGoalByKey(state, _, rootState, rootGetters) {
 			return (key) => {
-				if(key === BACKLOG) {
+				if(key.split('-').includes(BACKLOG)) {
 					return state.items.filter(({ workspaceId }) => {
-						return workspaceId === rootGetters['workspaces/currentWorkspace'].id;
+						return workspaceId === rootGetters['workspaces/currentWorkspace']?.id || (key.split('-')[1] || null) === workspaceId;
 					})[0];
 				}
 
