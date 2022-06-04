@@ -30,8 +30,8 @@ class WorkspaceController extends Controller
 		]);
 
 		$workspace = Workspace::create($data);
-		$workspace->associateMany(Team::class, $data['team_ids']);
-		$workspace->associateMany(Label::class, $data['label_ids']);
+		$workspace->associateMany(Team::class, $data['team_ids'] ?? []);
+		$workspace->associateMany(Label::class, $data['label_ids'] ?? []);
 
 		Goal::create([
 			'title' => 'Defina um objetivo',
