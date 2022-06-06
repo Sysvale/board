@@ -46,7 +46,7 @@ Route::group(
         );
         Route::get('/labels', 'LabelController@index');
         Route::resource('members', 'MemberController');
-        Route::get('/teams', 'TeamController@index');
+        Route::resource('/teams', 'TeamController');
         Route::get('/boards', 'BoardController@index');
 
         Route::resource('events', 'EventController')->only(['store', 'update', 'destroy']);
