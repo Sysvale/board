@@ -67,7 +67,8 @@ class CreateBacklogListByWorkspaceCommand extends Command
 		return BoardList::create([
 			'name' => $this->getBoardListLabel($key, $workspace),
 			'key' => $this->getBoardListKey($key, $workspace),
-			'accepts_card_type' => 'user-story',
+			'accepts_card_type' => $this->getAcceptsCardType($key),
+			'user_story_holder' => true,
 			'position' => $position,
 		]);
 	}
@@ -87,6 +88,16 @@ class CreateBacklogListByWorkspaceCommand extends Command
 	private function getBoardListKey($key, $workspace)
 	{
 		return $key.'-'.$workspace->id;
+	}
+
+	private function getAcceptsCardType($key)
+	{
+		$accepts_card_type = 'user-story';
+		if($key === BoardListsKeys::NOT_PRIORITIZED) {
+			$accepts_card_type = 'not-prioritized';
+		}
+
+		return $accepts_card_type;
 	}
 
 	private function setupCardsInToNewBoardList($workspace, $old_board_list, $new_board_list)
