@@ -49,7 +49,7 @@ class CreateBacklogListByWorkspaceCommand extends Command
 
 		$workspaces = Workspace::get();
 		$backlog_board_list = BoardList::where('key', BoardListsKeys::BACKLOG)->first();
-		$not_prioritized_board_list = BoardList::where('key', BoardListsKeys::BACKLOG)->first();
+		$not_prioritized_board_list = BoardList::where('key', BoardListsKeys::NOT_PRIORITIZED)->first();
 
 		$workspaces->each(function ($workspace) use ($backlog_board_list, $not_prioritized_board_list) {
 			$new_backlog_board_list = $this->createBoardList(BoardListsKeys::BACKLOG, $workspace, 1);
