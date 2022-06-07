@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class BoardList extends Model
 {
@@ -20,6 +21,15 @@ class BoardList extends Model
 
 	protected $appends = ['id'];
 	protected $hidden = ['_id'];
+
+	protected static function boot()
+	{
+		parent::boot();
+
+		static::addGlobalScope('order', function (Builder $builder) {
+			$builder->orderBy('position');
+		});
+	}
 
 	public function cards()
 	{
