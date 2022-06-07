@@ -59,6 +59,8 @@ class CreateBacklogListByWorkspaceCommand extends Command
 			$this->setupCardsInToNewBoardList($workspace, $not_prioritized_board_list, $new_not_prioritized_board_list);
 		});
 
+		$this->setupBacklogAndNotPrioritizedPositions();
+
 		$this->info('Finalizado!');
 	}
 
@@ -110,5 +112,16 @@ class CreateBacklogListByWorkspaceCommand extends Command
 			$card->board_list_id = $new_board_list->id;
 			$card->save();
 		});
+	}
+
+	private function setupBacklogAndNotPrioritizedPositions() {
+		$backlog_board_list = BoardList::where('key', BoardListsKeys::BACKLOG)->first();
+		$not_prioritized_board_list = BoardList::where('key', BoardListsKeys::NOT_PRIORITIZED)->first();
+
+		$backlog_board_list->position = 0;
+		$backlog_board_list->save();
+
+		$not_prioritized_board_list->position = -1;
+		$not_prioritized_board_list->save();
 	}
 }
