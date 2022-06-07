@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Workspace;
+use App\Models\BoardList;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
@@ -30,4 +31,10 @@ class Team extends Model
 	{
 		return $this->belongsTo(Workspace::class);
 	}
+
+	public function board_lists()
+	{
+		return $this->hasMany(BoardList::class);
+	}
+
 }

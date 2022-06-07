@@ -15,6 +15,7 @@ class BoardList extends Model
 		'key',
 		'user_story_holder',
 		'accepts_card_type',
+		'team_id',
 	];
 
 	protected $appends = ['id'];
@@ -23,5 +24,10 @@ class BoardList extends Model
 	public function cards()
 	{
 		return $this->hasMany('App\Models\Card');
+	}
+
+	public function team()
+	{
+		return $this->belongsTo('App\Models\Team');
 	}
 }
