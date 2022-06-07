@@ -20,6 +20,7 @@ class TeamResource extends JsonResource
 			'extended_task_flow' => $this->extended_task_flow,
 			'key' => $this->key,
 			'workspace_id' => $this->workspace_id,
+			'board_lists' => $this->board_lists,
 		];
 	}
 }
