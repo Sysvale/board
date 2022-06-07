@@ -1,6 +1,6 @@
 <template>
 	<v-card
-		v-if="colapsed"
+		v-if="internalCollapsed"
 		class="px-2 py-2 mr-1 ml-1"
 		flat
 		outlined
@@ -11,7 +11,7 @@
 			<v-btn
 				icon
 				small
-				@click="colapsed = false"
+				@click="internalCollapsed = false"
 			>
 				<v-icon>
 					keyboard_arrow_down
@@ -71,7 +71,7 @@
 				<v-btn
 					icon
 					small
-					@click="colapsed = true"
+					@click="internalCollapsed = true"
 				>
 					<v-icon>
 						keyboard_arrow_right
@@ -308,13 +308,17 @@ export default {
 			type: String,
 			default: null,
 		},
+		collapsed: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	data() {
 		return {
 			newCardTitle: null,
 			createMode: false,
-			colapsed: false,
+			internalCollapsed: this.collapsed,
 			editGoal: false,
 			drag: false,
 			selectedProcess: null,

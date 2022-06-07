@@ -72,9 +72,17 @@ class BoardListController extends Controller
 			)->toArray()
 		);
 
-		return BoardList::whereIn('key', $planningLists)
+		$board_lists = BoardList::whereIn('key', $planningLists)
 			->orderBy('position')
 			->get();
+
+		return $board_lists->map(function($item) {
+			if($item->key !== BoardListsKeys::NOT_PRIORITIZED
+				&& $item->key !== BoardListsKeys::BACKLOG) {
+				$item->collapsed = true;
+			}
+			return $item;
+		});
 	}
 
 	public function getIssuesLists()
