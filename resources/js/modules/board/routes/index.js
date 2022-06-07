@@ -5,6 +5,7 @@ import Home from '../views/Home.vue';
 import Planning from '../views/Planning.vue';
 import Sprint from '../views/Sprint.vue';
 import WorkspaceSelection from '../views/WorkspaceSelection.vue';
+import CompanyPlanning from '../views/CompanyPlanning.vue';
 
 export default [
 	{
@@ -38,6 +39,14 @@ export default [
 		component: WorkspaceSelection,
 		meta: {
 			title: 'Selecione seu Workspace',
+		},
+	},
+	{
+		path: '/workspace/company',
+		name: 'workspace.company',
+		component: CompanyPlanning,
+		meta: {
+			title: 'Backlogs',
 		},
 	},
 	...settingsRoutes,

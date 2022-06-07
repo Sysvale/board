@@ -8,6 +8,7 @@
 				v-for="list in lists"
 				:id="list.id"
 				:key="list.id"
+				:collapsed="list.collapsed"
 				:accepts-card-type="list.acceptsCardType"
 				:key-value="list.key"
 				:name="list.name"
