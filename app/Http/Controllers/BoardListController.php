@@ -74,6 +74,7 @@ class BoardListController extends Controller
 
 		$board_lists = BoardList::whereIn('key', $planningLists)
 			->orderBy('position')
+			->orderBy('name')
 			->get();
 
 		return $board_lists->map(function($item) {
