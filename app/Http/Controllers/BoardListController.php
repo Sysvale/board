@@ -81,6 +81,7 @@ class BoardListController extends Controller
 			if($item->key !== BoardListsKeys::NOT_PRIORITIZED
 				&& $item->key !== BoardListsKeys::BACKLOG) {
 				$item->collapsed = true;
+				$item->name = explode(" - ", $item->name)[1] ?? $item->name;
 			}
 			return $item;
 		});
