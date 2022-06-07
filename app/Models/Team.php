@@ -6,6 +6,7 @@ use App\Models\Workspace;
 use App\Models\BoardList;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use App\Services\BoardListService;
 
 class Team extends Model
 {
@@ -37,4 +38,32 @@ class Team extends Model
 		return $this->hasMany(BoardList::class);
 	}
 
+	public function syncBoardLists($from_request)
+	{
+
+		$current = $this->board_lists;
+
+		$add = array_filter($from_request, function ($item) {
+			return empty($item['id']);
+		});
+
+		$update = array_filter($from_request, function ($item) {
+			return !empty($item['id']);
+		});
+
+		$remove = array_diff(
+			$current->pluck('id')->toArray(),
+			collect($from_request)->pluck('id')->toArray()
+		);
+
+		
+		if (empty($add) && empty($remove) && empty($update)) {
+			return;
+		}
+
+		$board_list_service = new BoardListService();
+		$board_list_service->createMany($add, $this->id);
+		$board_list_service->deleteMany($remove);
+		$board_list_service->updateMany($update);
+	}
 }
