@@ -23,7 +23,7 @@
 
 					<v-dialog
 						v-model="dialog"
-						max-width="500px"
+						max-width="750px"
 					>
 						<template v-slot:activator="{ on, attrs }">
 							<v-btn
@@ -50,24 +50,13 @@
 											label="Nome"
 										/>
 									</v-row>
-									<pre :key="JSON.stringify(selectedItem.boardLists) + 'aaa'">
-										{{ selectedItem.boardLists }}
-									</pre>
 									<v-row>
 										<div v-if="!selectedItem.boardLists || selectedItem.boardLists.length === 0">
 											Nenhuma lista adicionada
 										</div>
 										<div v-else>
-											<v-alert
-												dense
-												text
-												type="warning"
-											>
-												Ao deletar uma lista, todos os cards que estão nela, serão excluídos.
-											</v-alert>
 											<draggable
-												v-model="selectedItem.boardList"
-												:key="JSON.stringify(selectedItem.boardLists)"
+												v-model="selectedItem.boardLists"
 												class="d-flex"
 											>
 												<div
@@ -76,9 +65,8 @@
 													class="mr-1"
 												>
 													<v-chip
-														small
-														class="mr-2"
 														close
+														label
 														@click:close="handleRemoveBoardList(i)"
 													>
 														{{ item.name }}
@@ -87,12 +75,16 @@
 											</draggable>
 										</div>
 									</v-row>
-									<v-row>
+									<v-row class="mt-3">
 										<v-text-field
 											v-model="selectedItem.newBoardListItem"
 											label="Lista"
-										></v-text-field>
-										<v-btn @click="addBoardList">Adicionar</v-btn>
+										/>
+										<v-btn
+											@click="addBoardList"
+										>
+											Adicionar
+										</v-btn>
 									</v-row>
 								</v-container>
 							</v-card-text>
@@ -119,14 +111,31 @@
 						</v-card>
 					</v-dialog>
 
-					<v-dialog v-model="dialogDelete" max-width="500px">
+					<v-dialog
+						v-model="dialogDelete"
+						max-width="500px"
+					>
 						<v-card>
-							<v-card-title class="headline">Deseja mesmo deletar {{ selectedItem.name }}?</v-card-title>
+							<v-card-title class="headline">
+								Deseja mesmo deletar {{ selectedItem.name }}?
+							</v-card-title>
 							<v-card-actions>
-								<v-spacer></v-spacer>
-								<v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
-								<v-btn color="blue darken-1" text @click="deleteItemConfirm">Sim</v-btn>
-								<v-spacer></v-spacer>
+								<v-spacer />
+								<v-btn
+									color="blue darken-1"
+									text
+									@click="closeDelete"
+								>
+									Cancelar
+								</v-btn>
+								<v-btn
+									color="blue darken-1"
+									text
+									@click="deleteItemConfirm"
+								>
+									Sim
+								</v-btn>
+								<v-spacer />
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
@@ -184,12 +193,6 @@ export default {
 					sortable: true,
 					value: 'name',
 				},
-				{
-					text: 'Workspace',
-					align: 'start',
-					sortable: true,
-					value: 'workspace',
-				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
 			editMode: false,
@@ -203,11 +206,11 @@ export default {
 	},
 
 	computed: {
-		formTitle () {
+		formTitle() {
 			return !this.editMode ? 'Novo time' : 'Editar time';
 		},
 
-		formIsValid () {
+		formIsValid() {
 			return !!this.selectedItem.name && this.selectedItem.name.trim();
 		},
 
@@ -219,50 +222,23 @@ export default {
 			isRemoving: ({ deleteTeam }) => deleteTeam.isFetching,
 		}),
 
-		...mapState('workspaces', {
-			workspaces: (state) => state.items,
-		}),
-
 		loading() {
 			return this.isGetting || this.isCreating || this.isUpdating || this.isRemoving;
-		},
-
-		computedTeams() {
-			if (this.editMode) {
-				return this.teams.filter(({ workspaceId }) => {
-					return !workspaceId || workspaceId === this.selectedItem.id;
-				});
-			}
-
-			return this.teams.filter(({ workspaceId }) => !workspaceId);
-		},
-
-		computedLabels() {
-			if (this.editMode) {
-				return this.labels.filter(({ workspaceId }) => {
-					return !workspaceId || workspaceId === this.selectedItem.id;
-				});
-			}
-
-			return this.labels.filter(({ workspaceId }) => !workspaceId);
 		},
 	},
 
 	watch: {
-		dialog (val) {
+		dialog(val) {
 			val || this.close();
 		},
 
-		dialogDelete (val) {
+		dialogDelete(val) {
 			val || this.closeDelete();
 		},
 	},
 
 	methods: {
 		isEmpty: (arg) => _.isEmpty(arg),
-		...mapActions('workspaces', [
-			'getWorkspaces',
-		]),
 
 		...mapActions('teams', [
 			'getTeams',
@@ -275,35 +251,26 @@ export default {
 			setTeams: 'setItems',
 		}),
 
-		...mapMutations('labels', {
-			setLabels: 'setItems',
-		}),
-
-		...mapMutations('workspaces', {
-			setWorkspaces: 'setItems',
-		}),
-
-		editItem (item) {
+		editItem(item) {
 			this.editMode = true;
 			this.selectedItem = Object.assign({}, item);
 			this.dialog = true;
 		},
 
-		deleteItem (item) {
+		deleteItem(item) {
 			this.selectedItem = Object.assign({}, item);
 			this.dialogDelete = true;
 		},
 
-		deleteItemConfirm () {
-			const deletedId = _.clone(this.selectedItem.id);
-			this.deleteWorkspace(this.selectedItem.id)
+		deleteItemConfirm() {
+			this.deleteTeam(this.selectedItem.id)
 				.then(() => {
 					this.reloadData();
-				})
+				});
 			this.closeDelete();
 		},
 
-		close () {
+		close() {
 			this.dialog = false;
 			this.$nextTick(() => {
 				this.selectedItem = Object.assign({}, this.defaultItem);
@@ -319,15 +286,21 @@ export default {
 			});
 		},
 
-		save () {
+		save() {
 			if (this.editMode) {
-				this.updateWorkspace(convertKeysToSnakeCase(this.selectedItem))
-					.then((item) => {
+				this.selectedItem = {
+					...this.selectedItem,
+					boardLists: this.selectedItem
+						.boardLists.map((i, position) => ({ ...i, position })),
+				};
+
+				this.updateTeam(convertKeysToSnakeCase(this.selectedItem))
+					.then(() => {
 						this.reloadData();
 					});
 			} else {
-				this.createWorkspace(convertKeysToSnakeCase(this.selectedItem))
-					.then((item) => {
+				this.createTeam(convertKeysToSnakeCase(this.selectedItem))
+					.then(() => {
 						this.reloadData();
 					});
 			}
@@ -335,29 +308,14 @@ export default {
 		},
 
 		reloadData() {
-			this.fetchWorkspaces();
 			this.fetchTeams();
-			this.fetchLabels();
-		},
-
-		fetchWorkspaces() {
-			this.getWorkspaces().then((items) => {
-				this.setWorkspaces(items);
-			})
-			.finally(() => {
-				this.selectedItem = {};
-			});
 		},
 
 		fetchTeams() {
 			this.getTeams().then((items) => {
 				this.setTeams(items);
-			});
-		},
-
-		fetchLabels() {
-			this.getLabels().then((items) => {
-				this.setLabels(items);
+			}).finally(() => {
+				this.selectedItem = {};
 			});
 		},
 
@@ -383,5 +341,5 @@ export default {
 			};
 		},
 	},
-}
+};
 </script>
