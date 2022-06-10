@@ -28,8 +28,8 @@ export default {
 	},
 	getters: {
 		itemsByWorkspace(state, _, __, rootGetters) {
-			return state.items.filter(({ workspaceIds }) => {
-				return workspaceIds.indexOf(rootGetters['workspaces/currentWorkspace'].id) > -1;
+			return state.items.filter(({ workspaceId }) => {
+				return workspaceId.indexOf(rootGetters['workspaces/currentWorkspace'].id) > -1;
 			});
 		},
 	},
