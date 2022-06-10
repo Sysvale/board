@@ -2,7 +2,7 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
-	getTeams
+	getTeams,
 } from '../services/teams';
 
 const modules = [
@@ -24,7 +24,7 @@ export default {
 		itemsByWorkspace(state, _, __, rootGetters) {
 			return state.items.filter(({ workspaceId }) => {
 				return workspaceId === rootGetters['workspaces/currentWorkspace'].id;
-			})
+			});
 		},
 	},
 	mutations: {
@@ -32,4 +32,4 @@ export default {
 			state.items = convertKeysToCamelCase(payload);
 		},
 	},
-}
+};
