@@ -29,20 +29,17 @@ class CardController extends Controller
 
 	public function getCardsByListsIds(Request $in)
 	{
-		$card_query = Card::whereIn('board_list_id', $in->lists_ids);
-
-		if ($in->user_story_id) {
-			$card_query = $card_query->where('user_story_id', $in->user_story_id);
-		}
-
-		$cards = $card_query->get();
 
 		$board_lists = BoardList::get()->keyBy('id');
 
 		$payload = array();
 		collect($in->lists_ids)->each(
 			function ($item) use (&$payload, &$cards, $board_lists, $in) {
-				$sub_query = $cards->where('board_list_id', $item);
+				$sub_query = Card::where('board_list_id', $item);
+
+				if ($in->user_story_id) {
+					$sub_query = $sub_query->where('user_story_id', $in->user_story_id);
+				}
 
 				// se a lista n for sprint devlog n deve fazer o filtro por time nem por board
 				if (!preg_match("/([a-zA-Z0-9()]*)(Dev)/", $board_lists[$item]->key)) {
@@ -63,7 +60,7 @@ class CardController extends Controller
 					$sub_query = $sub_query->where('workspace_id', $in->workspace_id);
 				}
 
-				$card_resource = CardResource::collection($sub_query->sortBy('position')->values());
+				$card_resource = CardResource::collection($sub_query->orderBy('position')->get());
 				$payload[$item] = $card_resource->resolve();
 			}
 		);
