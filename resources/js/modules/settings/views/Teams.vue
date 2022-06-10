@@ -23,7 +23,7 @@
 
 					<v-dialog
 						v-model="dialog"
-						max-width="750px"
+						min-width="750px"
 					>
 						<template v-slot:activator="{ on, attrs }">
 							<v-btn
@@ -44,6 +44,7 @@
 
 							<v-card-text>
 								<v-container>
+									<pre v-if="false"> {{ selectedItem }} </pre>
 									<v-row>
 										<v-text-field
 											v-model="selectedItem.name"
@@ -61,30 +62,63 @@
 											>
 												<div
 													v-for="(item, i) in selectedItem.boardLists"
-													:key="`$${item.name}-{i}`"
+													:key="`${item.name}-${i}`"
 													class="mr-1"
 												>
 													<v-chip
-														close
+														:close="!item.editMode"
 														label
+														:style="{
+															minWidth: item.editMode ? '150px' : null,
+															minHeight: item.editMode ? '50px' : null,
+														}"
+														@click="setBoardListEditMode(i, true)"
 														@click:close="handleRemoveBoardList(i)"
 													>
-														{{ item.name }}
+														<v-text-field
+															v-if="item.editMode"
+															v-model="item.name"
+															flat
+															outlined
+															autofocus
+															dense
+															hide-details
+															single-line
+															@blur="setBoardListEditMode(i, false)"
+														/>
+														<span v-else>
+															{{ item.name }}
+														</span>
 													</v-chip>
 												</div>
 											</draggable>
+											<div class="mt-5">
+												<v-chip
+													label
+													:style="{
+														minWidth: boardListAddMode ? '150px' : null,
+														minHeight: boardListAddMode ? '50px' : null,
+													}"
+													@click="boardListAddMode = true"
+												>
+													<v-text-field
+														v-if="boardListAddMode"
+														v-model="selectedItem.newBoardListItem"
+														flat
+														outlined
+														autofocus
+														dense
+														hide-details
+														single-line
+														@blur="addBoardList"
+														@keyup.enter="addBoardList"
+													/>
+													<span v-else>
+														<v-icon>add</v-icon>
+													</span>
+												</v-chip>
+											</div>
 										</div>
-									</v-row>
-									<v-row class="mt-3">
-										<v-text-field
-											v-model="selectedItem.newBoardListItem"
-											label="Lista"
-										/>
-										<v-btn
-											@click="addBoardList"
-										>
-											Adicionar
-										</v-btn>
 									</v-row>
 								</v-container>
 							</v-card-text>
@@ -171,6 +205,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert2';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 
@@ -202,6 +237,7 @@ export default {
 			defaultItem: {
 				settings: {},
 			},
+			boardListAddMode: false,
 		};
 	},
 
@@ -320,24 +356,56 @@ export default {
 		},
 
 		addBoardList() {
-			this.selectedItem.boardLists = [
-				...(this.selectedItem.boardLists || []),
-				{
-					name: this.selectedItem.newBoardListItem,
-					position: (this.selectedItem.boardLists?.length || 0),
-				},
-			];
+			if (this.selectedItem && this.selectedItem.newBoardListItem?.trim() !== '') {
+				this.selectedItem.boardLists = [
+					...(this.selectedItem.boardLists || []),
+					{
+						name: this.selectedItem.newBoardListItem,
+						position: (this.selectedItem.boardLists?.length || 0),
+					},
+				];
+			}
 
 			this.selectedItem.newBoardListItem = '';
+			this.boardListAddMode = false;
 		},
 
 		handleRemoveBoardList(i) {
+			swal.fire({
+				type: 'warning',
+				title: 'Tem certeza?',
+				text: 'Ao apagar a lista, você perderá todos os cards que estão nela. Essa ação não poderá ser desfeita.',
+				confirmButtonText: 'Sim, Apagar',
+				showCancelButton: true,
+				confirmButtonColor: '#E83047',
+				cancelButtonColor: '#ABB8C4',
+				cancelButtonText: 'Cancelar',
+			}).then((result) => {
+				if (result.value) {
+					this.selectedItem = {
+						...this.selectedItem,
+						boardLists: this.selectedItem
+							.boardLists
+							.filter((_, index) => index !== i)
+							.map((item, index) => ({ ...item, position: index })),
+					};
+				}
+			});
+		},
+
+		setBoardListEditMode(i, value) {
 			this.selectedItem = {
 				...this.selectedItem,
 				boardLists: this.selectedItem
-					.boardLists
-					.filter((_, index) => index !== i)
-					.map((item, index) => ({ ...item, position: index })),
+					.boardLists.map((item, index) => {
+						if (index === i) {
+							item = {
+								...item,
+								editMode: value,
+							};
+						}
+						return item;
+					}),
 			};
 		},
 	},
