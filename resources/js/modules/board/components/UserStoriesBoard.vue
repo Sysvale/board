@@ -88,13 +88,12 @@
 							</strong>
 						</div>
 						<lottie-player
-								:src="getLottieFile(story)"
-								background="white"
-								speed="1"
-								style="width: 250px; height: 250px;margin: 0 auto; background: white"
-								autoplay
-							>
-						</lottie-player>
+							:src="getLottieFile(story)"
+							background="white"
+							speed="1"
+							style="width: 250px; height: 250px;margin: 0 auto; background: white"
+							autoplay
+						/>
 						<div>
 							{{ story.title }}
 						</div>
@@ -166,12 +165,7 @@
 				>
 					<board
 						:namespace="story.id"
-						:get-lists="{
-							resolver: getDefaultLists,
-							params: {
-								teamId,
-							}
-						}"
+						:lists="defaultListsToTeam"
 						:get-cards="{
 							resolver: getCardsByListsIds,
 							params: {
@@ -200,10 +194,6 @@ import Board from './Board.vue';
 import ArtifactItem from './ArtifactItem.vue';
 
 import {
-	getDefaultLists,
-} from '../services/sprint';
-
-import {
 	getUserStoriesByTeam,
 } from '../services/userStories';
 
@@ -230,6 +220,7 @@ export default {
 	data() {
 		return {
 			pipelineHovered: false,
+			defaultListsToTeam: [],
 		};
 	},
 
@@ -303,13 +294,18 @@ export default {
 		this.getUserStoriesByTeam(this.teamId).then((data) => {
 			this.setItems(data);
 		});
+		this.getDefaultLists(convertKeysToSnakeCase({ teamId: this.teamId })).then((data) => {
+			this.defaultListsToTeam = convertKeysToCamelCase(data);
+		});
 	},
 
 	methods: {
-		getDefaultLists,
 		getCardsByListsIds,
 		...mapActions('cards', [
 			'updateCard',
+		]),
+		...mapActions('sprint', [
+			'getDefaultLists',
 		]),
 		handleStatusChange(story, status) {
 			this.updateCard(convertKeysToSnakeCase({

@@ -650,19 +650,21 @@ export default {
 			const end = moment();
 			const diff = moment.duration(end.diff(start)).asDays();
 
+			let opacityValue = '.10';
+
 			if (diff <= 7 || this.hover) {
-				return 'opacity: 1';
+				opacityValue = '1';
+			} else if (diff <= 14) {
+				opacityValue = '.70';
+			} else if (diff <= 21) {
+				opacityValue = '.35';
+			} else {
+				opacityValue = '.10';
 			}
 
-			if (diff <= 14) {
-				return 'opacity: .70';
-			}
-
-			if (diff <= 21) {
-				return 'opacity: .35';
-			}
-
-			return 'opacity: .10';
+			return {
+				opacity: opacityValue,
+			};
 		},
 
 		createdBy() {

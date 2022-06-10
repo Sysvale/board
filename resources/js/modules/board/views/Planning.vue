@@ -45,7 +45,7 @@
 					<board
 						v-if="wasSynced"
 						:namespace="`${currentWorkspace.name}problems`"
-						:getLists="getIssuesLists"
+						:lists="issuesLists"
 						:getCards="getCardsByListsIds"
 					/>
 				</v-expansion-panel-content>
@@ -64,12 +64,7 @@
 				<v-expansion-panel-content>
 					<board
 						:namespace="`${currentWorkspace.name}planning`"
-						:getLists="{
-							resolver: getPlanningLists,
-							params: {
-								workspaceId: currentWorkspace.id,
-							}
-						}"
+						:lists="planningLists"
 						:getCards="{
 							resolver: getCardsByListsIds,
 							params: {
@@ -87,22 +82,16 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 import Board from '../components/Board.vue';
-import GitlabSynchronizer from '../components/GitlabSynchronizer';
+import GitlabSynchronizer from '../components/GitlabSynchronizer.vue';
 import PlanningGroups from '../constants/PlanningGroups';
-
-import {
-	getPlanningLists,
-} from '../services/planning';
-
-import {
-	getIssuesLists,
-} from '../services/issues';
 
 import {
 	getCardsByListsIds,
 } from '../services/cards';
-import { mapGetters } from 'vuex';
+
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 export default {
 	components: {
@@ -114,34 +103,52 @@ export default {
 			panels: [this.currentWorkspace && !this.currentWorkspace.settings.noPlanningProblems ? 1 : 0],
 			syncing: false,
 			wasSynced: true,
-			PlanningGroups
-		}
+			PlanningGroups,
+			planningLists: [],
+			issuesLists: [],
+		};
 	},
 
 	computed: {
-		...mapGetters('workspaces', ['currentWorkspace'])
+		...mapGetters('workspaces', ['currentWorkspace']),
+	},
+
+	watch: {
+		currentWorkspace: {
+			handler(newValue) {
+				if (newValue) {
+					this.getPlanningLists(newValue.id)
+						.then((data) => {
+							this.planningLists = convertKeysToCamelCase(data);
+						});
+				}
+			},
+			immediate: true,
+		},
 	},
 
 	methods: {
-		getPlanningLists,
-		getIssuesLists,
 		getCardsByListsIds,
+
+		...mapActions('planning', [
+			'getPlanningLists',
+		]),
 
 		finishedHandler() {
 			this.syncing = false;
 			this.wasSynced = false;
 			this.$nextTick().then(() => {
 				this.wasSynced = true;
-			})
+			});
 		},
 
-		handleProblemsPanelChange(value) {
-			if(this.panels.indexOf(0) > -1) {
+		handleProblemsPanelChange() {
+			if (this.panels.indexOf(0) > -1) {
 				this.showSyncButton = true;
 				return;
 			}
 			this.showSyncButton = false;
-		}
+		},
 	},
-}
+};
 </script>
