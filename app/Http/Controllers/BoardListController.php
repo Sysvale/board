@@ -12,24 +12,15 @@ use App\Services\BoardListService;
 
 class BoardListController extends Controller
 {
-	public function getDefaultLists(Request $in)
+	public function getTaskLists(Request $in)
 	{
-		return (new BoardListService())->getDefaultLists($in->team_id);
+		return (new BoardListService())->getTaskLists($in->team_id);
 	}
 
 	public function getDevlogLists(Request $in)
 	{
-		$default_lists = [Team::where('_id', $in->team_id)->first()->key . 'Dev'];
+		return (new BoardListService())->getDevLists($in->team_id);
 
-		$default_lists = array_merge(
-			$default_lists,
-			(new BoardListService())->getDefaultTaskLists($in->team_id)
-		);
-
-		return BoardList::whereIn('key', $default_lists)
-			->get()
-			->sortBy('position')
-			->values();
 	}
 
 	public function getPlanningLists(Workspace $workspace)
