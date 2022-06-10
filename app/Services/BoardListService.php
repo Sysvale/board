@@ -12,36 +12,17 @@ use App\Services\BoardListService;
 
 class BoardListService
 {
-	public function getDefaultLists($team_id)
+	public function getTaskLists($team_id)
 	{
-		return BoardList::whereIn('key', $this->getDefaultTaskLists($team_id))
-			->get()
-			->sortBy('position')
-			->values();
+		return BoardList::where('team_id', $team_id)
+			->where('is_devlog', '<>', true)
+			->get();
 	}
 
-	public function getDefaultTaskLists($team_id)
+	public function getDevLists($team_id)
 	{
-		$default_lists = BoardListsKeys::DEFAULT_LISTS;
-
-		if ($team_id) {
-			$team = Team::where('_id', $team_id)
-				->first();
-
-			if ($team->key === TeamKeys::DATA_TEAM) {
-				return BoardListsKeys::DT_LISTS;
-			}
-
-			if ($team->short_task_flow) {
-				return BoardListsKeys::SHORTED_LISTS;
-			}
-
-			if ($team->extended_task_flow) {
-				return array_merge($default_lists, BoardListsKeys::EXTENDED_LISTS);
-			}
-		}
-
-		return $default_lists;
+		return BoardList::where('team_id', $team_id)
+			->get();
 	}
 
 	public function createMany($board_lists, $team_id)
