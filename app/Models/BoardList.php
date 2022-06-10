@@ -17,6 +17,7 @@ class BoardList extends Model
 		'user_story_holder',
 		'accepts_card_type',
 		'team_id',
+		'is_devlog',
 	];
 
 	protected $appends = ['id'];
