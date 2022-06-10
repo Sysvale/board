@@ -24,9 +24,7 @@
 				<v-expansion-panel-content>
 					<board
 						namespace="company-planning"
-						:getLists="{
-							resolver: getCompanyPlanningLists,
-						}"
+						:lists="lists"
 						:getCards="{
 							resolver: getCardsByListsIds,
 						}"
@@ -41,17 +39,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 
 import Board from '../components/Board.vue';
 import PlanningGroups from '../constants/PlanningGroups';
 
 import {
-	getCompanyPlanningLists,
-} from '../services/planning';
-import {
 	getCardsByListsIds,
 } from '../services/cards';
+
 export default {
 	components: {
 		Board,
@@ -60,15 +56,22 @@ export default {
 		return {
 			panels: 0,
 			PlanningGroups,
+			lists: [],
 		};
 	},
 
-	computed: {
-		...mapGetters('workspaces', ['currentWorkspace']),
+	mounted() {
+		this.getCompanyPlanningLists()
+			.then((data) => {
+				this.lists = data;
+			});
 	},
 
 	methods: {
-		getCompanyPlanningLists,
+		...mapActions('planning', [
+			'getCompanyPlanningLists',
+		]),
+
 		getCardsByListsIds,
 	},
 };
