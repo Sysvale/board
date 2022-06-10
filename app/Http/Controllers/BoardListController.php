@@ -35,8 +35,8 @@ class BoardListController extends Controller
 	public function getPlanningLists(Workspace $workspace)
 	{
 		$planningLists = [
-			BoardListsKeys::NOT_PRIORITIZED,
-			BoardListsKeys::BACKLOG,
+			BoardListsKeys::NOT_PRIORITIZED.'-'.$workspace->id,
+			BoardListsKeys::BACKLOG.'-'.$workspace->id,
 		];
 
 		$teams = Team::where('workspace_id', $workspace->id)->get();
@@ -52,6 +52,39 @@ class BoardListController extends Controller
 		return BoardList::whereIn('key', $planningLists)
 			->orderBy('position')
 			->get();
+	}
+
+	public function getCompanyPlanningLists()
+	{
+		$planningLists = [
+			BoardListsKeys::NOT_PRIORITIZED,
+			BoardListsKeys::BACKLOG,
+		];
+
+		$workspaces = Workspace::get();
+
+		$planningLists = array_merge(
+			$planningLists,
+			$workspaces->map(
+				function ($item) {
+					return 'backlog-' . $item->id;
+				}
+			)->toArray()
+		);
+
+		$board_lists = BoardList::whereIn('key', $planningLists)
+			->orderBy('position')
+			->orderBy('name')
+			->get();
+
+		return $board_lists->map(function($item) {
+			if($item->key !== BoardListsKeys::NOT_PRIORITIZED
+				&& $item->key !== BoardListsKeys::BACKLOG) {
+				$item->collapsed = true;
+				$item->name = explode(" - ", $item->name)[1] ?? $item->name;
+			}
+			return $item;
+		});
 	}
 
 	public function getIssuesLists()

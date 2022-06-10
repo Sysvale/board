@@ -5,6 +5,7 @@
 			color="#333"
 			dense
 			dark
+			@dblclick="goToCompanyPlanning"
 		>
 			<a
 				href="/workspace/select"
@@ -138,6 +139,14 @@
 					</v-list-item>
 				</v-list>
 			</v-menu>
+			<v-btn
+				icon
+				@click="goToSettings()"
+			>
+				<v-icon>
+					settings
+				</v-icon>
+			</v-btn>
 			<v-btn
 				icon
 				@click="logout()"
@@ -353,6 +362,16 @@ export default {
 						}, {}),
 				},
 			});
+		},
+
+		goToCompanyPlanning() {
+			this.$router.push({
+				name: 'workspace.company',
+			});
+		},
+
+		goToSettings() {
+			this.$router.push({ name: 'settings' });
 		},
 	},
 };
