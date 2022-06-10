@@ -10,7 +10,9 @@ class TeamController extends Controller
 {
 	public function index()
 	{
-		return TeamResource::collection(Team::get());
+		return TeamResource::collection(
+			Team::get()->load(['board_lists'])
+		);
 	}
 
 	public function update(Request $request, Team $team)
