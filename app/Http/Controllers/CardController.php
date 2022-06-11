@@ -6,6 +6,7 @@ use App\Models\Card;
 use App\Models\Team;
 use App\Models\Event;
 use App\Models\Label;
+use App\Models\Board;
 use App\Models\BoardList;
 use App\Constants\CardTypes;
 use App\Constants\LabelKeys;
@@ -14,63 +15,113 @@ use Illuminate\Http\Request;
 use App\Constants\BoardListsKeys;
 use App\Constants\GitlabLabelKeys;
 use App\Constants\TeamKeys;
+use App\Constants\BoardKeys;
 use App\Http\Resources\CardResource;
 use App\Http\Requests\StoreCardRequest;
 use App\Services\CardService;
+use App\Services\BoardListService;
 
 class CardController extends Controller
 {
 	protected $handler;
+	private $card_service;
+	private $board_list_service;
 
 	public function __construct(GitlabHandler $handler)
 	{
 		$this->handler = $handler;
+		$this->card_service = new CardService();
+		$this->board_list_service = new BoardListService();
+	}
+	
+	public function getTaskCardsFromUserStory(Request $request)
+	{
+		$request->validate([
+			'user_story_id' => 'required|string',
+			'team_id' => 'required|string',
+		]);
+		
+		$team_board_lists = $this->board_list_service
+			->getTaskLists($request->team_id)
+			->pluck('id');
+
+		$cards = $this->card_service->getTasksFromUserStory(
+			$request->user_story_id,
+			$team_board_lists
+		);
+		return $this->mountPayload($team_board_lists, $cards);
 	}
 
-	public function getCardsByListsIds(Request $in)
+	public function getTaskCardsFromDevlog(Request $request)
 	{
+		$request->validate([
+			'team_id' => 'required|string',
+		]);
 
-		$board_lists = BoardList::get()->keyBy('id');
+		$devlog_board = Board::where('key', BoardKeys::SPRINT_DEVLOG)->first();
 
-		$payload = array();
-		collect($in->lists_ids)->each(
-			function ($item) use (&$payload, &$cards, $board_lists, $in) {
-				$sub_query = Card::where('board_list_id', $item);
-
-				if ($in->user_story_id) {
-					$sub_query = $sub_query->where('user_story_id', $in->user_story_id);
-				}
-
-				// se a lista n for sprint devlog n deve fazer o filtro por time nem por board
-				if (!preg_match("/([a-zA-Z0-9()]*)(Dev)/", $board_lists[$item]->key)) {
-					if ($in->board_id) {
-						$sub_query = $sub_query->where('board_id', $in->board_id);
-					}
-					if ($in->team_id) {
-						$sub_query = $sub_query->where('team_id', $in->team_id);
-					}
-				}
-
-				if (in_array(
-					$board_lists[$item]->key,
-					[BoardListsKeys::BACKLOG, BoardListsKeys::NOT_PRIORITIZED]
-				)
-					&& $in->workspace_id
-				) {
-					$sub_query = $sub_query->where('workspace_id', $in->workspace_id);
-				}
-
-				$card_resource = CardResource::collection($sub_query->orderBy('position')->get());
-				$payload[$item] = $card_resource->resolve();
-			}
+		$team_board_lists = (
+			$this->board_list_service->getDevLists($request->team_id)
+		)->pluck('id');
+	
+		$cards = $this->card_service->getTasksFromBoard(
+			$devlog_board->id,
+			$team_board_lists
 		);
 
-		return $payload;
+		return $this->mountPayload($team_board_lists, $cards);
+	}
+
+	public function getTaskCardsFromNotPlanned(Request $request)
+	{
+		$request->validate([
+			'team_id' => 'required|string',
+		]);
+
+		$not_planned = Board::where('key', BoardKeys::NOT_PLANNED)->first();
+
+		$team_board_lists = (
+			$this->board_list_service->getTaskLists($request->team_id)
+		)->pluck('id');
+	
+		$cards = $this->card_service->getTasksFromBoard(
+			$not_planned->id,
+			$team_board_lists
+		);
+
+		return $this->mountPayload($team_board_lists, $cards);
+	}
+
+	public function getCompanyPlanningCards()
+	{
+
+		$company_planning_board_lists = (
+			$this->board_list_service->getCompanyPlanningLists()
+		)->pluck('id');
+	
+		$cards = $this->card_service->getCardsByBoardListsIds($company_planning_board_lists);
+
+		return $this->mountPayload($company_planning_board_lists, $cards);
+	}
+
+	public function getPlanningCards(Request $request)
+	{
+		$request->validate([
+			'workspace_id' => 'required|string',
+		]);
+
+		$planning_board_lists = (
+			$this->board_list_service->getPlanningLists($request->workspace_id)
+		)->pluck('id');
+	
+		$cards = $this->card_service->getCardsByBoardListsIds($planning_board_lists);
+
+		return $this->mountPayload($planning_board_lists, $cards);
 	}
 
 	public function getUserStoriesByTeam(Team $team)
 	{
-		return (new CardService())->getUserStoriesByTeam($team->key);
+		return $this->card_service->getUserStoriesByTeam($team->key);
 	}
 
 	public function getCurrentSprintSummaryByTeam(Team $team)
@@ -252,5 +303,17 @@ class CardController extends Controller
 			}
 		}
 		return BoardList::where('key', $output[0])->get()->first()->id;
+	}
+
+	private function mountPayload($team_board_lists, $cards)
+	{
+		$payload = array();
+
+
+		$team_board_lists->each(function ($item) use (&$payload, $cards) {
+			$payload[$item] = $cards[$item] ?? [];
+		});
+
+		return $payload;
 	}
 }
