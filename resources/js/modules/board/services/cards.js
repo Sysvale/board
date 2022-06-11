@@ -4,7 +4,23 @@ export const createCard = (payload) => http.post('/cards', payload);
 
 export const createCards = (payload) => http.post('/cards/store-many', payload);
 
-export const getCardsByListsIds = (params) => http.get('/cards/lists-ids', {
+export const getTaskCardsFromUserStory = (params) => http.get('/cards/from-user-story', {
+	params,
+});
+
+export const getTaskCardsFromDevlog = (params) => http.get('/cards/from-devlog', {
+	params,
+});
+
+export const getTaskCardsFromNotPlanned = (params) => http.get('/cards/from-not-planned', {
+	params,
+});
+
+export const getCompanyPlanningCards = (params) => http.get('/cards/from-company-planning', {
+	params,
+});
+
+export const getPlanningCards = (params) => http.get('/cards/from-planning', {
 	params,
 });
 
