@@ -21,7 +21,7 @@ class SprintReportController extends Controller
 
 		$sprint_backlog_items = (new CardService())->getUserStoriesByTeam($team->key);
 		$default_lists = (new BoardListService())
-			->getDefaultLists($team->id);
+			->getTaskLists($team->id);
 
 		$cards = Card::whereIn('user_story_id', $sprint_backlog_items->pluck('id')->toArray())
 			->whereIn('board_list_id', $default_lists->map( function ($item) {
