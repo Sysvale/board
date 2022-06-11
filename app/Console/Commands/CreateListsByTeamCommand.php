@@ -3,13 +3,16 @@
 namespace App\Console\Commands;
 
 use App\Constants\BoardListsKeys;
+use App\Constants\BoardKeys;
 use App\Constants\LabelKeys;
 use App\Constants\TeamKeys;
 use App\Models\BoardList;
 use App\Models\Team;
+use App\Models\Board;
 use App\Models\Card;
 use App\Models\Workspace;
 use Illuminate\Console\Command;
+use App\Services\CardService;
 
 class CreateListsByTeamCommand extends Command
 {
@@ -91,7 +94,7 @@ class CreateListsByTeamCommand extends Command
 			$current_board_list = BoardList::where('key', $list_key)->first();
 			if(empty($current_board_list)) continue;
 			$new_board_list = $this->createBoardList($current_board_list, $team, $extra_data);
-			$this->setupCardsInToNewBoardList($current_board_list, $new_board_list);
+			$this->setupCardsInToNewBoardList($current_board_list, $new_board_list, $team);
 		}
 	}
 
@@ -107,10 +110,27 @@ class CreateListsByTeamCommand extends Command
 		return $new_board_list;
 	}
 	
-	private function setupCardsInToNewBoardList($current_board_list, $new_board_list)
+	private function setupCardsInToNewBoardList($current_board_list, $new_board_list, $team)
 	{
-		$cards = Card::where('board_list_id', $current_board_list->id)
+		// pegar todos os cards de todas as histórias de um time
+		$from_user_histories = Card::where('board_list_id', $current_board_list->id)
+			->whereIn('user_story_id', (new CardService())->getUserStoriesByTeam($team->key)->pluck('id'))
 			->get();
+
+		// pegar todos os cards do não planejados de um time
+		$from_not_planned = Card::where('board_list_id', $current_board_list->id)
+			->where('team_id', $team->id)
+			->where('board_id', Board::where('key', BoardKeys::NOT_PLANNED)->first()->id)
+			->get();
+	
+		// pegar todos os cards do devlog de um time
+		$from_devlog = Card::where('board_list_id', $current_board_list->id)
+			->where('team_id', $team->id)
+			->where('board_id', Board::where('key', BoardKeys::SPRINT_DEVLOG)->first()->id)
+			->get();
+
+		$cards = $from_user_histories->merge($from_not_planned);
+		$cards = $cards->merge($from_devlog);
 
 		$this->info("Movendo [" . $cards->count() . "] cards da lista [" . $current_board_list->name . "] para [" . $new_board_list->name . "]" );
 
