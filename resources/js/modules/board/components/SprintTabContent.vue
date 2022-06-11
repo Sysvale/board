@@ -40,7 +40,7 @@
 					:namespace="`${teamId}-notPlanned`"
 					:lists="defaultListsToTeam"
 					:getCards="{
-						resolver: getCardsByListsIds,
+						resolver: getTaskCardsFromNotPlanned,
 						params: {
 							teamId,
 							boardId: getBoardId(NOT_PLANNED),
@@ -116,10 +116,9 @@
 					:namespace="`${teamId}-dev`"
 					:lists="defaultDevlogListsToTeam"
 					:getCards="{
-						resolver: getCardsByListsIds,
+						resolver: getTaskCardsFromDevlog,
 						params: {
 							teamId,
-							boardId: getBoardId(SPRINT_DEVLOG),
 						}
 					}"
 					:card-middleware="{
@@ -139,7 +138,8 @@ import Board from './Board.vue';
 import EventsBoard from './EventsBoard.vue';
 import SprintBacklogOverview from './SprintBacklogOverview.vue';
 import {
-	getCardsByListsIds,
+	getTaskCardsFromDevlog,
+	getTaskCardsFromNotPlanned,
 } from '../services/cards';
 
 import {
@@ -215,7 +215,8 @@ export default {
 	},
 
 	methods: {
-		getCardsByListsIds,
+		getTaskCardsFromDevlog,
+		getTaskCardsFromNotPlanned,
 
 		...mapActions('sprint', [
 			'getCurrentSprintSummaryByTeam',
