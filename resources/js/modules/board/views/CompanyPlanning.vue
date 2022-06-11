@@ -40,6 +40,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import Board from '../components/Board.vue';
 import PlanningGroups from '../constants/PlanningGroups';
@@ -63,7 +64,7 @@ export default {
 	mounted() {
 		this.getCompanyPlanningLists()
 			.then((data) => {
-				this.lists = data;
+				this.lists = convertKeysToCamelCase(data);
 			});
 	},
 
