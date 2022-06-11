@@ -93,7 +93,7 @@
 								<small class="text--primary"><strong>{{ pointsSum }}</strong></small>
 							</div>
 							<v-tooltip
-								v-if="isAGoalableList && $attrs.list && $attrs.list.length > 0"
+								v-if="isGoalable && $attrs.list && $attrs.list.length > 0"
 								bottom
 							>
 								<template v-slot:activator="{ on, attrs }">
@@ -173,7 +173,7 @@
 									v-if="keyValue !== BACKLOG && keyValue !== NOT_PRIORITIZED"
 								>
 									<card-from-process-modal
-										:process-only="isAGoalableList"
+										:process-only="isGoalable"
 										@create="handleAddFromProcess"
 									/>
 								</v-list-item>
@@ -183,7 +183,7 @@
 				</div>
 			</div>
 			<div
-				v-if="isAGoalableList"
+				v-if="isGoalable"
 				class="mt-1 mx-1"
 			>
 				<v-alert
@@ -277,12 +277,6 @@ import swal from 'sweetalert2';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import {
 	BACKLOG,
-	AVENGERS,
-	STEPPER,
-	BREAKOUT_ONE,
-	SYS_OUT,
-	SYS_IN,
-	GRASSHOPPER,
 	NOT_PRIORITIZED,
 } from '../constants/BoardListKeys';
 import Card from './Card.vue';
@@ -312,6 +306,10 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		isGoalable: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	data() {
@@ -329,20 +327,6 @@ export default {
 
 	computed: {
 		...mapGetters('goals', ['getGoalByKey']),
-
-		isAGoalableList() {
-			const goalableLists = [
-				BACKLOG,
-				AVENGERS,
-				STEPPER,
-				BREAKOUT_ONE,
-				SYS_OUT,
-				SYS_IN,
-				GRASSHOPPER,
-			];
-			const [keyToEvaluate] = this.keyValue.split('-');
-			return goalableLists.indexOf(keyToEvaluate) > -1;
-		},
 
 		cardsQuantity() {
 			const { length } = this.$attrs.list;
@@ -447,7 +431,7 @@ export default {
 					type: this.acceptsCardType,
 				};
 				if (this.selectedProcess) {
-					const processOnly = this.isAGoalableList;
+					const processOnly = this.isGoalable;
 					if(processOnly) {
 						output = {
 							...output,
@@ -475,7 +459,7 @@ export default {
 
 		handleAddFromProcess(process) {
 			this.selectedProcess = process;
-			if(this.isAGoalableList) {
+			if(this.isGoalable) {
 				this.newCardTitle = process.name;
 			} else {
 				this.newCardTitle = process.title;
