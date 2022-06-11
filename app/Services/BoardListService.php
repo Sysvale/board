@@ -16,6 +16,7 @@ class BoardListService
 	{
 		return BoardList::where('team_id', $team_id)
 			->where('is_devlog', '<>', true)
+			->where('is_goalable', '<>', true)
 			->get();
 	}
 
