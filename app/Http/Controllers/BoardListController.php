@@ -25,57 +25,12 @@ class BoardListController extends Controller
 
 	public function getPlanningLists(Workspace $workspace)
 	{
-		$planningLists = [
-			BoardListsKeys::NOT_PRIORITIZED.'-'.$workspace->id,
-			BoardListsKeys::BACKLOG.'-'.$workspace->id,
-		];
-
-		$teams = Team::where('workspace_id', $workspace->id)->get();
-		$planningLists = array_merge(
-			$planningLists,
-			$teams->map(
-				function ($item) {
-					return $item->key;
-				}
-			)->toArray()
-		);
-
-		return BoardList::whereIn('key', $planningLists)
-			->orderBy('position')
-			->get();
+		return (new BoardListService())->getPlanningLists($workspace->id);
 	}
 
 	public function getCompanyPlanningLists()
 	{
-		$planningLists = [
-			BoardListsKeys::NOT_PRIORITIZED,
-			BoardListsKeys::BACKLOG,
-		];
-
-		$workspaces = Workspace::get();
-
-		$planningLists = array_merge(
-			$planningLists,
-			$workspaces->map(
-				function ($item) {
-					return 'backlog-' . $item->id;
-				}
-			)->toArray()
-		);
-
-		$board_lists = BoardList::whereIn('key', $planningLists)
-			->orderBy('position')
-			->orderBy('name')
-			->get();
-
-		return $board_lists->map(function($item) {
-			if($item->key !== BoardListsKeys::NOT_PRIORITIZED
-				&& $item->key !== BoardListsKeys::BACKLOG) {
-				$item->collapsed = true;
-				$item->name = explode(" - ", $item->name)[1] ?? $item->name;
-			}
-			return $item;
-		});
+		return (new BoardListService())->getCompanyPlanningLists();
 	}
 
 	public function getIssuesLists()
