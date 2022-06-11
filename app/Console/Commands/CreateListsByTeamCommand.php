@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Constants\BoardListsKeys;
 use App\Constants\BoardKeys;
 use App\Constants\LabelKeys;
+use App\Constants\CardTypes;
 use App\Constants\TeamKeys;
 use App\Models\BoardList;
 use App\Models\Team;
@@ -52,6 +53,8 @@ class CreateListsByTeamCommand extends Command
 	{
 		$this->info('Iniciando...');
 
+		$this->setBacklogAndNotPrioritizedAsGoalable();
+
 		$this->fixCodeReviewListKey();
 
 		$teams = Team::get();
@@ -84,6 +87,17 @@ class CreateListsByTeamCommand extends Command
 
 		$code_review->each(function($item) {
 			$item->key = BoardListsKeys::CODE_REVIEW;
+			$item->save();
+		});
+	}
+
+	private function setBacklogAndNotPrioritizedAsGoalable()
+	{
+		$goalables = BoardList::where('accepts_card_type', CardTypes::USER_STORY)
+			->get();
+
+		$goalables->each(function($item) {
+			$item->is_goalable = true;
 			$item->save();
 		});
 	}
