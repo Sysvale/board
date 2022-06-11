@@ -325,13 +325,12 @@ export default {
 		},
 
 		save() {
+			this.selectedItem = {
+				...this.selectedItem,
+				boardLists: this.selectedItem
+					.boardLists.map((i, position) => ({ ...i, position })),
+			};
 			if (this.editMode) {
-				this.selectedItem = {
-					...this.selectedItem,
-					boardLists: this.selectedItem
-						.boardLists.map((i, position) => ({ ...i, position })),
-				};
-
 				this.updateTeam(convertKeysToSnakeCase(this.selectedItem))
 					.then(() => {
 						this.reloadData();
@@ -359,13 +358,16 @@ export default {
 
 		addBoardList() {
 			if (this.selectedItem && this.selectedItem.newBoardListItem?.trim() !== '') {
-				this.selectedItem.boardLists = [
-					...(this.selectedItem.boardLists || []),
-					{
-						name: this.selectedItem.newBoardListItem,
-						position: (this.selectedItem.boardLists?.length || 0),
-					},
-				];
+				this.selectedItem = {
+					...this.selectedItem,
+					boardLists: [
+						...(this.selectedItem.boardLists || []),
+						{
+							name: this.selectedItem.newBoardListItem,
+							position: (this.selectedItem.boardLists?.length || 0),
+						},
+					],
+				};
 			}
 
 			this.selectedItem.newBoardListItem = '';
