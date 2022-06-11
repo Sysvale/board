@@ -18,6 +18,7 @@ class BoardList extends Model
 		'accepts_card_type',
 		'team_id',
 		'is_devlog',
+		'is_goalable',
 	];
 
 	protected $appends = ['id'];
