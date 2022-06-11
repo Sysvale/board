@@ -92,32 +92,34 @@
 													</v-chip>
 												</div>
 											</draggable>
-											<div class="mt-5">
-												<v-chip
-													label
-													:style="{
-														minWidth: boardListAddMode ? '150px' : null,
-														minHeight: boardListAddMode ? '50px' : null,
-													}"
-													@click="boardListAddMode = true"
-												>
-													<v-text-field
-														v-if="boardListAddMode"
-														v-model="selectedItem.newBoardListItem"
-														flat
-														outlined
-														autofocus
-														dense
-														hide-details
-														single-line
-														@blur="addBoardList"
-														@keyup.enter="addBoardList"
-													/>
-													<span v-else>
-														<v-icon>add</v-icon>
-													</span>
-												</v-chip>
-											</div>
+										</div>
+									</v-row>
+									<v-row>
+										<div class="mt-5 d-block">
+											<v-chip
+												label
+												:style="{
+													minWidth: boardListAddMode ? '150px' : null,
+													minHeight: boardListAddMode ? '50px' : null,
+												}"
+												@click="boardListAddMode = true"
+											>
+												<v-text-field
+													v-if="boardListAddMode"
+													v-model="selectedItem.newBoardListItem"
+													flat
+													outlined
+													autofocus
+													dense
+													hide-details
+													single-line
+													@blur="addBoardList"
+													@keyup.enter="addBoardList"
+												/>
+												<span v-else>
+													<v-icon>add</v-icon>
+												</span>
+											</v-chip>
 										</div>
 									</v-row>
 								</v-container>
