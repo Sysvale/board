@@ -11,6 +11,7 @@ use App\Http\Resources\WorkspaceResource;
 use App\Models\Goal;
 use App\Models\BoardList;
 use App\Constants\BoardListsKeys;
+use App\Constants\CardTypes;
 
 class WorkspaceController extends Controller
 {
@@ -83,7 +84,8 @@ class WorkspaceController extends Controller
 		BoardList::create([
 			'name' => $this->getBoardListLabel($key, $workspace),
 			'key' => $this->getBoardListKey($key, $workspace),
-			'accepts_card_type' => 'user-story',
+			'accepts_card_type' => CardTypes::USER_STORY,
+			'is_goalable' => true,
 			'position' => $position,
 		]);
 	}
