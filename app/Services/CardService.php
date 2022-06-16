@@ -25,4 +25,33 @@ class CardService
 
 		return CardResource::collection($cards);
 	}
+
+	public function getTasksFromUserStory($user_story_id, $team_board_lists)
+	{
+		$cards = Card::whereIn('board_list_id', $team_board_lists)
+			->where('user_story_id', $user_story_id)
+			->orderBy('position')
+			->get();
+
+		return CardResource::collection($cards)->groupBy('board_list_id');
+	}
+
+	public function getTasksFromBoard($board_id, $team_board_lists)
+	{
+		$cards = Card::whereIn('board_list_id', $team_board_lists)
+			->where('board_id', $board_id)
+			->orderBy('position')
+			->get();
+
+		return CardResource::collection($cards)->groupBy('board_list_id');
+	}
+
+	public function getCardsByBoardListsIds($team_board_lists)
+	{
+		$cards = Card::whereIn('board_list_id', $team_board_lists)
+			->orderBy('position')
+			->get();
+
+		return CardResource::collection($cards)->groupBy('board_list_id');
+	}
 }

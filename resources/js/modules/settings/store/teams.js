@@ -3,10 +3,16 @@ import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
 	getTeams,
+	createTeam,
+	updateTeam,
+	deleteTeam,
 } from '../services/teams';
 
 const modules = [
 	{ getTeams },
+	{ createTeam },
+	{ updateTeam },
+	{ deleteTeam },
 ];
 
 export default {
@@ -23,7 +29,7 @@ export default {
 	getters: {
 		itemsByWorkspace(state, _, __, rootGetters) {
 			return state.items.filter(({ workspaceId }) => {
-				return workspaceId === rootGetters['workspaces/currentWorkspace'].id;
+				return workspaceId.indexOf(rootGetters['workspaces/currentWorkspace'].id) > -1;
 			});
 		},
 	},
@@ -32,4 +38,4 @@ export default {
 			state.items = convertKeysToCamelCase(payload);
 		},
 	},
-};
+}

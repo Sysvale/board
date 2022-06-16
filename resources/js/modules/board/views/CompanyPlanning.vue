@@ -26,7 +26,7 @@
 						namespace="company-planning"
 						:lists="lists"
 						:getCards="{
-							resolver: getCardsByListsIds,
+							resolver: getCompanyPlanningCards,
 						}"
 						:cardMiddleware="{
 							type: 'user-story',
@@ -46,7 +46,7 @@ import Board from '../components/Board.vue';
 import PlanningGroups from '../constants/PlanningGroups';
 
 import {
-	getCardsByListsIds,
+	getCompanyPlanningCards,
 } from '../services/cards';
 
 export default {
@@ -73,7 +73,7 @@ export default {
 			'getCompanyPlanningLists',
 		]),
 
-		getCardsByListsIds,
+		getCompanyPlanningCards,
 	},
 };
 </script>

@@ -10,6 +10,7 @@
 				:key="list.id"
 				:collapsed="list.collapsed"
 				:accepts-card-type="list.acceptsCardType"
+				:is-goalable="list.isGoalable"
 				:key-value="list.key"
 				:name="list.name"
 				:list="getList(list.id)"

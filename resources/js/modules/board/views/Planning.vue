@@ -46,7 +46,7 @@
 						v-if="wasSynced"
 						:namespace="`${currentWorkspace.name}problems`"
 						:lists="issuesLists"
-						:getCards="getCardsByListsIds"
+						:getCards="getPlanningCards"
 					/>
 				</v-expansion-panel-content>
 			</v-expansion-panel>
@@ -66,7 +66,7 @@
 						:namespace="`${currentWorkspace.name}planning`"
 						:lists="planningLists"
 						:getCards="{
-							resolver: getCardsByListsIds,
+							resolver: getPlanningCards,
 							params: {
 								workspaceId: currentWorkspace.id,
 							}
@@ -88,7 +88,7 @@ import GitlabSynchronizer from '../components/GitlabSynchronizer.vue';
 import PlanningGroups from '../constants/PlanningGroups';
 
 import {
-	getCardsByListsIds,
+	getPlanningCards,
 } from '../services/cards';
 
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
@@ -128,7 +128,7 @@ export default {
 	},
 
 	methods: {
-		getCardsByListsIds,
+		getPlanningCards,
 
 		...mapActions('planning', [
 			'getPlanningLists',

@@ -7,7 +7,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use App\Models\Card;
+use App\Models\Team;
 use App\Observers\CardObserver;
+use App\Observers\TeamObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -34,6 +36,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
         Card::observe(CardObserver::class);
+        Team::observe(TeamObserver::class);
         //
     }
 }

@@ -8,10 +8,17 @@
 		</v-btn>
 
 		<v-btn
-		link
+			link
 			to="/settings/workspaces"
 		>
 			Workspaces
+		</v-btn>
+
+		<v-btn
+			link
+			to="/settings/teams"
+		>
+			Times
 		</v-btn>
 	</v-container>
 </template>
