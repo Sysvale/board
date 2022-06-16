@@ -1,6 +1,7 @@
 import Home from '../views/Home.vue';
 import Members from '../views/Members.vue';
 import Workspaces from '../views/Workspaces.vue';
+import Teams from '../views/Teams.vue';
 
 export default [
 	{
@@ -17,6 +18,14 @@ export default [
 		component: Members,
 		meta: {
 			title: 'Membros',
+		},
+	},
+	{
+		path: '/settings/teams',
+		name: 'settings.teams',
+		component: Teams,
+		meta: {
+			title: 'Times',
 		},
 	},
 	{

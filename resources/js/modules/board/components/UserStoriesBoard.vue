@@ -167,9 +167,10 @@
 						:namespace="story.id"
 						:lists="defaultListsToTeam"
 						:get-cards="{
-							resolver: getCardsByListsIds,
+							resolver: getTaskCardsFromUserStory,
 							params: {
 								userStoryId: story.id,
+								teamId,
 							}
 						}"
 						:card-middleware="{
@@ -198,7 +199,7 @@ import {
 } from '../services/userStories';
 
 import {
-	getCardsByListsIds,
+	getTaskCardsFromUserStory,
 } from '../services/cards';
 import UserStoryPipeline from './UserStoryPipeline.vue';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
@@ -300,7 +301,7 @@ export default {
 	},
 
 	methods: {
-		getCardsByListsIds,
+		getTaskCardsFromUserStory,
 		...mapActions('cards', [
 			'updateCard',
 		]),

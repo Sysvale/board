@@ -21,7 +21,7 @@ Route::redirect('/', 'login');
 
 Route::group(
     ['middleware' => ['auth']], function () {
-        Route::get('/lists/default', 'BoardListController@getDefaultLists');
+        Route::get('/lists/default', 'BoardListController@getTaskLists');
         Route::get('/lists/planning/company', 'BoardListController@getCompanyPlanningLists');
         Route::get('/lists/planning/{workspace}', 'BoardListController@getPlanningLists');
         Route::get('/lists/issues/', 'BoardListController@getIssuesLists');
@@ -34,7 +34,13 @@ Route::group(
             '/cards/impediments/{team}',
             'CardController@getImpedimentsByTeam'
         );
-        Route::get('/cards/lists-ids', 'CardController@getCardsByListsIds');
+
+        Route::get('/cards/from-user-story', 'CardController@getTaskCardsFromUserStory');
+        Route::get('/cards/from-devlog', 'CardController@getTaskCardsFromDevlog');
+        Route::get('/cards/from-not-planned', 'CardController@getTaskCardsFromNotPlanned');
+        Route::get('/cards/from-company-planning', 'CardController@getCompanyPlanningCards');
+        Route::get('/cards/from-planning', 'CardController@getPlanningCards');
+
         Route::post(
             '/cards/update-positions',
             'CardController@updateCardsPositions'
@@ -47,7 +53,7 @@ Route::group(
         );
         Route::get('/labels', 'LabelController@index');
         Route::resource('members', 'MemberController');
-        Route::get('/teams', 'TeamController@index');
+        Route::resource('/teams', 'TeamController');
         Route::get('/boards', 'BoardController@index');
 
         Route::resource('events', 'EventController')->only(['store', 'update', 'destroy']);
