@@ -81,11 +81,19 @@ class WorkspaceController extends Controller
 
 	private function createBoardList($key, $workspace, $position)
 	{
+		$accepts_card_type = CardTypes::USER_STORY;
+		$is_goalable = true;
+
+		if($key === BoardListsKeys::NOT_PRIORITIZED) {
+			$accepts_card_type = CardTypes::NOT_PRIORITIZED;
+			$is_goalable = false;
+		}
+
 		BoardList::create([
 			'name' => $this->getBoardListLabel($key, $workspace),
 			'key' => $this->getBoardListKey($key, $workspace),
-			'accepts_card_type' => CardTypes::USER_STORY,
-			'is_goalable' => true,
+			'accepts_card_type' => $accepts_card_type,
+			'is_goalable' => $is_goalable,
 			'position' => $position,
 		]);
 	}
@@ -103,7 +111,10 @@ class WorkspaceController extends Controller
 	{
 		$board_list = BoardList::where('key', $this->getBoardListKey($key, $workspace))->first();
 
-		$board_list->delete();
+		if(!empty($board_list)) {
+			$board_list->delete();
+		}
+
 	}
 
 	private function getBoardListLabel($key, $workspace)
