@@ -9,6 +9,7 @@ use App\Models\Team;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
 use App\Services\BoardListService;
+use App\Constants\CardTypes;
 
 class BoardListService
 {
@@ -88,6 +89,11 @@ class BoardListService
 
 		foreach ($board_lists as $list) {
 			$list['team_id'] = $team_id;
+
+			if(empty($list['accepts_card_type'])) {
+				$list['accepts_card_type'] = CardTypes::TASK;
+			}
+
 			BoardList::create($list);
 		}
 	}
