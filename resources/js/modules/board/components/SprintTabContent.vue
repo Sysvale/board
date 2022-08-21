@@ -7,20 +7,19 @@
 		class="px-2"
 	>
 		<v-expansion-panel
-			:key="`impediment-${teamId}`"
+			:key="`schedule-${teamId}`"
 		>
 			<v-expansion-panel-header>
 				<div class="d-flex align-center">
 					<v-icon class="mr-2">
-						block
+						calendar_month
 					</v-icon>
-					<h3 class="mb-0 mr-2">Impedimentos</h3>
+					<h3 class="mb-0 mr-2">Agenda</h3>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
 				<events-board
 					:team-id="teamId"
-					@changed="impedimentsAmount = $event.length"
 				/>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
@@ -30,9 +29,9 @@
 			<v-expansion-panel-header>
 				<div class="d-flex align-center">
 					<v-icon class="mr-2">
-						local_fire_department
+						block
 					</v-icon>
-					<h3 class="mb-0">Não planejados</h3>
+					<h3 class="mb-0">Não planejados e impedimentos</h3>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -174,7 +173,6 @@ export default {
 			NOT_PLANNED,
 			IMPEDIMENTS,
 			SPRINT_DEVLOG,
-			impedimentsAmount: 0,
 			estimatedAmount: 0,
 			dialog: false,
 			defaultListsToTeam: [],
@@ -200,8 +198,7 @@ export default {
 	mounted() {
 		this.getCurrentSprintSummaryByTeam(this.teamId)
 			.then((data) => {
-				const { impedimentsAmount, estimatedAmount } = convertKeysToCamelCase(data);
-				this.impedimentsAmount = impedimentsAmount;
+				const { estimatedAmount } = convertKeysToCamelCase(data);
 				this.estimatedAmount = estimatedAmount;
 			});
 
