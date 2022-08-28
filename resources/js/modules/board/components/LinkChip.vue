@@ -1,29 +1,27 @@
 <template>
-	<v-chip
-		v-if="computedLink.label"
-		:href="link"
-		target="_blank"
-		small
-		pill
-		:color="computedLink.color"
-		:text-color="computedLink.color"
-		outlined
-		:title="link"
-		@click.native.stop
-	>
-		<span
+	<span>
+		<a
+			v-if="computedLink.label"
+			:href="link"
+			target="_blank"
+			class="badge__link"
 		>
-			{{ computedLink.label }}
-		</span>
-	</v-chip>
-	<v-btn
-		v-else
-		icon
-		:href="link"
-		target="_blank"
-	>
-		<v-icon>open_in_new</v-icon>
-	</v-btn>
+			<cds-badge
+				:variant="computedLink.variant"
+			>
+				{{ computedLink.label }}
+			</cds-badge>
+		</a>
+
+		<v-btn
+			v-else
+			icon
+			:href="link"
+			target="_blank"
+		>
+			<v-icon>open_in_new</v-icon>
+		</v-btn>
+	</span>
 </template>
 <script>
 export default {
@@ -31,49 +29,48 @@ export default {
 		link: {
 			type: String,
 			default: null,
-		}
+		},
 	},
 
 	computed: {
 		computedLink() {
-			if(this.link) {
-				let url = this.link;
-				if(this.isUrlFromThisDomain(url, 'gitlab')) {
-					const color = '#fc6d26';
-					const textColor = 'white';
+			if (this.link) {
+				const url = this.link;
+
+				if (this.isUrlFromThisDomain(url, 'gitlab')) {
+					const variant = 'orange';
 					const splitedUrl = url.split('/');
-					if(this.hasInUrl(url, 'merge_requests')) {
+
+					if (this.hasInUrl(url, 'merge_requests')) {
 						return {
 							label: `!${splitedUrl[splitedUrl.length - 1] || 'merge'}`,
-							color,
-							textColor,
+							variant,
 						};
 					}
-					if(this.hasInUrl(url, 'issues')) {
+
+					if (this.hasInUrl(url, 'issues')) {
 						return {
 							label: `#${splitedUrl[splitedUrl.length - 1] || 'merge'}`,
-							color,
-							textColor,
+							variant,
 						};
 					}
+
 					return {
 						label: 'gitlab',
-						color,
-						textColor,
+						variant,
 					};
 				}
 
-				if(this.isUrlFromThisDomain(url, 'figma')) {
+				if (this.isUrlFromThisDomain(url, 'figma')) {
 					return {
 						label: 'figma',
-						color: '#021336',
-						textColor: '#fff',
-					}
+						variant: 'gray',
+					};
 				}
+
 				return {
-					color: 'rgba(0, 0, 0, 0.50)',
-					textColor: 'white',
-				}
+					variant: 'blue',
+				};
 			}
 			return null;
 		},
@@ -87,7 +84,12 @@ export default {
 
 		hasInUrl(url, string) {
 			return url.indexOf(string) > -1;
-		}
-	}
-}
+		},
+	},
+};
 </script>
+<style scoped>
+	.badge__link {
+		text-decoration: none;
+	}
+</style>
