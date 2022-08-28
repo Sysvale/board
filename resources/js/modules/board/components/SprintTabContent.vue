@@ -24,6 +24,7 @@
 				/>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
+
 		<v-expansion-panel
 			:key="`notPlanned-${teamId}`"
 		>
@@ -35,11 +36,12 @@
 					<h3 class="mb-0">Não planejados</h3>
 				</div>
 			</v-expansion-panel-header>
+
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-notPlanned`"
 					:lists="defaultListsToTeam"
-					:getCards="{
+					:get-cards="{
 						resolver: getTaskCardsFromNotPlanned,
 						params: {
 							teamId,
@@ -53,6 +55,38 @@
 				/>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
+
+		<v-expansion-panel
+			:key="`kaizen-${teamId}`"
+		>
+			<v-expansion-panel-header>
+				<div class="d-flex align-center">
+					<v-icon class="mr-2">
+						moving
+					</v-icon>
+					<h3 class="mb-0">Kaizen</h3>
+				</div>
+			</v-expansion-panel-header>
+
+			<v-expansion-panel-content>
+				<board
+					:namespace="`${teamId}-kaizen`"
+					:lists="defaultListsToTeam"
+					:get-cards="{
+						resolver: getTaskCardsFromKaizen,
+						params: {
+							teamId,
+							boardId: getBoardId(KAIZEN),
+						}
+					}"
+					:card-middleware="{
+						teamId,
+						boardId: getBoardId(KAIZEN),
+					}"
+				/>
+			</v-expansion-panel-content>
+		</v-expansion-panel>
+
 		<v-expansion-panel
 			:key="`userStories-${teamId}`"
 		>
@@ -93,12 +127,14 @@
 					</v-dialog>
 				</div>
 			</v-expansion-panel-header>
+
 			<v-expansion-panel-content>
 				<user-stories-board
 					:team-id="teamId"
 				/>
 			</v-expansion-panel-content>
 		</v-expansion-panel>
+
 		<v-expansion-panel
 			v-if="!currentWorkspace.settings.noSprintDevlog"
 			:key="`sprintDevlog-${teamId}`"
@@ -111,11 +147,12 @@
 					<h3 class="mb-0">Sprint Devlog</h3>
 				</div>
 			</v-expansion-panel-header>
+
 			<v-expansion-panel-content>
 				<board
 					:namespace="`${teamId}-dev`"
 					:lists="defaultDevlogListsToTeam"
-					:getCards="{
+					:get-cards="{
 						resolver: getTaskCardsFromDevlog,
 						params: {
 							teamId,
@@ -140,12 +177,14 @@ import SprintBacklogOverview from './SprintBacklogOverview.vue';
 import {
 	getTaskCardsFromDevlog,
 	getTaskCardsFromNotPlanned,
+	getTaskCardsFromKaizen,
 } from '../services/cards';
 
 import {
 	NOT_PLANNED,
 	IMPEDIMENTS,
 	SPRINT_DEVLOG,
+	KAIZEN,
 } from '../constants/BoardKeys';
 
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
@@ -169,11 +208,12 @@ export default {
 	data() {
 		return {
 			panels: [
-				2,
+				3,
 			],
 			NOT_PLANNED,
 			IMPEDIMENTS,
 			SPRINT_DEVLOG,
+			KAIZEN,
 			impedimentsAmount: 0,
 			estimatedAmount: 0,
 			dialog: false,
@@ -217,6 +257,7 @@ export default {
 	methods: {
 		getTaskCardsFromDevlog,
 		getTaskCardsFromNotPlanned,
+		getTaskCardsFromKaizen,
 
 		...mapActions('sprint', [
 			'getCurrentSprintSummaryByTeam',
