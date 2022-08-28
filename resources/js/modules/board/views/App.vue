@@ -379,6 +379,6 @@ export default {
 <style scoped>
 .v-application {
 	background-color: rgb(250, 250, 250); /*#F4F4F6;*/
-	font-family: 'Poppins', sans-serif;
+	font-family: 'Inter', sans-serif;
 }
 </style>

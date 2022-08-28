@@ -14,7 +14,7 @@
 					<v-icon class="mr-2">
 						block
 					</v-icon>
-					<h3 class="mb-0 mr-2">Impedimentos</h3>
+					<h5 class="font-weight-bold mb-0 mr-2">Impedimentos</h5>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -32,7 +32,7 @@
 					<v-icon class="mr-2">
 						local_fire_department
 					</v-icon>
-					<h3 class="mb-0">Não planejados</h3>
+					<h5 class="font-weight-bold mb-0">Não planejados</h5>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -61,7 +61,7 @@
 					<v-icon class="mr-2">
 						settings_backup_restore
 					</v-icon>
-					<h3 class="mb-0 mr-2">Sprint Backlog</h3>
+					<h5 class="font-weight-bold mb-0 mr-2">Sprint Backlog</h5>
 					<span class="text--secondary mb-0">
 						{{ computedEstimatedAmount }}
 					</span>
@@ -108,7 +108,7 @@
 					<v-icon class="mr-2">
 						code
 					</v-icon>
-					<h3 class="mb-0">Sprint Devlog</h3>
+					<h5 class="font-weight-bold mb-0">Sprint Devlog</h5>
 				</div>
 			</v-expansion-panel-header>
 			<v-expansion-panel-content>
@@ -230,3 +230,11 @@ export default {
 	},
 };
 </script>
+<style scoped>
+	.v-expansion-panel-header {
+		outline: none;
+		outline-color: initial;
+		outline-style: none;
+		outline-width: initial;
+	}
+</style>
