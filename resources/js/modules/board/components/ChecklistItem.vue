@@ -61,6 +61,8 @@
 </template>
 
 <script>
+import ChecklistItem from '../entities/ChecklistItem';
+
 export default {
 	props: {
 		value: {
@@ -86,7 +88,7 @@ export default {
 	},
 
 	mounted() {
-		this.internalItem = this.value;
+		this.internalItem = new ChecklistItem(this.value);
 	},
 
 	methods: {
