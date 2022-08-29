@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import * as ChecklistItem from './ChecklistItem.vue';
+import ChecklistItem from './ChecklistItem.vue';
 
 export default {
 	components: {
