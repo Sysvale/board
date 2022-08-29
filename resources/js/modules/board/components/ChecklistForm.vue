@@ -9,61 +9,17 @@
 
 		<v-list flat>
 			<v-list-item-group>
-				<v-list-item
-					v-for="(item, i) in value"
-					:key="i"
+				<div
+					v-for="(item, index) in internalValue"
+					:key="index"
 				>
-					<template #default="{ toggle }">
-						<v-list-item-action v-if="!editMode || selectedIndex !== i">
-							<v-checkbox
-								v-model="item.done"
-								:readonly="readonly"
-								@click="toggle"
-							/>
-						</v-list-item-action>
-
-						<v-list-item-content>
-							<v-list-item-title :class="{ 'done': item.done }">
-								<span v-if="editMode && selectedIndex === i">
-									<v-text-field
-										v-model="editItem"
-										autofocus
-										outlined
-										flat
-										dense
-										class="mt-0 mb-0 pt-0 pb-0"
-										info
-										hide-details
-										color="secondary"
-										@keydown.enter="finishEdit(i)"
-										@blur="finishEdit(i)"
-									/>
-								</span>
-
-								<span v-else>
-									<div v-html="getHtmlFromDescription(item.description)" />
-								</span>
-							</v-list-item-title>
-						</v-list-item-content>
-						<div v-if="!noActions">
-							<v-btn
-								v-if="!item.done && (!editMode || selectedIndex !== i)"
-								icon
-								@click="handleEdit(i)"
-							>
-								<v-icon>edit</v-icon>
-							</v-btn>
-
-							<v-btn
-								v-if="!editMode || selectedIndex !== i"
-								icon
-								@click="handleRemove(i)"
-							>
-								<v-icon>delete</v-icon>
-							</v-btn>
-						</div>
-					</template>
-				</v-list-item>
+					<checklist-item
+						v-model="internalValue[index]"
+						:readonly="readonly"
+						:no-actions="noActions"
+						@remove="handleRemove(index)"
+					/>
+				</div>
 			</v-list-item-group>
 		</v-list>
 
@@ -86,14 +42,20 @@
 				color="#333"
 				@click="handleAdd"
 			>
-				{{ addBuletttonText }}
+				{{ addButtonText }}
 			</v-btn>
 		</div>
 	</div>
 </template>
 
 <script>
+import * as ChecklistItem from './ChecklistItem.vue';
+
 export default {
+	components: {
+		ChecklistItem,
+	},
+
 	props: {
 		value: {
 			type: Array,
@@ -116,9 +78,7 @@ export default {
 	data() {
 		return {
 			newItem: null,
-			editItem: null,
-			editMode: false,
-			selectedIndex: -1,
+			internalValue: [],
 		};
 	},
 
@@ -128,77 +88,36 @@ export default {
 		},
 	},
 
+	watch: {
+		value(newValue, oldValue) {
+			if (newValue !== oldValue) {
+				this.internalValue = newValue;
+			}
+		},
+
+		internalValue(newValue) {
+			if (newValue !== this.value) {
+				this.$emit('input', newValue);
+			}
+		},
+	},
+
+	mounted() {
+		this.internalValue = this.value;
+	},
+
 	methods: {
 		handleAdd() {
 			if (this.newItem === null || this.newItem.trim() === '') return;
-			this.$emit('input', [...(this.value || []), {
-				description: this.newItem,
-			}]);
+			this.$emit('input', [...(this.value || []), { description: this.newItem }]);
 			this.newItem = null;
 		},
 
 		handleRemove(index) {
 			this.$emit('input', [
-				...this.value.filter((_, i) => index !== i),
+				...this.internalValue.filter((_, i) => index !== i),
 			]);
-		},
-
-		handleToggle(index) {
-			this.$emit('input', [
-				...this.value.map((item, i) => {
-					if (index === i) {
-						item.done = !item.done;
-					}
-
-					return item;
-				}),
-			]);
-		},
-
-		handleEdit(index) {
-			this.editItem = `${this.value[index].description}`;
-			this.editMode = true;
-			this.selectedIndex = index;
-		},
-
-		finishEdit(index) {
-			this.$emit('input', [
-				...this.value.map((item, i) => {
-					if (index === i) {
-						item.description = this.editItem;
-					}
-					return item;
-				}),
-			]);
-			this.editMode = false;
-			this.selectedIndex = -1;
-			this.editItem = null;
-		},
-
-		getHtmlFromDescription(description) {
-			let derText = description;
-			const elements = derText.match(/\[.*?\)/g);
-			if (elements != null && elements.length > 0) {
-				for (let el of elements) {
-					let text = el.match(/\[(.*?)\]/)[1];
-					let url = el.match(/\((.*?)\)/)[1];
-					derText = derText.replace(el,`<a href="${url}" target="_blank" @click.stop>${text}</a>`);
-				}
-			}
-			return derText;
 		},
 	},
 };
 </script>
-
-<style scoped>
-.done {
-	text-decoration: line-through;
-	opacity: 0.3;
-}
-
-.v-list-item__subtitle, .v-list-item__title {
-	flex: 1 1 100%;
-	white-space: normal !important;
-}
-</style>
