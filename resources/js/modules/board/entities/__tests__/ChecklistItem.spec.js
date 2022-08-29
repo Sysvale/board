@@ -1,6 +1,6 @@
 import ChecklistItem from '../ChecklistItem';
 
-describe('ChecklistItem', () => {
+describe('ChecklistItem class', () => {
 	test('if object structure is correct', () => {
 		const item = new ChecklistItem({ description: 'test' });
 
