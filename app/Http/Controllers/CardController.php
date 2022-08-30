@@ -92,6 +92,26 @@ class CardController extends Controller
 		return $this->mountPayload($team_board_lists, $cards);
 	}
 
+	public function getTaskCardsFromKaizen(Request $request)
+	{
+		$request->validate([
+			'team_id' => 'required|string',
+		]);
+
+		$kaizen = Board::where('key', BoardKeys::KAIZEN)->first();
+
+		$team_board_lists = (
+			$this->board_list_service->getTaskLists($request->team_id)
+		)->pluck('id');
+	
+		$cards = $this->card_service->getTasksFromBoard(
+			$kaizen->id,
+			$team_board_lists
+		);
+
+		return $this->mountPayload($team_board_lists, $cards);
+	}
+
 	public function getCompanyPlanningCards()
 	{
 

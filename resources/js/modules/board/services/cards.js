@@ -16,6 +16,10 @@ export const getTaskCardsFromNotPlanned = (params) => http.get('/cards/from-not-
 	params,
 });
 
+export const getTaskCardsFromKaizen = (params) => http.get('/cards/from-kaizen', {
+	params,
+});
+
 export const getCompanyPlanningCards = (params) => http.get('/cards/from-company-planning', {
 	params,
 });
