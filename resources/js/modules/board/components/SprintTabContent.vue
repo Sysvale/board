@@ -61,25 +61,16 @@
 		>
 			<v-expansion-panel-header>
 				<div class="d-flex align-center">
-					<v-tooltip
-						top
-						max-width="300"
-						color="rgba(0, 0, 0, 0.95)"
+					<span
+						class="d-flex align-center"
+						v-bind="attrs"
+						v-on="on"
 					>
-						<template v-slot:activator="{ on, attrs }">
-							<span
-								class="d-flex align-center"
-								v-bind="attrs"
-								v-on="on"
-							>
-								<v-icon class="mr-2">
-									moving
-								</v-icon>
-								<h3 class="mb-0">Kaizen</h3>
-							</span>
-						</template>
-						<span>Kaizen ("melhoria") é um instrumento com finalidade de promover aprimoramento contínuo de práticas e processos e diminuir desperdícios.</span>
-					</v-tooltip>
+						<v-icon class="mr-2">
+							moving
+						</v-icon>
+						<h3 class="mb-0">Kaizen (item de melhoria)</h3>
+					</span>
 				</div>
 			</v-expansion-panel-header>
 
