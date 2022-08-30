@@ -62,8 +62,6 @@
 				<div class="d-flex align-center">
 					<span
 						class="d-flex align-center"
-						v-bind="attrs"
-						v-on="on"
 					>
 						<v-icon class="mr-2">
 							moving
