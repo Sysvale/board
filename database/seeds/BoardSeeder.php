@@ -17,10 +17,10 @@ class BoardSeeder extends Seeder
 
 		$defaultBoards->each(
 			function ($item) {
-					$list = new Board();
-					$list->name = $item['name'];
-					$list->key = $item['key'];
-					$list->save();
+				$list = new Board();
+				$list->name = $item['name'];
+				$list->key = $item['key'];
+				$list->save();
 			}
 		);
 	}
@@ -35,6 +35,10 @@ class BoardSeeder extends Seeder
 			[
 				'name' => 'Não planejados',
 				'key' => BoardKeys::NOT_PLANNED,
+			],
+			[
+				'name' => 'Kaizen',
+				'key' => BoardKeys::KAIZEN,
 			],
 			[
 				'name' => 'Sprint Backlog',
