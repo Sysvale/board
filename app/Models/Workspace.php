@@ -15,6 +15,7 @@ class Workspace extends Model
 		'name',
 		'lottie_file',
 		'settings',
+		'inactive',
 	];
 
 	protected $appends = ['id'];

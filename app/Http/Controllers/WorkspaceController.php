@@ -15,9 +15,15 @@ use App\Constants\CardTypes;
 
 class WorkspaceController extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
-		$workspaces = Workspace::all();
+		if(isset($request->with_inactive)) {
+			$workspaces = Workspace::all();
+		} else {
+			$workspaces = Workspace::where('inactive', false)
+				->orWhereNull('inactive')
+				->get();
+		}
 
 		return WorkspaceResource::collection($workspaces);
 	}
@@ -55,6 +61,7 @@ class WorkspaceController extends Controller
 			'label_ids' => 'nullable|array',
 			'lottie_file' => 'nullable|string',
 			'settings' => 'nullable|array',
+			'inactive' => 'nullable|boolean',
 		]);
 
 		$workspace->update($data);

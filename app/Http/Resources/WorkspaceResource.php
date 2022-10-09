@@ -22,6 +22,7 @@ class WorkspaceResource extends JsonResource
 			'team_names' => $this->team_names,
 			'lottie_file' => $this->lottie_file,
 			'settings' => (object) $this->settings,
+			'status' => $this->inactive ? 'Desativado' : '',
 		];
 	}
 }
