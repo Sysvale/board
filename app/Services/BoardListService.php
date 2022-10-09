@@ -9,6 +9,7 @@ use App\Models\Team;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
 use App\Services\BoardListService;
+use App\Services\WorkspaceService;
 use App\Constants\CardTypes;
 
 class BoardListService
@@ -30,12 +31,14 @@ class BoardListService
 
 	public function getCompanyPlanningLists()
 	{
+		$workspace_service = new WorkspaceService();
+
 		$planningLists = [
 			BoardListsKeys::NOT_PRIORITIZED,
 			BoardListsKeys::BACKLOG,
 		];
 
-		$workspaces = Workspace::get();
+		$workspaces = $workspace_service->getActiveWorkspaces();
 
 		$planningLists = array_merge(
 			$planningLists,
