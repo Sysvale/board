@@ -80,7 +80,7 @@
 											label="URL do Lottie File"
 										></v-text-field>
 									</v-row>
-									<v-row>
+									<v-row v-if="selectedItem.settings">
 										<v-switch
 											v-model="selectedItem.settings.noPlanningProblems"
 											label="Esconder board Suporte, issues e débitos técnicos"
@@ -89,6 +89,11 @@
 										<v-switch
 											v-model="selectedItem.settings.noSprintDevlog"
 											label="Esconder board Sprint Devlog"
+										></v-switch>
+
+										<v-switch
+											v-model="selectedItem.inactive"
+											label="Desativar Workspace"
 										></v-switch>
 									</v-row>
 								</v-container>
@@ -187,6 +192,12 @@ export default {
 					sortable: true,
 					value: 'teamNames',
 				},
+				{
+					text: 'Status',
+					align: 'start',
+					sortable: true,
+					value: 'status',
+				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
 			editMode: false,
@@ -196,7 +207,7 @@ export default {
 			defaultItem: {
 				settings: {},
 			},
-		}
+		};
 	},
 
 	computed: {
@@ -259,10 +270,14 @@ export default {
 		},
 	},
 
+	beforeMount() {
+		this.fetchWorkspaces();
+	},
+
 	methods: {
 		isEmpty: (arg) => _.isEmpty(arg),
 		...mapActions('workspaces', [
-			'getWorkspaces',
+			'getWorkspacesIncludeInactive',
 			'deleteWorkspace',
 			'updateWorkspace',
 			'createWorkspace',
@@ -346,7 +361,7 @@ export default {
 		},
 
 		fetchWorkspaces() {
-			this.getWorkspaces().then((items) => {
+			this.getWorkspacesIncludeInactive().then((items) => {
 				this.setWorkspaces(items);
 			})
 			.finally(() => {
