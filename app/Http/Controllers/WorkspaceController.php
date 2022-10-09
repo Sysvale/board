@@ -12,17 +12,18 @@ use App\Models\Goal;
 use App\Models\BoardList;
 use App\Constants\BoardListsKeys;
 use App\Constants\CardTypes;
+use App\Services\WorkspaceService;
 
 class WorkspaceController extends Controller
 {
 	public function index(Request $request)
 	{
+		$workspace_service = new WorkspaceService();
+
 		if(isset($request->with_inactive)) {
-			$workspaces = Workspace::all();
+			$workspaces = $workspace_service->getWorkspacesWithInactive();
 		} else {
-			$workspaces = Workspace::where('inactive', false)
-				->orWhereNull('inactive')
-				->get();
+			$workspaces = $workspace_service->getActiveWorkspaces();
 		}
 
 		return WorkspaceResource::collection($workspaces);
