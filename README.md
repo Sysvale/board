@@ -42,6 +42,13 @@
   $ docker-compose exec board-server chown -R www-data:www-data bootstrap/cache/
   ```
 
+- Para o funcionamento correto, você precisa preencher a base de dados com alguns registros. Basta executar:
+  ```
+  $ docker-compose exec board-server php artisan setup:app
+  ```
+<small> **detalhe**: Caso você esteja em ambiente de desenvolvimento e não possua nenhum outro usuário na base, o comando acima cria um usuário com as seguintes credenciais email: `admin@admin.com` e senha `admin`
+
+
 - Realize o *build* do *frontend*:
 
   ```bash
