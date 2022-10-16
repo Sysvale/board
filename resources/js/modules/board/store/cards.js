@@ -7,7 +7,6 @@ import {
 	updateCard,
 	updateCardsPositions,
 	createCards,
-	synchronize
 } from '../services/cards';
 
 const modules = [
@@ -17,7 +16,6 @@ const modules = [
 	{ updateCard },
 	{ updateCardsPositions },
 	{ createCards },
-	{ synchronize },
 ];
 
 export default {
