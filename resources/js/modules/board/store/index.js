@@ -5,7 +5,6 @@ import cards from './cards';
 import labels from './labels';
 import teams from './teams';
 import boards from './boards';
-import issues from './issues';
 import sprint from './sprint';
 import events from './events';
 import goals from './goals';
@@ -23,7 +22,6 @@ export default new Vuex.Store({
 		labels,
 		teams,
 		boards,
-		issues,
 		sprint,
 		events,
 		goals,
