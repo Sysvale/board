@@ -32,24 +32,4 @@ class BoardListController extends Controller
 	{
 		return (new BoardListService())->getCompanyPlanningLists();
 	}
-
-	public function getIssuesLists()
-	{
-		$issuesLists = BoardListsKeys::DEFAULT_ISSUES_LISTS;
-
-		$teams = Team::get();
-		$issuesLists = array_merge(
-			$issuesLists,
-			$teams->map(
-				function ($item) {
-					return $item->key . 'Dev';
-				}
-			)->toArray()
-		);
-
-		return BoardList::whereIn('key', $issuesLists)
-			->get()
-			->sortBy('position')
-			->values();
-	}
 }
