@@ -82,11 +82,6 @@
 									</v-row>
 									<v-row v-if="selectedItem.settings">
 										<v-switch
-											v-model="selectedItem.settings.noPlanningProblems"
-											label="Esconder board Suporte, issues e débitos técnicos"
-										></v-switch>
-
-										<v-switch
 											v-model="selectedItem.settings.noSprintDevlog"
 											label="Esconder board Sprint Devlog"
 										></v-switch>
