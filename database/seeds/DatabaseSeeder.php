@@ -11,14 +11,6 @@ class DatabaseSeeder extends Seeder
 	 */
 	public function run()
 	{
-		$this->call(
-			[
-				TeamSeeder::class,
-				BoardSeeder::class,
-				LabelSeeder::class,
-				BoardListSeeder::class,
-				MemberSeeder::class,
-			]
-		);
+		$this->call([]);
 	}
 }
