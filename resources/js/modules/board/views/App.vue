@@ -107,38 +107,6 @@
 			>
 				Central de Processos
 			</v-btn>
-
-			<v-menu offset-y>
-				<template v-slot:activator="{ on, attrs }">
-					<v-btn
-						color="#FFEFF9"
-						dark
-						v-bind="attrs"
-						v-on="on"
-					>
-						<span style="color: black">Links úteis</span>
-					</v-btn>
-				</template>
-				<v-list>
-					<v-list-item
-						v-for="(item, index) in utilLinks"
-						:key="index"
-					>
-						<v-list-item-title>
-							<v-btn
-								:href="item.link"
-								target="_blank"
-								text
-							>
-								{{ item.text }}
-								<v-icon class="ml-2">
-									open_in_new
-								</v-icon>
-							</v-btn>
-						</v-list-item-title>
-					</v-list-item>
-				</v-list>
-			</v-menu>
 			<v-btn
 				icon
 				@click="goToSettings()"
@@ -187,7 +155,6 @@ export default {
 	data() {
 		return {
 			currentPage: 'Planning',
-			utilLinks: [],
 		};
 	},
 
@@ -258,8 +225,6 @@ export default {
 	},
 
 	mounted() {
-		this.utilLinks = JSON.parse(process.env.MIX_UTIL_LINKS || '[]');
-
 		document.title = this.$route && this.$route.meta
 			? `${this.$route.meta.title} | Trelássio` : 'Trelássio';
 

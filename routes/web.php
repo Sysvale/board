@@ -24,7 +24,6 @@ Route::group(
 		Route::get('/lists/default', 'BoardListController@getTaskLists');
 		Route::get('/lists/planning/company', 'BoardListController@getCompanyPlanningLists');
 		Route::get('/lists/planning/{workspace}', 'BoardListController@getPlanningLists');
-		Route::get('/lists/issues/', 'BoardListController@getIssuesLists');
 		Route::get('/lists/devlog', 'BoardListController@getDevlogLists');
 
 		Route::delete('cards/delete-many', 'CardController@destroyMany')
@@ -47,12 +46,12 @@ Route::group(
 			'CardController@updateCardsPositions'
 		);
 		Route::get('/user-stories/{team}', 'CardController@getUserStoriesByTeam');
-		Route::get('/cards/synchronize', 'CardController@synchronize');
 		Route::get(
 			'/sprint/summary/current/{team}',
 			'CardController@getCurrentSprintSummaryByTeam'
 		);
-		Route::get('/labels', 'LabelController@index');
+		Route::resource('labels', 'LabelController');
+		Route::get('/labels/workspace/{workspace}', 'LabelController@getLabelsByWorkspaceId');
 		Route::resource('members', 'MemberController');
 		Route::resource('/teams', 'TeamController');
 		Route::get('/boards', 'BoardController@index');

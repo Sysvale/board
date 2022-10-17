@@ -26,7 +26,6 @@ class Card extends Model
 		'artifacts',
 		'checklist',
 		'type',
-		'gitlab_id',
 		'workspace_id',
 		'description',
 		'rating',
@@ -67,11 +66,6 @@ class Card extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class);
-	}
-
-	public function scopeFromGitlab($query)
-	{
-		return $query->where('from_gitlab', true);
 	}
 
 	public function getIsUserStoryAttribute()

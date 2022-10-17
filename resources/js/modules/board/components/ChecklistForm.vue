@@ -86,7 +86,7 @@
 				color="#333"
 				@click="handleAdd"
 			>
-				{{ addBuletttonText }}
+				{{ addButtonText }}
 			</v-btn>
 		</div>
 	</div>

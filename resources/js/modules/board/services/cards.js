@@ -35,5 +35,3 @@ export const deleteCard = (id) => http.delete(`/cards/${id}`);
 export const deleteManyCards = (payload) => http.delete('/cards/delete-many', { data: payload });
 
 export const updateCardsPositions = (cards = []) => http.post('/cards/update-positions', { cards });
-
-export const synchronize = () => http.get('/cards/synchronize');
