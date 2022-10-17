@@ -87,6 +87,7 @@
 										></v-switch>
 
 										<v-switch
+											v-if="editMode"
 											v-model="selectedItem.inactive"
 											label="Desativar Workspace"
 										></v-switch>
@@ -358,9 +359,8 @@ export default {
 		fetchWorkspaces() {
 			this.getWorkspacesIncludeInactive().then((items) => {
 				this.setWorkspaces(items);
-			})
-			.finally(() => {
-				this.selectedItem = {};
+			}).finally(() => {
+				this.selectedItem = { ...this.defaultItem };
 			});
 		},
 
