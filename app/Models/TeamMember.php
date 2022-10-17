@@ -25,4 +25,9 @@ class TeamMember extends Model
 	{
 		return $this->belongsTo(Member::class);
 	}
+
+	public function company()
+	{
+		return $this->belongsTo(Company::class);
+	}
 }
