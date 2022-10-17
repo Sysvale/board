@@ -1,17 +1,17 @@
 <template>
-<v-container>
-	<v-skeleton-loader
-		v-if="loading"
-		class="mx-auto"
-		type="table"
-	></v-skeleton-loader>
-	<v-data-table
-		v-else
-		:headers="headers"
-		:items="members"
-		sort-by="name"
-		class="elevation-1"
-	>
+	<v-container>
+		<v-skeleton-loader
+			v-if="loading"
+			class="mx-auto"
+			type="table"
+		/>
+		<v-data-table
+			v-else
+			:headers="headers"
+			:items="members"
+			sort-by="name"
+			class="elevation-1"
+		>
 			<template v-slot:top>
 				<v-toolbar
 					flat
@@ -21,8 +21,8 @@
 						class="mx-4"
 						inset
 						vertical
-					></v-divider>
-					<v-spacer></v-spacer>
+					/>
+					<v-spacer />
 					<v-dialog
 						v-model="dialog"
 						max-width="500px"
@@ -49,7 +49,7 @@
 										<v-text-field
 											v-model="selectedItem.name"
 											label="Nome"
-										></v-text-field>
+										/>
 									</v-row>
 									<v-row>
 										<v-text-field
@@ -74,7 +74,7 @@
 										<v-text-field
 											v-model="selectedItem.avatarUrl"
 											label="URL do avatar"
-										></v-text-field>
+										/>
 									</v-row>
 
 									<v-row>
@@ -91,7 +91,7 @@
 							</v-card-text>
 
 							<v-card-actions>
-								<v-spacer></v-spacer>
+								<v-spacer />
 								<v-btn
 									color="blue darken-1"
 									text
@@ -110,14 +110,35 @@
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
-					<v-dialog v-model="dialogDelete" max-width="500px">
+					<v-dialog
+						v-model="dialogDelete"
+						max-width="500px"
+					>
 						<v-card>
-							<v-card-title class="headline">Deseja mesmo deletar {{ selectedItem.name }}?</v-card-title>
+							<v-card-title
+								class="headline"
+							>
+								Deseja mesmo deletar {{ selectedItem.name }}?
+							</v-card-title>
 							<v-card-actions>
-								<v-spacer></v-spacer>
-								<v-btn color="blue darken-1" text @click="closeDelete">Cancelar</v-btn>
-								<v-btn color="blue darken-1" text @click="deleteItemConfirm">Sim</v-btn>
-								<v-spacer></v-spacer>
+								<v-spacer />
+								<v-btn
+									color="blue
+									darken-1"
+									text
+									@click="closeDelete"
+								>
+									Cancelar
+								</v-btn>
+								<v-btn
+									color="blue
+									darken-1"
+									text
+									@click="deleteItemConfirm"
+								>
+									Sim
+								</v-btn>
+								<v-spacer />
 							</v-card-actions>
 						</v-card>
 					</v-dialog>
@@ -159,7 +180,7 @@ export default {
 		teamId: {
 			type: String,
 			default: null,
-		}
+		},
 	},
 
 	data() {
@@ -190,11 +211,11 @@ export default {
 	},
 
 	computed: {
-		formTitle () {
+		formTitle() {
 			return !this.editMode ? 'Novo membro' : 'Editar item';
 		},
 
-		formIsValid () {
+		formIsValid() {
 			return !!this.selectedItem.name && this.selectedItem.name.trim()
 			&& !!this.selectedItem.email && this.selectedItem.email.trim()
 			&& /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.selectedItem.email)
@@ -206,7 +227,7 @@ export default {
 		}),
 
 		...mapState('members', {
-			members: state => state.items,
+			members: ({ items }) => items,
 			isGetting: ({ getMembers }) => getMembers.isFetching,
 			isCreating: ({ createMember }) => createMember.isFetching,
 			isUpdating: ({ updateMember }) => updateMember.isFetching,
@@ -223,15 +244,17 @@ export default {
 		},
 
 		teamName() {
-			return item => item.teamId ? this.teams.filter((team) => team.id === item.teamId)[0].name : '--';
-		}
+			return (item) => (item.teamId ? this.teams.filter((team) => team.id === item.teamId)[0].name : '--');
+		},
 	},
 
 	watch: {
-		dialog (val) {
+		dialog(val) {
+			// eslint-disable-next-line no-unused-expressions
 			val || this.close();
 		},
-		dialogDelete (val) {
+		dialogDelete(val) {
+			// eslint-disable-next-line no-unused-expressions
 			val || this.closeDelete();
 		},
 	},
@@ -249,55 +272,54 @@ export default {
 			'setItems',
 		]),
 
-		editItem (item) {
+		editItem(item) {
 			this.editMode = true;
-			this.selectedItem = Object.assign({}, item);
+			this.selectedItem = { ...item };
 			this.dialog = true;
 		},
 
-		deleteItem (item) {
-			this.selectedItem = Object.assign({}, item);
+		deleteItem(item) {
+			this.selectedItem = { ...item };
 			this.dialogDelete = true;
 		},
 
-		deleteItemConfirm () {
-			const deletedId = _.clone(this.selectedItem.id);
+		deleteItemConfirm() {
 			this.deleteMember(this.selectedItem.id)
 				.then(() => {
 					this.fetchMembers();
-				})
+				});
 			this.closeDelete();
 		},
 
-		close () {
+		close() {
 			this.dialog = false;
 			this.$nextTick(() => {
-				this.selectedItem = Object.assign({}, this.defaultItem);
+				this.selectedItem = {};
 				this.editMode = false;
 			});
 		},
 
-		closeDelete () {
+		closeDelete() {
 			this.dialogDelete = false;
 			this.$nextTick(() => {
-				this.selectedItem = Object.assign({}, this.defaultItem);
+				this.selectedItem = {};
 				this.editMode = false;
 			});
 		},
 
-		save () {
+		save() {
 			const member = {
 				...this.selectedItem,
 			};
 
 			if (this.editMode) {
 				this.updateMember(convertKeysToSnakeCase(member))
-					.then((item) => {
+					.then(() => {
 						this.fetchMembers();
 					});
 			} else {
 				this.createMember(convertKeysToSnakeCase(member))
-					.then((item) => {
+					.then(() => {
 						this.fetchMembers();
 					});
 			}
@@ -307,8 +329,7 @@ export default {
 		fetchMembers() {
 			this.getMembers().then((items) => {
 				this.setItems(items);
-			})
-			.finally(() => {
+			}).finally(() => {
 				this.selectedItem = {};
 			});
 		},
@@ -326,5 +347,5 @@ export default {
 			}
 		},
 	},
-}
+};
 </script>
