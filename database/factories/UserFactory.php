@@ -1,6 +1,9 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use App\Models\Company;
+use App\Models\Member;
 use App\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -21,9 +24,29 @@ $factory->define(User::class, function (Faker $faker) {
 		'name' => $faker->name,
 		'email' => $faker->unique()->safeEmail,
 		'email_verified_at' => now(),
-		'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+		'password' => bcrypt('sysbrau'), // password
 		'remember_token' => Str::random(10),
 		'active' => true,
 		'type' => 'A',
 	];
+});
+
+$factory->state(User::class, 'with-member', function () {
+    return [
+        'member_id' => factory(Member::class)
+			->create()
+			->id,
+    ];
+});
+
+$factory->state(User::class, 'with-member-company', function () {
+    return [
+        'member_id' => factory(Member::class)
+			->state('with-company')
+			->create()
+			->id,
+		'company_id' => factory(Company::class)
+			->create()
+			->id,
+    ];
 });
