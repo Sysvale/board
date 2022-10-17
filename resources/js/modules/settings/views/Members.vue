@@ -55,7 +55,8 @@
 										<v-text-field
 											v-model="selectedItem.email"
 											label="Email"
-											:suffix="emailSuffix"
+											type="email"
+											:rules="emailRules"
 										/>
 									</v-row>
 									<v-row>
@@ -182,8 +183,10 @@ export default {
 			],
 			editMode: false,
 			selectedItem: {},
-			emailSuffix: '@sysvale.com',
-		}
+			emailRules: [
+				(v) => !v || /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'Informe um email válido',
+			],
+		};
 	},
 
 	computed: {
@@ -192,7 +195,10 @@ export default {
 		},
 
 		formIsValid () {
-			return !!this.selectedItem.name && this.selectedItem.name.trim();
+			return !!this.selectedItem.name && this.selectedItem.name.trim()
+			&& !!this.selectedItem.email && this.selectedItem.email.trim()
+			&& /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.selectedItem.email)
+			&& !!this.selectedItem.teamIds && this.selectedItem.teamIds.length > 0;
 		},
 
 		...mapState('teams', {
@@ -280,10 +286,8 @@ export default {
 		},
 
 		save () {
-			const email = this.selectedItem.email ? (this.selectedItem.email + this.emailSuffix) : null;
 			const member = {
 				...this.selectedItem,
-				email,
 			};
 
 			if (this.editMode) {
