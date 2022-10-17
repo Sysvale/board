@@ -13,44 +13,6 @@
 			class="px-2"
 		>
 			<v-expansion-panel
-				v-if="currentWorkspace && !currentWorkspace.settings.noPlanningProblems"
-				:key="PlanningGroups.PROBLEMS"
-				@change="handleProblemsPanelChange"
-			>
-				<v-expansion-panel-header>
-					<div class="d-flex align-center">
-						<v-icon class="mr-2">
-							bug_report
-						</v-icon>
-						<h3 class="mb-0">Suporte, issues e débitos técnicos</h3>
-					</div>
-				</v-expansion-panel-header>
-				<v-expansion-panel-content>
-					<v-btn
-						:disabled="syncing"
-						:dark="!syncing"
-						color="#fc6d26"
-						class="mb-3"
-						depressed
-						small
-						outlined
-						@click.stop="syncing = true"
-					>
-						{{ syncing ? 'Sincronizando...' : 'Sincronizar com GitLab' }}
-					</v-btn>
-					<gitlab-synchronizer
-						v-if="syncing"
-						@finished="finishedHandler"
-					/>
-					<board
-						v-if="wasSynced"
-						:namespace="`${currentWorkspace.name}problems`"
-						:lists="issuesLists"
-						:getCards="getPlanningCards"
-					/>
-				</v-expansion-panel-content>
-			</v-expansion-panel>
-			<v-expansion-panel
 				:key="PlanningGroups.PLANNING"
 			>
 				<v-expansion-panel-header>
@@ -84,7 +46,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Board from '../components/Board.vue';
-import GitlabSynchronizer from '../components/GitlabSynchronizer.vue';
 import PlanningGroups from '../constants/PlanningGroups';
 
 import {
@@ -96,16 +57,12 @@ import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 export default {
 	components: {
 		Board,
-		GitlabSynchronizer,
 	},
 	data() {
 		return {
-			panels: [this.currentWorkspace && !this.currentWorkspace.settings.noPlanningProblems ? 1 : 0],
-			syncing: false,
-			wasSynced: true,
+			panels: [0],
 			PlanningGroups,
 			planningLists: [],
-			issuesLists: [],
 		};
 	},
 
@@ -133,22 +90,6 @@ export default {
 		...mapActions('planning', [
 			'getPlanningLists',
 		]),
-
-		finishedHandler() {
-			this.syncing = false;
-			this.wasSynced = false;
-			this.$nextTick().then(() => {
-				this.wasSynced = true;
-			});
-		},
-
-		handleProblemsPanelChange() {
-			if (this.panels.indexOf(0) > -1) {
-				this.showSyncButton = true;
-				return;
-			}
-			this.showSyncButton = false;
-		},
 	},
 };
 </script>
