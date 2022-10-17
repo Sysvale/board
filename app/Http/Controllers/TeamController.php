@@ -26,11 +26,16 @@ class TeamController extends Controller
 			'board_lists' => 'required|array',
 			'board_lists.*.name' => 'required',
 			'board_lists.*.position' => 'required',
+			'company_id' => 'required',
 		]);
+
+		$company_id = $request->company_id;
 
 		$team = Team::create([
 			'name' => $request->name,
 		]);
+
+		$team->company()->attach($company_id);
 
 		$team->syncBoardLists($request['board_lists'] ?? []);
 
