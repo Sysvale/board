@@ -50,7 +50,8 @@ Route::group(
 			'/sprint/summary/current/{team}',
 			'CardController@getCurrentSprintSummaryByTeam'
 		);
-		Route::get('/labels', 'LabelController@index');
+		Route::resource('labels', 'LabelController');
+		Route::get('/labels/workspace/{workspace}', 'LabelController@getLabelsByWorkspaceId');
 		Route::resource('members', 'MemberController');
 		Route::resource('/teams', 'TeamController');
 		Route::get('/boards', 'BoardController@index');
