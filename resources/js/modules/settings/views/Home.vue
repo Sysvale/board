@@ -20,5 +20,12 @@
 		>
 			Times
 		</v-btn>
+
+		<v-btn
+			link
+			to="/settings/labels"
+		>
+			Categorias
+		</v-btn>
 	</v-container>
 </template>
