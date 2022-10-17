@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Models\Team;
 use App\Models\Label;
+use App\Traits\Models\hasCompanyGlobalScope;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Workspace extends Model
 {
 	use SoftDeletes;
+	use hasCompanyGlobalScope;
 
 	protected $fillable = [
 		'name',

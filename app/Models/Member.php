@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\User;
 use App\Models\TeamMember;
+use App\Traits\Models\hasCompanyGlobalScope;
 use Illuminate\Support\Str;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
+	use hasCompanyGlobalScope;
 	use SoftDeletes;
 
 	protected $fillable = [
@@ -24,6 +26,7 @@ class Member extends Model
 	{
 		return $this->hasOne(User::class, 'member_id');
 	}
+	
 	public function company()
 	{
 		return $this->belongsTo(Company::class);
