@@ -37,15 +37,15 @@ class WorkspaceController extends Controller
 			'label_ids' => 'nullable|array',
 			'lottie_file' => 'nullable|string',
 			'settings' => 'nullable|array',
-			'company_id' => 'required',
+			// 'company_id' => 'required',
 		]);
 
-		$company_id = $request->company_id;
+		// $company_id = $request->company_id;
 
 		$workspace = Workspace::create($data);
 		$workspace->associateMany(Team::class, $data['team_ids'] ?? []);
 		$workspace->associateMany(Label::class, $data['label_ids'] ?? []);
-		$workspace->company()->attach($company_id);
+		// $workspace->company()->attach($company_id);
 
 		Goal::create([
 			'title' => 'Defina um objetivo',

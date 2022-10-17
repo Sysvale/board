@@ -26,18 +26,18 @@ class MemberController extends Controller
 			'team_ids' => 'required|array',
 			'avatar_url' => 'nullable|string',
 			'email' => 'required|email',
-			'company_id' => 'required',
+			// 'company_id' => 'required',
 		]);
 
-		$company_id = $request->company_id;
+		// $company_id = $request->company_id;
 
 		$member = Member::create($data);
 
-		$member->company()->attach($company_id);
+		// $member->company()->attach($company_id);
 
 		$isRegisteredUser = User::where('email', $request->email)->exists();
 
-		$this->syncTeams($member, $data['team_ids'], $company_id);
+		$this->syncTeams($member, $data['team_ids']);
 
 		if (isset($request->email) && !$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
@@ -48,7 +48,7 @@ class MemberController extends Controller
 				'password' => Hash::make($generatedPassword),
 			]);
 
-			$user->company()->attach($company_id);
+			// $user->company()->attach($company_id);
 		}
 
 		return new MemberResource($member);
@@ -61,14 +61,14 @@ class MemberController extends Controller
 			'team_ids' => 'required|array',
 			'avatar_url' => 'nullable|string',
 			'email' => 'nullable|string',
-			'company_id' => 'required',
+			// 'company_id' => 'required',
 		]);
 
-		$company_id = $request->company_id;
+		// $company_id = $request->company_id;
 
 		$member->update($data);
 
-		$this->syncTeams($member, $data['team_ids'], $company_id);
+		// $this->syncTeams($member, $data['team_ids'], $company_id);
 
 		if ($member->user) {
 			$member->user->update([
@@ -90,7 +90,7 @@ class MemberController extends Controller
 		return Response::json('Membro excluído com sucesso!');
 	}
 
-	private function syncTeams(Member $member, array $team_ids, $company_id): void
+	private function syncTeams(Member $member, array $team_ids): void
 	{
 		$current = $member->team_ids;
 
@@ -107,7 +107,7 @@ class MemberController extends Controller
 			TeamMember::create([
 				'team_id' => $team_id,
 				'member_id' => $member->id,
-				'company_id' => $company_id,
+				// 'company_id' => $company_id,
 			]);
 		}
 	}
