@@ -45,8 +45,5 @@ $factory->state(User::class, 'with-member-company', function () {
 			->state('with-company')
 			->create()
 			->id,
-		'company_id' => factory(Company::class)
-			->create()
-			->id,
     ];
 });
