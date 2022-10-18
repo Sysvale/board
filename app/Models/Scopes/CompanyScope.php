@@ -17,7 +17,6 @@ class CompanyScope implements Scope
 
     public function apply(Builder $builder, Model $model): void
     {
-        dump($this->company_id);
         if ($this->company_id) {
             $builder->where('company_id', $this->company_id);
         }
