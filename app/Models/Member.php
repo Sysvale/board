@@ -4,14 +4,12 @@ namespace App\Models;
 
 use App\User;
 use App\Models\TeamMember;
-use App\Traits\Models\hasCompanyGlobalScope;
 use Illuminate\Support\Str;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
-	use hasCompanyGlobalScope;
 	use SoftDeletes;
 
 	protected $fillable = [

@@ -12,7 +12,6 @@ use App\Traits\Models\hasCompanyGlobalScope;
 class Team extends Model
 {
 	use SoftDeletes;
-	use hasCompanyGlobalScope;
 
 	protected $fillable = [
 		'name',

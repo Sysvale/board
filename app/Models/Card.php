@@ -4,13 +4,11 @@ namespace App\Models;
 
 use App\User;
 use App\Constants\CardTypes;
-use App\Traits\Models\hasCompanyGlobalScope;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 
 class Card extends Model
 {
-	use hasCompanyGlobalScope;
 	use SoftDeletes;
 
 	protected $fillable = [
