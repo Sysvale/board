@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Card;
+use App\Models\Team;
+use App\Observers\CardObserver;
+use App\Observers\TeamObserver;
 use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
 use Illuminate\Support\ServiceProvider;
@@ -29,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		JsonResource::withoutWrapping();
+		Card::observe(CardObserver::class);
+        Team::observe(TeamObserver::class);
 	}
 }
