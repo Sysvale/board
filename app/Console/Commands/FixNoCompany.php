@@ -49,7 +49,8 @@ class FixNoCompany extends Command
                 'name' => 'Sysvale',
                 'cnpj' => '20750009000127',
                 'phone' => '7436116061',
-                'email' => 'contato@sysvale.com'
+                'email' => 'contato@sysvale.com',
+                'email_sufix' => '@sysvale.com',
             )
         );
 
