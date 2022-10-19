@@ -15,7 +15,6 @@ $factory->define(Member::class, function (Faker $faker) {
 
 $factory->state(Member::class, 'with-company', function () {
     return [
-        'company_id' => '634e8d56280f967b5e10ab92',
-        // 'company_id' => factory(Company::class)->create()->id,
+        'company_id' => factory(Company::class)->create()->id,
     ];
 });
