@@ -14,6 +14,7 @@ class Company extends Model
         'name',
         'phone',
         'email',
+		'email_sufix',
     ];
 
 
