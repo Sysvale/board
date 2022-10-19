@@ -26,5 +26,6 @@ class CardObserver
 			return;
 		}
 		$card->number = 1;
+		$card->save();
 	}
 }
