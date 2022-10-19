@@ -11,10 +11,13 @@ class CardControllerTest extends TestCase
 	public function testItIsPossibleToDestroyManyCardsInASingleRequest()
 	{
 		Card::unsetEventDispatcher();
-		$cards_ids = factory(Card::class, 5)->create()->pluck('id')->toArray();
+		$cards_ids = factory(Card::class, 5)
+			->create()
+			->pluck('id')
+			->toArray();
 
 		$this
-			->actingAs(factory(User::class)->create())
+			->actingAs(factory(User::class)->state('with-member-company')->create())
 			->deleteJson(route('cards.destroy_many', ['ids' => $cards_ids]))
 			->assertStatus(204);
 
