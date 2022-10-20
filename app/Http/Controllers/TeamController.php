@@ -6,7 +6,6 @@ use App\Models\Team;
 use App\Models\BoardList;
 use App\Http\Resources\TeamResource;
 use Illuminate\Http\Request;
-use App\Constants\CardTypes;
 use Illuminate\Support\Facades\Response;
 
 
