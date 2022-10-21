@@ -34,6 +34,6 @@ class AppServiceProvider extends ServiceProvider
 	{
 		JsonResource::withoutWrapping();
 		Card::observe(CardObserver::class);
-        Team::observe(TeamObserver::class);
+		Team::observe(TeamObserver::class);
 	}
 }
