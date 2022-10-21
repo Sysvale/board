@@ -7,7 +7,6 @@ use App\Models\BoardList;
 use Jenssegers\Mongodb\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\SoftDeletes;
 use App\Services\BoardListService;
-use App\Traits\Models\hasCompanyGlobalScope;
 
 class Team extends Model
 {
@@ -23,7 +22,7 @@ class Team extends Model
 
 	protected $appends = ['id'];
 	protected $hidden = ['_id'];
-	
+
 	public function cards()
 	{
 		return $this->hasMany(Card::class);
