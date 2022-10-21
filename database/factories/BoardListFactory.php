@@ -17,4 +17,3 @@ $factory->define(BoardList::class, function (Faker $faker) {
 		'is_goalable' => $faker->boolean(50),
 	];
 });
-
