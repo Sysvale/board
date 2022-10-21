@@ -60,9 +60,10 @@ class FixNoCompany extends Command
 
         foreach ($members_to_add_company as $member) {
             if(!$member->company()->exists()) {
-                $this->info("Membro atualizado: $member->name");
                 $member->company_id = $company->id;
                 $member->save();
+
+                $this->info("Membro atualizado: $member->name");
             }
         }
 
@@ -70,19 +71,21 @@ class FixNoCompany extends Command
 
         foreach ($teams_to_add_company as $team) {
             if(!$team->company()->exists()) {
-                $this->info("Time atualizado: $team->name");
                 $team->company_id = $company->id;
                 $team->save();
+                
+                $this->info("Time atualizado: $team->name");
             }
         }
 
-        $teams_to_add_company = TeamMember::where('company_id', null)->get();
+        $teams_members_to_add_company = TeamMember::where('company_id', null)->get();
 
-        foreach ($teams_to_add_company as $team) {
-            if(!$team->company()->exists()) {
-                $this->info("Time atualizado: $team->id");
-                $team->company_id = $company->id;
-                $team->save();
+        foreach ($teams_members_to_add_company as $team_member) {
+            if(!$team_member->company()->exists()) {
+                $team_member->company_id = $company->id;
+                $team_member->save();
+                
+                $this->info("Time atualizado: $team_member->id");
             }
         }
 
@@ -90,9 +93,10 @@ class FixNoCompany extends Command
 
         foreach ($cards_to_add_company as $card) {
             if(!$card->company()->exists()) {
-                $this->info("Card atualizado: $card->name");
                 $card->company_id = $company->id;
                 $card->save();
+                
+                $this->info("Card atualizado: $card->name");
             }
         }
 
@@ -100,9 +104,10 @@ class FixNoCompany extends Command
 
         foreach ($workspaces_to_add_company as $workspace) {
             if(!$workspace->company()->exists()) {
-                $this->info("Workspace atualizado: $workspace->name");
                 $workspace->company_id = $company->id;
                 $workspace->save();
+                
+                $this->info("Workspace atualizado: $workspace->name");
             }
         }
     }
