@@ -10,13 +10,12 @@ class Company extends Model
     use SoftDeletes;
 
 	protected $fillable = [
-        'cnpj',
-        'name',
-        'phone',
-        'email',
+		'cnpj',
+		'name',
+		'phone',
+		'email',
 		'email_sufix',
     ];
-
 
     public function user()
 	{
@@ -33,6 +32,3 @@ class Company extends Model
 		return $this->hasMany(Team::class);
 	}
 }
-
-
-
