@@ -1,6 +1,9 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
+use App\Models\Company;
+use App\Models\Member;
 use App\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
@@ -26,4 +29,21 @@ $factory->define(User::class, function (Faker $faker) {
 		'active' => true,
 		'type' => 'A',
 	];
+});
+
+$factory->state(User::class, 'with-member', function () {
+    return [
+        'member_id' => factory(Member::class)
+			->create()
+			->id,
+    ];
+});
+
+$factory->state(User::class, 'with-member-company', function () {
+    return [
+        'member_id' => factory(Member::class)
+			->state('with-company')
+			->create()
+			->id,
+    ];
 });

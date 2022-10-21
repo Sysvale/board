@@ -8,7 +8,6 @@ use App\Models\BoardList;
 use App\Models\Team;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
-use App\Services\BoardListService;
 use App\Services\WorkspaceService;
 use App\Constants\CardTypes;
 

@@ -26,6 +26,11 @@ class Workspace extends Model
 		return $this->hasMany(Team::class);
 	}
 
+	public function company()
+	{
+		return $this->belongsTo(Company::class);
+	}
+
 	public function getTeamIdsAttribute()
 	{
 		return $this->teams->pluck('id')->toArray();
