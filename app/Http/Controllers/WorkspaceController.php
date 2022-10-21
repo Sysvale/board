@@ -39,9 +39,13 @@ class WorkspaceController extends Controller
 			'settings' => 'nullable|array',
 		]);
 
+		$company_id = auth()->user()->member->company_id;
+
 		$workspace = Workspace::create($data);
 		$workspace->associateMany(Team::class, $data['team_ids'] ?? []);
 		$workspace->associateMany(Label::class, $data['label_ids'] ?? []);
+		$workspace->company()->associate($company_id);
+		$workspace->save();
 
 		Goal::create([
 			'title' => 'Defina um objetivo',

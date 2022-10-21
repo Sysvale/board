@@ -28,16 +28,19 @@ class MemberController extends Controller
 			'email' => 'required|email',
 		]);
 
+		$company_id = auth()->user()->member->company_id;
+
 		$member = Member::create($data);
+		$member->company()->associate($company_id);
+		$member->save();
 
 		$isRegisteredUser = User::where('email', $request->email)->exists();
 
-		$this->syncTeams($member, $data['team_ids']);
+		$this->syncTeams($member, $data['team_ids'], $member->company_id);
 
 		if (isset($request->email) && !$isRegisteredUser) {
 			$generatedPassword = Str::random(12);
-
-			User::create([
+			$user = User::create([
 				'name' => $request->name,
 				'email' => $request->email,
 				'member_id' => $member->id,
@@ -57,8 +60,10 @@ class MemberController extends Controller
 			'email' => 'nullable|string',
 		]);
 
+
 		$member->update($data);
-		$this->syncTeams($member, $data['team_ids']);
+
+		$this->syncTeams($member, $data['team_ids'], $member->company_id);
 
 		if ($member->user) {
 			$member->user->update([
@@ -80,7 +85,7 @@ class MemberController extends Controller
 		return Response::json('Membro excluído com sucesso!');
 	}
 
-	private function syncTeams(Member $member, array $team_ids): void
+	private function syncTeams(Member $member, array $team_ids, $company_id): void
 	{
 		$current = $member->team_ids;
 
@@ -97,6 +102,7 @@ class MemberController extends Controller
 			TeamMember::create([
 				'team_id' => $team_id,
 				'member_id' => $member->id,
+				'company_id' => $company_id,
 			]);
 		}
 	}

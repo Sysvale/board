@@ -6,7 +6,6 @@ use App\Models\Team;
 use App\Models\BoardList;
 use App\Http\Resources\TeamResource;
 use Illuminate\Http\Request;
-use App\Constants\CardTypes;
 use Illuminate\Support\Facades\Response;
 
 
@@ -28,9 +27,14 @@ class TeamController extends Controller
 			'board_lists.*.position' => 'required',
 		]);
 
+		$company_id = auth()->user()->member->company_id;
+
 		$team = Team::create([
 			'name' => $request->name,
 		]);
+
+		$team->company()->associate($company_id);
+		$team->save();
 
 		$team->syncBoardLists($request['board_lists'] ?? []);
 

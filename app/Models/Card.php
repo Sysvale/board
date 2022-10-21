@@ -53,6 +53,11 @@ class Card extends Model
 		return $this->belongsTo('App\Models\Team');
 	}
 
+	public function company()
+	{
+		return $this->belongsTo(Company::class);
+	}
+
 	public function userStory()
 	{
 		return $this->belongsTo('App\Models\Card');
