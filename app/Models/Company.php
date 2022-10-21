@@ -17,17 +17,17 @@ class Company extends Model
 		'email_sufix',
     ];
 
-    public function user()
+	public function user()
 	{
 		return $this->hasMany(User::class);
 	}
 
-    public function workspace()
+	public function workspace()
 	{
 		return $this->hasMany(Workspace::class);
 	}
 
-    public function teams()
+	public function teams()
 	{
 		return $this->hasMany(Team::class);
 	}
