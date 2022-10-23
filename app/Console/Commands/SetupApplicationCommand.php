@@ -8,6 +8,8 @@ use App\Constants\BoardKeys;
 use App\Constants\CardTypes;
 use App\Models\BoardList;
 use App\Models\Board;
+use App\Models\Member;
+use App\Models\Company;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
@@ -51,7 +53,9 @@ class SetupApplicationCommand extends Command
 		$this->info('Iniciando...');
 
 		if($this->is_dev) {
-			$this->createAnUser();
+			$company = $this->createACompany();
+			$member = $this->createAMember($company);
+			$this->createAnUser($member);
 		}
 
 		$this->createBoards();
@@ -67,11 +71,11 @@ class SetupApplicationCommand extends Command
 
 		$default_boards = [
 			[
-				'name' => 'Impedimentos',
+				'name' => 'Agenda',
 				'key' => BoardKeys::IMPEDIMENTS,
 			],
 			[
-				'name' => 'Não planejados',
+				'name' => 'Não planejados e impedimentos',
 				'key' => BoardKeys::NOT_PLANNED,
 			],
 			[
@@ -137,17 +141,52 @@ class SetupApplicationCommand extends Command
 		});
 	}
 
-	private function createAnUser()
+	private function createACompany()
+	{
+		$this->titleDivider('Criando empresa/compania padrão...');
+
+		if(Company::get()->count() === 0) {
+			return factory(Company::class)->create();
+		}
+
+		$this->info('Empresa/compania padrão já existe');
+		return Company::get()->first();
+
+	}
+
+	private function createAMember($company)
+	{
+		$this->titleDivider('Criando membro padrão...');
+
+		if(Member::get()->count() === 0) {
+			$member = Member::create([
+				'name' => 'Administrador',
+			]);
+	
+			$member->company()->associate($company->id);
+	
+			$member->save();
+			return $member;
+		}
+
+		$this->info('Membro padrão já existe');
+		return Member::get()->first();
+	}
+
+	private function createAnUser($member)
 	{
 		$this->titleDivider('Criando usuário padrão...');
-		if (User::count() === 0) {
-			User::create([
+
+		if(User::get()->count() === 0) {
+			return User::create([
 				'email' => 'admin@admin.com',
 				'password' => Hash::make('admin'),
+				'member_id' => $member->id,
 			]);
-		} else {
-			$this->info('Já existe um usuário nesta base de dados');
 		}
+
+		$this->info('Usuário padrão já existe');
+		return User::get()->first();
 	}
 
 	private function titleDivider($text)
