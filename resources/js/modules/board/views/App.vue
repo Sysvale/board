@@ -14,7 +14,7 @@
 				<img
 					src="/images/logo.svg"
 					height="35px"
-					title="aka Trelindo"
+					title="Trelássio"
 				>
 			</a>
 			<v-icon
