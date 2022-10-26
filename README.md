@@ -6,6 +6,10 @@
   <p align="center">Uma ferramenta para ajudar na gestão de tarefas de múltiplos times utilizando o Scrum</p>
 </div>
 
+<p align="center">
+  <big><strong> Gostaria de ter o Trelássio na sua empresa? <a href="https://app.pipefy.com/public/form/gqTsy4ym" target="_blank">A gente te ajuda!</a> </strong></big>
+</p>
+
 ### Configurando o Trelássio
 
 <small>⚠️ ATENÇÃO ⚠️ Você deverá ter o [docker](https://docs.docker.com/engine/install/) e [docker-compose](https://docs.docker.com/compose/install/) instalado em sua máquina.</small>
