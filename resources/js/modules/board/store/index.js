@@ -10,6 +10,7 @@ import planning from './planning';
 
 import settingsModules from '../../settings/store';
 import processesModules from '../../processes/store';
+import reportsModules from '../../reports/store';
 
 Vue.use(Vuex);
 
@@ -24,5 +25,6 @@ export default new Vuex.Store({
 		planning,
 		...settingsModules,
 		...processesModules,
+		...reportsModules,
 	},
 });
