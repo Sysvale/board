@@ -117,6 +117,14 @@
 			</v-btn>
 			<v-btn
 				icon
+				@click="goToReports()"
+			>
+				<v-icon>
+					bar_chart
+				</v-icon>
+			</v-btn>
+			<v-btn
+				icon
 				@click="logout()"
 			>
 				<v-icon>
@@ -337,6 +345,10 @@ export default {
 
 		goToSettings() {
 			this.$router.push({ name: 'settings' });
+		},
+
+		goToReports() {
+			this.$router.push({ name: 'reports' });
 		},
 	},
 };
