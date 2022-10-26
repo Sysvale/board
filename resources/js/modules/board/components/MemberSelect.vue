@@ -8,12 +8,13 @@
 		>
 			<member-list
 				:members="value"
-				deletable
+				:deletable="!disabled"
 				full
 				@deleteItem="$emit('input', value.filter(i => i !== $event))"
 			>
 				<template v-slot:append>
 					<v-btn
+						v-if="!disabled"
 						class="ml-1"
 						icon
 						small
@@ -59,20 +60,24 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import MemberItem from './MemberItem';
+import MemberItem from './MemberItem.vue';
 import MemberList from './MemberList.vue';
 
 export default {
+	components: {
+		MemberItem,
+		MemberList,
+	},
+
 	props: {
 		value: {
 			type: [Object, String, Array],
 			default: null,
 		},
-	},
-
-	components: {
-		MemberItem,
-		MemberList,
+		disabled: {
+			type: Boolean,
+			default: false,
+		},
 	},
 
 	data() {
@@ -89,12 +94,12 @@ export default {
 	},
 
 	watch: {
-		select(newValue) {
+		select() {
 			setTimeout(() => {
-				if(!this.$refs.memberSelect) return;
+				if (!this.$refs.memberSelect) return;
 				this.$refs.memberSelect.isMenuActive = true;
 			}, 100);
-		}
-	}
-}
+		},
+	},
+};
 </script>
