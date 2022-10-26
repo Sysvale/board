@@ -54,4 +54,16 @@ class CardService
 
 		return CardResource::collection($cards)->groupBy('board_list_id');
 	}
+
+	public function deleteMany($cards_ids)
+	{
+		if(empty($cards_ids)) return;
+
+		foreach ($cards_ids as $id) {
+			$find = Card::find($id);
+			if($find) {
+				$find->delete();
+			}
+		}
+	}
 }
