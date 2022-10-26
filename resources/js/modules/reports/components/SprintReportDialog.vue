@@ -16,7 +16,7 @@
 			class="px-3 py-3"
 		>
 			<v-card-title>
-				Fechar sprint
+				{{ readonly ? 'Resumo da sprint' : 'Fechar sprint' }}
 			</v-card-title>
 			<sprint-report-dialog-content
 				v-if="dialog"
