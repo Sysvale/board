@@ -68,6 +68,9 @@ Route::group(
 
 		Route::apiResource('workspaces', 'WorkspaceController');
 		Route::apiResource('processes', 'ProcessController');
+		Route::apiResource('sprint-reports', 'SprintReportController')->only(['store']);
+		Route::get('sprint-reports/{team}', 'SprintReportController@getSprintReportByTeamId');
+
 
 		Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
 
