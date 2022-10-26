@@ -7,6 +7,7 @@ import sprint from './sprint';
 import events from './events';
 import goals from './goals';
 import planning from './planning';
+import sprintReport from './sprintReport';
 
 import settingsModules from '../../settings/store';
 import processesModules from '../../processes/store';
@@ -23,6 +24,7 @@ export default new Vuex.Store({
 		events,
 		goals,
 		planning,
+		sprintReport,
 		...settingsModules,
 		...processesModules,
 		...reportsModules,
