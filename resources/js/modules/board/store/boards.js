@@ -2,7 +2,7 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
-	getBoards
+	getBoards,
 } from '../services/boards';
 
 const modules = [
@@ -25,4 +25,4 @@ export default {
 			state.items = convertKeysToCamelCase(payload);
 		},
 	},
-}
+};

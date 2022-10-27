@@ -6,6 +6,10 @@
   <p align="center">Uma ferramenta para ajudar na gestão de tarefas de múltiplos times utilizando o Scrum</p>
 </div>
 
+<p align="center">
+  <big><strong> Gostaria de ter o Trelássio na sua empresa? <a href="https://app.pipefy.com/public/form/gqTsy4ym" target="_blank">A gente te ajuda!</a> </strong></big>
+</p>
+
 ### Configurando o Trelássio
 
 <small>⚠️ ATENÇÃO ⚠️ Você deverá ter o [docker](https://docs.docker.com/engine/install/) e [docker-compose](https://docs.docker.com/compose/install/) instalado em sua máquina.</small>
@@ -41,6 +45,13 @@
   $ docker-compose exec board-server chown -R www-data:www-data storage/
   $ docker-compose exec board-server chown -R www-data:www-data bootstrap/cache/
   ```
+
+- Para o funcionamento correto, você precisa preencher a base de dados com alguns registros. Basta executar:
+  ```
+  $ docker-compose exec board-server php artisan setup:app
+  ```
+<small> **detalhe**: Caso você esteja em ambiente de desenvolvimento e não possua nenhum outro usuário na base, o comando acima cria um usuário com as seguintes credenciais email: `admin@admin.com` e senha `admin`
+
 
 - Realize o *build* do *frontend*:
 

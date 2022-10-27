@@ -12,12 +12,19 @@ use App\Models\Goal;
 use App\Models\BoardList;
 use App\Constants\BoardListsKeys;
 use App\Constants\CardTypes;
+use App\Services\WorkspaceService;
 
 class WorkspaceController extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
-		$workspaces = Workspace::all();
+		$workspace_service = new WorkspaceService();
+
+		if(isset($request->with_inactive)) {
+			$workspaces = $workspace_service->getWorkspacesWithInactive();
+		} else {
+			$workspaces = $workspace_service->getActiveWorkspaces();
+		}
 
 		return WorkspaceResource::collection($workspaces);
 	}
@@ -32,9 +39,13 @@ class WorkspaceController extends Controller
 			'settings' => 'nullable|array',
 		]);
 
+		$company_id = auth()->user()->member->company_id;
+
 		$workspace = Workspace::create($data);
 		$workspace->associateMany(Team::class, $data['team_ids'] ?? []);
 		$workspace->associateMany(Label::class, $data['label_ids'] ?? []);
+		$workspace->company()->associate($company_id);
+		$workspace->save();
 
 		Goal::create([
 			'title' => 'Defina um objetivo',
@@ -55,6 +66,7 @@ class WorkspaceController extends Controller
 			'label_ids' => 'nullable|array',
 			'lottie_file' => 'nullable|string',
 			'settings' => 'nullable|array',
+			'inactive' => 'nullable|boolean',
 		]);
 
 		$workspace->update($data);

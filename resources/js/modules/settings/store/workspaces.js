@@ -3,6 +3,7 @@ import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
 	getWorkspaces,
+	getWorkspacesIncludeInactive,
 	createWorkspace,
 	updateWorkspace,
 	deleteWorkspace,
@@ -10,6 +11,7 @@ import {
 
 const modules = [
 	{ getWorkspaces },
+	{ getWorkspacesIncludeInactive },
 	{ createWorkspace },
 	{ updateWorkspace },
 	{ deleteWorkspace },

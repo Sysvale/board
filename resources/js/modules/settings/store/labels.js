@@ -2,11 +2,19 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
-	getTeams,
-} from '../services/teams';
+	getLabels,
+	createLabel,
+	updateLabel,
+	deleteLabel,
+	getLabelsByWorkspaceId,
+} from '../services/labels';
 
 const modules = [
-	{ getTeams },
+	{ getLabels },
+	{ createLabel },
+	{ updateLabel },
+	{ deleteLabel },
+	{ getLabelsByWorkspaceId },
 ];
 
 export default {
@@ -19,6 +27,7 @@ export default {
 	},
 	state: {
 		items: [],
+		selectedWorkspaceId: null,
 	},
 	getters: {
 		itemsByWorkspace(state, _, __, rootGetters) {
@@ -30,6 +39,9 @@ export default {
 	mutations: {
 		setItems(state, payload) {
 			state.items = convertKeysToCamelCase(payload);
+		},
+		setSelectedWorkspaceId(state, payload) {
+			state.selectedWorkspaceId = payload;
 		},
 	},
 };

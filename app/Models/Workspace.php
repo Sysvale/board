@@ -15,6 +15,7 @@ class Workspace extends Model
 		'name',
 		'lottie_file',
 		'settings',
+		'inactive',
 	];
 
 	protected $appends = ['id'];
@@ -23,6 +24,11 @@ class Workspace extends Model
 	public function teams()
 	{
 		return $this->hasMany(Team::class);
+	}
+
+	public function company()
+	{
+		return $this->belongsTo(Company::class);
 	}
 
 	public function getTeamIdsAttribute()

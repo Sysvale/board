@@ -24,6 +24,11 @@ class Member extends Model
 	{
 		return $this->hasOne(User::class, 'member_id');
 	}
+	
+	public function company()
+	{
+		return $this->belongsTo(Company::class);
+	}
 
 	public function getFullEmailAttribute()
 	{
@@ -32,7 +37,7 @@ class Member extends Model
 
 	public function getEmailAttribute()
 	{
-		return Str::before($this->full_email, '@sysvale.com');
+		return $this->full_email;
 	}
 
 	public function getHasLoginAttribute()

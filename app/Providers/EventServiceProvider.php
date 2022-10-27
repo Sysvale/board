@@ -35,8 +35,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-        Card::observe(CardObserver::class);
-        Team::observe(TeamObserver::class);
         //
     }
 }

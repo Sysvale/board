@@ -33,6 +33,11 @@ class Team extends Model
 		return $this->belongsTo(Workspace::class);
 	}
 
+	public function company()
+	{
+		return $this->belongsTo(Company::class);
+	}
+
 	public function board_lists()
 	{
 		return $this->hasMany(BoardList::class);
