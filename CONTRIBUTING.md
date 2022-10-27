@@ -14,7 +14,7 @@ Todas as contribuições são encorajadas e bem-vindas. Consulte o [Índice](#Í
 <!-- omit in toc -->
 ## Índice
 
-1. [Tenho uma dúvida](#tenho-uma-dvida)
+1. [Tenho uma dúvida](#tenho-uma-dúvida)
 1. [Como contribuir?](#como-contribuir)
    1. [Aviso legal](#aviso-legal)
    1. [Reportando um bug](#reportando-um-bug)
