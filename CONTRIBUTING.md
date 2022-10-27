@@ -18,7 +18,6 @@ Todas as contribuições são encorajadas e bem-vindas. Consulte o [Índice](#Í
 1. [Como contribuir?](#como-contribuir)
    1. [Aviso legal](#aviso-legal)
    1. [Reportando um bug](#reportando-um-bug)
-   1. [Como faço um bug report](#como-faço-um-bug-report)
    1. [Solicitando uma feature](#solicitando-uma-feature)
 1. [Git Strategy](#git-strategy)
 
