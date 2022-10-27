@@ -38,6 +38,7 @@ Em seguida, cuidaremos do problema o mais rápido possível.
 ### Aviso Legal
 >  Ao contribuir para este projeto, você deve concordar que é autor de 100% do conteúdo, que possui os direitos necessários sobre o conteúdo e que a melhoria com a qual contribui pode ser fornecida sob a licença do projeto.
 
+Para configurar o projeto localmente basta seguir os passos do [README](https://github.com/Sysvale/board/blob/develop/README.md).
 
 ### Reportando um bug
 
