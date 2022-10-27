@@ -24,7 +24,7 @@ Todas as contribuições são encorajadas e bem-vindas. Consulte o [Índice](#Í
 
 ## Tenho uma dúvida
 
-Antes de fazer uma pergunta, é melhor pesquisar por [Issues](https://github.com/Sysvale/board/issues) que podem te ajudar. Caso você tenha encontrado uma issue similar e ainda assim precise de esclarecimentos, você pode escrever a sua pergunta como comentário desta issue.
+Antes de fazer uma pergunta, é melhor pesquisar por [Issues](https://github.com/Sysvale/board/issues) que podem te ajudar. Caso você tenha encontrado uma issue similar e ainda assim precise de esclarecimentos, você pode escrever a sua pergunta como comentário dessa issue.
 
 Se você ainda sentir a necessidade de fazer uma pergunta e precisar de esclarecimento, recomendamos o seguinte:
 
@@ -36,7 +36,7 @@ Em seguida, cuidaremos do problema o mais rápido possível.
 ## Como contribuir?
 
 ### Aviso Legal
->  Ao contribuir para este projeto, você deve concordar que é autor de 100% do conteúdo, que possui os direitos necessários sobre o conteúdo e que a melhoria com a qual contribui pode ser fornecida sob a licença do projeto.
+>  Ao contribuir para este projeto você deve concordar que é autor de 100% do conteúdo, que possui os direitos necessários sobre o conteúdo e que a melhoria com a qual contribui pode ser fornecida sob a licença do projeto.
 
 Para configurar o projeto localmente basta seguir os passos do [README](https://github.com/Sysvale/board/blob/develop/README.md).
 
@@ -48,16 +48,17 @@ Para configurar o projeto localmente basta seguir os passos do [README](https://
 Antes de abrir uma issue reportando um bug é importante assegurar-se de que o erro que está acontecendo com você pode ser reproduzido por outras pessoas e que você tem em mãos informações suficientes para que elas possam te ajudar. Para tanto, pedimos que cheque o seguinte:
 
 -   Certifique-se de estar usando a última versão do Trelássio;
--   Verifique se o problema que está acontecendo não é um erro no seu ambiente de desenvolvimento;
+-   Verifique se o problema que está acontecendo não é um erro do seu ambiente de desenvolvimento;
 -   Procure na [lista de issues](https://github.com/Sysvale/board/issues) se já não há um bug report semelhante ou igual ao seu;
 
 #### Como faço um bug report?
 
 Nesse momento precisamos que você informe:
 
--   Resumo do problema (prints e gifs podem ser muito úteis);
--   Os passos para reproduzir o problema;
--   Comportamento atual e o comportamento esperado;
+-   Resumo do problema (prints e gifs podem ser muito úteis):
+    -   Passos para reproduzir o problema
+    -   Comportamento atual
+    -   Comportamento esperado
 -   Versão do Trelássio;
 -   Versão das principais dependências relacionadas ao problema;
 -   Navegador utilizado;
@@ -72,7 +73,7 @@ Esta seção orienta você no envio de uma sugestão de aprimoramento para o Tre
 <!-- omit in toc -->
 #### Antes de submeter uma melhoria
 
-- Cheque na [lista de issues](https://github.com/Sysvale/board/issues) para ver se o aprimoramento já foi sugerido. Se tiver, adicione um comentário ao problema existente em vez de abrir um novo.
+- Cheque na [lista de issues](https://github.com/Sysvale/board/issues) para ver se o aprimoramento já foi sugerido. Se houver, adicione um comentário à sugestão existente em vez de abrir uma nova.
 - Descubra se sua ideia se encaixa com o escopo e os objetivos do projeto. Cabe a você fazer um argumento forte para convencer os desenvolvedores do projeto dos méritos desse recurso.
 
 ## Git strategy
@@ -91,15 +92,15 @@ Utilizamos três tipos de branch temporários. Eles ajudam a categorizar o tipo 
 -   **Bug fix**: `fix/nome-da-correção`
 -   **Build**: `build/nome-da-modificação-no-build`
 
-Os branchs temporários, têm nomes em kebab-case, têm um tempo limite de existência e, uma vez merjados ou fechados, devem ser excluídos.
+Os branches temporários, têm nomes em kebab-case, têm um tempo limite de existência e, uma vez mesclados ou fechados, devem ser excluídos.
 
 #### Exemplo de fluxo de trabalho
 
 -   Atualize sua versão local do `master`;
 -   A partir do master, crie um branch seguindo as convenções de nomenclatura mencionadas acima;
--   Crie um pull request e o marque como _work in progress_ (WIP) até ter finalizado o desenvolvimento;
+-   Crie um pull request e marque-o como _work in progress_ (WIP) até ter finalizado o desenvolvimento;
 -   Uma vez pronto para review, solicite que algum dev avalie seu código. Dois approvals são necessários, mas approvals nunca são de mais, sobretudo em implementações mais complexas 😉;
--   Uma vez aprovado o PR, o seu branch será mergeado no `develop`;
+-   Uma vez aprovado o PR, o seu branch será mesclado no `develop`;
 -   Delete seu branch;
 -   Crie uma nota de release;
 
