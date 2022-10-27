@@ -63,7 +63,7 @@ Nesse momento precisamos que você informe:
 -   Navegador utilizado;
 -   Versão do navegador;
 -   SO utilizado;
--   Versão do OS;
+-   Versão do SO;
 
 ### Solicitando uma feature
 
