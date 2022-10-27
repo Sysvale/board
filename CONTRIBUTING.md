@@ -62,7 +62,7 @@ Nesse momento precisamos que você informe:
 -   Versão das principais dependências relacionadas ao problema;
 -   Navegador utilizado;
 -   Versão do navegador;
--   OS utilizado;
+-   SO utilizado;
 -   Versão do OS;
 
 ### Solicitando uma feature
