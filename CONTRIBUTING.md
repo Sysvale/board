@@ -1,7 +1,7 @@
 <!-- omit in toc -->
 # Guia de contribuição do Trelássio
 
-Primeiramente, obrigado pelo tempo e iniciativa em contribuir com o Trelássio! ❤️
+Primeiramente, agradecemos pelo tempo e iniciativa em contribuir com o Trelássio! ❤️
 
 
 Todas as contribuições são encorajadas e bem-vindas. Consulte o [Índice](#Índice) para obter diferentes maneiras de ajudar. Por favor, assegure-se de ler as seções do índice relacionadas à sua contribuição antes de abrir algum PR ou issue, isso vai tornar o processo de avaliação e discussão mais ágil e garantir que todos estarão na mesma página. 🎉
