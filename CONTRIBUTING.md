@@ -23,7 +23,7 @@ Todas as contribuições são encorajadas e bem-vindas. Consulte o [Índice](#Í
 
 ## Tenho uma dúvida
 
-Antes de fazer uma pergunta, é melhor pesquisar por [Issues](https://github.com/Sysvale/board/issues) que possam te ajudar. Caso você tenha encontrado uma issue similar e ainda assim precise de esclarecimentos, você pode escrever a sua pergunta como comentário dessa issue.
+Pesquise por [Issues](https://github.com/Sysvale/board/issues) que possam te ajudar. Caso você tenha encontrado uma issue similar e ainda assim precise de esclarecimentos, você pode escrever a sua pergunta como comentário dessa issue.
 
 Se você ainda sentir a necessidade de fazer uma pergunta e precisar de esclarecimento, recomendamos o seguinte:
 
