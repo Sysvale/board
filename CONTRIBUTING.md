@@ -4,7 +4,7 @@
 Primeiramente, agradecemos pelo tempo e iniciativa em contribuir com o Trelássio! ❤️
 
 
-Todas as contribuições são encorajadas e bem-vindas. Consulte o [Índice](#Índice) para obter diferentes maneiras de ajudar. Por favor, assegure-se de ler as seções do índice relacionadas à sua contribuição antes de abrir algum PR ou issue, isso vai tornar o processo de avaliação e discussão mais ágil e garantir que todos estarão na mesma página. 🎉
+Todas as contribuições são encorajadas e bem-vindas. Consulte o [Índice](#Índice) para obter diferentes maneiras de ajudar. Por favor, assegure-se de ler as seções do índice relacionadas à sua contribuição antes de abrir algum PR ou issue, isso vai tornar o processo de avaliação e discussão mais ágil e garantir que todos estarão alinhados. 🎉
 
 > E se você gosta do projeto, mas não tem tempo para contribuir, tudo bem. Existem outras maneiras fáceis de apoiar o projeto e mostrar o seu apreço, com as quais também ficaríamos muito felizes:
 > - Dê uma estrela no repositório ⭐
