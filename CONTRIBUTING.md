@@ -81,7 +81,7 @@ Esta seção orienta você no envio de uma sugestão de aprimoramento para o Tre
 
 #### Branch base
 
-Nosso branch base é o `master` e ele sempre representa o último código enviado para produção. Qualquer novo branch deve ser criado a partir dele e merjado para ele, a menos que haja uma versão específica em planejamento, contendo várias contribuições. Nesse cenário deve-se criar um branch de versão (Ex.: `release/v3.0.0`) a partir do `master` e as features dessa versão devem ser direcionadas ao branch de versão.
+Nosso branch base é o `master` e ele sempre representa o último código enviado para produção. Porém qualquer novo branch deve ser criado a partir do `develop`, nele serão aceitos pull requests. Havendo uma versão específica em planejamento, contendo várias contribuições, deve-se criar um branch de versão (Ex.: `release/v3.0.0`) a partir do `develop` e as features dessa versão devem ser direcionadas ao branch `master`.
 
 #### Branches temporários
 
