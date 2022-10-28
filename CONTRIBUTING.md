@@ -95,6 +95,7 @@ Os branches temporários, têm nomes em kebab-case, têm um tempo limite de exis
 
 #### Exemplo de fluxo de trabalho
 
+-   Faça um fork do projeto;
 -   Atualize sua versão local do `develop`;
 -   A partir do develop, crie um branch seguindo as convenções de nomenclatura mencionadas acima;
 -   Crie um pull request e marque-o como _work in progress_ (WIP) até ter finalizado o desenvolvimento;
