@@ -101,7 +101,6 @@ Os branches temporários, têm nomes em kebab-case, têm um tempo limite de exis
 -   Uma vez pronto para review, solicite que algum dev avalie seu código. Dois approvals são necessários, mas approvals nunca são de mais, sobretudo em implementações mais complexas 😉;
 -   Uma vez aprovado o PR, o seu branch será mesclado no `develop`;
 -   Delete seu branch;
--   Crie uma nota de release;
 
 <br>
 <br>
