@@ -148,8 +148,8 @@
 								>
 									<ul>
 										<li
-											v-for="artifact in story.artifacts"
-											:key="artifact"
+											v-for="(artifact, i) in story.artifacts"
+											:key="`${JSON.stringify(artifact)}-${i}`"
 										>
 											<artifact-item :artifact="artifact" />
 										</li>
