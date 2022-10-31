@@ -67,4 +67,6 @@
   $ docker-compose exec board-server npm run prod
   ```
 
-<small> **nota**: `docker-composer exec board-server` pode ser substituido por `./on-server.sh`
+<small> **nota**: `docker-composer exec board-server` pode ser substituido por `./on-server.sh` </small>
+
+Caso você queira contribuir com o projeto, considere ler o [CONTRIBUTING.md](CONTRIBUTING.md).
