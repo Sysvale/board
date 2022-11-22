@@ -316,9 +316,9 @@ export default {
 		},
 		getLottieFile({ isTechnicalWork }) {
 			if (isTechnicalWork) {
-				return 'https://assets4.lottiefiles.com/packages/lf20_sy9zodcx.json';
+				return 'https://lottie.host/09e85c11-ab28-411b-9359-4798af4fada2/QdAKiduTVi.json';
 			}
-			return 'https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json';
+			return 'https://lottie.host/09e85c11-ab28-411b-9359-4798af4fada2/QdAKiduTVi.json';
 		},
 	}
 }
