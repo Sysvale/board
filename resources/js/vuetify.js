@@ -11,10 +11,10 @@ const opts = {
   theme: {
     themes: {
       light: {
-        primary: '#399AE7',
+        primary: '#1B59B1',
       },
       dark: {
-        primary: '#399AE7',
+        primary: '#1B59B1',
       },
     },
   },
