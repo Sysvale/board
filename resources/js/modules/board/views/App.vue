@@ -2,7 +2,7 @@
 	<v-app>
 		<v-app-bar
 			app
-			color="#145C45"
+			color="#333"
 			dense
 			dark
 			@dblclick="goToCompanyPlanning"
@@ -67,9 +67,8 @@
 			>
 				<template v-slot:activator="{ on, attrs }">
 					<v-btn
-						color="yellow"
+						color="secondary"
 						dark
-						style="color:black!important"
 						v-bind="attrs"
 						v-on="on"
 					>
@@ -83,7 +82,6 @@
 					<v-list-item>
 						<v-btn
 							text
-							color="primary"
 							:to="`/workspace/${currentWorkspace.id}/planning`"
 						>
 							Planning

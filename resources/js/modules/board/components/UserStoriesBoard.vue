@@ -180,7 +180,7 @@
 				</div>
 			</div>
 			<div class="py-5">
-				<v-divider />
+				<div class="christmas-divider"/>
 			</div>
 		</section>
 	</div>
@@ -316,12 +316,12 @@ export default {
 		},
 		getLottieFile({ isTechnicalWork }) {
 			if (isTechnicalWork) {
-				return 'https://lottie.host/09e85c11-ab28-411b-9359-4798af4fada2/QdAKiduTVi.json';
+				return 'https://lottie.host/7d524d2a-0250-43bd-8606-0838a93b9852/vwvhujqbFq.json';
 			}
-			return 'https://lottie.host/09e85c11-ab28-411b-9359-4798af4fada2/QdAKiduTVi.json';
+			return 'https://lottie.host/7d524d2a-0250-43bd-8606-0838a93b9852/vwvhujqbFq.json';
 		},
-	}
-}
+	},
+};
 </script>
 <style scoped>
 .v-expansion-panel-content__wrap {
@@ -341,5 +341,12 @@ export default {
 /* Track */
 #board-outside-wrapper::-webkit-scrollbar-track {
 	background: transparent;
+}
+
+.christmas-divider {
+	height: 40px;
+	width: 100%;
+	background-image: url('/images/christmas-divider.png');
+	background-repeat: repeat-x;
 }
 </style>

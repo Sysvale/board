@@ -29,7 +29,7 @@
 - Instale as dependências da aplicação:
 
   ```bash
-  $ docker-compose exec board-server composer installl
+  $ docker-compose exec board-server composer install
   $ docker-compose exec board-server npm ci
   ```
 
