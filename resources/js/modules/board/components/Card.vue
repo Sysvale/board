@@ -9,9 +9,6 @@
 			<v-card
 				v-bind="$attrs"
 				class="task-card px-3 py-3"
-				:style="{
-					...agingStyle,
-				}"
 				hover
 				:ripple="false"
 				v-on="$listeners"
@@ -640,30 +637,6 @@ export default {
 				default:
 					return tab;
 				}
-			};
-		},
-
-		agingStyle() {
-			if (!this.isNotPriorized) return '';
-
-			const start = moment(this.item.createdAt, 'DD-MM-YYYY HH:mm');
-			const end = moment();
-			const diff = moment.duration(end.diff(start)).asDays();
-
-			let opacityValue = '.10';
-
-			if (diff <= 7 || this.hover) {
-				opacityValue = '1';
-			} else if (diff <= 14) {
-				opacityValue = '.70';
-			} else if (diff <= 21) {
-				opacityValue = '.35';
-			} else {
-				opacityValue = '.10';
-			}
-
-			return {
-				opacity: opacityValue,
 			};
 		},
 
