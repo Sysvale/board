@@ -6,8 +6,8 @@
 		<div class="justify-center align-center text-center w-100" style="margin: 0 auto">
 			<div class="mb-5">
 				<img
-					src="/images/logo-dark.svg"
-					height="50px"
+					src="/images/logo-natal.png"
+					height="118px"
 					title="Trelássio"
 				>
 			</div>
