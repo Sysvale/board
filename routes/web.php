@@ -72,12 +72,6 @@ Route::group(
 		Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
 
 		Route::get('/reports/sprint-overview/{team}', 'SprintReportController@getCurrentSprintOverviewByTeam');
-
-		Route::get('/create/innovation-company', function() {
-			$handle = Artisan::call('setup:innovation-company');
-
-			return response()->json($handle, 200);
-		});
 	}
 );
 
