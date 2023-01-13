@@ -102,20 +102,20 @@
 										v-on="on"
 										class="font-weight-bold metric-ratio-badge px-2"
 										:style="{
-											color: withMetricRatioConfig.color,
-											border: `1px solid ${withMetricRatioConfig.color}`,
-											backgroundColor: `${withMetricRatioConfig.color}0A`,
+											color: bimesterGoalRatioConfig.color,
+											border: `1px solid ${bimesterGoalRatioConfig.color}`,
+											backgroundColor: `${bimesterGoalRatioConfig.color}0A`,
 										}"
 									>
 										<v-icon
-											:color="withMetricRatioConfig.color"
+											:color="bimesterGoalRatioConfig.color"
 										>
-											insights
+											my_location
 										</v-icon>
-										{{ withMetricRatioConfig.value }}
+										{{ bimesterGoalRatioConfig.value }}
 									</small>
 								</template>
-								{{ withMetricRatioConfig.tooltip }}
+								{{ bimesterGoalRatioConfig.tooltip }}
 							</v-tooltip>
 						</div>
 					</span>
@@ -380,43 +380,43 @@ export default {
 			};
 		},
 
-		withMetricRatioConfig() {
-			const hasMetricLength = this.$attrs.list.filter((item) => item.hasMetric).length;
+		bimesterGoalRatioConfig() {
+			const bimesterGoalLength = this.$attrs.list.filter((item) => item.bimesterGoal).length;
 			const { length } = this.$attrs.list;
-			const ratio = Math.round((hasMetricLength / length) * 100);
+			const ratio = Math.round((bimesterGoalLength / length) * 100);
 
-			const pluralTranslation = length === 1 ? 'história possui' : 'histórias possuem';
-			const tooltip = `${hasMetricLength} de ${length} ${pluralTranslation} métrica`;
+			const pluralTranslation = length === 1 ? 'história está' : 'histórias estão';
+			const tooltip = `${bimesterGoalLength} de ${length} ${pluralTranslation} alinhadas ao objetivo do bimestre`;
 
-			if(ratio < 50) {
+			if (ratio < 50) {
 				return {
 					value: `${ratio}%`,
 					color: '#ED3B51',
 					tooltip,
-				}
+				};
 			}
 
-			if(ratio >= 50 && ratio < 60) {
+			if (ratio >= 50 && ratio < 60) {
 				return {
 					value: `${ratio}%`,
 					color: '#FBAA32',
 					tooltip,
-				}
+				};
 			}
 
-			if(ratio >= 60) {
+			if (ratio >= 60) {
 				return {
 					value: `${ratio}%`,
 					color: '#29A37D',
 					tooltip,
-				}
+				};
 			}
 
 			return {
 				value: `${ratio}%`,
 				color: 'gray',
 				tooltip,
-			}
+			};
 		},
 	},
 

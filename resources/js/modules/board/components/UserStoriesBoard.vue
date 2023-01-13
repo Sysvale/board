@@ -29,7 +29,7 @@
 							</v-chip>
 							<v-spacer />
 							<v-tooltip
-								v-if="story.hasMetric"
+								v-if="story.bimesterGoal"
 								bottom
 							>
 								<template v-slot:activator="{ on, attrs }">
@@ -38,10 +38,10 @@
 										v-bind="attrs"
 										v-on="on"
 									>
-										insights
+										my_location
 									</v-icon>
 								</template>
-								Possui métrica
+								Alinhado ao objetivo do bimestre
 							</v-tooltip>
 							<v-tooltip
 								v-if="story.isRecurrent"
