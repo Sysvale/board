@@ -29,7 +29,7 @@ class Card extends Model
 		'workspace_id',
 		'description',
 		'rating',
-		'has_metric',
+		'bimester_goal',
 		'is_recurrent',
 		'is_technical_work',
 		'user_id',
