@@ -180,7 +180,11 @@
 				</div>
 			</div>
 			<div class="py-5">
-				<div class="christmas-divider"/>
+				<div
+					v-if="$isChristmasSeason"
+					class="christmas-divider"
+				/>
+				<v-divider v-else />
 			</div>
 		</section>
 	</div>
@@ -232,6 +236,18 @@ export default {
 				if (this.pipelineHovered) return true;
 				return false;
 			};
+		},
+
+		christmasLottieFile() {
+			return 'https://lottie.host/7d524d2a-0250-43bd-8606-0838a93b9852/vwvhujqbFq.json';
+		},
+
+		defaultLottieFile() {
+			return 'https://assets4.lottiefiles.com/packages/lf20_sy9zodcx.json';
+		},
+
+		userHistoryDefaultLottieFile() {
+			return 'https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json';
 		},
 	},
 
@@ -316,9 +332,9 @@ export default {
 		},
 		getLottieFile({ isTechnicalWork }) {
 			if (isTechnicalWork) {
-				return 'https://lottie.host/7d524d2a-0250-43bd-8606-0838a93b9852/vwvhujqbFq.json';
+				return this.$isChristmasSeason ? this.christmasLottieFile : this.defaultLottieFile;
 			}
-			return 'https://lottie.host/7d524d2a-0250-43bd-8606-0838a93b9852/vwvhujqbFq.json';
+			return this.$isChristmasSeason ? this.christmasLottieFile : this.userHistoryDefaultLottieFile;
 		},
 	},
 };
