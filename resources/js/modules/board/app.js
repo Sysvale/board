@@ -11,6 +11,7 @@ import {
 	extend,
 	setInteractionMode,
 } from 'vee-validate';
+import moment from 'moment';
 
 import validateLocale from 'vee-validate/dist/locale/pt_BR.json';
 import routes from './routes';
@@ -40,6 +41,14 @@ Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('Draggable', draggable);
 
+Vue.prototype.$isChristmasSeason = (function isChristmasSeason() {
+	const today = moment();
+	const currentYear = today.year();
+	const christmasSeasonStartDate = moment(`${currentYear}-12-10`);
+	const christmasSeasonEndDate = moment(`${+currentYear + 1}-01-02`);
+
+	return today.isBetween(christmasSeasonStartDate, christmasSeasonEndDate);
+}());
 
 const app = new Vue({
 	render: (h) => h(App),

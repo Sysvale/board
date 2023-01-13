@@ -183,7 +183,7 @@ class CardController extends Controller
 			'board_id' => $request->board_id ?? $request->board['id'] ?? null,
 			'workspace_id' => $request->workspace_id,
 			'type' => $request->type,
-			'has_metric' => $request->has_metric,
+			'bimester_goal' => $request->bimester_goal,
 			'is_recurrent' => $request->is_recurrent,
 			'is_technical_work' => $request->is_technical_work,
 			'rating' => $request->rating,

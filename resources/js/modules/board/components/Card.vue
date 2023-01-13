@@ -70,7 +70,7 @@
 					</v-tooltip>
 
 					<v-tooltip
-						v-if="isUserStory && item.hasMetric"
+						v-if="isUserStory && item.bimesterGoal"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -80,10 +80,10 @@
 								small
 								v-on="on"
 							>
-								insights
+								my_location
 							</v-icon>
 						</template>
-						Possui métrica
+						Alinhado com o objetivo do bimestre
 					</v-tooltip>
 					<v-tooltip
 						v-if="isUserStory && item.isRecurrent"
@@ -369,15 +369,15 @@
 			>
 				<div class="mb-3">
 					<switch-button
-						v-model="item.hasMetric"
+						v-model="item.bimesterGoal"
 						active-background-color="#CC3381"
 						active-text-color="white"
 						class="mr-3 mt-3"
 					>
 						<v-icon left>
-							insights
+							my_location
 						</v-icon>
-						Possui métrica
+						Objetivo do bimestre
 					</switch-button>
 					<switch-button
 						v-model="item.isRecurrent"

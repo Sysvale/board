@@ -32,7 +32,7 @@ class CardResource extends JsonResource
 			'workspace_id' => $this->when(isset($this->workspace_id), $this->workspace_id),
 			'description' => $this->when(isset($this->description), $this->description),
 			'rating' => $this->when(isset($this->rating), $this->rating),
-			'has_metric' => $this->when(isset($this->has_metric), $this->has_metric),
+			'bimester_goal' => $this->when(isset($this->bimester_goal), $this->bimester_goal),
 			'is_recurrent' => $this->when(isset($this->is_recurrent), $this->is_recurrent),
 			'is_technical_work' => $this->when(isset($this->is_technical_work), $this->is_technical_work),
 			'user' => $this->when(isset($this->user), $this->user),
