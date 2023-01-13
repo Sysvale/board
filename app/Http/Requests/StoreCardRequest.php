@@ -63,7 +63,7 @@ class StoreCardRequest extends FormRequest
 	protected function userStoryRules(): array
 	{
 		return [
-			'has_metric' => 'nullable|boolean',
+			'bimester_goal' => 'nullable|boolean',
 			'is_recurrent' => 'nullable|boolean',
 		];
 	}
