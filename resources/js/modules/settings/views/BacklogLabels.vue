@@ -235,6 +235,10 @@ export default {
 			'createBacklogLabel',
 		]),
 
+		...mapMutations('backlogLabels', [
+			'setItems',
+		]),
+
 		editItem(item) {
 			this.editMode = true;
 			this.selectedItem = {
