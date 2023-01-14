@@ -55,17 +55,17 @@ Route::group(
 		Route::resource('members', 'MemberController');
 		Route::resource('/teams', 'TeamController');
 		Route::get('/boards', 'BoardController@index');
-
+		
 		Route::resource('events', 'EventController')->only(['store', 'update', 'destroy']);
 		Route::get('/events/{team}', 'EventController@getEventsByTeam');
 
 		Route::resource('goals', 'GoalController');
-
+		
 		Route::get('/logout', function () {
 			Auth::logout();
 			return redirect('login');
 		});
-
+		
 		Route::apiResource('workspaces', 'WorkspaceController');
 		Route::apiResource('processes', 'ProcessController');
 		Route::apiResource('sprint-reports', 'SprintReportController')->only(['store']);
@@ -73,8 +73,10 @@ Route::group(
 
 
 		Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
-
+		
 		Route::get('/reports/sprint-overview/{team}', 'SprintReportController@getCurrentSprintOverviewByTeam');
+		
+		Route::resource('backlog-labels', 'BacklogLabelController');
 	}
 );
 

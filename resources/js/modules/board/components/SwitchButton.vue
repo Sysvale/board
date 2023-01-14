@@ -1,7 +1,7 @@
 <template>
 	<v-btn
 		:color="value ? activeBackgroundColor : 'gray'"
-		title="Tem métrica"
+		:title="$attrs.title || ''"
 		label
 		elevation="0"
 		:class="{ 'muted': !value }"
@@ -10,9 +10,9 @@
 		}"
 		@click="$emit('input', !value)"
 	>
-			<slot>
-				switch {{ value }}
-			</slot>
+		<slot>
+			switch {{ value }}
+		</slot>
 	</v-btn>
 </template>
 <script>
@@ -45,8 +45,8 @@ export default {
 		handleButtonClick() {
 			this.$emit('input', !this.internalValue)
 		},
-	}
-}
+	},
+};
 </script>
 <style scoped>
 	.muted {

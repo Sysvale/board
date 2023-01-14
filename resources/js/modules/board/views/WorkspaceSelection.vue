@@ -6,8 +6,8 @@
 		<div class="justify-center align-center text-center w-100" style="margin: 0 auto">
 			<div class="mb-5">
 				<img
-					src="/images/logo-dark.svg"
-					height="50px"
+					:src="logoSrc"
+					:height="logoHeight"
 					title="Trelássio"
 				>
 			</div>
@@ -69,6 +69,14 @@ export default {
 		...mapState('workspaces', {
 			workspaces: 'items',
 		}),
+
+		logoSrc() {
+			return this.$isChristmasSeason ? '/images/logo-natal.png' : '/images/logo-dark.svg';
+		},
+
+		logoHeight() {
+			return this.$isChristmasSeason ? '118px' : '50px';
+		},
 	},
 	methods: {
 		goTo(workspaceId) {

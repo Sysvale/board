@@ -57,14 +57,16 @@ class StoreCardRequest extends FormRequest
 		return [
 			'rating' => 'nullable|numeric|min:0|max:5',
 			'description' => 'nullable|string',
+			'backlog_labels' => 'nullable|string',
 		];
 	}
 
 	protected function userStoryRules(): array
 	{
 		return [
-			'has_metric' => 'nullable|boolean',
+			'bimester_goal' => 'nullable|boolean',
 			'is_recurrent' => 'nullable|boolean',
+			'backlog_labels' => 'nullable|string',
 		];
 	}
 }

@@ -2,18 +2,22 @@
 	<div class="mb-5">
 		<label-list
 			:labels="labels.map(({ id }) => id)"
+			:raw-labels="labels"
 			selectable
-			:selectedLabels="value"
+			:secondary="secondary"
+			:selected-labels="value"
 			@itemClick="selectHandler"
 		/>
 	</div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
-import LabelItem from './LabelItem';
 import LabelList from './LabelList.vue';
 
 export default {
+	components: {
+		LabelList,
+	},
+
 	props: {
 		value: {
 			type: [Object, String, Array],
@@ -22,28 +26,25 @@ export default {
 		small: {
 			type: Boolean,
 			default: false,
-		}
-	},
-
-	components: {
-		LabelItem,
-		LabelList,
-	},
-
-	computed: {
-		...mapGetters('labels', {
-			labels: 'itemsByWorkspace',
-		}),
+		},
+		secondary: {
+			type: Boolean,
+			default: false,
+		},
+		labels: {
+			type: Array,
+			default: () => [],
+		},
 	},
 
 	methods: {
 		selectHandler(selectedId) {
-			if(!!this.value && this.value.indexOf(selectedId) > -1) {
+			if (!!this.value && this.value.indexOf(selectedId) > -1) {
 				this.$emit('input', this.value.filter((item) => item !== selectedId));
 				return;
 			}
 			this.$emit('input', [...(this.value || []), selectedId]);
-		}
-	}
-}
+		},
+	},
+};
 </script>

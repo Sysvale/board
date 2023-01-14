@@ -27,5 +27,12 @@
 		>
 			Categorias
 		</v-btn>
+
+		<v-btn
+			link
+			to="/settings/backlog-labels"
+		>
+			Categorias de backlog
+		</v-btn>
 	</v-container>
 </template>

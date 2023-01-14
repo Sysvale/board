@@ -29,7 +29,7 @@
 							</v-chip>
 							<v-spacer />
 							<v-tooltip
-								v-if="story.hasMetric"
+								v-if="story.bimesterGoal"
 								bottom
 							>
 								<template v-slot:activator="{ on, attrs }">
@@ -38,10 +38,10 @@
 										v-bind="attrs"
 										v-on="on"
 									>
-										insights
+										my_location
 									</v-icon>
 								</template>
-								Possui métrica
+								Alinhado ao objetivo do bimestre
 							</v-tooltip>
 							<v-tooltip
 								v-if="story.isRecurrent"
@@ -94,6 +94,17 @@
 							style="width: 250px; height: 250px;margin: 0 auto; background: white"
 							autoplay
 						/>
+						<div
+							v-if="story.backlogLabels && story.backlogLabels.length"
+							class="py-3"
+						>
+							<label-list
+								:labels="story.backlogLabels"
+								:raw-labels="backlogLabels"
+								small
+								secondary
+							/>
+						</div>
 						<div>
 							{{ story.title }}
 						</div>
@@ -180,19 +191,24 @@
 				</div>
 			</div>
 			<div class="py-5">
-				<v-divider />
+				<div
+					v-if="$isChristmasSeason"
+					class="christmas-divider"
+				/>
+				<v-divider v-else />
 			</div>
 		</section>
 	</div>
 </template>
 
 <script>
-import { createNamespacedHelpers, mapActions } from 'vuex';
+import { createNamespacedHelpers, mapActions, mapState } from 'vuex';
 import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import Board from './Board.vue';
 import ArtifactItem from './ArtifactItem.vue';
+import LabelList from './LabelList.vue';
 
 import {
 	getUserStoriesByTeam,
@@ -209,6 +225,7 @@ export default {
 		ArtifactItem,
 		Board,
 		UserStoryPipeline,
+		LabelList,
 	},
 
 	props: {
@@ -226,12 +243,28 @@ export default {
 	},
 
 	computed: {
+		...mapState('backlogLabels', {
+			backlogLabels: ({ items }) => items,
+		}),
+
 		pipelineMode() {
 			return (status) => {
 				if (!!status && status !== 'development') return true;
 				if (this.pipelineHovered) return true;
 				return false;
 			};
+		},
+
+		christmasLottieFile() {
+			return 'https://lottie.host/7d524d2a-0250-43bd-8606-0838a93b9852/vwvhujqbFq.json';
+		},
+
+		defaultLottieFile() {
+			return 'https://assets4.lottiefiles.com/packages/lf20_sy9zodcx.json';
+		},
+
+		userHistoryDefaultLottieFile() {
+			return 'https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json';
 		},
 	},
 
@@ -316,12 +349,12 @@ export default {
 		},
 		getLottieFile({ isTechnicalWork }) {
 			if (isTechnicalWork) {
-				return 'https://assets4.lottiefiles.com/packages/lf20_sy9zodcx.json';
+				return this.$isChristmasSeason ? this.christmasLottieFile : this.defaultLottieFile;
 			}
-			return 'https://assets8.lottiefiles.com/packages/lf20_n3jsukvi.json';
+			return this.$isChristmasSeason ? this.christmasLottieFile : this.userHistoryDefaultLottieFile;
 		},
-	}
-}
+	},
+};
 </script>
 <style scoped>
 .v-expansion-panel-content__wrap {
@@ -341,5 +374,12 @@ export default {
 /* Track */
 #board-outside-wrapper::-webkit-scrollbar-track {
 	background: transparent;
+}
+
+.christmas-divider {
+	height: 40px;
+	width: 100%;
+	background-image: url('/images/christmas-divider.png');
+	background-repeat: repeat-x;
 }
 </style>
