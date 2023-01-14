@@ -13,6 +13,7 @@ class SprintReport extends Model
 	protected $fillable = [
 		'team_id',
 		'members',
+		'notes',
 		'impediments_quantity',
 		'started_at',
 		'finished_at',

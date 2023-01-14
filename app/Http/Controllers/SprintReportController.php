@@ -20,6 +20,7 @@ class SprintReportController extends Controller
 	{
 		$data = $request->validate([
 			'team_id' => 'required|string',
+			'notes' => 'string|string',
 			'members' => 'required|array',
 			'impediments_quantity' => 'integer',
 			'started_at' => 'required|date',
@@ -28,6 +29,9 @@ class SprintReportController extends Controller
 			'cards.*.status' => 'required',
 			'cards.*.title' => 'required',
 			'cards.*.estimated' => 'nullable',
+			'cards.*.backlog_labels' => 'nullable',
+			'cards.*.is_recurrent' => 'nullable',
+			'cards.*.bimester_goal' => 'nullable',
 		]);
 
 		$sprint_report = SprintReport::create($data);

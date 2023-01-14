@@ -19,6 +19,7 @@ class SprintReportResource extends JsonResource
 			'started_at' => $this->started_at,
 			'finished_at' => $this->finished_at,
 			'members' => $this->members,
+			'notes' => $this->notes,
 			'impediments_quantity' => $this->impediments_quantity,
 			'cards' => $this->cards,
 		];
