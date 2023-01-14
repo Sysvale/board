@@ -10,6 +10,7 @@
 				:label="label"
 				:muted="shouldBeMuted(label.id)"
 				:small="small"
+				:secondary="secondary"
 				style="cursor:pointer"
 				class="mt-1"
 				@click.native="handleItemClick($event, label.id)"
@@ -18,10 +19,12 @@
 	</div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
-import LabelItem from './LabelItem';
+import LabelItem from './LabelItem.vue';
 
 export default {
+	components: {
+		LabelItem,
+	},
 	props: {
 		labels: {
 			type: Array,
@@ -39,23 +42,24 @@ export default {
 			type: Boolean,
 			default: false,
 		},
-	},
-
-	components: {
-		LabelItem,
+		secondary: {
+			type: Boolean,
+			default: false,
+		},
+		rawLabels: {
+			type: Array,
+			default: () => [],
+		},
 	},
 
 	computed: {
-		...mapGetters('labels', {
-			rawLabels: 'itemsByWorkspace',
-		}),
 		computedLabels() {
-			return this.rawLabels.filter(item => _.includes(this.labels, item.id));
+			return this.rawLabels.filter((item) => _.includes(this.labels, item.id));
 		},
 		shouldBeMuted() {
-			return itemId => {
-				if(!this.selectable) return false;
-				if(!this.selectedLabels || this.selectedLabels.length === 0) return true;
+			return (itemId) => {
+				if (!this.selectable) return false;
+				if (!this.selectedLabels || this.selectedLabels.length === 0) return true;
 				return !!this.selectedLabels && this.selectedLabels.indexOf(itemId) === -1;
 			};
 		},
@@ -63,11 +67,11 @@ export default {
 
 	methods: {
 		handleItemClick(event, id) {
-			if(this.selectable) {
+			if (this.selectable) {
 				event.stopPropagation();
 				this.$emit('itemClick', id);
 			}
-		}
-	}
-}
+		},
+	},
+};
 </script>
