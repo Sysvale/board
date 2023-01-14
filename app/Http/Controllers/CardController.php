@@ -174,6 +174,7 @@ class CardController extends Controller
 			'title' => $request->title,
 			'link' => $request->link,
 			'labels' => $request->labels,
+			'backlog_labels' => $request->backlog_labels,
 			'members' => $request->members,
 			'estimated' => $request->estimated,
 			'team_id' => $request->team_id ?? $request->team['id'] ?? null,

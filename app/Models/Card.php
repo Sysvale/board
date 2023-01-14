@@ -22,6 +22,7 @@ class Card extends Model
 		'position',
 		'members',
 		'labels',
+		'backlog_labels',
 		'acceptance_criteria',
 		'artifacts',
 		'checklist',
