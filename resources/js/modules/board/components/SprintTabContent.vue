@@ -106,7 +106,6 @@
 						v-model="dialog"
 						width="100%"
 						height="100%"
-						scrollable
 						@click:outside="dialog = false"
 						@keydown="dialog = false"
 					>
@@ -128,6 +127,21 @@
 							/>
 						</v-card>
 					</v-dialog>
+					<sprint-report-dialog
+						:team-id="teamId"
+						@close="reload"
+					>
+						<template v-slot:activator="{on, attrs}">
+							<v-btn
+								text
+								v-bind="attrs"
+								v-on="on"
+								@click.stop
+							>
+								Fechar sprint
+							</v-btn>
+						</template>
+					</sprint-report-dialog>
 				</div>
 			</v-expansion-panel-header>
 
@@ -177,6 +191,7 @@ import UserStoriesBoard from './UserStoriesBoard.vue';
 import Board from './Board.vue';
 import EventsBoard from './EventsBoard.vue';
 import SprintBacklogOverview from './SprintBacklogOverview.vue';
+import SprintReportDialog from '../../reports/components/SprintReportDialog.vue';
 import {
 	getTaskCardsFromDevlog,
 	getTaskCardsFromNotPlanned,
@@ -199,6 +214,7 @@ export default {
 		Board,
 		EventsBoard,
 		SprintBacklogOverview,
+		SprintReportDialog,
 	},
 
 	props: {
@@ -269,6 +285,10 @@ export default {
 
 		getBoardId(key) {
 			return this.boards.filter((item) => item.key === key)[0].id;
+		},
+
+		reload() {
+			window.location.reload();
 		},
 	},
 };

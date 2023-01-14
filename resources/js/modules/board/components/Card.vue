@@ -2,7 +2,7 @@
 	<v-dialog
 		v-if="item"
 		v-model="dialog"
-		width="500"
+		width="530"
 		@click:outside="showDeleteConfirmation = false"
 	>
 		<template v-slot:activator="{}">
@@ -18,7 +18,7 @@
 			>
 				<div class="d-flex align-center">
 					<v-tooltip
-						v-if="isNotPriorizedWithPendingInfo"
+						v-if="isNotPrioritizedWithPendingInfo"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -49,7 +49,7 @@
 					</v-chip>
 
 					<v-tooltip
-						v-if="isNotPriorized && item.rating"
+						v-if="isNotPrioritized && item.rating"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -162,7 +162,15 @@
 						<label-list
 							v-if="isTask && item.labels && item.labels.length"
 							:labels="item.labels"
+							:raw-labels="labels"
 							small
+						/>
+						<label-list
+							v-else-if="item.backlogLabels && item.backlogLabels.length"
+							:labels="item.backlogLabels"
+							:raw-labels="backlogLabels"
+							small
+							secondary
 						/>
 					</div>
 				</div>
@@ -203,7 +211,7 @@
 					class="d-flex"
 				>
 					<v-chip
-						v-if="isNotPriorizedWithPendingInfo"
+						v-if="isNotPrioritizedWithPendingInfo"
 						color="#FDD291"
 						text-color="black"
 						small
@@ -280,6 +288,7 @@
 							</div>
 							<label-select
 								v-model="item.labels"
+								:labels="labels"
 								small
 							/>
 						</div>
@@ -339,8 +348,18 @@
 				</v-tabs-items>
 			</v-container>
 			<v-container
-				v-else-if="isNotPriorized"
+				v-else-if="isNotPrioritized"
 			>
+				<div class="py-3">
+					<div class="mb-2">
+						<strong>Categorias</strong>
+					</div>
+					<label-select
+						v-model="item.backlogLabels"
+						:labels="backlogLabels"
+						secondary
+					/>
+				</div>
 				<div>
 					<div class="pb-2">
 						Qual o problema?
@@ -370,7 +389,7 @@
 				<div class="mb-3">
 					<switch-button
 						v-model="item.bimesterGoal"
-						active-background-color="#CC3381"
+						active-background-color="#1579F3"
 						active-text-color="white"
 						class="mr-3 mt-3"
 					>
@@ -390,17 +409,20 @@
 						</v-icon>
 						É recorrente
 					</switch-button>
-					<switch-button
-						v-model="item.isTechnicalWork"
-						active-background-color="#7BD0F4"
-						active-text-color="black"
-						class="mr-3 mt-3"
+				</div>
+				<div>
+					<div
+						class="pt-5"
 					>
-						<v-icon left>
-							construction
-						</v-icon>
-						Trabalho técnico
-					</switch-button>
+						<div class="mb-2">
+							<strong>Categorias</strong>
+						</div>
+						<label-select
+							v-model="item.backlogLabels"
+							:labels="backlogLabels"
+							secondary
+						/>
+					</div>
 				</div>
 				<div class="mb-2">
 					<strong>Esforço estimado</strong>
@@ -513,7 +535,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import MemberList from './MemberList.vue';
 import LabelList from './LabelList.vue';
 import MemberSelect from './MemberSelect.vue';
@@ -576,6 +598,10 @@ export default {
 	},
 
 	computed: {
+		...mapState('backlogLabels', {
+			backlogLabels: ({ items }) => items,
+		}),
+
 		...mapGetters('labels', {
 			labels: 'itemsByWorkspace',
 		}),
@@ -587,7 +613,7 @@ export default {
 			return this.listType === TASK;
 		},
 
-		isNotPriorized() {
+		isNotPrioritized() {
 			return this.listType === NOT_PRIORITIZED;
 		},
 
@@ -595,10 +621,10 @@ export default {
 			return this.listType === USER_STORY;
 		},
 
-		isNotPriorizedWithPendingInfo() {
+		isNotPrioritizedWithPendingInfo() {
 			const hasDescription = this.item.description && this.item.description.trim() !== '';
 			const hasRating = this.item.rating && this.item.rating > 0;
-			return this.isNotPriorized && (!hasDescription || !hasRating);
+			return this.isNotPrioritized && (!hasDescription || !hasRating);
 		},
 
 		estimated() {

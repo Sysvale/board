@@ -117,6 +117,14 @@
 			</v-btn>
 			<v-btn
 				icon
+				@click="goToReports()"
+			>
+				<v-icon>
+					bar_chart
+				</v-icon>
+			</v-btn>
+			<v-btn
+				icon
 				@click="logout()"
 			>
 				<v-icon>
@@ -169,6 +177,9 @@ export default {
 		...mapState('labels', {
 			loadingLabels: ({ getLabels }) => getLabels.isFetching,
 		}),
+		...mapState('backlogLabels', {
+			loadingBacklogLabels: ({ getBacklogLabels }) => getBacklogLabels.isFetching,
+		}),
 		...mapState('teams', {
 			teams: 'items',
 			loadingTeams: ({ getTeams }) => getTeams.isFetching,
@@ -191,6 +202,7 @@ export default {
 		loading() {
 			return this.loadingMembers
 				|| this.loadingLabels
+				|| this.loadingBacklogLabels
 				|| this.loadingTeams
 				|| this.loadingBoards
 				|| this.loadingWorkspaces
@@ -244,6 +256,9 @@ export default {
 		this.getLabels().then((data) => {
 			this.setLabels(data);
 		});
+		this.getBacklogLabels().then((data) => {
+			this.setBacklogLabels(data);
+		});
 		this.getTeams().then((data) => {
 			this.setTeams(data);
 		});
@@ -268,6 +283,9 @@ export default {
 		...mapActions('labels', [
 			'getLabels',
 		]),
+		...mapActions('backlogLabels', [
+			'getBacklogLabels',
+		]),
 		...mapActions('teams', [
 			'getTeams',
 		]),
@@ -289,6 +307,9 @@ export default {
 		}),
 		...mapMutations('labels', {
 			setLabels: 'setItems',
+		}),
+		...mapMutations('backlogLabels', {
+			setBacklogLabels: 'setItems',
 		}),
 		...mapMutations('teams', {
 			setTeams: 'setItems',
@@ -337,6 +358,10 @@ export default {
 
 		goToSettings() {
 			this.$router.push({ name: 'settings' });
+		},
+
+		goToReports() {
+			this.$router.push({ name: 'reports' });
 		},
 	},
 };

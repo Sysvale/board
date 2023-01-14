@@ -94,6 +94,17 @@
 							style="width: 250px; height: 250px;margin: 0 auto; background: white"
 							autoplay
 						/>
+						<div
+							v-if="story.backlogLabels && story.backlogLabels.length"
+							class="py-3"
+						>
+							<label-list
+								:labels="story.backlogLabels"
+								:raw-labels="backlogLabels"
+								small
+								secondary
+							/>
+						</div>
 						<div>
 							{{ story.title }}
 						</div>
@@ -148,8 +159,8 @@
 								>
 									<ul>
 										<li
-											v-for="artifact in story.artifacts"
-											:key="artifact"
+											v-for="(artifact, i) in story.artifacts"
+											:key="`${JSON.stringify(artifact)}-${i}`"
 										>
 											<artifact-item :artifact="artifact" />
 										</li>
@@ -191,12 +202,13 @@
 </template>
 
 <script>
-import { createNamespacedHelpers, mapActions } from 'vuex';
+import { createNamespacedHelpers, mapActions, mapState } from 'vuex';
 import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import Board from './Board.vue';
 import ArtifactItem from './ArtifactItem.vue';
+import LabelList from './LabelList.vue';
 
 import {
 	getUserStoriesByTeam,
@@ -213,6 +225,7 @@ export default {
 		ArtifactItem,
 		Board,
 		UserStoryPipeline,
+		LabelList,
 	},
 
 	props: {
@@ -230,6 +243,10 @@ export default {
 	},
 
 	computed: {
+		...mapState('backlogLabels', {
+			backlogLabels: ({ items }) => items,
+		}),
+
 		pipelineMode() {
 			return (status) => {
 				if (!!status && status !== 'development') return true;

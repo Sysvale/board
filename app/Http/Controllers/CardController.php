@@ -174,6 +174,7 @@ class CardController extends Controller
 			'title' => $request->title,
 			'link' => $request->link,
 			'labels' => $request->labels,
+			'backlog_labels' => $request->backlog_labels,
 			'members' => $request->members,
 			'estimated' => $request->estimated,
 			'team_id' => $request->team_id ?? $request->team['id'] ?? null,
@@ -246,20 +247,12 @@ class CardController extends Controller
 
 	private function getFirstDefaultBoardListId($team_key)
 	{
-		$output = BoardListsKeys::DEFAULT_LISTS;
-		if ($team_key) {
-			$team = Team::where('key', $team_key)
-			->first();
-			
-			if ($team->key === TeamKeys::DATA_TEAM) {
-				$output = BoardListsKeys::DT_LISTS;
-			}
-			
-			if ($team->short_task_flow) {
-				$output = BoardListsKeys::SHORTED_LISTS;
-			}
-		}
-		return BoardList::where('key', $output[0])->get()->first()->id;
+		$team = Team::where('key', $team_key)->first();
+		return BoardList::where('team_id', $team->id)
+			->orderBy('position')
+			->get()
+			->first()
+			->id;
 	}
 
 	private function mountPayload($team_board_lists, $cards)

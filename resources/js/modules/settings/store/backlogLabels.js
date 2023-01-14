@@ -2,19 +2,17 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
-	getMembers,
-	createMember,
-	updateMember,
-	deleteMember,
-	resendWelcomeMail,
-} from '../services/members';
+	getBacklogLabels,
+	createBacklogLabel,
+	updateBacklogLabel,
+	deleteBacklogLabel,
+} from '../services/backlogLabels';
 
 const modules = [
-	{ getMembers },
-	{ createMember },
-	{ updateMember },
-	{ deleteMember },
-	{ resendWelcomeMail },
+	{ getBacklogLabels },
+	{ createBacklogLabel },
+	{ updateBacklogLabel },
+	{ deleteBacklogLabel },
 ];
 
 export default {
@@ -27,13 +25,6 @@ export default {
 	},
 	state: {
 		items: [],
-	},
-	getters: {
-		itemsByWorkspace(state, _, __, rootGetters) {
-			return state.items.filter(({ workspaceIds }) => {
-				return workspaceIds.indexOf(rootGetters['workspaces/currentWorkspace']?.id) > -1;
-			});
-		},
 	},
 	mutations: {
 		setItems(state, payload) {
