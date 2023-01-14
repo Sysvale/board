@@ -77,7 +77,7 @@ export default (lists, modules = []) => {
 					{
 						...args,
 					},
-					...state[boardListId],
+					...(state[boardListId] || []),
 				];
 			},
 			removeTask(state, payload) {

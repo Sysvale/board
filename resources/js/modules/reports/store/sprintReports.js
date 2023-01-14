@@ -2,19 +2,11 @@ import makeRequestStore from '../../../core/utils/makeRequestStore';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 import {
-	getMembers,
-	createMember,
-	updateMember,
-	deleteMember,
-	resendWelcomeMail,
-} from '../services/members';
+	getSprintReportByTeamId,
+} from '../services/sprintReports';
 
 const modules = [
-	{ getMembers },
-	{ createMember },
-	{ updateMember },
-	{ deleteMember },
-	{ resendWelcomeMail },
+	{ getSprintReportByTeamId },
 ];
 
 export default {
@@ -27,11 +19,12 @@ export default {
 	},
 	state: {
 		items: [],
+		selectedTeamId: null,
 	},
 	getters: {
-		itemsByWorkspace(state, _, __, rootGetters) {
-			return state.items.filter(({ workspaceIds }) => {
-				return workspaceIds.indexOf(rootGetters['workspaces/currentWorkspace']?.id) > -1;
+		itemsByTeam(state) {
+			return (teamId) => state.items.filter(({ teamIds }) => {
+				return teamIds.indexOf(teamId) > -1;
 			});
 		},
 	},
@@ -39,5 +32,9 @@ export default {
 		setItems(state, payload) {
 			state.items = convertKeysToCamelCase(payload);
 		},
+
+		setSelectedTeamId(state, payload) {
+			state.selectedTeamId = payload;
+		},
 	},
-};
+}
