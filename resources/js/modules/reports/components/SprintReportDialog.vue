@@ -1,7 +1,7 @@
 <template>
 	<v-dialog
 		v-model="dialog"
-		width="750px"
+		width="950px"
 		height="100%"
 		@click:outside="loading ? dialog = false : null"
 	>
@@ -20,6 +20,7 @@
 			</v-card-title>
 			<sprint-report-dialog-content
 				v-if="dialog"
+				:key="dialogContentControl"
 				v-model="sprintReport"
 				:team-id="teamId"
 				:readonly="readonly"
@@ -97,6 +98,7 @@ export default {
 			dialog: false,
 			sprintReport: this.data || {},
 			showFinishConfirmation: false,
+			dialogContentControl: 0,
 		};
 	},
 
@@ -117,6 +119,15 @@ export default {
 				&& (!!members && members.length > 0)
 				&& (!!cards && cards.length > 0)
 				&& !!impedimentsQuantity;
+		},
+	},
+
+	watch: {
+		data: {
+			handler() {
+				this.dialogContentControl += 1;
+			},
+			immediate: true,
 		},
 	},
 

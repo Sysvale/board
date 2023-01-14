@@ -30,6 +30,11 @@
 						<v-spacer />
 					</v-toolbar>
 				</template>
+				<template v-slot:item.period="{ item }">
+					<div>
+						{{ getSprintPeriod(item) }}
+					</div>
+				</template>
 				<template v-slot:item.actions="{ item }">
 					<sprint-report-dialog
 						:data="item"
@@ -73,7 +78,7 @@ export default {
 					text: 'Data',
 					align: 'start',
 					sortable: true,
-					value: 'startedAt',
+					value: 'period',
 				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
@@ -136,6 +141,10 @@ export default {
 			}).finally(() => {
 				this.selectedItem = {};
 			});
+		},
+
+		getSprintPeriod(item) {
+			return `${moment(item.startedAt).format('DD/MM/yy')} à ${moment(item.finishedAt).format('DD/MM/yy')}`;
 		},
 	},
 };

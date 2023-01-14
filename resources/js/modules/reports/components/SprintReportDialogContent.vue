@@ -16,7 +16,7 @@
 				>
 					<template v-slot:activator="{ on, attrs }">
 						<v-text-field
-							:value="getSelectedEventFormatedDate(internalValue.startedAt)"
+							:value="getSelectedEventFormattedDate(internalValue.startedAt)"
 							prepend-icon="insert_invitation"
 							readonly
 							outlined
@@ -31,6 +31,7 @@
 						v-model="internalValue.startedAt"
 						locale="pt-BR"
 						no-title
+						:max="maxDate"
 						@input="startedAtMenu = false"
 					/>
 				</v-menu>
@@ -50,7 +51,7 @@
 				>
 					<template v-slot:activator="{ on, attrs }">
 						<v-text-field
-							:value="getSelectedEventFormatedDate(internalValue.finishedAt)"
+							:value="getSelectedEventFormattedDate(internalValue.finishedAt)"
 							prepend-icon="insert_invitation"
 							readonly
 							outlined
@@ -65,6 +66,7 @@
 						v-model="internalValue.finishedAt"
 						locale="pt-BR"
 						no-title
+						:max="maxDate"
 						@input="finishedAtMenu = false"
 					/>
 				</v-menu>
@@ -99,10 +101,24 @@
 		</v-row>
 		<v-row>
 			<v-col>
-				<div>
+				<div class="mb-3">
+					Observações
+				</div>
+				<v-textarea
+					v-model="internalValue.notes"
+					outlined
+					height="60px"
+					:disabled="readonly"
+				/>
+			</v-col>
+		</v-row>
+		<v-row>
+			<v-col>
+				<div class="mb-3">
 					Sprint backlog
 				</div>
 				<v-data-table
+					:key="tableControl"
 					:headers="headers"
 					:items="internalValue.cards"
 					item-class="text-center"
@@ -129,6 +145,35 @@
 							</template>
 							<span>{{ item.title }}</span>
 						</v-tooltip>
+					</template>
+					<template
+						v-slot:item.details="{ item }"
+					>
+						<div class="d-flex">
+							<v-icon
+								v-if="item.bimesterGoal"
+								class="ml-2"
+								small
+							>
+								my_location
+							</v-icon>
+							<v-icon
+								v-if="item.isRecurrent"
+								class="ml-2"
+								small
+							>
+								restore
+							</v-icon>
+						</div>
+					</template>
+					<template
+						v-slot:item.backlogLabels="{ item }"
+					>
+						<label-list
+							:labels="item.backlogLabels"
+							:raw-labels="backlogLabels"
+							small
+						/>
 					</template>
 					<template
 						v-slot:item.status="{ item }"
@@ -161,17 +206,19 @@
 	</div>
 </template>
 <script>
-import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers, mapState } from 'vuex';
+import moment from 'moment';
 import {
 	options as userStoriesStatusesOptions,
 	dictionary as userStoriesStatusesDictionary,
 } from '../../../core/constants/userStoryStatuses';
 
 import MemberSelect from '../../board/components/MemberSelect.vue';
+import LabelList from '../../board/components/LabelList.vue';
 
 export default {
 
-	components: { MemberSelect },
+	components: { MemberSelect, LabelList },
 
 	props: {
 		value: {
@@ -197,6 +244,16 @@ export default {
 					sortable: false,
 				},
 				{
+					text: 'Detalhes',
+					value: 'details',
+					sortable: false,
+				},
+				{
+					text: 'Categorias',
+					value: 'backlogLabels',
+					sortable: false,
+				},
+				{
 					text: 'Estado',
 					value: 'status',
 					sortable: false,
@@ -218,7 +275,18 @@ export default {
 				return 'Insira um valor válido';
 			},
 			userStoriesStatusesOptions,
+			tableControl: 0,
 		};
+	},
+
+	computed: {
+		...mapState('backlogLabels', {
+			backlogLabels: ({ items }) => items,
+		}),
+
+		maxDate() {
+			return moment().toISOString();
+		},
 	},
 
 	watch: {
@@ -238,11 +306,11 @@ export default {
 		if (teamId) {
 			const namespace = `userStories-${teamId}`;
 			const {
-				mapState,
+				mapState: mapStateHelper,
 			} = createNamespacedHelpers(namespace);
 
 			this.$options.computed = {
-				...mapState({
+				...mapStateHelper({
 					userStories: 'items',
 				}),
 				...this.$options.computed,
@@ -259,11 +327,16 @@ export default {
 			status: userStoriesStatusesDictionary.IN_PROGRESS,
 			shouldBeDeleted: false,
 			estimated: item.estimated,
+			isRecurrent: item.isRecurrent,
+			bimesterGoal: item.bimesterGoal,
+			backlogLabels: item.backlogLabels,
 		}));
+
+		this.tableControl += 1;
 	},
 
 	methods: {
-		getSelectedEventFormatedDate(date) {
+		getSelectedEventFormattedDate(date) {
 			return date ? moment(date).locale('pt-BR').format('DD/MM/YY') : '';
 		},
 		isNaN(value) {
