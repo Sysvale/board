@@ -3,6 +3,7 @@ import Members from '../views/Members.vue';
 import Workspaces from '../views/Workspaces.vue';
 import Teams from '../views/Teams.vue';
 import Labels from '../views/Labels.vue';
+import BacklogLabels from '../views/BacklogLabels.vue';
 
 export default [
 	{
@@ -35,6 +36,14 @@ export default [
 		component: Labels,
 		meta: {
 			title: 'Categorias',
+		},
+	},
+	{
+		path: '/settings/backlog-labels',
+		name: 'settings.backlogLabels',
+		component: BacklogLabels,
+		meta: {
+			title: 'Categorias de backlog',
 		},
 	},
 	{
