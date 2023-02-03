@@ -244,6 +244,11 @@ export default {
 					sortable: false,
 				},
 				{
+					text: 'Pontuação',
+					value: 'estimated',
+					sortable: false,
+				},
+				{
 					text: 'Detalhes',
 					value: 'details',
 					sortable: false,
