@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\Scopes\CompanyScope;
 use App\Models\Team;
 use App\Models\Workspace;
+use App\Models\Process;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +29,7 @@ class EnableCompanyGlobalScope
             Member::addGlobalScope(new CompanyScope($company_id));
             Team::addGlobalScope(new CompanyScope($company_id));
             Workspace::addGlobalScope(new CompanyScope($company_id));
+            Process::addGlobalScope(new CompanyScope($company_id));
         }
         
         return $next($request);
