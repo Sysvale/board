@@ -31,6 +31,12 @@ class ProcessController extends Controller
 
 		$process = Process::create($data);
 
+		$process->company()->associate(
+			auth()->user()->member->company_id
+		);
+
+		$process->save();
+
 		return new ProcessResource($process);
 	}
 

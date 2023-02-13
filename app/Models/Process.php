@@ -24,4 +24,9 @@ class Process extends Model
 	{
 		return $this->hasMany(Team::class);
 	}
+
+	public function company()
+	{
+		return $this->belongsTo(Company::class);
+	}
 }
