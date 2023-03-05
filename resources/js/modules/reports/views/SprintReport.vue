@@ -35,6 +35,11 @@
 						{{ getSprintPeriod(item) }}
 					</div>
 				</template>
+				<template v-slot:item.velocity="{ item }">
+					<div>
+						{{ getSprintVelocity(item) }} pts
+					</div>
+				</template>
 				<template v-slot:item.actions="{ item }">
 					<sprint-report-dialog
 						:data="item"
@@ -73,12 +78,19 @@ export default {
 	data() {
 		return {
 			dialog: false,
+			teamVelocity: [],
 			headers: [
 				{
 					text: 'Data',
 					align: 'start',
 					sortable: true,
 					value: 'period',
+				},
+				{
+					text: 'Velocidade',
+					align: 'start',
+					sortable: true,
+					value: 'velocity',
 				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
@@ -87,7 +99,6 @@ export default {
 	},
 
 	computed: {
-
 		selectedTeamId: {
 			get() {
 				return this.storeSelectedTeamId;
@@ -145,6 +156,18 @@ export default {
 
 		getSprintPeriod(item) {
 			return `${moment(item.startedAt).format('DD/MM/yy')} à ${moment(item.finishedAt).format('DD/MM/yy')}`;
+		},
+
+		getSprintVelocity(item) {
+			const velocity = item.cards.reduce((acc, card) => {
+				if (card.status !== 'done') {
+					return acc + 0;
+				}
+
+				return acc + Number(card.estimated);
+			}, 0);
+
+			return velocity;
 		},
 	},
 };
