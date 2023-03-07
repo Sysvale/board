@@ -169,7 +169,7 @@ export default {
 					return acc + 0;
 				}
 
-				return acc + Number(card.estimated);
+				return acc + Number(card.estimated || 0);
 			}, 0);
 
 			return deliveredPoints;
