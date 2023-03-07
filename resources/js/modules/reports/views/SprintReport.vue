@@ -29,10 +29,20 @@
 						<v-toolbar-title>Sprints</v-toolbar-title>
 						<v-spacer />
 					</v-toolbar>
+
+					<div class="mb-4">
+						<small class="pl-4">Velocidade do time: </small>
+						<small class="pl-2 font-weight-bold">{{ getTeamVelocity() }} pts</small>
+					</div>
 				</template>
 				<template v-slot:item.period="{ item }">
 					<div>
 						{{ getSprintPeriod(item) }}
+					</div>
+				</template>
+				<template v-slot:item.deliveredPoints="{ item }">
+					<div>
+						{{ getDeliveredPoints(item) }} pts
 					</div>
 				</template>
 				<template v-slot:item.actions="{ item }">
@@ -73,12 +83,19 @@ export default {
 	data() {
 		return {
 			dialog: false,
+			teamVelocity: 0,
 			headers: [
 				{
 					text: 'Data',
 					align: 'start',
 					sortable: true,
 					value: 'period',
+				},
+				{
+					text: 'Pontos entregues',
+					align: 'start',
+					sortable: true,
+					value: 'deliveredPoints',
 				},
 				{ text: 'Ações', value: 'actions', sortable: false },
 			],
@@ -87,7 +104,6 @@ export default {
 	},
 
 	computed: {
-
 		selectedTeamId: {
 			get() {
 				return this.storeSelectedTeamId;
@@ -145,6 +161,26 @@ export default {
 
 		getSprintPeriod(item) {
 			return `${moment(item.startedAt).format('DD/MM/yy')} à ${moment(item.finishedAt).format('DD/MM/yy')}`;
+		},
+
+		getDeliveredPoints(item) {
+			const deliveredPoints = item.cards.reduce((acc, card) => {
+				if (card.status !== 'done') {
+					return acc + 0;
+				}
+
+				return acc + Number(card.estimated || 0);
+			}, 0);
+
+			return deliveredPoints;
+		},
+
+		getTeamVelocity() {
+			const numberOfSprints = this.sprints.length;
+			const velocity = this.sprints.reduce((acc, curr) => acc + this.getDeliveredPoints(curr), 0);
+
+			// eslint-disable-next-line no-bitwise
+			return ~~(velocity / numberOfSprints);
 		},
 	},
 };
