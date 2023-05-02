@@ -22,7 +22,8 @@
         "laravel/framework": "^6.2",
         "laravel/helpers": "^1.2",
         "laravel/tinker": "^2.0",
-        "sysvale/helpers": "^1.0"
+        "sysvale/helpers": "^1.0",
+        "sysvale/laravel-mongodb-passport": "master"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
