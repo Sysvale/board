@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CardController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +18,5 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('cards', [CardController::class, 'store'])->name('api.cards.store');
