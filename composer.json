@@ -7,6 +7,12 @@
         "laravel"
     ],
     "license": "MIT",
+    "repositories": [
+      {
+        "type": "git",
+        "url": "https://github.com/Sysvale/laravel-mongodb-passport"
+      }
+    ],
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
