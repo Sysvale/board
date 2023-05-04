@@ -150,12 +150,6 @@ class CardController extends Controller
 	{
 		$card = Card::create($request->validated());
 
-		$card->company()->associate(
-			auth()->user()->member->company_id
-		);
-
-		$card->save();
-
 		if ($request->team_key) {
 			$card->first_default_board_list_id = $this->getFirstDefaultBoardListId($request->team_key);
 		}
