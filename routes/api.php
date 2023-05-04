@@ -19,4 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('cards', [CardController::class, 'store'])->name('api.cards.store');
+Route::post('cards', [CardController::class, 'store'])
+	->middleware('client')
+	->name('api.cards.store');
