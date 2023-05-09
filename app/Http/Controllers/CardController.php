@@ -5,14 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Card;
 use App\Models\Team;
 use App\Models\Event;
-use App\Models\Label;
 use App\Models\Board;
 use App\Models\BoardList;
-use App\Constants\CardTypes;
-use App\Constants\LabelKeys;
 use Illuminate\Http\Request;
-use App\Constants\BoardListsKeys;
-use App\Constants\TeamKeys;
 use App\Constants\BoardKeys;
 use App\Http\Resources\CardResource;
 use App\Http\Requests\StoreCardRequest;
@@ -29,14 +24,14 @@ class CardController extends Controller
 		$this->card_service = new CardService();
 		$this->board_list_service = new BoardListService();
 	}
-	
+
 	public function getTaskCardsFromUserStory(Request $request)
 	{
 		$request->validate([
 			'user_story_id' => 'required|string',
 			'team_id' => 'required|string',
 		]);
-		
+
 		$team_board_lists = $this->board_list_service
 			->getTaskLists($request->team_id)
 			->pluck('id');
@@ -59,7 +54,7 @@ class CardController extends Controller
 		$team_board_lists = (
 			$this->board_list_service->getDevLists($request->team_id)
 		)->pluck('id');
-	
+
 		$cards = $this->card_service->getTasksFromBoard(
 			$devlog_board->id,
 			$team_board_lists
@@ -79,7 +74,7 @@ class CardController extends Controller
 		$team_board_lists = (
 			$this->board_list_service->getTaskLists($request->team_id)
 		)->pluck('id');
-	
+
 		$cards = $this->card_service->getTasksFromBoard(
 			$not_planned->id,
 			$team_board_lists
@@ -99,7 +94,7 @@ class CardController extends Controller
 		$team_board_lists = (
 			$this->board_list_service->getTaskLists($request->team_id)
 		)->pluck('id');
-	
+
 		$cards = $this->card_service->getTasksFromBoard(
 			$kaizen->id,
 			$team_board_lists
@@ -114,7 +109,7 @@ class CardController extends Controller
 		$company_planning_board_lists = (
 			$this->board_list_service->getCompanyPlanningLists()
 		)->pluck('id');
-	
+
 		$cards = $this->card_service->getCardsByBoardListsIds($company_planning_board_lists);
 
 		return $this->mountPayload($company_planning_board_lists, $cards);
@@ -129,7 +124,7 @@ class CardController extends Controller
 		$planning_board_lists = (
 			$this->board_list_service->getPlanningLists($request->workspace_id)
 		)->pluck('id');
-	
+
 		$cards = $this->card_service->getCardsByBoardListsIds($planning_board_lists);
 
 		return $this->mountPayload($planning_board_lists, $cards);
@@ -154,12 +149,6 @@ class CardController extends Controller
 	public function store(StoreCardRequest $request)
 	{
 		$card = Card::create($request->validated());
-
-		$card->company()->associate(
-			auth()->user()->member->company_id
-		);
-
-		$card->save();
 
 		if ($request->team_key) {
 			$card->first_default_board_list_id = $this->getFirstDefaultBoardListId($request->team_key);
