@@ -69,4 +69,6 @@
 
 <small> **nota**: `docker-composer exec board-server` pode ser substituido por `./on-server.sh` </small>
 
+[Veja como usar a api do trelássio](API.md)
+
 Caso você queira contribuir com o projeto, considere ler o [CONTRIBUTING.md](CONTRIBUTING.md).
