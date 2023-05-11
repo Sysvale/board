@@ -7,25 +7,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CardObserver
 {
-	public function creating(Card $card)
+	public function creating(Card $card): void
 	{
-		$card->user_id = Auth::user()->id;
-	}
-
-	/**
-	 * Handle the card "created" event.
-	 *
-	 * @param  \App\Models\Card  $card
-	 * @return void
-	 */
-	public function created(Card $card)
-	{
-		if (Card::withTrashed()->count() > 0) {
-			$card->number = Card::max('number') + 1;
-			$card->save();
-			return;
+		if (request()->filled('company_id')) {
+			$card->company()->associate(request()->company_id);
+			$card->user_id = auth()->check() ? Auth::user()->id : null;
 		}
-		$card->number = 1;
-		$card->save();
+
+		$card->number = (Card::withTrashed()->max('number') ?: 0) + 1;
 	}
 }
