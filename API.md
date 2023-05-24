@@ -90,7 +90,8 @@ para evitar redirecionamentos em caso de erros de validação ou autenticação.
 {
 	"title": "Card criado via api", // titulo do card
 	"type":  "user-story", // tipo do card. para mais tipos ver: App/Constants/CardTypes
-	"board_list_id" : "645259f8ec05ef07130f31a8" // id da lista onde o card será criado
+	"board_list_id" : "645259f8ec05ef07130f31a8", // id da lista onde o card será criado
+	"user_story_id": "6458e1a8a90d9a6e0e697d02" // opcional, deve ser enviado quando o card criado é do tipo task
 }
 ```
 
