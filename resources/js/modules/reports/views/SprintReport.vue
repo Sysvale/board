@@ -30,9 +30,29 @@
 						<v-spacer />
 					</v-toolbar>
 
-					<div class="mb-4">
-						<small class="pl-4">Velocidade do time: </small>
-						<small class="pl-2 font-weight-bold">{{ getTeamVelocity() }} pts</small>
+					<div class="d-flex align-center mb-4">
+						<div class="mr-2">
+							<small class="pl-4">Velocidade do time: </small>
+							<small class="pl-2 font-weight-bold">{{ getTeamVelocity() }} pts</small>
+						</div>
+
+						<v-tooltip
+							bottom
+							:max-width="200"
+						>
+							<template
+								v-slot:activator="{ on, attrs }"
+							>
+								<v-icon
+									class="mr-2"
+									v-bind="attrs"
+									v-on="on"
+								>
+									info
+								</v-icon>
+							</template>
+							{{ tooltipText }}
+						</v-tooltip>
 					</div>
 				</template>
 				<template v-slot:item.period="{ item }">
@@ -84,6 +104,7 @@ export default {
 		return {
 			dialog: false,
 			teamVelocity: 0,
+			tooltipText: 'A velocidade do time é calculada pela média dos pontos entregues nas últimas 8 sprints com arredondamento para baixo',
 			headers: [
 				{
 					text: 'Data',
@@ -176,11 +197,12 @@ export default {
 		},
 
 		getTeamVelocity() {
-			const numberOfSprints = this.sprints.length;
-			const velocity = this.sprints.reduce((acc, curr) => acc + this.getDeliveredPoints(curr), 0);
+			const numberOfSprintsToConsider = 8;
+			const sprintsToConsider = this.sprints.slice(0, numberOfSprintsToConsider);
+			const velocity = sprintsToConsider.reduce((acc, curr) => acc + this.getDeliveredPoints(curr), 0);
 
 			// eslint-disable-next-line no-bitwise
-			return ~~(velocity / numberOfSprints);
+			return ~~(velocity / numberOfSprintsToConsider);
 		},
 	},
 };
