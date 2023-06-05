@@ -48,7 +48,11 @@ class SprintReportController extends Controller
 
 	public function getSprintReportByTeamId(Team $team)
 	{
-		return SprintReport::where('team_id', $team->id)->orderBy('startedAt')->get();
+		return SprintReport::where('team_id', $team->id)
+			->orderBy('startedAt')
+			->get()
+			->reverse()
+			->values();
 	}
 
 	public function getCurrentSprintOverviewByTeam(Team $team)
