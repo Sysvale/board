@@ -197,7 +197,7 @@ export default {
 		},
 
 		getTeamVelocity() {
-			const numberOfSprintsToConsider = 8;
+			const numberOfSprintsToConsider = this.sprints.length <= 8 ? this.sprints.length : 8;
 			const sprintsToConsider = this.sprints.slice(0, numberOfSprintsToConsider);
 			const velocity = sprintsToConsider.reduce((acc, curr) => acc + this.getDeliveredPoints(curr), 0);
 
