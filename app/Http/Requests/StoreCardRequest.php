@@ -27,7 +27,7 @@ class StoreCardRequest extends FormRequest
 		return [
 			'title' => 'required|string',
 			'type' => "required|in:$types",
-			'board_list_id' => 'required|string',
+			'board_list_id' => 'required|string|exists:board_lists,_id',
 			'user_story_id' => 'nullable|string',
 			'members' => 'nullable|array',
 			'team_id' => 'nullable|string',
