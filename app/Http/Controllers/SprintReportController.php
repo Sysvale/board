@@ -49,15 +49,13 @@ class SprintReportController extends Controller
 	public function getSprintReportByTeamId(Team $team)
 	{
 		return SprintReport::where('team_id', $team->id)
-			->orderBy('startedAt')
+			->orderBy('started_at', 'desc')
 			->get()
-			->reverse()
 			->values();
 	}
 
 	public function getCurrentSprintOverviewByTeam(Team $team)
 	{
-
 		$output = [];
 
 		$sprint_backlog_items = (new CardService())->getUserStoriesByTeam($team->key);
