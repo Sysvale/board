@@ -375,7 +375,7 @@ export default {
 		getDeliveredRelativeCount(item) {
 			const doneCount = item.cards.filter(({ status }) => status === userStoryStatuses.DONE).length;
 			// eslint-disable-next-line no-bitwise
-			const percentage = ~~(doneCount / item.cards.length) * 100;
+			const percentage = ~~((doneCount / item.cards.length) * 100);
 			return { percentage, doneCount, total: item.cards.length };
 		},
 
@@ -388,7 +388,7 @@ export default {
 				.reduce((acc, curr) => acc + Number(curr.estimated || 0), 0);
 
 			// eslint-disable-next-line no-bitwise
-			const percentage = ~~(donePoints / plannedPoints) * 100;
+			const percentage = ~~((donePoints / plannedPoints) * 100);
 			return { percentage, donePoints, plannedPoints };
 		},
 	},
