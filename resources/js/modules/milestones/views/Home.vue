@@ -125,6 +125,9 @@
 										<v-textarea
 											v-model="selectedItem.description"
 											label="Descrição"
+											flat
+											outlined
+											auto-grow
 										/>
 									</v-row>
 									<v-row>
@@ -133,6 +136,14 @@
 										</div>
 										<teams-select
 											v-model="selectedItem.teamIds"
+										/>
+									</v-row>
+									<v-row>
+										<div class="mt-5">
+											<strong>Critérios de aceitação</strong>
+										</div>
+										<checklist-form
+											v-model="selectedItem.acceptanceCriteria"
 										/>
 									</v-row>
 								</v-container>
@@ -228,10 +239,12 @@ import moment from 'moment';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import TeamsSelect from '../components/TeamsSelect.vue';
+import ChecklistForm from '../../board/components/ChecklistForm.vue';
 
 export default {
 	components: {
 		TeamsSelect,
+		ChecklistForm,
 	},
 	data() {
 		return {

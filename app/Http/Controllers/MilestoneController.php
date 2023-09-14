@@ -37,7 +37,7 @@ class MilestoneController extends Controller
 			'start_date' => 'required|string',
 			'end_date' => 'required|string',
 			'team_ids' => 'nullable|array',
-			'acceptance_criteria',
+			'acceptance_criteria' => 'nullable|array',
 		]);
 
 		$milestone = Milestone::create([
@@ -60,7 +60,7 @@ class MilestoneController extends Controller
 			'start_date' => 'required|string',
 			'end_date' => 'required|string',
 			'team_ids' => 'nullable|array',
-			'acceptance_criteria',
+			'acceptance_criteria' => 'nullable|array',
 		]);
 
 		$milestone->update($data);
