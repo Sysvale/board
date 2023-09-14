@@ -239,30 +239,32 @@
 					</v-icon>
 				</v-btn>
 			</template>
-			<template v-slot:expanded-item="{ item }">
-				<v-container>
-					<div>
-						{{ item.description }}
-					</div>
-					<div class="py-2">
-						<strong>Times</strong>
-						<div>{{ getTeamsNames(item.teamIds) }}</div>
-					</div>
-					<div class="py-2">
-						<strong>
-							<small>Critérios de aceitação {{ getAcceptanceCriteriaRatio(item.acceptanceCriteria) }}</small>
-						</strong>
-						<ul>
-							<li
-								v-for="criteria in item.acceptanceCriteria"
-								:key="criteria.description"
-								:class="{'done' : criteria.done }"
-							>
-								{{ criteria.description }}
-							</li>
-						</ul>
-					</div>
-				</v-container>
+			<template v-slot:expanded-item="{ item, headers }">
+				<td :colspan="headers.length">
+					<v-container>
+						<div>
+							{{ item.description }}
+						</div>
+						<div class="py-2">
+							<strong>Times</strong>
+							<div>{{ getTeamsNames(item.teamIds) }}</div>
+						</div>
+						<div class="py-2">
+							<strong>
+								<small>Critérios de aceitação {{ getAcceptanceCriteriaRatio(item.acceptanceCriteria) }}</small>
+							</strong>
+							<ul>
+								<li
+									v-for="criteria in item.acceptanceCriteria"
+									:key="criteria.description"
+									:class="{'done' : criteria.done }"
+								>
+									{{ criteria.description }}
+								</li>
+							</ul>
+						</div>
+					</v-container>
+				</td>
 			</template>
 		</v-data-table>
 	</v-container>
