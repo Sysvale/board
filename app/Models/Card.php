@@ -36,6 +36,7 @@ class Card extends Model
 		'user_id',
 		'estimated',
 		'status',
+		'milestone_id',
 	];
 
 	protected $appends = ['id', 'is_user_story', 'is_not_prioritized', 'is_task'];
@@ -72,6 +73,11 @@ class Card extends Model
 	public function user()
 	{
 		return $this->belongsTo(User::class);
+	}
+
+	public function milestone()
+	{
+		return $this->belongsTo('App\Models\Milestone');
 	}
 
 	public function getIsUserStoryAttribute()

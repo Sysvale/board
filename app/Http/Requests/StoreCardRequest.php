@@ -67,6 +67,7 @@ class StoreCardRequest extends FormRequest
 			'bimester_goal' => 'nullable|boolean',
 			'is_recurrent' => 'nullable|boolean',
 			'backlog_labels' => 'nullable|string',
+			'milestone_id' => 'nullable|string',
 		];
 	}
 }

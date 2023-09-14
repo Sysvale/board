@@ -33,3 +33,7 @@
 .swal2-popup {
 	font-family: Poppins, sans-serif !important;
 }
+
+.v-data-table tbody tr.v-data-table__expanded__content {
+	box-shadow: unset !important;
+}
