@@ -82,7 +82,6 @@
 													v-model="selectedItem.startDate"
 													locale="pt-BR"
 													no-title
-													:max="maxDate"
 													@input="startDateMenu = false"
 												/>
 											</v-menu>
@@ -117,7 +116,6 @@
 													locale="pt-BR"
 													no-title
 													:min="selectedItem.startDate"
-													:max="maxDate"
 													@input="endDateMenu = false"
 												/>
 											</v-menu>
@@ -332,7 +330,9 @@ export default {
 		},
 
 		formIsValid() {
-			return !!this.selectedItem.title && this.selectedItem.title.trim();
+			const fields = ['title', 'description', 'startDate', 'endDate'];
+			return fields.reduce((acc, curr) => acc && (!!this.selectedItem[curr]
+				&& !!this.selectedItem[curr]?.trim()), true) && (this.selectedItem.teamIds?.length > 0 || false);
 		},
 
 		...mapState('milestones', {
@@ -348,10 +348,6 @@ export default {
 				|| this.isCreating
 				|| this.isUpdating
 				|| this.isRemoving;
-		},
-
-		maxDate() {
-			return moment().toISOString();
 		},
 
 		filteredMilestones() {
@@ -473,6 +469,7 @@ export default {
 			});
 		},
 		getAcceptanceCriteriaRatio(acceptanceCriteria) {
+			if (!acceptanceCriteria) return '';
 			return `${acceptanceCriteria.filter(({ done }) => done)?.length || 0}/${(acceptanceCriteria?.length || 0)}`;
 		},
 
