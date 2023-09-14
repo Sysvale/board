@@ -70,7 +70,7 @@
 					</v-tooltip>
 
 					<v-tooltip
-						v-if="isUserStory && item.bimesterGoal"
+						v-if="isUserStory && item.milestoneId"
 						bottom
 					>
 						<template v-slot:activator="{ on, attrs }">
@@ -83,7 +83,7 @@
 								my_location
 							</v-icon>
 						</template>
-						Alinhado com o objetivo do bimestre
+						Item associado à um milestone
 					</v-tooltip>
 					<v-tooltip
 						v-if="isUserStory && item.isRecurrent"
@@ -388,17 +388,6 @@
 			>
 				<div class="mb-3">
 					<switch-button
-						v-model="item.bimesterGoal"
-						active-background-color="#1579F3"
-						active-text-color="white"
-						class="mr-3 mt-3"
-					>
-						<v-icon left>
-							my_location
-						</v-icon>
-						Objetivo do bimestre
-					</switch-button>
-					<switch-button
 						v-model="item.isRecurrent"
 						active-background-color="#FCBB5A"
 						active-text-color="black"
@@ -410,10 +399,16 @@
 						É recorrente
 					</switch-button>
 				</div>
-				<div>
-					<div
-						class="pt-5"
-					>
+				<div class="mb-5 pt-5">
+					<div class="mb-2">
+						<strong>Milestone</strong>
+					</div>
+					<milestone-select
+						v-model="item.milestoneId"
+					/>
+				</div>
+				<div class="mb-2">
+					<div>
 						<div class="mb-2">
 							<strong>Categorias</strong>
 						</div>
@@ -550,6 +545,7 @@ import TooltipRating from './TooltipRating.vue';
 import { NOT_PRIORITIZED, TASK, USER_STORY } from '../constants/CardTypes';
 import ChecklistFromProcessSelect from '../../processes/components/ChecklistFromProcessSelect.vue';
 import ArtifactsForm from './ArtifactsForm.vue';
+import MilestoneSelect from '../../milestones/components/MilestoneSelect.vue';
 
 const MAIN_TAB = 'Informações gerais';
 const CHECKLIST_TAB = 'Checklist';
@@ -568,6 +564,7 @@ export default {
 		TooltipRating,
 		ChecklistFromProcessSelect,
 		ArtifactsForm,
+		MilestoneSelect,
 	},
 
 	props: {

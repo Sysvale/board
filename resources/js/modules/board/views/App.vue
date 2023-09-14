@@ -191,7 +191,12 @@ export default {
 			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
 		}),
 		...mapState('goals', {
+			milestones: 'items',
 			loadingGoals: ({ getGoals }) => getGoals.isFetching,
+		}),
+
+		...mapState('milestones', {
+			loadingMilestones: ({ getMilestones }) => getMilestones.isFetching,
 		}),
 
 		...mapGetters('workspaces', ['currentWorkspace']),
@@ -271,6 +276,9 @@ export default {
 		this.getGoals().then((data) => {
 			this.setGoals(data);
 		});
+		this.getMilestones().then((data) => {
+			this.setMilestones(data);
+		});
 	},
 
 	methods: {
@@ -298,6 +306,9 @@ export default {
 		...mapActions('goals', [
 			'getGoals',
 		]),
+		...mapActions('milestones', [
+			'getMilestones',
+		]),
 		...mapMutations('workspaces', {
 			setWorkspaces: 'setItems',
 			setSelectedWorkspace: 'setSelectedWorkspace',
@@ -322,6 +333,9 @@ export default {
 		}),
 		...mapMutations('goals', {
 			setGoals: 'setItems',
+		}),
+		...mapMutations('milestones', {
+			setMilestones: 'setItems',
 		}),
 		logout() {
 			window.location.href = '/logout';

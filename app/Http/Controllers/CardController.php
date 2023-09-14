@@ -179,6 +179,7 @@ class CardController extends Controller
 			'rating' => $request->rating,
 			'description' => $request->description,
 			'status' => $request->status,
+			'milestone_id' => $request->milestone_id,
 		];
 
 		$cleaned_data = array_filter($params, function ($value) {

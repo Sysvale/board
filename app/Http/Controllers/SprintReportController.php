@@ -37,6 +37,12 @@ class SprintReportController extends Controller
 		$sprint_report = SprintReport::create($data);
 
 		if ($sprint_report) {
+			foreach($request->cards as $card) {
+				$db = Card::find($card['id']);
+				$db->status = $card['status'];
+				$db->save();
+			}
+	
 			(new CardService())->deleteMany(collect($request->cards)
 				->filter(function($item) {
 					return !!$item['should_be_deleted'];

@@ -68,6 +68,7 @@ Route::group(
 		
 		Route::apiResource('workspaces', 'WorkspaceController');
 		Route::apiResource('processes', 'ProcessController');
+		Route::apiResource('milestones', 'MilestoneController');
 		Route::apiResource('sprint-reports', 'SprintReportController')->only(['store']);
 		Route::get('sprint-reports/{team}', 'SprintReportController@getSprintReportByTeamId');
 
@@ -77,6 +78,10 @@ Route::group(
 		Route::get('/reports/sprint-overview/{team}', 'SprintReportController@getCurrentSprintOverviewByTeam');
 		
 		Route::resource('backlog-labels', 'BacklogLabelController');
+
+		Route::get('milestones/{milestone}/backlog-items/not-started', 'MilestoneController@getNotStarted');
+		Route::get('milestones/{milestone}/backlog-items/on-going', 'MilestoneController@getOnGoing');
+		Route::get('milestones/{milestone}/backlog-items/finished', 'MilestoneController@getFinished');
 	}
 );
 
