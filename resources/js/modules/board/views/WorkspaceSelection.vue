@@ -53,6 +53,14 @@
 				>
 					Workspace geral
 				</v-btn>
+				<v-btn
+					text
+					depressed
+					outlined
+					@click="goToMilestones"
+				>
+					Milestones
+				</v-btn>
 			</v-container>
 			<div class="mt-5">
 				<img src="/images/sysvale-logo.svg">
@@ -90,6 +98,11 @@ export default {
 		goToCompanyPlanning() {
 			this.$router.push({
 				name: 'workspace.company',
+			});
+		},
+		goToMilestones() {
+			this.$router.push({
+				name: 'milestones',
 			});
 		},
 		getWorkspaceAlias(name) {

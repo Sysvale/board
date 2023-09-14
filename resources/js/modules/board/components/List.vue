@@ -102,20 +102,20 @@
 										v-on="on"
 										class="font-weight-bold metric-ratio-badge px-2"
 										:style="{
-											color: bimesterGoalRatioConfig.color,
-											border: `1px solid ${bimesterGoalRatioConfig.color}`,
-											backgroundColor: `${bimesterGoalRatioConfig.color}0A`,
+											color: milestoneRatioConfig.color,
+											border: `1px solid ${milestoneRatioConfig.color}`,
+											backgroundColor: `${milestoneRatioConfig.color}0A`,
 										}"
 									>
 										<v-icon
-											:color="bimesterGoalRatioConfig.color"
+											:color="milestoneRatioConfig.color"
 										>
 											my_location
 										</v-icon>
-										{{ bimesterGoalRatioConfig.value }}
+										{{ milestoneRatioConfig.value }}
 									</small>
 								</template>
-								{{ bimesterGoalRatioConfig.tooltip }}
+								{{ milestoneRatioConfig.tooltip }}
 							</v-tooltip>
 						</div>
 					</span>
@@ -380,13 +380,13 @@ export default {
 			};
 		},
 
-		bimesterGoalRatioConfig() {
-			const bimesterGoalLength = this.$attrs.list.filter((item) => item.bimesterGoal).length;
+		milestoneRatioConfig() {
+			const milestoneLength = this.$attrs.list.filter((item) => !!item.milestoneId).length;
 			const { length } = this.$attrs.list;
-			const ratio = Math.round((bimesterGoalLength / length) * 100);
+			const ratio = Math.round((milestoneLength / length) * 100);
 
 			const pluralTranslation = length === 1 ? 'história está' : 'histórias estão';
-			const tooltip = `${bimesterGoalLength} de ${length} ${pluralTranslation} alinhadas ao objetivo do bimestre`;
+			const tooltip = `${milestoneLength} de ${length} ${pluralTranslation} associados à um milestone`;
 
 			if (ratio < 50) {
 				return {

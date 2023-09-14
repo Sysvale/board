@@ -12,6 +12,7 @@ import sprintReport from './sprintReport';
 import settingsModules from '../../settings/store';
 import processesModules from '../../processes/store';
 import reportsModules from '../../reports/store';
+import milestonesModules from '../../milestones/store';
 
 Vue.use(Vuex);
 
@@ -28,5 +29,6 @@ export default new Vuex.Store({
 		...settingsModules,
 		...processesModules,
 		...reportsModules,
+		...milestonesModules,
 	},
 });
