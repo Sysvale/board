@@ -8,9 +8,11 @@
 		<v-data-table
 			v-else
 			:headers="headers"
-			:items="milestones"
+			:items="filteredMilestones"
 			sort-by="name"
 			class="elevation-1"
+			show-expand
+			single-expand
 		>
 			<template v-slot:top>
 				<v-toolbar
@@ -201,11 +203,20 @@
 						</v-card>
 					</v-dialog>
 				</v-toolbar>
+				<v-container>
+					<strong>Times</strong>
+					<teams-select
+						v-model="selectedTeams"
+					/>
+				</v-container>
 			</template>
 			<template v-slot:item.title="{ item }">
 				<a href="javascript:void(0)" @click="goTo(item.id)">
 					{{ item.title }}
 				</a>
+			</template>
+			<template v-slot:item.acceptanceCriteriaRatio="{ item }">
+				{{ getAcceptanceCriteriaRatio(item.acceptanceCriteria) }}
 			</template>
 			<template v-slot:item.actions="{ item }">
 				<v-btn
@@ -230,12 +241,38 @@
 					</v-icon>
 				</v-btn>
 			</template>
+			<template v-slot:expanded-item="{ item }">
+				<v-container>
+					<div>
+						{{ item.description }}
+					</div>
+					<div class="py-2">
+						<strong>Times</strong>
+						<div>{{ getTeamsNames(item.teamIds) }}</div>
+					</div>
+					<div class="py-2">
+						<strong>
+							<small>Critérios de aceitação {{ getAcceptanceCriteriaRatio(item.acceptanceCriteria) }}</small>
+						</strong>
+						<ul>
+							<li
+								v-for="criteria in item.acceptanceCriteria"
+								:key="criteria.description"
+								:class="{'done' : criteria.done }"
+							>
+								{{ criteria.description }}
+							</li>
+						</ul>
+					</div>
+				</v-container>
+			</template>
 		</v-data-table>
 	</v-container>
 </template>
 
 <script>
 import moment from 'moment';
+import intersection from 'lodash.intersection';
 import { mapActions, mapMutations, mapState } from 'vuex';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import TeamsSelect from '../components/TeamsSelect.vue';
@@ -258,6 +295,12 @@ export default {
 					value: 'title',
 				},
 				{
+					text: 'Critérios de aceitação',
+					align: 'start',
+					sortable: true,
+					value: 'acceptanceCriteriaRatio',
+				},
+				{
 					text: 'Início',
 					align: 'start',
 					sortable: true,
@@ -275,10 +318,15 @@ export default {
 			selectedItem: {},
 			startDateMenu: false,
 			endDateMenu: false,
+			selectedTeams: [],
 		};
 	},
 
 	computed: {
+		...mapState('teams', {
+			teams: 'items',
+		}),
+
 		formTitle() {
 			return !this.editMode ? 'Novo milestone' : 'Editar item';
 		},
@@ -305,6 +353,12 @@ export default {
 		maxDate() {
 			return moment().toISOString();
 		},
+
+		filteredMilestones() {
+			const selectedTeamsIds = this.selectedTeams.map((item) => item.id || item);
+			return this.milestones
+				.filter((item) => intersection(selectedTeamsIds, item.teamIds).length > 0);
+		},
 	},
 
 	watch: {
@@ -317,9 +371,13 @@ export default {
 			val || this.closeDelete();
 		},
 
-		selectedWorkspaceId() {
-			this.fetchMilestones();
+		teams: {
+			handler(newValue) {
+				this.selectedTeams = newValue?.filter(({ id }) => id);
+			},
+			immediate: true,
 		},
+
 	},
 
 	beforeMount() {
@@ -413,6 +471,23 @@ export default {
 					id,
 				},
 			});
+		},
+		getAcceptanceCriteriaRatio(acceptanceCriteria) {
+			return `${acceptanceCriteria.filter(({ done }) => done)?.length || 0}/${(acceptanceCriteria?.length || 0)}`;
+		},
+
+		getTeamsNames(teamIds) {
+			return this.teams
+				.filter((team) => teamIds.indexOf(team.id) > -1)
+				.map(({ name }) => name)
+				.reduce((acc, curr, index, arr) => {
+					if (index === arr.length - 1) {
+						acc += curr;
+					} else {
+						acc += `${curr}, `;
+					}
+					return acc;
+				}, '');
 		},
 	},
 };
