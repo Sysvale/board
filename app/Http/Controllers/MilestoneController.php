@@ -36,7 +36,7 @@ class MilestoneController extends Controller
 			'description' => 'required|string',
 			'start_date' => 'required|string',
 			'end_date' => 'required|string',
-			'team_ids' => 'nullable|array',
+			'team_ids' => 'required|array',
 			'acceptance_criteria' => 'nullable|array',
 		]);
 

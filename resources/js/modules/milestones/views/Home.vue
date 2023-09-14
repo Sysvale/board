@@ -332,7 +332,7 @@ export default {
 		formIsValid() {
 			const fields = ['title', 'description', 'startDate', 'endDate'];
 			return fields.reduce((acc, curr) => acc && (!!this.selectedItem[curr]
-				&& !!this.selectedItem[curr]?.trim()), true);
+				&& !!this.selectedItem[curr]?.trim()), true) && (this.selectedItem.teamIds?.length > 0 || false);
 		},
 
 		...mapState('milestones', {
@@ -469,6 +469,7 @@ export default {
 			});
 		},
 		getAcceptanceCriteriaRatio(acceptanceCriteria) {
+			if (!acceptanceCriteria) return '';
 			return `${acceptanceCriteria.filter(({ done }) => done)?.length || 0}/${(acceptanceCriteria?.length || 0)}`;
 		},
 
