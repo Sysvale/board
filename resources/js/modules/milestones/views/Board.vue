@@ -1,9 +1,33 @@
 <template>
 	<v-container v-if="milestone">
 		<h2>{{ milestone.title }}</h2>
-		<div>Início: {{ milestone.startDate }} | Fim: {{ milestone.endDate }}</div>
+		<div>
+			<small>
+				<strong>Início:</strong> {{ milestone.startDate }} |
+				<strong>Fim:</strong> {{ milestone.endDate }}
+			</small>
+		</div>
 		<div>
 			{{ milestone.description }}
+		</div>
+		<div class="py-2">
+			<strong>Times</strong>
+			<div>{{ teamsNames }}</div>
+		</div>
+		<div class="py-2">
+			<strong>
+				Critérios de aceitação ({{ acceptanceCriteriaDoneCount }}
+				/{{ acceptanceCriteriaTotalCount }})
+			</strong>
+			<ul>
+				<li
+					v-for="criteria in milestone.acceptanceCriteria"
+					:key="criteria.description"
+					:class="{'done' : criteria.done }"
+				>
+					{{ criteria.description }}
+				</li>
+			</ul>
 		</div>
 		<v-row>
 			<v-col>
@@ -17,6 +41,11 @@
 					color="#efefef"
 				>
 					<v-card-text>
+						<div>
+							<small>
+								<strong>Workspace:</strong> {{ item.workspaceName }}
+							</small>
+						</div>
 						{{ item.title }}
 					</v-card-text>
 				</v-card>
@@ -32,6 +61,11 @@
 					color="#efefef"
 				>
 					<v-card-text>
+						<div>
+							<small>
+								<strong>Time:</strong> {{ item.teamName }}
+							</small>
+						</div>
 						{{ item.title }}
 					</v-card-text>
 				</v-card>
@@ -47,6 +81,11 @@
 					color="#efefef"
 				>
 					<v-card-text>
+						<div>
+							<small>
+								<strong>Time:</strong> {{ item.teamName }}
+							</small>
+						</div>
 						{{ item.title }}
 					</v-card-text>
 				</v-card>
@@ -55,7 +94,7 @@
 	</v-container>
 </template>
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import convertKeysToCamelCase from '../../../core/utils/convertKeysToCamelCase';
 
 export default {
@@ -66,6 +105,34 @@ export default {
 			notStartedItems: [],
 			onGoingItems: [],
 		};
+	},
+	computed: {
+		...mapState('teams', {
+			teams: 'items',
+		}),
+
+		acceptanceCriteriaDoneCount() {
+			return this.milestone.acceptanceCriteria ? this.milestone.acceptanceCriteria
+				.filter(({ done }) => done).length : 0;
+		},
+
+		acceptanceCriteriaTotalCount() {
+			return this.milestone.acceptanceCriteria ? this.milestone.acceptanceCriteria.length : 0;
+		},
+
+		teamsNames() {
+			return this.teams
+				.filter((team) => this.milestone.teamIds.indexOf(team.id) > -1)
+				.map(({ name }) => name)
+				.reduce((acc, curr, index, arr) => {
+					if (index === arr.length - 1) {
+						acc += curr;
+					} else {
+						acc += `${curr}, `;
+					}
+					return acc;
+				}, '');
+		},
 	},
 	mounted() {
 		this.getMilestone(this.$route.params.id)
@@ -95,3 +162,9 @@ export default {
 	},
 };
 </script>
+<style scoped>
+.done {
+	text-decoration: line-through;
+	opacity: 0.3;
+}
+</style>

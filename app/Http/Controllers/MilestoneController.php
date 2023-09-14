@@ -99,20 +99,24 @@ class MilestoneController extends Controller
 			->whereNotNull('workspace_id')
 			->where('milestone_id', $milestone->id)
 			->whereIn('board_list_id', $board_lists_ids)
+			->with('boardList')
 			->orderBy('position')
 			->get();
 
-		return $cards;
+		$workspaces_keyed_by_id = $workspaces->keyBy('id');
+
+		return $cards->map(function($item) use ($workspaces_keyed_by_id) {
+			$new_item = array();
+			$new_item['workspace_name'] = $workspaces_keyed_by_id[explode('-', $item->boardList->key)[1]]->name;
+			$new_item['id'] = $item->id;
+			$new_item['title'] = $item->title;
+			return $new_item;
+		});
 	}
 
 	public function getOnGoing(Milestone $milestone)
 	{
 		$teams = Team::get();
-		// pega todos os times
-		// todos os team_keys
-		// o board list id do team_key é o sprint list id
-		// pega todos os cards desses sprints lists id
-		// filtra pelo milestone
 		$team_keys = $teams->map(function ($team) { return $team->key; });
 		$sprint_list_ids = BoardList::whereIn('key', $team_keys)
 			->get()
@@ -122,10 +126,19 @@ class MilestoneController extends Controller
 		$cards = Card::whereIn('board_list_id', $sprint_list_ids)
 			->where('type', CardTypes::USER_STORY)
 			->where('milestone_id', $milestone->id)
+			->with('boardList')
 			->orderBy('position')
 			->get();
 
-		return $cards;
+		$teams_keyed_by_id = $teams->keyBy('id');
+
+		return $cards->map(function($item) use ($teams_keyed_by_id) {
+			$new_item = array();
+			$new_item['team_name'] = $teams_keyed_by_id[$item->boardList->key]->name;
+			$new_item['id'] = $item->id;
+			$new_item['title'] = $item->title;
+			return $new_item;
+		});
 	}
 
 	public function getFinished(Milestone $milestone)
@@ -134,8 +147,17 @@ class MilestoneController extends Controller
 			->where('milestone_id', $milestone->id)
 			->where('type', CardTypes::USER_STORY)
 			->where('status', UserStoryStatuses::DONE)
+			->with('boardList')
 			->get();
 
-		return $cards;
+		$teams_keyed_by_id = Team::get()->keyBy('id');
+
+		return $cards->map(function($item) use ($teams_keyed_by_id) {
+			$new_item = array();
+			$new_item['team_name'] = $teams_keyed_by_id[$item->boardList->key]->name;
+			$new_item['id'] = $item->id;
+			$new_item['title'] = $item->title;
+			return $new_item;
+		});
 	}
 }
