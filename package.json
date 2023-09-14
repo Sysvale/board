@@ -37,6 +37,7 @@
         "bootstrap": "^4.4.1",
         "bootstrap-vue": "^2.13.0",
         "chart.js": "^2.9.4",
+        "lodash.intersection": "^4.4.0",
         "moment": "^2.25.2",
         "sweetalert": "^2.1.2",
         "sweetalert2": "^8.19.0",
