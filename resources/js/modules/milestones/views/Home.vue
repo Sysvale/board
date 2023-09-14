@@ -82,7 +82,6 @@
 													v-model="selectedItem.startDate"
 													locale="pt-BR"
 													no-title
-													:max="maxDate"
 													@input="startDateMenu = false"
 												/>
 											</v-menu>
@@ -117,7 +116,6 @@
 													locale="pt-BR"
 													no-title
 													:min="selectedItem.startDate"
-													:max="maxDate"
 													@input="endDateMenu = false"
 												/>
 											</v-menu>
@@ -348,10 +346,6 @@ export default {
 				|| this.isCreating
 				|| this.isUpdating
 				|| this.isRemoving;
-		},
-
-		maxDate() {
-			return moment().toISOString();
 		},
 
 		filteredMilestones() {
