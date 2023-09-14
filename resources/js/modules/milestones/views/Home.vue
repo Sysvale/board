@@ -330,7 +330,9 @@ export default {
 		},
 
 		formIsValid() {
-			return !!this.selectedItem.title && this.selectedItem.title.trim();
+			const fields = ['title', 'description', 'startDate', 'endDate'];
+			return fields.reduce((acc, curr) => acc && (!!this.selectedItem[curr]
+				&& !!this.selectedItem[curr]?.trim()), true);
 		},
 
 		...mapState('milestones', {
