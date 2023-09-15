@@ -29,8 +29,8 @@
 									<h1>
 										{{ getTeamVelocity() }} pts
 										<span>
-											<v-icon>
-												{{ getTeamVelocityIcon() }}
+											<v-icon v-if="teamVelocityIcon">
+												{{ teamVelocityIcon }}
 											</v-icon>
 										</span>
 									</h1>
@@ -220,6 +220,15 @@ export default {
 				return `${percentage}% (${doneCount}/${total})`;
 			};
 		},
+
+		teamVelocityIcon() {
+			const oldVelocity = this.getTeamVelocity(true);
+			const newVelocity = this.getTeamVelocity();
+
+			if (newVelocity < oldVelocity) return 'arrow_downward';
+			if (newVelocity > oldVelocity) return 'arrow_upward';
+			return null;
+		},
 	},
 
 	watch: {
@@ -322,12 +331,16 @@ export default {
 		},
 
 		getTeamVelocity(oldVelocity = false) {
-			let xSprints = this.sprints;
+			const xSprints = this.sprints;
+			const numberOfSprintsToConsider = xSprints.length <= SPRINT_RANGE
+				? xSprints.length : SPRINT_RANGE;
+			let startIndex = 0;
+			let endIndex = numberOfSprintsToConsider;
 			if (oldVelocity) {
-				xSprints = xSprints.slice(0, xSprints.length - 1);
+				startIndex = 1;
+				endIndex += 1;
 			}
-			const numberOfSprintsToConsider = xSprints.length <= SPRINT_RANGE ? xSprints.length : SPRINT_RANGE;
-			const sprintsToConsider = xSprints.slice(0, numberOfSprintsToConsider);
+			const sprintsToConsider = xSprints.slice(startIndex, endIndex);
 			const velocity = sprintsToConsider.reduce(
 				(acc, curr) => acc + this.getDeliveredPoints(curr),
 				0,
@@ -335,16 +348,6 @@ export default {
 
 			// eslint-disable-next-line no-bitwise
 			return ~~(velocity / numberOfSprintsToConsider);
-		},
-
-		getTeamVelocityIcon() {
-			// -1 caiu, 0 manteve, 1 subiu
-			const oldVelocity = this.getTeamVelocity(true);
-			const newVelocity = this.getTeamVelocity();
-
-			if (newVelocity < oldVelocity) return 'arrow_downward';
-			if (newVelocity > oldVelocity) return 'arrow_upward';
-			return 'unknown_med';
 		},
 
 		getDeliveryAveragePercentage(oldVelocity = false) {
@@ -375,7 +378,7 @@ export default {
 		getDeliveredRelativeCount(item) {
 			const doneCount = item.cards.filter(({ status }) => status === userStoryStatuses.DONE).length;
 			// eslint-disable-next-line no-bitwise
-			const percentage = ~~(doneCount / item.cards.length) * 100;
+			const percentage = ~~((doneCount / item.cards.length) * 100);
 			return { percentage, doneCount, total: item.cards.length };
 		},
 
@@ -388,7 +391,7 @@ export default {
 				.reduce((acc, curr) => acc + Number(curr.estimated || 0), 0);
 
 			// eslint-disable-next-line no-bitwise
-			const percentage = ~~(donePoints / plannedPoints) * 100;
+			const percentage = ~~((donePoints / plannedPoints) * 100);
 			return { percentage, donePoints, plannedPoints };
 		},
 	},
