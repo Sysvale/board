@@ -66,7 +66,11 @@
 	<list-container
 		v-else
 	>
-		<header class="mb-2 text--black">
+		<header
+			:id="`list-container-${$attrs.name}`"
+			:data-list="JSON.stringify($attrs.list)"
+			class="mb-2 text--black"
+		>
 			<div class="d-flex px-2 py-2">
 				<v-btn
 					icon
@@ -81,8 +85,14 @@
 					<span class="mb-0 text-uppercase font-weight-medium text--secondary">
 						<span>
 							<small>{{ $attrs.name }}</small>
-							<span class="ml-3 text--secondary mb-0">
-								<small>{{ $attrs.list.length }}</small>
+							<span
+								class="ml-3 text--secondary mb-0"
+							>
+								<small
+									:id="`list-size-${$attrs.name}`"
+								>
+									{{ $attrs.list.length }}
+								</small>
 							</span>
 						</span>
 						<div class="d-flex align-center">
