@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+  @php
+    $addons = auth()->user()->member->company['addons'] ?? [];
+  @endphp
 <head>
   <title>@yield('title')</title>
   <meta charset="utf-8">
@@ -9,10 +12,25 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+  @foreach($addons as $addon)
+    @if(isset($addon['styles']))
+      @foreach($addon['styles'] as $style)
+        <link href="{{ $style }}" rel="stylesheet">
+      @endforeach
+    @endif
+  @endforeach
 </head>
 <body>
   <div id="app"></div>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script src="{{ mix('js/app.min.js') }}" defer></script>
+  <script src="/debt-amount.js" defer></script>
+  @foreach($addons as $addon)
+    @if(isset($addon['scripts']))
+      @foreach($addon['scripts'] as $script)
+        <script src="{{ $script }}" defer></script>
+      @endforeach
+    @endif
+  @endforeach
 </body>
 </html>
