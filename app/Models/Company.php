@@ -9,6 +9,14 @@ class Company extends Model
 {
     use SoftDeletes;
 
+	/*
+		Estrutura do objeto que vai no array addons
+		{
+			styles: ['url_do_style_1', 'url_do_style_2'],
+			scripts: ['url_do_script_1', 'url_do_script_2'],
+		}
+	*/
+
 	protected $fillable = [
 		'cnpj',
 		'name',
