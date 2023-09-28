@@ -33,8 +33,20 @@ Vue.use(VueRouter);
 
 // Routes
 const router = new VueRouter({
-  mode: 'history',
+	mode: 'history',
 	routes,
+});
+
+// emite evento customizado para capturar mudanças de rota sem depender do Vue
+router.afterEach((to, from) => {
+	const event = new CustomEvent('routeChange', {
+		detail: {
+			to,
+			from,
+		},
+	});
+
+	window.dispatchEvent(event);
 });
 
 Vue.component('ValidationObserver', ValidationObserver);
