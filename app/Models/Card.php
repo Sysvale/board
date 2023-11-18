@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\User;
 use App\Constants\CardTypes;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use  MongoDB\Laravel\Eloquent\Model;
+use  MongoDB\Laravel\Eloquent\SoftDeletes;
 
 class Card extends Model
 {

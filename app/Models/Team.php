@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Models\Workspace;
 use App\Models\BoardList;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use  MongoDB\Laravel\Eloquent\Model;
+use  MongoDB\Laravel\Eloquent\SoftDeletes;
 use App\Services\BoardListService;
 
 class Team extends Model
@@ -61,7 +61,7 @@ class Team extends Model
 			collect($from_request)->pluck('id')->toArray()
 		);
 
-		
+
 		if (empty($add) && empty($remove) && empty($update)) {
 			return;
 		}

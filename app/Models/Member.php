@@ -5,8 +5,8 @@ namespace App\Models;
 use App\User;
 use App\Models\TeamMember;
 use Illuminate\Support\Str;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use  MongoDB\Laravel\Eloquent\Model;
+use  MongoDB\Laravel\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
@@ -24,7 +24,7 @@ class Member extends Model
 	{
 		return $this->hasOne(User::class, 'member_id');
 	}
-	
+
 	public function company()
 	{
 		return $this->belongsTo(Company::class);

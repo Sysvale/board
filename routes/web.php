@@ -1,13 +1,16 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 |
 | Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
 |
 */
 
@@ -55,17 +58,17 @@ Route::group(
 		Route::resource('members', 'MemberController');
 		Route::resource('/teams', 'TeamController');
 		Route::get('/boards', 'BoardController@index');
-		
+
 		Route::resource('events', 'EventController')->only(['store', 'update', 'destroy']);
 		Route::get('/events/{team}', 'EventController@getEventsByTeam');
 
 		Route::resource('goals', 'GoalController');
-		
+
 		Route::get('/logout', function () {
 			Auth::logout();
 			return redirect('login');
 		});
-		
+
 		Route::apiResource('workspaces', 'WorkspaceController');
 		Route::apiResource('processes', 'ProcessController');
 		Route::apiResource('milestones', 'MilestoneController');
@@ -74,9 +77,9 @@ Route::group(
 
 
 		Route::post('users/resend-welcome-mail', 'UserController@resendWelcomeMail');
-		
+
 		Route::get('/reports/sprint-overview/{team}', 'SprintReportController@getCurrentSprintOverviewByTeam');
-		
+
 		Route::resource('backlog-labels', 'BacklogLabelController');
 
 		Route::get('milestones/{milestone}/backlog-items/not-started', 'MilestoneController@getNotStarted');
