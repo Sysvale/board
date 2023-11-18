@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Models\Scopes;
+
+use App\Enums\CardTypesEnum;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\Model;
+
+class BacklogCardScope implements Scope
+{
+    public function apply(Builder $builder, Model $model): void
+    {
+        $builder->where('type', CardTypesEnum::BACKLOG_CARD);
+    }
+}
