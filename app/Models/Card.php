@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\User;
+use App\Models\User;
 use App\Constants\CardTypes;
 use  MongoDB\Laravel\Eloquent\Model;
 use  MongoDB\Laravel\Eloquent\SoftDeletes;

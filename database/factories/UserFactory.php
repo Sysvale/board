@@ -6,7 +6,7 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Member;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 

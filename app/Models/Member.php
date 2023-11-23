@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\User;
+use App\Models\User;
 use App\Models\TeamMember;
 use Illuminate\Support\Str;
 use  MongoDB\Laravel\Eloquent\Model;

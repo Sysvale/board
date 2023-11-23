@@ -1,4 +1,4 @@
-import AxiosCache from 'axios-cache-plugin';
+// import AxiosCache from 'axios-cache-plugin';
 
 const axios = require('axios');
 
@@ -18,7 +18,7 @@ let axiosInstance = axios.create({
 	},
 });
 
-const wrapper = AxiosCache(axiosInstance, {
-	maxCacheSize: 15 * 60 * 1000,
-});
-export default wrapper;
+// const wrapper = AxiosCache(axiosInstance, {
+// 	maxCacheSize: 15 * 60 * 1000,
+// });
+export default axiosInstance;
