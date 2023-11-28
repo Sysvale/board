@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}">
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@1&display=swap" rel="stylesheet">
   @foreach($addons as $addon)
     @if(isset($addon['styles']))
       @foreach($addon['styles'] as $style)
@@ -21,10 +22,11 @@
   @endforeach
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app-vue-3">
+  </div>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <script src="{{ mix('js/app.min.js') }}" defer></script>
-  <script src="/debt-amount.js" defer></script>
+  <script src="/js/app-vue-3.min.js" defer></script> 
+  <!-- TODO: resolver essa questão da importação -->
   @foreach($addons as $addon)
     @if(isset($addon['scripts']))
       @foreach($addon['scripts'] as $script)

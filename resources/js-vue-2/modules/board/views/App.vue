@@ -371,7 +371,7 @@ export default {
 		},
 
 		goToSettings() {
-			this.$router.push({ name: 'settings' });
+			window.location = '/v2/index/settings';
 		},
 
 		goToReports() {

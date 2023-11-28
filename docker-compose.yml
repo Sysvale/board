@@ -31,7 +31,7 @@ services:
         networks:
           - trelassio
     mongo:
-      image: mongo:6.0.11
+      image: mongo:4.2
       volumes:
         - './.docker/mongo/data:/data/db:z'
       ports:

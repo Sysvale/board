@@ -67,4 +67,4 @@ const app = new Vue({
 	vuetify,
 	router,
 	store,
-}).$mount('#app');
+}).$mount('#app-vue-2');

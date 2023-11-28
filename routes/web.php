@@ -96,9 +96,18 @@ Route::group(
 );
 
 Route::get(
+	"/v2/{path}", function () {
+		if (Auth::check()) {
+			return view('index-vue-3');
+		}
+		return redirect('login');
+	}
+)->where('path', '(.*)');
+
+Route::get(
 	"{path}", function () {
 		if (Auth::check()) {
-			return view('index');
+			return view('index-vue-2');
 		}
 		return redirect('login');
 	}
