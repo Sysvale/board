@@ -1,0 +1,50 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production",
+        "dev-vite": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@vue/test-utils": "^2.0.0-rc.18",
+        "axios": "^0.27",
+        "jsdom": "^20.0.0",
+        "laravel-mix": "^6.0.39",
+        "laravel-vite-plugin": "^0.5.0",
+        "lodash": "^4.17.19",
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.54.4",
+        "sass-loader": "^12.6.0",
+        "vite": "^3.0.0",
+        "vitest": "^0.22.1"
+    },
+    "dependencies": {
+        "@sysvale/cuida": "^3.0.0-alpha.109",
+        "@sysvale/show": "^0.2.0",
+        "@vitejs/plugin-vue": "^3.0.3",
+        "chart.js": "^4.0.1",
+        "fibers": "^5.0.3",
+        "lodash.camelcase": "^4.3.0",
+        "lodash.chunk": "^4.2.0",
+        "lodash.flatten": "^4.4.0",
+        "lodash.get": "^4.4.2",
+        "lodash.groupby": "^4.6.0",
+        "lodash.isobject": "^3.0.2",
+        "lodash.snakecase": "^4.1.1",
+        "luxon": "^3.1.1",
+        "pinia": "^2.0.22",
+        "sweetalert2": "^11.6.7",
+        "tippy.js": "^6.3.7",
+        "vue": "^3.1.0",
+        "vue-loader": "^17.0.0",
+        "vue-multiselect": "^3.0.0-alpha.2",
+        "vue-router": "^4.1.3"
+    }
+}

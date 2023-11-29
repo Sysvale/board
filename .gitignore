@@ -20,3 +20,5 @@ public/mix-manifest.json
 .virtualenv
 .vscode/
 .idea/
+/resources/js-vue-2/node_modules
+/resources/js-vue-3/node_modules

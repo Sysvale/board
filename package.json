@@ -1,50 +1,29 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "npm run development",
-        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "npm run development -- --watch",
-        "watch-poll": "npm run watch -- --watch-poll",
-        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-    },
-    "devDependencies": {
-        "axios": "^0.19.1",
-        "axios-cache-plugin": "^0.1.0",
-        "babel-eslint": "^10.0.3",
-        "bootstrap": "^4.0.0",
-        "cross-env": "^5.1",
-        "deepmerge": "^4.2.2",
-        "eslint": "^6.8.0",
-        "eslint-config-airbnb-base": "^14.0.0",
-        "eslint-plugin-import": "^2.20.0",
-        "eslint-plugin-vue": "^5.2.3",
-        "fibers": "^5.0.0",
-        "jquery": "^3.2",
-        "laravel-mix": "^3.0.0",
-        "lodash": "^4.17.13",
-        "popper.js": "^1.12",
-        "resolve-url-loader": "^2.3.1",
-        "sass": "^1.20.1",
-        "sass-loader": "^7.1.0",
-        "vue": "^2.5.17",
-        "vue-router": "^3.1.5",
-        "vue-template-compiler": "^2.6.10"
-    },
-    "dependencies": {
-        "@mdi/font": "^5.5.55",
-        "bootstrap": "^4.4.1",
-        "bootstrap-vue": "^2.13.0",
-        "chart.js": "^2.9.4",
-        "lodash.intersection": "^4.4.0",
-        "moment": "^2.25.2",
-        "sweetalert": "^2.1.2",
-        "sweetalert2": "^8.19.0",
-        "vee-validate": "^3.2.1",
-        "vue-multiselect": "^2.1.6",
-        "vuedraggable": "^2.24.0",
-        "vuetify": "^2.3.7",
-        "vuex": "^3.1.2"
-    }
+	"name": "Trelássio",
+	"version": "4.0.0",
+	"private": true,
+	"description": "",
+	"author": "Tássio Freire",
+	"main": "index.js",
+	"scripts": {
+		"build": "npm run prod",
+		"dev": "npm-run-all -p dev:*",
+		"dev:vue2": "cd resources/js-vue-2 && npx mix",
+		"dev:vue3": "cd resources/js-vue-3 && npx mix",
+		"hot": "npm-run-all -p hot:*",
+		"hot:vue2": "cd resources/js-vue-2 && npx mix watch --hot -- --port 5174",
+		"hot:vue3": "cd resources/js-vue-3 && npx mix watch --hot -- --port 5173",
+		"prod": "npm-run-all -s prod:* && json-concat public/mix-manifest-vue2.json public/mix-manifest-vue3.json public/mix-manifest.json",
+		"prod:vue2": "cd resources/js-vue-2 && npx mix --production",
+		"prod:vue3": "cd resources/js-vue-3 && npx mix --production"
+	},
+	"dependencies": {
+		"json-concat": "^0.0.1"
+	},
+	"devDependencies": {
+		"npm-run-all": "^4.1.5"
+	},
+	"directories": {
+		"test": "tests"
+	}
 }
