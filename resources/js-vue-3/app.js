@@ -3,6 +3,8 @@ import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import Cuida from '@sysvale/cuida';
 import SHOW from '@sysvale/show';
+import * as VeeValidate from 'vee-validate';
+import validationConfig from './shared/validation';
 
 import App from './App.vue';
 
@@ -23,6 +25,13 @@ vueApp.component('PageWrapper', PageWrapper);
 vueApp.use(Cuida);
 vueApp.use(SHOW);
 vueApp.use(router);
+
+vueApp.use(VeeValidate, {
+	inject: true,
+	fieldsBagName: 'veeFields',
+});
+
+validationConfig(VeeValidate);
 
 router.isReady().then(() => {
 	vueApp.mount("#app-vue-3");
