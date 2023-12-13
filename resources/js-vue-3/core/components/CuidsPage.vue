@@ -1,7 +1,7 @@
 <template>
 	<PageWrapper
-		:title="pageSettings.title"
-		:subtitle="pageSettings.subtitle"
+		:title="pageSettings.pageTitle"
+		:subtitle="pageSettings.pageSubtitle"
 	>
 		<template #page-title-action>
 			<cds-button
