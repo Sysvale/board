@@ -17,6 +17,8 @@ class Milestone extends Model
 		'start_date',
 		'end_date',
 		'acceptance_criteria',
+		'status',
+		'closed',
 		'team_ids',
 	];
 
