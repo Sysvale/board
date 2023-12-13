@@ -22,7 +22,8 @@ class MemberResource extends JsonResource
 			'has_login' => $this->has_login,
 			'user_id' => optional($this->user)->id,
 			'avatar_url' => $this->avatar_url,
-			'teams' => implode(', ', $this->getTeams()->pluck('name')->toArray()),
+			'teams' => $this->getTeams()->toArray(),
+			'teamsNames' => implode(', ', $this->getTeams()->pluck('name')->toArray()),
 			'team_ids' => $this->team_ids,
 			'workspace_ids' => $this->workspace_ids,
 		];
