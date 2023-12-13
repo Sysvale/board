@@ -22,6 +22,8 @@ class MilestoneResource extends JsonResource
 			'end_date' => $this->end_date,
 			'team_ids' => $this->when(isset($this->team_ids), $this->team_ids),
 			'acceptance_criteria' => $this->when(isset($this->acceptance_criteria), $this->acceptance_criteria),
+			'status' => $this->status,
+			'closed' => $this->closed,
 		];
 	}
 }
