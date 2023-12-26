@@ -24,7 +24,6 @@
   <div id="app"></div>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <script src="{{ mix('js/app.min.js') }}" defer></script>
-  <script src="/debt-amount.js" defer></script>
   @foreach($addons as $addon)
     @if(isset($addon['scripts']))
       @foreach($addon['scripts'] as $script)

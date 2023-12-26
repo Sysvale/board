@@ -38,6 +38,8 @@ class MilestoneController extends Controller
 			'end_date' => 'required|string',
 			'team_ids' => 'required|array',
 			'acceptance_criteria' => 'nullable|array',
+			'closed' => 'nullable|bool',
+			'status' => 'nullable|string',
 		]);
 
 		$milestone = Milestone::create([
@@ -47,6 +49,8 @@ class MilestoneController extends Controller
 			'end_date' => $request->end_date,
 			'acceptance_criteria' => $request->acceptance_criteria,
 			'team_ids' => $request->team_ids,
+			'closed' => $request->closed,
+			'status' => $request->status,
 		]);
 
 		return new MilestoneResource($milestone);
@@ -61,6 +65,8 @@ class MilestoneController extends Controller
 			'end_date' => 'required|string',
 			'team_ids' => 'nullable|array',
 			'acceptance_criteria' => 'nullable|array',
+			'closed' => 'nullable|boolean',
+			'status' => 'nullable|string',
 		]);
 
 		$milestone->update($data);

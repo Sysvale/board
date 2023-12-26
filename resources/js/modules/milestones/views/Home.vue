@@ -216,9 +216,36 @@
 			<template v-slot:item.acceptanceCriteriaRatio="{ item }">
 				{{ getAcceptanceCriteriaRatio(item.acceptanceCriteria) }}
 			</template>
+			<template
+				v-slot:item.status="{ item }"
+			>
+				<v-select
+					v-model="item.status"
+					:items="milestonesStatusesOptions"
+					placeholder="Status"
+					return
+					outlined
+					dense
+					flat
+					hide-details
+					item-text="text"
+					item-value="value"
+					:disabled="item.closed"
+					@input="updateMilestone(convertKeysToSnakeCase(item))"
+				/>
+			</template>
+			<template
+				v-slot:item.closed="{ item }"
+			>
+				<v-switch
+					v-model="item.closed"
+					@change="updateMilestone(convertKeysToSnakeCase(item))"
+				/>
+			</template>
 			<template v-slot:item.actions="{ item }">
 				<v-btn
 					icon
+					:disabled="item.closed"
 					@click="editItem(item)"
 				>
 					<v-icon
@@ -230,6 +257,7 @@
 				</v-btn>
 				<v-btn
 					icon
+					:disabled="item.closed"
 					@click="deleteItem(item)"
 				>
 					<v-icon
@@ -257,9 +285,8 @@
 								<li
 									v-for="criteria in item.acceptanceCriteria"
 									:key="criteria.description"
-									:class="{'done' : criteria.done }"
 								>
-									{{ criteria.description }}
+									{{ criteria.description }} {{ criteria.done ? '(Concludído)' : '' }}
 								</li>
 							</ul>
 						</div>
@@ -277,6 +304,10 @@ import { mapActions, mapMutations, mapState } from 'vuex';
 import convertKeysToSnakeCase from '../../../core/utils/convertKeysToSnakeCase';
 import TeamsSelect from '../components/TeamsSelect.vue';
 import ChecklistForm from '../../board/components/ChecklistForm.vue';
+import {
+	options as milestonesStatusesOptions,
+	dictionary as milestonesStatusesDictionary,
+} from '../../../core/constants/milestoneStatuses';
 
 export default {
 	components: {
@@ -285,6 +316,8 @@ export default {
 	},
 	data() {
 		return {
+			milestonesStatusesOptions,
+			milestonesStatusesDictionary,
 			dialog: false,
 			dialogDelete: false,
 			headers: [
@@ -299,6 +332,19 @@ export default {
 					align: 'start',
 					sortable: true,
 					value: 'acceptanceCriteriaRatio',
+				},
+				{
+					text: 'Status',
+					align: 'start',
+					sortable: true,
+					value: 'status',
+					width: '200px',
+				},
+				{
+					text: 'Fechar milestone',
+					align: 'start',
+					sortable: true,
+					value: 'closed',
 				},
 				{
 					text: 'Início',
@@ -348,7 +394,6 @@ export default {
 		loading() {
 			return this.isGetting
 				|| this.isCreating
-				|| this.isUpdating
 				|| this.isRemoving;
 		},
 
@@ -383,6 +428,7 @@ export default {
 	},
 
 	methods: {
+		convertKeysToSnakeCase,
 		...mapActions('milestones', [
 			'getMilestones',
 			'deleteMilestone',
