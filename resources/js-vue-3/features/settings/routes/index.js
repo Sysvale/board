@@ -4,7 +4,7 @@ export const routes = {
 		name: 'index-settings',
 		path: 'index/settings',
 		components: {
-			default: () => import('../pages/IndexSettingsPage.vue')
+			default: () => import('../pages/MembersPage.vue')
 		},
 		meta: {
 			description: 'Configurações',

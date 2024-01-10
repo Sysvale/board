@@ -5,24 +5,39 @@
 				:items="items"
 				:active-item="items[0]"
 				@sidebar-click="handleSideBarItemClick"
-			/>
+			>
+				<template #logo>
+					<a
+						href="/workspace/select"
+						class="mr-3"
+					>
+						<img
+							src="/images/logo.svg"
+							height="45px"
+							title="Trelássio"
+							style="height:35px!important;width:100%;margin: 0 auto;"
+						>
+					</a>
+				</template>
+			</cds-side-bar>
 		</div>
 		<div class="page-wrapper__page-content">
 			<div class="page-wrapper__page-content--header">
 				<cds-page-header
 					:title="title"
 					:subtitle="subtitle"
-				/>
-				<slot name="page-title">
-					{{ title }}
-				</slot>
-				<div class="page-wrapper__page-content--header-action">
-					<slot name="page-title-action"/>
-				</div>
+				>
+					<template
+						#aside
+					>
+						<div class="d-flex">
+							<div class="page-wrapper__page-content--header-action">
+								<slot name="page-title-action"/>
+							</div>
+						</div>
+					</template>
+				</cds-page-header>
 			</div>
-			<slot name="page-subtitle">
-				{{ subtitle }}
-			</slot>
 			<slot name="page-body">
 				<div class="page-wrapper__page-content--body">
 					<slot/>
@@ -106,12 +121,18 @@ body {
 <style lang="scss" scoped>
 .page-wrapper {
 	 display: flex;
+
 	 &__side-bar {
 		position: fixed;
+		flex:1;
+		min-width: 242px;
 	 }
+
 	 &__page-content {
-		padding: 10px;
 		margin-left: 242px;
+		padding: pYX(8, 9);
+		width: calc(100% - 200px);
+		max-width: 100%;
 	 }
 }
 </style>
