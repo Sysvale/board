@@ -45,6 +45,7 @@ class CardResource extends JsonResource
 			'artifacts' => $this->when(isset($this->artifacts), $this->artifacts),
 			'first_default_board_list_id' => $this->first_default_board_list_id,
 			'milestone_id' => $this->when(isset($this->milestone_id), $this->milestone_id),
+			'integration_metadata' => $this->when(isset($this->integration_metadata), $this->integration_metadata),
 		];
 	}
 }
