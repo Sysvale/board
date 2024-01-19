@@ -206,9 +206,8 @@ class CardController extends Controller
 				$card->first_default_board_list_id = $this->getFirstDefaultBoardListId($card['team_key']);
 			}
 
-			array_push($total, $card);
+			array_push($total, new CardResource($card));
 		};
-
 
 		return $total;
 	}
