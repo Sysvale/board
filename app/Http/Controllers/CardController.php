@@ -180,6 +180,7 @@ class CardController extends Controller
 			'description' => $request->description,
 			'status' => $request->status,
 			'milestone_id' => $request->milestone_id,
+			'integration_metadata' => $request->integration_metadata,
 		];
 
 		$cleaned_data = array_filter($params, function ($value) {
@@ -190,6 +191,26 @@ class CardController extends Controller
 		$card->save();
 
 		return new CardResource($card);
+	}
+
+	public function updateOrCreate(Request $request)
+	{
+		$total = [];
+		foreach($request->cards as $card) {
+			$key = key($card['integration_metadata']);
+			$card = Card::updateOrCreate([
+				"integration_metadata.$key.id" => $card['integration_metadata'][$key]['id']
+			], $card);
+
+			if ($card['team_key']) {
+				$card->first_default_board_list_id = $this->getFirstDefaultBoardListId($card['team_key']);
+			}
+
+			array_push($total, $card);
+		};
+
+
+		return $total;
 	}
 
 	public function updateCardsPositions(Request $request)
