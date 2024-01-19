@@ -126,3 +126,42 @@ para evitar redirecionamentos em caso de erros de validação ou autenticação.
 	}
 }
 ```
+
+#### /api/cards
+##### Request [PUT]
+```json
+{
+  [
+    "title": "Card criado via api", // titulo do card
+	  "type":  "user-story", // tipo do card. para mais tipos ver: App/Constants/CardTypes
+		"board_list_id" : "645259f8ec05ef07130f31a8", // id da lista onde o card será criado
+		"user_story_id": "6458e1a8a90d9a6e0e697d02", // opcional, deve ser enviado quando o card criado é do tipo task
+			"integration_metadata": [
+				"granatum": [ // nome da aplicação
+					"id": "1231y54kh3khiu1g23uh6" // id do elemento atrelado ao card
+				]
+			]
+	],
+}
+```
+
+##### Response: Array dos Cards
+``` json
+{
+  [
+    "id": "65aa64fa9c80a91a0c36a68a",
+    "number": 1,
+    "created_at": "19/01/2024 12:03",
+    "board_list_id": "645259f8ec05ef07130f31a8",
+    "user_story_id": "6458e1a8a90d9a6e0e697d02",
+    "title": "Card criado via api",
+    "position": 0,
+    "first_default_board_list_id": null,
+    "integration_metadata": {
+      "granatum": {
+        "id": "1231y54kh3khiu1g23uh6",
+      }
+    },
+	],
+}
+```
