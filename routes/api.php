@@ -22,3 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('cards', [CardController::class, 'store'])
 	->middleware('client')
 	->name('api.cards.store');
+
+Route::put('cards/update-or-create', [CardController::class, 'updateOrCreate'])
+	->middleware('client')
+	->name('api.cards.updateOrCreate');
