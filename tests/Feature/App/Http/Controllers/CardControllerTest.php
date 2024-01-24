@@ -65,4 +65,104 @@ class CardControllerTest extends TestCase
 		])
 		->assertCreated();
 	}
+
+	public function testAuthenticatedClientCanHandleAnBatch(): void
+	{
+		$company = factory(Company::class)->create();
+		$board_list = factory(BoardList::class)->create(['company_id' => $company->id]);
+		$client = Client::create();
+
+		CompanyClient::create([
+			'company_id' => $company->id,
+			'client_id' =>  $client->id,
+		]);
+
+		Passport::actingAsClient($client);
+		$this->mock(Parser::class, function ($mock) {
+			$mock->shouldReceive('parse->claims->get')->andReturn('access_token');
+		});
+
+		$user_story_card = factory(Card::class)->create();
+		$task_card = factory(Card::class, ['type'=>'task'])->create();
+		$task_card->title = 'Change Title';
+
+		$data = [
+				"batch_key" => "integration_metadata.granatum",
+				"cards" => [
+					[
+						"title" => $task_card->title,
+						"type" =>  "task",
+						"board_list_id" => $board_list->id,
+						"user_story_id" => $user_story_card->id,
+						"integration_metadata" => [
+							"granatum" => [
+								"id" => "1231y54kh3khiu1g23uh6"
+							]
+						]
+					],
+					[
+						"title" => "Card criado via api",
+						"type" =>  "task",
+						"board_list_id" => $board_list->id,
+						"user_story_id" => $user_story_card->id,
+						"integration_metadata" => [
+							"granatum" => [
+								"id" => "321wdsfgoiukh32423huls"
+							]
+						]
+					],
+				]
+		];
+
+		$this->withHeader('Authorization', 'Bearer access_token')
+			->postJson('api/cards/batch', $data)
+			->assertOk();
+
+		$this->assertDatabaseHas('cards', [
+			'title' => 'Change Title',
+		]);
+		$this->assertDatabaseHas('cards', [
+			'integration_metadata.granatum.id' => '321wdsfgoiukh32423huls',
+		]);
+	}
+
+	public function testAuthenticatedClientCantHandleAnBatchWithWrongKeyType(): void
+	{
+		$company = factory(Company::class)->create();
+		$board_list = factory(BoardList::class)->create(['company_id' => $company->id]);
+		$client = Client::create();
+
+		CompanyClient::create([
+			'company_id' => $company->id,
+			'client_id' =>  $client->id,
+		]);
+
+		Passport::actingAsClient($client);
+		$this->mock(Parser::class, function ($mock) {
+			$mock->shouldReceive('parse->claims->get')->andReturn('access_token');
+		});
+
+		$user_story_card = factory(Card::class)->create();
+
+		$data = [
+				"batch_key" => ["integration_metadata.granatum"],
+				"cards" => [
+					[
+						"title" => "Card criado via api",
+						"type" =>  "task",
+						"board_list_id" => $board_list->id,
+						"user_story_id" => $user_story_card->id,
+						"integration_metadata" => [
+							"granatum" => [
+								"id" => "321wdsfgoiukh32423huls"
+							]
+						]
+					],
+				]
+		];
+
+		$this->withHeader('Authorization', 'Bearer access_token')
+			->postJson('api/cards/batch', $data)
+			->assertStatus(422); // Unprocessable
+	}
 }
