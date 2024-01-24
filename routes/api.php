@@ -23,6 +23,6 @@ Route::post('cards', [CardController::class, 'store'])
 	->middleware('client')
 	->name('api.cards.store');
 
-Route::put('cards/update-or-create', [CardController::class, 'updateOrCreate'])
+Route::post('cards/batch', [CardController::class, 'handleBatch'])
 	->middleware('client')
-	->name('api.cards.updateOrCreate');
+	->name('api.cards.batch');
