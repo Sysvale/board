@@ -127,41 +127,45 @@ para evitar redirecionamentos em caso de erros de validação ou autenticação.
 }
 ```
 
-#### /api/cards
-##### Request [PUT]
+#### /api/cards/batch
+##### Request [POST]
 ```json
 {
-  [
-    "title": "Card criado via api", // titulo do card
-	  "type":  "user-story", // tipo do card. para mais tipos ver: App/Constants/CardTypes
-		"board_list_id" : "645259f8ec05ef07130f31a8", // id da lista onde o card será criado
-		"user_story_id": "6458e1a8a90d9a6e0e697d02", // opcional, deve ser enviado quando o card criado é do tipo task
+	"batch_key" => "integration_metadata.granatum", // chave do id do elemento atrelado ao card, deve ser uma string
+  "cards" => [ // array com os cards
+		[
+			"title": "Card criado via api", // titulo do card
+			"type":  "user-story", // tipo do card. para mais tipos ver: App/Constants/CardTypes
+			"board_list_id" : "645259f8ec05ef07130f31a8", // id da lista onde o card será criado
+			"user_story_id": "6458e1a8a90d9a6e0e697d02", // opcional, deve ser enviado quando o card criado é do tipo task
 			"integration_metadata": [
-				"granatum": [ // nome da aplicação
-					"id": "1231y54kh3khiu1g23uh6" // id do elemento atrelado ao card
+				"granatum": [ // chaves seguindo a lógica da variável batch_key
+					"id": "1231y54kh3khiu1g23uh6" // id do elemento atrelado ao card, deve ser uma string
 				]
 			]
+		],
+	],
+}_
+```
+
+##### Response: [200 - OK]
+``` json
+{
+  "ids" => [ // lista dos ids dos cards enviados
+    "65aa64fa9c80a91a0c36a68a",
 	],
 }
 ```
 
-##### Response: Array dos Cards
+##### Response: [422 - UNPROCESSABLE] indica erros de validação
 ``` json
 {
-  [
-    "id": "65aa64fa9c80a91a0c36a68a",
-    "number": 1,
-    "created_at": "19/01/2024 12:03",
-    "board_list_id": "645259f8ec05ef07130f31a8",
-    "user_story_id": "6458e1a8a90d9a6e0e697d02",
-    "title": "Card criado via api",
-    "position": 0,
-    "first_default_board_list_id": null,
-    "integration_metadata": {
-      "granatum": {
-        "id": "1231y54kh3khiu1g23uh6",
-      }
-    },
-	],
+	"message": "The given data was invalid.",
+	"errors": {
+		// cada campo com erro tem uma chave em errors, com um array de erros de validação para o campo
+		"type": [
+			"The selected type is invalid."
+		]
+	}
 }
 ```
