@@ -193,23 +193,29 @@ class CardController extends Controller
 		return new CardResource($card);
 	}
 
-	public function updateOrCreate(Request $request)
+	public function handleBatch(Request $request)
 	{
-		$total = [];
+		$request->validate([
+			'cards' => 'nullable|array',
+			'batch_key' => 'required|string',
+		]);
+
+		$card_keys = [];
+		$batch_key = $request->batch_key;
+
 		foreach($request->cards as $card) {
-			$key = key($card['integration_metadata']);
 			$card = Card::updateOrCreate([
-				"integration_metadata.$key.id" => $card['integration_metadata'][$key]['id']
+				"$batch_key.id" => data_get($card, "$batch_key.id"),
 			], $card);
 
 			if ($card['team_key']) {
 				$card->first_default_board_list_id = $this->getFirstDefaultBoardListId($card['team_key']);
 			}
 
-			array_push($total, new CardResource($card));
+			array_push($card_keys, data_get($card, "$batch_key.id"));
 		};
 
-		return $total;
+		return ['ids' => $card_keys];
 	}
 
 	public function updateCardsPositions(Request $request)
