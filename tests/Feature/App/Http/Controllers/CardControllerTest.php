@@ -87,7 +87,7 @@ class CardControllerTest extends TestCase
 		$task_card->title = 'Change Title';
 
 		$data = [
-				"batch_key" => "integration_metadata.granatum",
+				"update_attribute" => "integration_metadata.granatum.id",
 				"cards" => [
 					[
 						"title" => $task_card->title,
@@ -145,7 +145,7 @@ class CardControllerTest extends TestCase
 		$user_story_card = factory(Card::class)->create();
 
 		$data = [
-				"batch_key" => ["integration_metadata.granatum"],
+				"update_attribute" => ["integration_metadata.granatum.id"],
 				"cards" => [
 					[
 						"title" => "Card criado via api",

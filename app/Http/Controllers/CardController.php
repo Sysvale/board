@@ -197,22 +197,22 @@ class CardController extends Controller
 	{
 		$request->validate([
 			'cards' => 'nullable|array',
-			'batch_key' => 'required|string',
+			'update_attribute' => 'required|string',
 		]);
 
 		$card_keys = [];
-		$batch_key = $request->batch_key;
+		$update_attribute = $request->update_attribute;
 
 		foreach($request->cards as $card) {
 			$card = Card::updateOrCreate([
-				"$batch_key.id" => data_get($card, "$batch_key.id"),
+				$update_attribute => data_get($card, $update_attribute),
 			], $card);
 
 			if ($card['team_key']) {
 				$card->first_default_board_list_id = $this->getFirstDefaultBoardListId($card['team_key']);
 			}
 
-			array_push($card_keys, data_get($card, "$batch_key.id"));
+			array_push($card_keys, data_get($card, $update_attribute));
 		};
 
 		return ['ids' => $card_keys];
