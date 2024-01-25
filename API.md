@@ -126,3 +126,46 @@ para evitar redirecionamentos em caso de erros de validação ou autenticação.
 	}
 }
 ```
+
+#### /api/cards/batch
+##### Request [POST]
+```json
+{
+	"update_attribute" => "integration_metadata.granatum.id", // atributo que será utilizado como critério para verificar a existência do elemento (caso exista, será atualizado. Caso não, será criado)
+  "cards" => [ // array com os cards
+		[
+			"title": "Card criado via api", // título do card
+			"type":  "task", // tipo do card. para mais tipos ver: App/Constants/CardTypes
+			"board_list_id" : "645259f8ec05ef07130f31a8", // id da lista onde o card será criado
+			"user_story_id": "6458e1a8a90d9a6e0e697d02", // opcional, deve ser enviado quando o card criado é do tipo task
+			"integration_metadata": [
+				"granatum": [ // chaves seguindo a lógica da variável update_attribute
+					"id": "1231y54kh3khiu1g23uh6" // id do elemento atrelado ao card, deve ser uma string
+				]
+			]
+		],
+	],
+}_
+```
+
+##### Response: [200 - OK]
+``` json
+{
+  "ids" => [ // lista dos ids dos cards enviados
+    "65aa64fa9c80a91a0c36a68a",
+	],
+}
+```
+
+##### Response: [422 - UNPROCESSABLE] indica erros de validação
+``` json
+{
+	"message": "The given data was invalid.",
+	"errors": {
+		// cada campo com erro tem uma chave em errors, com um array de erros de validação para o campo
+		"type": [
+			"The selected type is invalid."
+		]
+	}
+}
+```
