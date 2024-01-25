@@ -37,6 +37,7 @@ class Card extends Model
 		'estimated',
 		'status',
 		'milestone_id',
+		'integration_metadata',
 	];
 
 	protected $appends = ['id', 'is_user_story', 'is_not_prioritized', 'is_task'];

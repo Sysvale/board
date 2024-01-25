@@ -22,3 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('cards', [CardController::class, 'store'])
 	->middleware('client')
 	->name('api.cards.store');
+
+Route::post('cards/batch', [CardController::class, 'handleBatch'])
+	->middleware('client')
+	->name('api.cards.batch');
