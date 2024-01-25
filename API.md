@@ -131,7 +131,7 @@ para evitar redirecionamentos em caso de erros de validação ou autenticação.
 ##### Request [POST]
 ```json
 {
-	"batch_key" => "integration_metadata.granatum", // chave do id do elemento atrelado ao card, deve ser uma string
+	"update_attribute" => "integration_metadata.granatum.id", // chave do id do elemento atrelado ao card, deve ser uma string
   "cards" => [ // array com os cards
 		[
 			"title": "Card criado via api", // título do card
@@ -139,7 +139,7 @@ para evitar redirecionamentos em caso de erros de validação ou autenticação.
 			"board_list_id" : "645259f8ec05ef07130f31a8", // id da lista onde o card será criado
 			"user_story_id": "6458e1a8a90d9a6e0e697d02", // opcional, deve ser enviado quando o card criado é do tipo task
 			"integration_metadata": [
-				"granatum": [ // chaves seguindo a lógica da variável batch_key
+				"granatum": [ // chaves seguindo a lógica da variável update_attribute
 					"id": "1231y54kh3khiu1g23uh6" // id do elemento atrelado ao card, deve ser uma string
 				]
 			]
