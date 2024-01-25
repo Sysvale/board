@@ -131,7 +131,7 @@ para evitar redirecionamentos em caso de erros de validação ou autenticação.
 ##### Request [POST]
 ```json
 {
-	"update_attribute" => "integration_metadata.granatum.id", // chave do id do elemento atrelado ao card, deve ser uma string
+	"update_attribute" => "integration_metadata.granatum.id", // atributo que será utilizado como critério para verificar a existência do elemento (caso exista, será atualizado. Caso não, será criado)
   "cards" => [ // array com os cards
 		[
 			"title": "Card criado via api", // título do card
