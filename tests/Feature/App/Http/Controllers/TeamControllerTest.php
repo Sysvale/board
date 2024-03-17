@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Models\Team;
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 
 class TeamControllerTest extends TestCase
@@ -11,7 +11,7 @@ class TeamControllerTest extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		
+
 		$this->user = factory(User::class)->state('with-member-company')->create();
 		factory(Team::class, 3)->state('with-company')->make();
 
@@ -33,7 +33,7 @@ class TeamControllerTest extends TestCase
 	{
 		factory(Team::class, 1)->create([
 			'company_id' => $this->user->member->company_id,
-		]);	
+		]);
 
 		$response = $this->get('teams');
 

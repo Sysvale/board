@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
-use Jenssegers\Mongodb\Relations\BelongsTo;
+use  MongoDB\Laravel\Eloquent\Model;
+use  MongoDB\Laravel\Eloquent\SoftDeletes;
+use  MongoDB\Laravel\Relations\BelongsTo;
 use Sysvale\Mongodb\Passport\Client;
 
 class CompanyClient extends Model

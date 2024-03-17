@@ -21,19 +21,19 @@ module.exports = {
         {
           loader: 'sass-loader',
           // Requires sass-loader@^7.0.0
-          options: {
-            implementation: require('sass'),
-            fiber: require('fibers'),
-            indentedSyntax: true // optional
-          },
+        //   options: {
+        //     implementation: require('sass'),
+        //     fiber: require('fibers'),
+        //     indentedSyntax: true // optional
+        //   },
           // Requires sass-loader@^8.0.0
-          options: {
-            implementation: require('sass'),
-            sassOptions: {
-              fiber: require('fibers'),
-              indentedSyntax: true // optional
-            },
-          },
+        //   options: {
+        //     implementation: require('sass'),
+        //     sassOptions: {
+        //       fiber: require('fibers'),
+        //       indentedSyntax: true // optional
+        //     },
+        //   },
         },
       ],
     },
@@ -44,8 +44,8 @@ mix.babelConfig({
 	plugins: ['@babel/plugin-syntax-dynamic-import'],
 });
 
-mix.js('resources/js/modules/board/app.js', 'public/js/app.min.js')
-	.sass('resources/sass/app.scss', 'public/css')
+mix.js('resources/js/modules/board/app.js', 'public/js/app.min.js').vue()
+mix.sass('resources/sass/app.scss', 'public/css')
   .sass('resources/sass/home.scss', 'public/css');
 
 mix.version();

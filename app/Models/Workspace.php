@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Models\Team;
 use App\Models\Label;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use  MongoDB\Laravel\Eloquent\Model;
+use  MongoDB\Laravel\Eloquent\SoftDeletes;
 
 class Workspace extends Model
 {
@@ -67,6 +67,7 @@ class Workspace extends Model
 		foreach ($remove as $id_to_remove) {
 			$team = Team::find($id_to_remove);
 			$team->unset('workspace_id');
+            $team->save();
 		}
 	}
 
@@ -86,6 +87,7 @@ class Workspace extends Model
 		foreach ($remove as $id_to_remove) {
 			$team = Label::find($id_to_remove);
 			$team->unset('workspace_id');
+            $team->save();
 		}
 	}
 

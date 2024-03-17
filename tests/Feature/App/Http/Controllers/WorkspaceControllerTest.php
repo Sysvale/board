@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Models\Workspace;
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 
 class WorkspaceControllerTest extends TestCase
@@ -13,13 +13,13 @@ class WorkspaceControllerTest extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		
+
 		$this->user = factory(User::class)->state('with-member-company')->create();
 		factory(Workspace::class, 2)->state('with-company')->create();
-		
+
 		$this->actingAs($this->user);
 	}
-	
+
 	public function testIfAuthenticatedMemberCanCreateANewWorkspace()
 	{
 		$this->actingAs($this->user);
@@ -43,7 +43,7 @@ class WorkspaceControllerTest extends TestCase
 	{
 		factory(Workspace::class, 2)->create([
 			'company_id' => $this->user->member->company_id,
-		]);	
+		]);
 
 		$response = $this->get('workspaces');
 
