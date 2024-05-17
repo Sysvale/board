@@ -10,7 +10,6 @@
 		:disable-cancel-button="disabled || requestProps.loading"
 		:ok-button-text="requestProps.loading ? 'Carregando...' : 'Salvar'"
 		@ok="handleOk"
-		@close="handleClose"
 	>
 		<div>
 			<slot/>
@@ -54,6 +53,12 @@ export default {
 		modelValue(newValue) {
 			this.internalShowModal = newValue;
 		},
+
+		requestProps(newValue) {
+			if(newValue?.succeeded) {
+				this.internalShowModal = false;
+			}
+		}
 	},
 
 	methods: {
