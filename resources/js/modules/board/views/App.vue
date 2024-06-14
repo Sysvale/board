@@ -170,6 +170,7 @@ export default {
 		...mapState('workspaces', {
 			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
 			workspaces: 'items',
+			currentWorkspace: 'currentWorkspace',
 		}),
 		...mapState('members', {
 			loadingMembers: ({ getMembers }) => getMembers.isFetching,
@@ -186,9 +187,6 @@ export default {
 		}),
 		...mapState('boards', {
 			loadingBoards: ({ getBoards }) => getBoards.isFetching,
-		}),
-		...mapState('workspaces', {
-			loadingWorkspaces: ({ getWorkspaces }) => getWorkspaces.isFetching,
 		}),
 		...mapState('goals', {
 			milestones: 'items',
@@ -226,22 +224,14 @@ export default {
 	},
 
 	watch: {
-		$route(to) {
-			if (to.params && to.params.workspaceId) {
-				this.setSelectedWorkspace(this.workspaces
-					.filter(({ id }) => id === to.params.workspaceId)[0]);
-			} else {
-				this.setSelectedWorkspace(null);
-			}
-
-			if (to.meta && to.meta.title) {
-				this.currentPage = to.meta.title;
-				document.title = `${to.meta.title} | Trelássio`;
-			}
+		$route(newValue) {
+			this.resolveCurrentPage(newValue);
 		},
 	},
 
 	mounted() {
+		this.resolveCurrentPage(this.$route);
+
 		document.title = this.$route && this.$route.meta
 			? `${this.$route.meta.title} | Trelássio` : 'Trelássio';
 
@@ -376,6 +366,20 @@ export default {
 
 		goToReports() {
 			this.$router.push({ name: 'reports' });
+		},
+
+		resolveCurrentPage(route) {
+			if (route.params && route.params.workspaceId) {
+				this.setSelectedWorkspace(this.workspaces
+					.filter(({ id }) => id === route.params.workspaceId)[0]);
+			} else {
+				this.setSelectedWorkspace(null);
+			}
+
+			if (route.meta && route.meta.title) {
+				this.currentPage = route.meta.title;
+				document.title = `${route.meta.title} | Trelássio`;
+			}
 		},
 	},
 };
