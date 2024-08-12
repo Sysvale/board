@@ -20,7 +20,6 @@
 				/>
 				<cds-icon-button
 					id="delete-button"
-					variant="blue"
 					size="sm"
 					icon="trash-outline"
 					:tooltip-text="'Excluir'"
