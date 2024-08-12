@@ -18,12 +18,11 @@ class WorkspaceResource extends JsonResource
 			'id' => $this->id,
 			'name' => $this->name,
 			'team_ids' => $this->team_ids,
+			'teams' => $this->teams,
 			'label_ids' => $this->label_ids,
 			'team_names' => $this->team_names,
-			'lottie_file' => $this->lottie_file,
 			'settings' => (object) $this->settings,
-			'inactive' => $this->inactive ?? false,
-			'status' => $this->inactive ? 'Desativado' : '',
+			'status' => $this->inactive ? 'Inativo' : 'Ativo',
 		];
 	}
 }
