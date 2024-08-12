@@ -45,17 +45,15 @@ export default {
 	},
 
 	watch: {
-		internalShowModal(newValue, oldValue) {
-			if(newValue !== oldValue) {
-				this.$emit('update:modelValue', newValue);
-			}
+		internalShowModal(newValue) {
+			this.$emit('update:modelValue', newValue);
 		},
 		modelValue(newValue) {
 			this.internalShowModal = newValue;
 		},
 
-		requestProps(newValue) {
-			if(newValue?.succeeded) {
+		'requestProps.succeeded': function(newValue) {
+			if(newValue) {
 				this.internalShowModal = false;
 			}
 		}
