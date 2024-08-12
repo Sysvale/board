@@ -4,6 +4,7 @@
 			<cds-side-bar
 				:items="items"
 				:active-item="items[0]"
+				collapsible
 				@sidebar-click="handleSideBarItemClick"
 			>
 				<template #logo>
@@ -77,15 +78,22 @@ export default {
 						{
 							label: "Membros",
 							route: {
-								path: "/settings/members",
+								path: "/v2/index/members",
 								name: "members"
 							}
 						},
 						{
 							label: "Workspaces",
 							route: {
-								path: "/settings/workspaces",
+								path: "/v2/index/workspaces",
 								name: "workspaces"
+							}
+						},
+						{
+							label: "Times",
+							route: {
+								path: "/v2/index/teams",
+								name: "teams"
 							}
 						},
 					]
@@ -119,6 +127,7 @@ body {
 }
 </style>
 <style lang="scss" scoped>
+@import 'node_modules/@sysvale/cuida/dist/@sysvale/tokens.scss';
 .page-wrapper {
 	 display: flex;
 
@@ -133,6 +142,14 @@ body {
 		padding: pYX(8, 9);
 		width: calc(100% - 200px);
 		max-width: 100%;
+
+		&--body {
+			padding: px(5);
+		}
+
+		&--header {
+			padding: px(5);
+		}
 	 }
 }
 </style>
