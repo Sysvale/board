@@ -19,6 +19,15 @@
 			/>
 		</template>
 		<template v-slot:index="{ items, deleteRequestProps }">
+			<cds-dialog-modal
+				v-model="showDeleteMemberModal"
+				:title="pageSettings.deleteConfirmationTitle"
+				:description="pageSettings.deleteConfirmationText"
+				action-button-variant="red"
+				ok-button-text="Sim, excluir"
+				@close="showDeleteMemberModal = false"
+				@ok="() => deleteRequestProps.action(selectedItem.id)"
+			/>
 			<members-table
 				:items="items"
 				@edit-item-click="handleUpdateItemClick"
@@ -46,6 +55,7 @@ export default {
 			selectedItem: new Member(),
 			showCreateMemberModal: false,
 			showUpdateMemberModal: false,
+			showDeleteMemberModal: false,
 			pageSettings: new MembersPageSettings(),
 		};
 	},
@@ -54,9 +64,9 @@ export default {
 			this.selectedItem = item;
 			this.showUpdateMemberModal = true;
 		},
-		handleDeleteItemClick(item, deleteAction) {
+		handleDeleteItemClick(item) {
+			this.showDeleteMemberModal = true;
 			this.selectedItem = item;
-			deleteAction(item.id);
 		},
 	}
 }

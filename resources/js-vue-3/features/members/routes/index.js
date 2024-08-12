@@ -1,13 +1,13 @@
 export const routes = {
 	INDEX_Settings: {
-		label: 'Configurações',
-		name: 'index-settings',
-		path: 'index/settings',
+		label: 'Membros',
+		name: 'index-members',
+		path: 'index/members',
 		components: {
 			default: () => import('../pages/MembersPage.vue')
 		},
 		meta: {
-			description: 'Configurações',
+			description: 'Membros',
 		},
 	},
 };
