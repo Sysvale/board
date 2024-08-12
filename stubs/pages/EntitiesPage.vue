@@ -19,6 +19,15 @@
 			/>
 		</template>
 		<template v-slot:index="{ items, deleteRequestProps }">
+			<cds-dialog-modal
+				v-model="showDeleteEntityModal"
+				:title="pageSettings.deleteConfirmationTitle"
+				:description="pageSettings.deleteConfirmationText"
+				action-button-variant="red"
+				ok-button-text="Sim, excluir"
+				@close="showDeleteEntityModal = false"
+				@ok="() => deleteRequestProps.action(selectedItem.id)"
+			/>
 			<entities-table
 				:items="items"
 				@edit-item-click="handleUpdateItemClick"
@@ -46,6 +55,7 @@ export default {
 			selectedItem: new Entity(),
 			showCreateEntityModal: false,
 			showUpdateEntityModal: false,
+			showDeleteEntityModal: false,
 			pageSettings: new EntitiesPageSettings(),
 		};
 	},
@@ -54,9 +64,9 @@ export default {
 			this.selectedItem = item;
 			this.showUpdateEntityModal = true;
 		},
-		handleDeleteItemClick(item, deleteAction) {
+		handleDeleteItemClick(item) {
+			this.showDeleteEntityModal = true;
 			this.selectedItem = item;
-			deleteAction(item.id);
 		},
 	}
 }

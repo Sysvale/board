@@ -149,15 +149,7 @@ export default {
 			return {
 				...deleteRequestProps,
 				action: (args) => {
-					this.$senswal.confirmation(
-						this.pageSettings.deleteConfirmationTitle,
-						this.pageSettings.deleteConfirmationText
-					).then((result) => {
-							if(result.value) {
-								deleteRequestProps
-									.action({ id: args });
-							}
-						});
+					deleteRequestProps.action({ id: args });
 				},
 			};
 		},
