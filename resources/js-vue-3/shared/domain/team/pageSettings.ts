@@ -3,21 +3,21 @@ import { ICuidsPageSettings } from "../../utils/cuids/interfaces/CuidsPageSettin
 export class TeamsPageSettings implements ICuidsPageSettings {
 	addItemButtonText = 'Adicionar time';
 	createSuccessFeedbackTitle = 'Sucesso';
-	createSuccessFeedbackText = 'Entidade criada com sucesso';
+	createSuccessFeedbackText = 'Time criado com sucesso';
 	createSuccessFeedbackParams = {};
-	deleteSuccessFeedbackText = 'Entidade deletada com sucesso';
+	deleteSuccessFeedbackText = 'Time deletado com sucesso';
 	deleteSuccessFeedbackTitle = 'Sucesso';
 	deleteSuccessFeedbackParams = {};
 	deleteConfirmationTitle = 'Tem certeza que deseja deletar?';
 	deleteConfirmationText = 'Essa ação não poderá ser desfeita';
 	emptyStateImage = '';
 	emptyStateDescription = 'Empty state description';
-	emptyStateTitle = 'Nenhum time cadastrada';
-	emptyStateText = 'Ainda não ha nenhum time cadastrada';
+	emptyStateTitle = 'Nenhum time cadastrado';
+	emptyStateText = 'Ainda não há nenhum time cadastrado';
 	emptyStateActionButtonText = 'Adicionar time';
-	pageTitle = 'Entidades';
+	pageTitle = 'Times';
 	pageSubtitle = 'Gerencie times';
-	updateSuccessFeedbackText = 'Entidade atualizada com sucesso'; 
+	updateSuccessFeedbackText = 'Time atualizada com sucesso'; 
 	updateSuccessFeedbackTitle = 'Sucesso';
 	updateSuccessFeedbackParams = {};
 }
