@@ -1,7 +1,7 @@
 <template>
 	<cuids-request-modal
 		v-model="internalShowModal"
-		title="Adicionar entidade"
+		title="Adicionar time"
 		:request-props="requestProps"
 		@save="handleSave"
 	>
@@ -34,7 +34,22 @@ export default {
 	data() {
 		return  {
 			internalShowModal: this.modelValue,
-			team: {},
+			team: {
+				boardLists: [
+					{
+						position: 0,
+						name: 'To Do',
+					},
+					{
+						position: 1,
+						name: 'Doing',
+					},
+					{
+						position: 2,
+						name: 'Done',
+					},
+				]
+			},
 		};
 	},
 
