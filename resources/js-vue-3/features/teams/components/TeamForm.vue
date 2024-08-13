@@ -23,69 +23,88 @@
 			/>
 		</Field>
 	</Form>
-	<label>
-		Listas de trabalho:
-	</label>
-	<small>Clique duas vezes para editar</small>
-	<div class="board-list-container">
-		<div
-			v-for="boardList in team.boardLists"
-		>
-			<cds-box
-				v-if="!boardList['toggleEdit']"	
-				@dblclick="boardList['toggleEdit'] = !boardList['toggleEdit']"
-			>
-				{{ boardList.name }}
-			</cds-box>
-			<cds-box
-				v-else
-				variant="amber"
-			>
-				<span class="board-list-edit-item">
-					<cds-text-input
-						v-model="boardList.name"
-						label=""
-						fluid
-					/>
-					<cds-icon-button
-						icon="check-outline"
-						@click="boardList['toggleEdit'] = !boardList['toggleEdit']"
-					/>
-					<cds-icon-button
-						icon="trash-outline"
-						@click="boardList['toggleEdit'] = !boardList['toggleEdit']"
-					/>
-				</span>
-			</cds-box>
-		</div>
-		
-		<span v-if="createBoardList">
-			<cds-box
-				variant="green"
-			>
-				<span class="board-list-edit-item">
-					<cds-text-input
-						v-model="newBoardList"
-						label=""
-						fluid
-					/>
-					<cds-icon-button
-						icon="check-outline"
-						@click="addBoardList"
-					/>
-				</span>
-			</cds-box>
-		</span>
-		<cds-icon-button
-			size="sm"
-			icon="plus-outline"
-			:tooltip-text="'Excluir'"
-			@click="createBoardList = true"
+	<cds-spacer
+		:margin-bottom="4"
+	/>
+	<span class="board-list-edit-item">
+		<cds-text-input
+			v-model="newBoardList"
+			label="Listas de trabalho"
+			fluid
+			required
+			@keyup.enter="addBoardList"
 		/>
+		<cds-icon-button
+			icon="plus-outline"
+			@click="addBoardList"
+		/>
+	</span>
+	<cds-spacer
+		:margin-bottom="2"
+	/>
+	<div class="board-list-legend">
+		<small>Listas já adicionadas (clique duas vezes para editar):</small>
 	</div>
+	<cds-spacer
+		:margin-bottom="2"
+	/>
+	<div class="board-list-container">
+		<VueDraggable
+			ref="el"
+			v-model="team.boardLists"
+			:animation="150"
+		>
+			<div
+				v-for="(boardList, index) in team.boardLists"
+			>
+				<cds-box
+					v-if="selectedBoardListIndex === null || selectedBoardListIndex !== index"
+					@dblclick="selectedBoardListIndex = index"
+				>
+					<small>
+						{{ boardList.name }}
+					</small>
+				</cds-box>
+				<cds-box
+					v-else
+					class="dashed-box"
+					variant="amber"
+				>
+					<span class="board-list-edit-item--editable">
+						<cds-text-input
+							v-model="boardList.name"
+							label=""
+							fluid
+							autofocus
+							@keyup.enter="selectedBoardListIndex = null"
+							@blur="selectedBoardListIndex = null"
+						/>
+						<cds-icon-button
+							icon="check-outline"
+							@click="selectedBoardListIndex = null"
+						/>
+						<cds-icon-button
+							icon="trash-outline"
+							@click="removeBoardListConfirmation(index)"
+						/>
+					</span>
+				</cds-box>
+			</div>
+		</VueDraggable>
+	</div>
+	<cds-dialog-modal
+		v-model="showDeleteListModal"
+		title="Tem certeza que deseja deletar essa lista?"
+		description="Ao realizar esta ação, todos os cards dessa lista serão permanentemente excluídos"
+		action-button-variant="red"
+		ok-button-text="Sim, excluir"
+		@close="cancelRemoveBoardList"
+		@ok="removeBoardList(selectedBoardListIndex)"
+	/>
 </template>
 <script>
 import { Form, Field } from 'vee-validate';
+import { VueDraggable } from 'vue-draggable-plus';
 export default {
 	props: {
 		modelValue: {
@@ -102,13 +121,16 @@ export default {
 		// eslint-disable-next-line vue/no-reserved-component-names
 		Form,
 		Field,
+		VueDraggable,
 	},
 
 	data() {
 		return {
 			team: this.modelValue,
 			newBoardList: '',
-			createBoardList: false,
+			selectedBoardListIndex: null,
+			showDeleteListModal: false,
+			selectedIndexToEdit: null,
 		};
 	},
 
@@ -133,19 +155,36 @@ export default {
 				name: this.newBoardList,
 				position: this.team.boardLists.length,
 			});
-			this.createBoardList = false;
-		}
+			this.newBoardList = '';
+		},
+
+		removeBoardListConfirmation(index) {
+			this.selectedBoardListIndex = index;	
+			this.showDeleteListModal = true;		
+		},
+
+		removeBoardList() {
+			this.team.boardLists.splice(this.selectedBoardListIndex, 1);
+			this.showDeleteListModal = false;
+			this.selectedBoardListIndex = null;
+		},
+		cancelRemoveBoardList() {
+			this.selectedBoardListIndex = null;
+			this.showDeleteListModal = false;
+		},
 	},
 }
 </script>
 <style lang="scss">
+@import 'node_modules/@sysvale/cuida/dist/@sysvale/tokens.scss';
 
-.board-list-container {
+.board-list-container > div {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 10px;
 	margin-top: 10px;
+	height: auto;
 }
 
 
@@ -153,6 +192,22 @@ export default {
 	display: flex;
 	flex-direction: row;
 	gap: 10px;
-	align-items: center;
+	align-items: end;
+
+	&--editable {
+		@extend .board-list-edit-item;
+		margin-top: -18px;
+		margin-bottom:-10px;
+		margin-left: -10px;
+		margin-right: -10px;
+	}
+}
+
+.board-list-legend {
+	color: $n-700;
+}
+
+.dashed-box {
+	outline-style: dashed!important;
 }
 </style>
