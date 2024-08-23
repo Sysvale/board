@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Models\Team;
 use App\Models\Label;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use  MongoDB\Laravel\Eloquent\Model;
+use  MongoDB\Laravel\Eloquent\SoftDeletes;
 
 class Process extends Model
 {

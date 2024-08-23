@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\User;
+use App\Models\User;
 use App\Constants\BoardListsKeys;
 use App\Constants\BoardKeys;
 use App\Constants\CardTypes;
@@ -162,9 +162,9 @@ class SetupApplicationCommand extends Command
 			$member = Member::create([
 				'name' => 'Administrador',
 			]);
-	
+
 			$member->company()->associate($company->id);
-	
+
 			$member->save();
 			return $member;
 		}

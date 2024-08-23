@@ -84,8 +84,8 @@ class WorkspaceController extends Controller
 		$this->removeBoardList(BoardListsKeys::BACKLOG, $workspace);
 		$this->removeBoardList(BoardListsKeys::NOT_PRIORITIZED, $workspace);
 
-		$workspace->teams()->unset('workspace_id');
-		$workspace->labels()->unset('workspace_id');
+		$workspace->teams()->unset('workspace_id')->save();
+		$workspace->labels()->unset('workspace_id')->save();
 		$workspace->delete();
 
 		return Response::json('Deletado com sucesso.', 200);

@@ -6,7 +6,7 @@ use App\Http\Middleware\ResolveCompanyTenant;
 use App\Models\Card;
 use App\Models\Company;
 use App\Models\CompanyClient;
-use App\User;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Passport;
 use Lcobucci\JWT\Parser;

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Models\Member;
 use App\Models\Workspace;
 use Tests\TestCase;
-use App\User;
+use App\Models\User;
 
 class FixNoCompanyTest extends TestCase
 {
@@ -20,7 +20,7 @@ class FixNoCompanyTest extends TestCase
         factory(User::class, 5)->state('with-member')->create();
 
         Artisan::call('fix:no-company');
-        
+
         $members = Member::get()->toArray();
 
         $updated_members = array_reduce($members, function($members_with_company, $member) {
@@ -41,18 +41,18 @@ class FixNoCompanyTest extends TestCase
             ->pluck('company_id')
             ->toArray();
 
-        Artisan::call('fix:no-company');  
+        Artisan::call('fix:no-company');
 
         $members = Member::get()->pluck('company_id')->toArray();
 
-        $this->assertEqualsCanonicalizing($members_companies_ids, $members);       
+        $this->assertEqualsCanonicalizing($members_companies_ids, $members);
     }
 
 
-    public function testIfCommandAddCompanyInAllWorkspaces() 
+    public function testIfCommandAddCompanyInAllWorkspaces()
     {
         factory(Workspace::class, 5)->create();
-        
+
         Artisan::call('fix:no-company');
 
         $workspaces = Workspace::get()->toArray();

@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use Jenssegers\Mongodb\Auth\User as Authenticatable;
+use  MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Jenssegers\Mongodb\Eloquent\SoftDeletes;
+use  MongoDB\Laravel\Eloquent\SoftDeletes;
 use App\Events\UserRegisteredEvent;
 use App\Models\Member;
 

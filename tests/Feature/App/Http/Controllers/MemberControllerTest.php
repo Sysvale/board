@@ -3,7 +3,7 @@
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Models\Member;
-use App\User;
+use App\Models\User;
 use Tests\TestCase;
 
 class MemberControllerTest extends TestCase
@@ -11,7 +11,7 @@ class MemberControllerTest extends TestCase
 	public function setUp(): void
 	{
 		parent::setUp();
-		
+
 		$this->user = factory(User::class)->state('with-member-company')->create();
 		$this->actingAs($this->user);
 	}

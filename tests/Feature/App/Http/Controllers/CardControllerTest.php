@@ -6,7 +6,7 @@ use App\Models\BoardList;
 use App\Models\Card;
 use App\Models\Company;
 use App\Models\CompanyClient;
-use App\User;
+use App\Models\User;
 use Laravel\Passport\Passport;
 use Sysvale\Mongodb\Passport\Client;
 use Tests\TestCase;

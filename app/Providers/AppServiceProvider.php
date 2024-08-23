@@ -10,6 +10,7 @@ use Faker\Factory as FakerFactory;
 use Faker\Generator as FakerGenerator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Laravel\Passport\Passport;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
 	 *
 	 * @return void
 	 */
-	public function register()
+	public function register(): void
 	{
 		$this->app->singleton(FakerGenerator::class, function () {
 			return FakerFactory::create('pt_BR');
@@ -30,10 +31,15 @@ class AppServiceProvider extends ServiceProvider
 	 *
 	 * @return void
 	 */
-	public function boot()
+	public function boot(): void
 	{
 		JsonResource::withoutWrapping();
 		Card::observe(CardObserver::class);
 		Team::observe(TeamObserver::class);
+
+        Passport::tokensCan([
+            'teste1' => 'Place orders',
+            'teste2' => 'Check order status',
+        ]);
 	}
 }
