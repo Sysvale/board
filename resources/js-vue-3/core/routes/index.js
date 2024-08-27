@@ -1,8 +1,12 @@
 import NotFoundPage from '../pages/NotFoundPage.vue';
-import SettingsRoutes from '../../features/settings/routes';
+import MembersRoute from '../../features/members/routes';
+import WorkspacesRoute from '../../features/workspaces/routes';
+import TeamsRoute from '../../features/teams/routes';
 
 const routes = {
-	...SettingsRoutes,
+	...MembersRoute,
+	...WorkspacesRoute,
+	...TeamsRoute,
 };
 
 const buildRoutes = () => {

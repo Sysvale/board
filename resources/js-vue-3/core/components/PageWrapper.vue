@@ -4,25 +4,41 @@
 			<cds-side-bar
 				:items="items"
 				:active-item="items[0]"
+				collapsible
 				@sidebar-click="handleSideBarItemClick"
-			/>
+			>
+				<template #logo>
+					<a
+						href="/workspace/select"
+						class="mr-3"
+					>
+						<img
+							src="/images/logo.svg"
+							height="45px"
+							title="Trelássio"
+							style="height:35px!important;width:100%;margin: 0 auto;"
+						>
+					</a>
+				</template>
+			</cds-side-bar>
 		</div>
 		<div class="page-wrapper__page-content">
 			<div class="page-wrapper__page-content--header">
 				<cds-page-header
 					:title="title"
 					:subtitle="subtitle"
-				/>
-				<slot name="page-title">
-					{{ title }}
-				</slot>
-				<div class="page-wrapper__page-content--header-action">
-					<slot name="page-title-action"/>
-				</div>
+				>
+					<template
+						#aside
+					>
+						<div class="d-flex">
+							<div class="page-wrapper__page-content--header-action">
+								<slot name="page-title-action"/>
+							</div>
+						</div>
+					</template>
+				</cds-page-header>
 			</div>
-			<slot name="page-subtitle">
-				{{ subtitle }}
-			</slot>
 			<slot name="page-body">
 				<div class="page-wrapper__page-content--body">
 					<slot/>
@@ -62,15 +78,22 @@ export default {
 						{
 							label: "Membros",
 							route: {
-								path: "/settings/members",
+								path: "/v2/index/members",
 								name: "members"
 							}
 						},
 						{
 							label: "Workspaces",
 							route: {
-								path: "/settings/workspaces",
+								path: "/v2/index/workspaces",
 								name: "workspaces"
+							}
+						},
+						{
+							label: "Times",
+							route: {
+								path: "/v2/index/teams",
+								name: "teams"
 							}
 						},
 					]
@@ -104,14 +127,29 @@ body {
 }
 </style>
 <style lang="scss" scoped>
+@import 'node_modules/@sysvale/cuida/dist/@sysvale/tokens.scss';
 .page-wrapper {
 	 display: flex;
+
 	 &__side-bar {
 		position: fixed;
+		flex:1;
+		min-width: 242px;
 	 }
+
 	 &__page-content {
-		padding: 10px;
 		margin-left: 242px;
+		padding: pYX(8, 9);
+		width: calc(100% - 200px);
+		max-width: 100%;
+
+		&--body {
+			padding: px(5);
+		}
+
+		&--header {
+			padding: px(5);
+		}
 	 }
 }
 </style>

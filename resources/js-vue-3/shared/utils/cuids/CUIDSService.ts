@@ -25,7 +25,8 @@ export abstract class CUIDSService<T> implements IRead<T>, IWrite<T> {
 		return this.httpClient.get(`/${this.resource}`, { params });
 	}
 
-	delete = async (id: string): Promise<T> => {
+	delete = async (param: any): Promise<T> => {
+		const id = typeof param === 'string' ? param : param.id;
 		return this.httpClient.delete(`/${this.resource}/${id}`);
 	}
 

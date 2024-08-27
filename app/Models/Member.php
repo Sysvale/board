@@ -54,6 +54,8 @@ class Member extends Model
 	{
 		return $this->teamMembers->map(function ($pivot) {
 			return $pivot->team;
+		})->filter(function ($item) {
+			return !empty($item);
 		});
 	}
 
